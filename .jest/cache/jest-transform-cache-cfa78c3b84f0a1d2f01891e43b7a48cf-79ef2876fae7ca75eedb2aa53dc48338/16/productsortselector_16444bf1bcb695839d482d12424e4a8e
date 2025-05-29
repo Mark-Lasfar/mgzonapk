@@ -1,0 +1,510 @@
+ead94f4f1b15a006cabe5ea20d29d19b
+'use client';
+"use strict";
+
+/* istanbul ignore next */
+function cov_ckeu3f1ww() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/product/product-sort-selector.tsx";
+  var hash = "07933f15a32071a357bd97d4e0a2d3987a5c5063";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/product/product-sort-selector.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 35
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 16
+        },
+        end: {
+          line: 13,
+          column: 42
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 15
+        },
+        end: {
+          line: 14,
+          column: 44
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 20
+        },
+        end: {
+          line: 15,
+          column: 46
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 29
+        },
+        end: {
+          line: 16,
+          column: 71
+        }
+      },
+      "8": {
+        start: {
+          line: 18,
+          column: 4
+        },
+        end: {
+          line: 20,
+          column: 6
+        }
+      },
+      "9": {
+        start: {
+          line: 23,
+          column: 19
+        },
+        end: {
+          line: 23,
+          column: 47
+        }
+      },
+      "10": {
+        start: {
+          line: 24,
+          column: 4
+        },
+        end: {
+          line: 48,
+          column: 7
+        }
+      },
+      "11": {
+        start: {
+          line: 26,
+          column: 12
+        },
+        end: {
+          line: 29,
+          column: 16
+        }
+      },
+      "12": {
+        start: {
+          line: 37,
+          column: 45
+        },
+        end: {
+          line: 37,
+          column: 61
+        }
+      },
+      "13": {
+        start: {
+          line: 42,
+          column: 60
+        },
+        end: {
+          line: 45,
+          column: 31
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 17,
+            column: 9
+          },
+          end: {
+            line: 17,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 17,
+            column: 39
+          },
+          end: {
+            line: 21,
+            column: 1
+          }
+        },
+        line: 17
+      },
+      "2": {
+        name: "ProductSortSelector",
+        decl: {
+          start: {
+            line: 22,
+            column: 9
+          },
+          end: {
+            line: 22,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 22,
+            column: 59
+          },
+          end: {
+            line: 49,
+            column: 1
+          }
+        },
+        line: 22
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 25,
+            column: 23
+          },
+          end: {
+            line: 25,
+            column: 24
+          }
+        },
+        loc: {
+          start: {
+            line: 25,
+            column: 28
+          },
+          end: {
+            line: 30,
+            column: 9
+          }
+        },
+        line: 25
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 37,
+            column: 40
+          },
+          end: {
+            line: 37,
+            column: 41
+          }
+        },
+        loc: {
+          start: {
+            line: 37,
+            column: 45
+          },
+          end: {
+            line: 37,
+            column: 61
+          }
+        },
+        line: 37
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 42,
+            column: 41
+          },
+          end: {
+            line: 42,
+            column: 42
+          }
+        },
+        loc: {
+          start: {
+            line: 42,
+            column: 60
+          },
+          end: {
+            line: 45,
+            column: 31
+          }
+        },
+        line: 42
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 18,
+            column: 11
+          },
+          end: {
+            line: 20,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 18,
+            column: 35
+          },
+          end: {
+            line: 18,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 18,
+            column: 41
+          },
+          end: {
+            line: 20,
+            column: 5
+          }
+        }],
+        line: 18
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 18,
+            column: 11
+          },
+          end: {
+            line: 18,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 18,
+            column: 11
+          },
+          end: {
+            line: 18,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 18,
+            column: 18
+          },
+          end: {
+            line: 18,
+            column: 32
+          }
+        }],
+        line: 18
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/product/product-sort-selector.tsx"],
+      sourcesContent: ["'use client'\nimport {\n  Select,\n  SelectContent,\n  SelectItem,\n  SelectTrigger,\n  SelectValue,\n} from '@/components/ui/select'\nimport { getFilterUrl } from '@/lib/utils'\nimport { useRouter } from 'next/navigation'\nimport React from 'react'\n\nexport default function ProductSortSelector({\n  sortOrders,\n  sort,\n  params,\n}: {\n  sortOrders: { value: string; name: string }[]\n  sort: string\n  params: {\n    q?: string\n    category?: string\n    price?: string\n    rating?: string\n    sort?: string\n    page?: string\n  }\n}) {\n  const router = useRouter()\n  return (\n    <Select\n      onValueChange={(v) => {\n        router.push(getFilterUrl({ params, sort: v }))\n      }}\n      value={sort}\n    >\n      <SelectTrigger>\n        <SelectValue>\n          Sort By: {sortOrders.find((s) => s.value === sort)!.name}\n        </SelectValue>\n      </SelectTrigger>\n\n      <SelectContent>\n        {sortOrders.map((s) => (\n          <SelectItem key={s.value} value={s.value}>\n            {s.name}\n          </SelectItem>\n        ))}\n      </SelectContent>\n    </Select>\n  )\n}\n"],
+      names: ["ProductSortSelector", "sortOrders", "sort", "params", "router", "useRouter", "Select", "onValueChange", "v", "push", "getFilterUrl", "value", "SelectTrigger", "SelectValue", "find", "s", "name", "SelectContent", "map", "SelectItem"],
+      mappings: "AAAA;;;;;+BAYA;;;eAAwBA;;;;wBALjB;uBACsB;4BACH;8DACR;;;;;;AAEH,SAASA,oBAAoB,EAC1CC,UAAU,EACVC,IAAI,EACJC,MAAM,EAYP;IACC,MAAMC,SAASC,IAAAA,qBAAS;IACxB,qBACE,sBAACC,cAAM;QACLC,eAAe,CAACC;YACdJ,OAAOK,IAAI,CAACC,IAAAA,mBAAY,EAAC;gBAAEP;gBAAQD,MAAMM;YAAE;QAC7C;QACAG,OAAOT;;0BAEP,qBAACU,qBAAa;0BACZ,cAAA,sBAACC,mBAAW;;wBAAC;wBACDZ,WAAWa,IAAI,CAAC,CAACC,IAAMA,EAAEJ,KAAK,KAAKT,MAAOc,IAAI;;;;0BAI5D,qBAACC,qBAAa;0BACXhB,WAAWiB,GAAG,CAAC,CAACH,kBACf,qBAACI,kBAAU;wBAAeR,OAAOI,EAAEJ,KAAK;kCACrCI,EAAEC,IAAI;uBADQD,EAAEJ,KAAK;;;;AAOlC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "07933f15a32071a357bd97d4e0a2d3987a5c5063"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_ckeu3f1ww = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_ckeu3f1ww();
+cov_ckeu3f1ww().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_ckeu3f1ww().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_ckeu3f1ww().f[0]++;
+    cov_ckeu3f1ww().s[2]++;
+    return ProductSortSelector;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_ckeu3f1ww().s[3]++, require("react/jsx-runtime"));
+const _select =
+/* istanbul ignore next */
+(cov_ckeu3f1ww().s[4]++, require("../../ui/select"));
+const _utils =
+/* istanbul ignore next */
+(cov_ckeu3f1ww().s[5]++, require("../../../lib/utils"));
+const _navigation =
+/* istanbul ignore next */
+(cov_ckeu3f1ww().s[6]++, require("next/navigation"));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_ckeu3f1ww().s[7]++, _interop_require_default(require("react")));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_ckeu3f1ww().f[1]++;
+  cov_ckeu3f1ww().s[8]++;
+  return /* istanbul ignore next */(cov_ckeu3f1ww().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_ckeu3f1ww().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_ckeu3f1ww().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_ckeu3f1ww().b[0][1]++, {
+    default: obj
+  });
+}
+function ProductSortSelector({
+  sortOrders,
+  sort,
+  params
+}) {
+  /* istanbul ignore next */
+  cov_ckeu3f1ww().f[2]++;
+  const router =
+  /* istanbul ignore next */
+  (cov_ckeu3f1ww().s[9]++, (0, _navigation.useRouter)());
+  /* istanbul ignore next */
+  cov_ckeu3f1ww().s[10]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)(_select.Select, {
+    onValueChange: v => {
+      /* istanbul ignore next */
+      cov_ckeu3f1ww().f[3]++;
+      cov_ckeu3f1ww().s[11]++;
+      router.push((0, _utils.getFilterUrl)({
+        params,
+        sort: v
+      }));
+    },
+    value: sort,
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_select.SelectTrigger, {
+      children: /*#__PURE__*/(0, _jsxruntime.jsxs)(_select.SelectValue, {
+        children: ["Sort By: ", sortOrders.find(s => {
+          /* istanbul ignore next */
+          cov_ckeu3f1ww().f[4]++;
+          cov_ckeu3f1ww().s[12]++;
+          return s.value === sort;
+        }).name]
+      })
+    }), /*#__PURE__*/(0, _jsxruntime.jsx)(_select.SelectContent, {
+      children: sortOrders.map(s => {
+        /* istanbul ignore next */
+        cov_ckeu3f1ww().f[5]++;
+        cov_ckeu3f1ww().s[13]++;
+        return /*#__PURE__*/(0, _jsxruntime.jsx)(_select.SelectItem, {
+          value: s.value,
+          children: s.name
+        }, s.value);
+      })
+    })]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJQcm9kdWN0U29ydFNlbGVjdG9yIiwic29ydE9yZGVycyIsInNvcnQiLCJwYXJhbXMiLCJjb3ZfY2tldTNmMXd3IiwiZiIsInJvdXRlciIsInMiLCJfbmF2aWdhdGlvbiIsInVzZVJvdXRlciIsIl9qc3hydW50aW1lIiwianN4cyIsIl9zZWxlY3QiLCJTZWxlY3QiLCJvblZhbHVlQ2hhbmdlIiwidiIsInB1c2giLCJfdXRpbHMiLCJnZXRGaWx0ZXJVcmwiLCJ2YWx1ZSIsImpzeCIsIlNlbGVjdFRyaWdnZXIiLCJTZWxlY3RWYWx1ZSIsImZpbmQiLCJuYW1lIiwiU2VsZWN0Q29udGVudCIsIm1hcCIsIlNlbGVjdEl0ZW0iXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvY29tcG9uZW50cy9zaGFyZWQvcHJvZHVjdC9wcm9kdWN0LXNvcnQtc2VsZWN0b3IudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIid1c2UgY2xpZW50J1xuaW1wb3J0IHtcbiAgU2VsZWN0LFxuICBTZWxlY3RDb250ZW50LFxuICBTZWxlY3RJdGVtLFxuICBTZWxlY3RUcmlnZ2VyLFxuICBTZWxlY3RWYWx1ZSxcbn0gZnJvbSAnQC9jb21wb25lbnRzL3VpL3NlbGVjdCdcbmltcG9ydCB7IGdldEZpbHRlclVybCB9IGZyb20gJ0AvbGliL3V0aWxzJ1xuaW1wb3J0IHsgdXNlUm91dGVyIH0gZnJvbSAnbmV4dC9uYXZpZ2F0aW9uJ1xuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0J1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBQcm9kdWN0U29ydFNlbGVjdG9yKHtcbiAgc29ydE9yZGVycyxcbiAgc29ydCxcbiAgcGFyYW1zLFxufToge1xuICBzb3J0T3JkZXJzOiB7IHZhbHVlOiBzdHJpbmc7IG5hbWU6IHN0cmluZyB9W11cbiAgc29ydDogc3RyaW5nXG4gIHBhcmFtczoge1xuICAgIHE/OiBzdHJpbmdcbiAgICBjYXRlZ29yeT86IHN0cmluZ1xuICAgIHByaWNlPzogc3RyaW5nXG4gICAgcmF0aW5nPzogc3RyaW5nXG4gICAgc29ydD86IHN0cmluZ1xuICAgIHBhZ2U/OiBzdHJpbmdcbiAgfVxufSkge1xuICBjb25zdCByb3V0ZXIgPSB1c2VSb3V0ZXIoKVxuICByZXR1cm4gKFxuICAgIDxTZWxlY3RcbiAgICAgIG9uVmFsdWVDaGFuZ2U9eyh2KSA9PiB7XG4gICAgICAgIHJvdXRlci5wdXNoKGdldEZpbHRlclVybCh7IHBhcmFtcywgc29ydDogdiB9KSlcbiAgICAgIH19XG4gICAgICB2YWx1ZT17c29ydH1cbiAgICA+XG4gICAgICA8U2VsZWN0VHJpZ2dlcj5cbiAgICAgICAgPFNlbGVjdFZhbHVlPlxuICAgICAgICAgIFNvcnQgQnk6IHtzb3J0T3JkZXJzLmZpbmQoKHMpID0+IHMudmFsdWUgPT09IHNvcnQpIS5uYW1lfVxuICAgICAgICA8L1NlbGVjdFZhbHVlPlxuICAgICAgPC9TZWxlY3RUcmlnZ2VyPlxuXG4gICAgICA8U2VsZWN0Q29udGVudD5cbiAgICAgICAge3NvcnRPcmRlcnMubWFwKChzKSA9PiAoXG4gICAgICAgICAgPFNlbGVjdEl0ZW0ga2V5PXtzLnZhbHVlfSB2YWx1ZT17cy52YWx1ZX0+XG4gICAgICAgICAgICB7cy5uYW1lfVxuICAgICAgICAgIDwvU2VsZWN0SXRlbT5cbiAgICAgICAgKSl9XG4gICAgICA8L1NlbGVjdENvbnRlbnQ+XG4gICAgPC9TZWxlY3Q+XG4gIClcbn1cbiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OytCQVlBOzs7Ozs7V0FBd0JBLG1CQUFBOzs7Ozs7OztpQ0FMakI7OztpQ0FDc0I7OztpQ0FDSDs7O3VFQUNSOzs7Ozs7Ozs7Ozs7Ozs7QUFFSCxTQUFTQSxvQkFBb0I7RUFDMUNDLFVBQVU7RUFDVkMsSUFBSTtFQUNKQztBQUFNLENBWVA7RUFBQTtFQUFBQyxhQUFBLEdBQUFDLENBQUE7RUFDQyxNQUFNQyxNQUFBO0VBQUE7RUFBQSxDQUFBRixhQUFBLEdBQUFHLENBQUEsT0FBUyxJQUFBQyxXQUFBLENBQUFDLFNBQVM7RUFBQTtFQUFBTCxhQUFBLEdBQUFHLENBQUE7RUFDeEIsb0JBQ0UsSUFBQUcsV0FBQSxDQUFBQyxJQUFBLEVBQUNDLE9BQUEsQ0FBQUMsTUFBTTtJQUNMQyxhQUFBLEVBQWdCQyxDQUFBO01BQUE7TUFBQVgsYUFBQSxHQUFBQyxDQUFBO01BQUFELGFBQUEsR0FBQUcsQ0FBQTtNQUNkRCxNQUFBLENBQU9VLElBQUksQ0FBQyxJQUFBQyxNQUFBLENBQUFDLFlBQVksRUFBQztRQUFFZixNQUFBO1FBQVFELElBQUEsRUFBTWE7TUFBRTtJQUM3QztJQUNBSSxLQUFBLEVBQU9qQixJQUFBOzRCQUVQLElBQUFRLFdBQUEsQ0FBQVUsR0FBQSxFQUFDUixPQUFBLENBQUFTLGFBQWE7Z0JBQ1osaUJBQUFYLFdBQUEsQ0FBQUMsSUFBQSxFQUFDQyxPQUFBLENBQUFVLFdBQVc7bUJBQUMsYUFDRHJCLFVBQUEsQ0FBV3NCLElBQUksQ0FBRWhCLENBQUEsSUFBTTtVQUFBO1VBQUFILGFBQUEsR0FBQUMsQ0FBQTtVQUFBRCxhQUFBLEdBQUFHLENBQUE7VUFBQSxPQUFBQSxDQUFBLENBQUVZLEtBQUssS0FBS2pCLElBQUE7UUFBQSxHQUFPc0IsSUFBSTs7cUJBSTVELElBQUFkLFdBQUEsQ0FBQVUsR0FBQSxFQUFDUixPQUFBLENBQUFhLGFBQWE7Z0JBQ1h4QixVQUFBLENBQVd5QixHQUFHLENBQUVuQixDQUFBLElBQ2Y7UUFBQTtRQUFBSCxhQUFBLEdBQUFDLENBQUE7UUFBQUQsYUFBQSxHQUFBRyxDQUFBO1FBQUEsT0FEZSxhQUNmLElBQUFHLFdBQUEsQ0FBQVUsR0FBQSxFQUFDUixPQUFBLENBQUFlLFVBQVU7VUFBZVIsS0FBQSxFQUFPWixDQUFBLENBQUVZLEtBQUs7b0JBQ3JDWixDQUFBLENBQUVpQjtXQURZakIsQ0FBQSxDQUFFWSxLQUFLO01BQUE7OztBQU9sQyIsImlnbm9yZUxpc3QiOltdfQ==

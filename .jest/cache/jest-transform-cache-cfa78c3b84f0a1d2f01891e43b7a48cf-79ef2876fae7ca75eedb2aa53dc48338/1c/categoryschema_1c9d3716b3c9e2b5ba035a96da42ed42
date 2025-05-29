@@ -1,0 +1,343 @@
+90c4c2e5d900a9f93a1d72f886f2fb33
+"use strict";
+
+/* istanbul ignore next */
+function cov_agl32g4uz() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/seo/category-schema.ts";
+  var hash = "df1d60ff03f2ec32361e1d098863904afdeb6f40";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/seo/category-schema.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 38
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 24
+        },
+        end: {
+          line: 11,
+          column: 61
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 46
+        },
+        end: {
+          line: 13,
+          column: 85
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 20
+        },
+        end: {
+          line: 14,
+          column: 57
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 30,
+          column: 6
+        }
+      },
+      "7": {
+        start: {
+          line: 25,
+          column: 51
+        },
+        end: {
+          line: 29,
+          column: 13
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "generateCategorySchema",
+        decl: {
+          start: {
+            line: 12,
+            column: 15
+          },
+          end: {
+            line: 12,
+            column: 37
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 48
+          },
+          end: {
+            line: 31,
+            column: 1
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 25,
+            column: 39
+          },
+          end: {
+            line: 25,
+            column: 40
+          }
+        },
+        loc: {
+          start: {
+            line: 25,
+            column: 51
+          },
+          end: {
+            line: 29,
+            column: 13
+          }
+        },
+        line: 25
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 14,
+            column: 20
+          },
+          end: {
+            line: 14,
+            column: 57
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 14,
+            column: 20
+          },
+          end: {
+            line: 14,
+            column: 23
+          }
+        }, {
+          start: {
+            line: 14,
+            column: 27
+          },
+          end: {
+            line: 14,
+            column: 57
+          }
+        }],
+        line: 14
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 28,
+            column: 21
+          },
+          end: {
+            line: 28,
+            column: 94
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 28,
+            column: 54
+          },
+          end: {
+            line: 28,
+            column: 65
+          }
+        }, {
+          start: {
+            line: 28,
+            column: 68
+          },
+          end: {
+            line: 28,
+            column: 94
+          }
+        }],
+        line: 28
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/seo/category-schema.ts"],
+      sourcesContent: ["import { getSetting } from '../actions/setting.actions'\n\nexport async function generateCategorySchema(category: {\n  name: string\n  description: string\n  products: Array<{\n    name: string\n    url: string\n  }>\n}) {\n  const {\n    site: { url, name: siteName },\n  } = await getSetting()\n  const baseUrl = url || 'https://hager-zon.vercel.app'\n\n  return {\n    '@context': 'https://schema.org',\n    '@type': 'CollectionPage',\n    name: category.name,\n    description: category.description,\n    isPartOf: {\n      '@type': 'WebSite',\n      name: siteName,\n      url: baseUrl,\n    },\n    hasPart: category.products.map((product) => ({\n      '@type': 'Product',\n      name: product.name,\n      url: product.url.startsWith('http')\n        ? product.url\n        : `${baseUrl}${product.url}`,\n    })),\n  }\n}\n"],
+      names: ["generateCategorySchema", "category", "site", "url", "name", "siteName", "getSetting", "baseUrl", "description", "isPartOf", "hasPart", "products", "map", "product", "startsWith"],
+      mappings: ";;;;+BAEsBA;;;eAAAA;;;gCAFK;AAEpB,eAAeA,uBAAuBC,QAO5C;IACC,MAAM,EACJC,MAAM,EAAEC,GAAG,EAAEC,MAAMC,QAAQ,EAAE,EAC9B,GAAG,MAAMC,IAAAA,0BAAU;IACpB,MAAMC,UAAUJ,OAAO;IAEvB,OAAO;QACL,YAAY;QACZ,SAAS;QACTC,MAAMH,SAASG,IAAI;QACnBI,aAAaP,SAASO,WAAW;QACjCC,UAAU;YACR,SAAS;YACTL,MAAMC;YACNF,KAAKI;QACP;QACAG,SAAST,SAASU,QAAQ,CAACC,GAAG,CAAC,CAACC,UAAa,CAAA;gBAC3C,SAAS;gBACTT,MAAMS,QAAQT,IAAI;gBAClBD,KAAKU,QAAQV,GAAG,CAACW,UAAU,CAAC,UACxBD,QAAQV,GAAG,GACX,GAAGI,UAAUM,QAAQV,GAAG,EAAE;YAChC,CAAA;IACF;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "df1d60ff03f2ec32361e1d098863904afdeb6f40"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_agl32g4uz = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_agl32g4uz();
+cov_agl32g4uz().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_agl32g4uz().s[1]++;
+Object.defineProperty(exports, "generateCategorySchema", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_agl32g4uz().f[0]++;
+    cov_agl32g4uz().s[2]++;
+    return generateCategorySchema;
+  }
+});
+const _settingactions =
+/* istanbul ignore next */
+(cov_agl32g4uz().s[3]++, require("../actions/setting.actions"));
+async function generateCategorySchema(category) {
+  /* istanbul ignore next */
+  cov_agl32g4uz().f[1]++;
+  const {
+    site: {
+      url,
+      name: siteName
+    }
+  } =
+  /* istanbul ignore next */
+  (cov_agl32g4uz().s[4]++, await (0, _settingactions.getSetting)());
+  const baseUrl =
+  /* istanbul ignore next */
+  (cov_agl32g4uz().s[5]++,
+  /* istanbul ignore next */
+  (cov_agl32g4uz().b[0][0]++, url) ||
+  /* istanbul ignore next */
+  (cov_agl32g4uz().b[0][1]++, 'https://hager-zon.vercel.app'));
+  /* istanbul ignore next */
+  cov_agl32g4uz().s[6]++;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: category.name,
+    description: category.description,
+    isPartOf: {
+      '@type': 'WebSite',
+      name: siteName,
+      url: baseUrl
+    },
+    hasPart: category.products.map(product => {
+      /* istanbul ignore next */
+      cov_agl32g4uz().f[2]++;
+      cov_agl32g4uz().s[7]++;
+      return {
+        '@type': 'Product',
+        name: product.name,
+        url: product.url.startsWith('http') ?
+        /* istanbul ignore next */
+        (cov_agl32g4uz().b[1][0]++, product.url) :
+        /* istanbul ignore next */
+        (cov_agl32g4uz().b[1][1]++, `${baseUrl}${product.url}`)
+      };
+    })
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfYWdsMzJnNHV6IiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiZ2VuZXJhdGVDYXRlZ29yeVNjaGVtYSIsImNhdGVnb3J5IiwiZiIsInNpdGUiLCJ1cmwiLCJuYW1lIiwic2l0ZU5hbWUiLCJfc2V0dGluZ2FjdGlvbnMiLCJnZXRTZXR0aW5nIiwiYmFzZVVybCIsImIiLCJkZXNjcmlwdGlvbiIsImlzUGFydE9mIiwiaGFzUGFydCIsInByb2R1Y3RzIiwibWFwIiwicHJvZHVjdCIsInN0YXJ0c1dpdGgiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL3Nlby9jYXRlZ29yeS1zY2hlbWEudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgZ2V0U2V0dGluZyB9IGZyb20gJy4uL2FjdGlvbnMvc2V0dGluZy5hY3Rpb25zJ1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2VuZXJhdGVDYXRlZ29yeVNjaGVtYShjYXRlZ29yeToge1xuICBuYW1lOiBzdHJpbmdcbiAgZGVzY3JpcHRpb246IHN0cmluZ1xuICBwcm9kdWN0czogQXJyYXk8e1xuICAgIG5hbWU6IHN0cmluZ1xuICAgIHVybDogc3RyaW5nXG4gIH0+XG59KSB7XG4gIGNvbnN0IHtcbiAgICBzaXRlOiB7IHVybCwgbmFtZTogc2l0ZU5hbWUgfSxcbiAgfSA9IGF3YWl0IGdldFNldHRpbmcoKVxuICBjb25zdCBiYXNlVXJsID0gdXJsIHx8ICdodHRwczovL2hhZ2VyLXpvbi52ZXJjZWwuYXBwJ1xuXG4gIHJldHVybiB7XG4gICAgJ0Bjb250ZXh0JzogJ2h0dHBzOi8vc2NoZW1hLm9yZycsXG4gICAgJ0B0eXBlJzogJ0NvbGxlY3Rpb25QYWdlJyxcbiAgICBuYW1lOiBjYXRlZ29yeS5uYW1lLFxuICAgIGRlc2NyaXB0aW9uOiBjYXRlZ29yeS5kZXNjcmlwdGlvbixcbiAgICBpc1BhcnRPZjoge1xuICAgICAgJ0B0eXBlJzogJ1dlYlNpdGUnLFxuICAgICAgbmFtZTogc2l0ZU5hbWUsXG4gICAgICB1cmw6IGJhc2VVcmwsXG4gICAgfSxcbiAgICBoYXNQYXJ0OiBjYXRlZ29yeS5wcm9kdWN0cy5tYXAoKHByb2R1Y3QpID0+ICh7XG4gICAgICAnQHR5cGUnOiAnUHJvZHVjdCcsXG4gICAgICBuYW1lOiBwcm9kdWN0Lm5hbWUsXG4gICAgICB1cmw6IHByb2R1Y3QudXJsLnN0YXJ0c1dpdGgoJ2h0dHAnKVxuICAgICAgICA/IHByb2R1Y3QudXJsXG4gICAgICAgIDogYCR7YmFzZVVybH0ke3Byb2R1Y3QudXJsfWAsXG4gICAgfSkpLFxuICB9XG59XG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBZ0JJO0lBQUFBLGFBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGFBQUE7QUFBQUEsYUFBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBZGtCOzs7Ozs7V0FBQUMsc0JBQUE7Ozs7O2lDQUZLO0FBRXBCLGVBQWVBLHVCQUF1QkMsUUFPNUM7RUFBQTtFQUFBSixhQUFBLEdBQUFLLENBQUE7RUFDQyxNQUFNO0lBQ0pDLElBQUEsRUFBTTtNQUFFQyxHQUFHO01BQUVDLElBQUEsRUFBTUM7SUFBUTtFQUFFLENBQzlCO0VBQUE7RUFBQSxDQUFBVCxhQUFBLEdBQUFFLENBQUEsT0FBRyxNQUFNLElBQUFRLGVBQUEsQ0FBQUMsVUFBVTtFQUNwQixNQUFNQyxPQUFBO0VBQUE7RUFBQSxDQUFBWixhQUFBLEdBQUFFLENBQUE7RUFBVTtFQUFBLENBQUFGLGFBQUEsR0FBQWEsQ0FBQSxVQUFBTixHQUFBO0VBQUE7RUFBQSxDQUFBUCxhQUFBLEdBQUFhLENBQUEsVUFBTztFQUFBO0VBQUFiLGFBQUEsR0FBQUUsQ0FBQTtFQUV2QixPQUFPO0lBQ0wsWUFBWTtJQUNaLFNBQVM7SUFDVE0sSUFBQSxFQUFNSixRQUFBLENBQVNJLElBQUk7SUFDbkJNLFdBQUEsRUFBYVYsUUFBQSxDQUFTVSxXQUFXO0lBQ2pDQyxRQUFBLEVBQVU7TUFDUixTQUFTO01BQ1RQLElBQUEsRUFBTUMsUUFBQTtNQUNORixHQUFBLEVBQUtLO0lBQ1A7SUFDQUksT0FBQSxFQUFTWixRQUFBLENBQVNhLFFBQVEsQ0FBQ0MsR0FBRyxDQUFFQyxPQUFBLElBQWE7TUFBQTtNQUFBbkIsYUFBQSxHQUFBSyxDQUFBO01BQUFMLGFBQUEsR0FBQUUsQ0FBQTtNQUFBO1FBQzNDLFNBQVM7UUFDVE0sSUFBQSxFQUFNVyxPQUFBLENBQVFYLElBQUk7UUFDbEJELEdBQUEsRUFBS1ksT0FBQSxDQUFRWixHQUFHLENBQUNhLFVBQVUsQ0FBQztRQUFBO1FBQUEsQ0FBQXBCLGFBQUEsR0FBQWEsQ0FBQSxVQUN4Qk0sT0FBQSxDQUFRWixHQUFHO1FBQUE7UUFBQSxDQUFBUCxhQUFBLEdBQUFhLENBQUEsVUFDWCxHQUFHRCxPQUFBLEdBQVVPLE9BQUEsQ0FBUVosR0FBRyxFQUFFO01BQ2hDO0lBQUE7RUFDRjtBQUNGIiwiaWdub3JlTGlzdCI6W119

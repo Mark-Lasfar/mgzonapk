@@ -1,0 +1,380 @@
+856c43eef322dd65a158de1d6ca65340
+"use strict";
+
+/* istanbul ignore next */
+function cov_14d6g8c2j() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/checkout/checkout-footer.tsx";
+  var hash = "f73d9028c93595cd1c4b7e2cc63eccdd0a3d89bf";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/checkout/checkout-footer.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 30
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 20
+        },
+        end: {
+          line: 11,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 39
+        },
+        end: {
+          line: 12,
+          column: 108
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 28
+        },
+        end: {
+          line: 13,
+          column: 74
+        }
+      },
+      "6": {
+        start: {
+          line: 14,
+          column: 29
+        },
+        end: {
+          line: 14,
+          column: 71
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 4
+        },
+        end: {
+          line: 18,
+          column: 6
+        }
+      },
+      "8": {
+        start: {
+          line: 21,
+          column: 34
+        },
+        end: {
+          line: 21,
+          column: 65
+        }
+      },
+      "9": {
+        start: {
+          line: 22,
+          column: 4
+        },
+        end: {
+          line: 75,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 15,
+            column: 9
+          },
+          end: {
+            line: 15,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 39
+          },
+          end: {
+            line: 19,
+            column: 1
+          }
+        },
+        line: 15
+      },
+      "2": {
+        name: "CheckoutFooter",
+        decl: {
+          start: {
+            line: 20,
+            column: 9
+          },
+          end: {
+            line: 20,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 26
+          },
+          end: {
+            line: 76,
+            column: 1
+          }
+        },
+        line: 20
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 35
+          },
+          end: {
+            line: 16,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 41
+          },
+          end: {
+            line: 18,
+            column: 5
+          }
+        }],
+        line: 16
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 18
+          },
+          end: {
+            line: 16,
+            column: 32
+          }
+        }],
+        line: 16
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/checkout/checkout-footer.tsx"],
+      sourcesContent: ["import useSettingStore from '@/hooks/use-setting-store'\nimport Link from 'next/link'\nimport React from 'react'\n\nexport default function CheckoutFooter() {\n  const {\n    setting: { site },\n  } = useSettingStore()\n  return (\n    <div className=\"border-t-2 space-y-2 my-4 py-4\">\n      <p>\n        Need help? Check our <Link href=\"/page/help\">Help Center</Link> or{' '}\n        <Link href=\"/page/contact-us\">Contact Us</Link>{' '}\n      </p>\n      <p>\n        For an item ordered from {site.name}: When you click the &apos;Place\n        Your Order&apos; button, we will send you an e-mail acknowledging\n        receipt of your order. Your contract to purchase an item will not be\n        complete until we send you an e-mail notifying you that the item has\n        been shipped to you. By placing your order, you agree to {site.name}\n        &apos;s <Link href=\"/page/privacy-policy\">privacy notice</Link> and\n        <Link href=\"/page/conditions-of-use\"> conditions of use</Link>.\n      </p>\n      <p>\n        Within 30 days of delivery, you may return new, unopened merchandise in\n        its original condition. Exceptions and restrictions apply.{' '}\n        <Link href=\"/page/returns-policy\">\n          See {site.name}&apos;s Returns Policy.\n        </Link>\n      </p>\n    </div>\n  )\n}\n"],
+      names: ["CheckoutFooter", "setting", "site", "useSettingStore", "div", "className", "p", "Link", "href", "name"],
+      mappings: ";;;;+BAIA;;;eAAwBA;;;;wEAJI;6DACX;8DACC;;;;;;AAEH,SAASA;IACtB,MAAM,EACJC,SAAS,EAAEC,IAAI,EAAE,EAClB,GAAGC,IAAAA,wBAAe;IACnB,qBACE,sBAACC;QAAIC,WAAU;;0BACb,sBAACC;;oBAAE;kCACoB,qBAACC,aAAI;wBAACC,MAAK;kCAAa;;oBAAkB;oBAAI;kCACnE,qBAACD,aAAI;wBAACC,MAAK;kCAAmB;;oBAAkB;;;0BAElD,sBAACF;;oBAAE;oBACyBJ,KAAKO,IAAI;oBAAC;oBAIsBP,KAAKO,IAAI;oBAAC;kCAC5D,qBAACF,aAAI;wBAACC,MAAK;kCAAuB;;oBAAqB;kCAC/D,qBAACD,aAAI;wBAACC,MAAK;kCAA0B;;oBAAyB;;;0BAEhE,sBAACF;;oBAAE;oBAE0D;kCAC3D,sBAACC,aAAI;wBAACC,MAAK;;4BAAuB;4BAC3BN,KAAKO,IAAI;4BAAC;;;;;;;AAKzB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "f73d9028c93595cd1c4b7e2cc63eccdd0a3d89bf"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_14d6g8c2j = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_14d6g8c2j();
+cov_14d6g8c2j().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_14d6g8c2j().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_14d6g8c2j().f[0]++;
+    cov_14d6g8c2j().s[2]++;
+    return CheckoutFooter;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_14d6g8c2j().s[3]++, require("react/jsx-runtime"));
+const _usesettingstore =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_14d6g8c2j().s[4]++, _interop_require_default(require("../../../hooks/use-setting-store")));
+const _link =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_14d6g8c2j().s[5]++, _interop_require_default(require("next/link")));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_14d6g8c2j().s[6]++, _interop_require_default(require("react")));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_14d6g8c2j().f[1]++;
+  cov_14d6g8c2j().s[7]++;
+  return /* istanbul ignore next */(cov_14d6g8c2j().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_14d6g8c2j().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_14d6g8c2j().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_14d6g8c2j().b[0][1]++, {
+    default: obj
+  });
+}
+function CheckoutFooter() {
+  /* istanbul ignore next */
+  cov_14d6g8c2j().f[2]++;
+  const {
+    setting: {
+      site
+    }
+  } =
+  /* istanbul ignore next */
+  (cov_14d6g8c2j().s[8]++, (0, _usesettingstore.default)());
+  /* istanbul ignore next */
+  cov_14d6g8c2j().s[9]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+    className: "border-t-2 space-y-2 my-4 py-4",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+      children: ["Need help? Check our ", /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+        href: "/page/help",
+        children: "Help Center"
+      }), " or", ' ', /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+        href: "/page/contact-us",
+        children: "Contact Us"
+      }), ' ']
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+      children: ["For an item ordered from ", site.name, ": When you click the 'Place Your Order' button, we will send you an e-mail acknowledging receipt of your order. Your contract to purchase an item will not be complete until we send you an e-mail notifying you that the item has been shipped to you. By placing your order, you agree to ", site.name, "'s ", /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+        href: "/page/privacy-policy",
+        children: "privacy notice"
+      }), " and", /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+        href: "/page/conditions-of-use",
+        children: " conditions of use"
+      }), "."]
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+      children: ["Within 30 days of delivery, you may return new, unopened merchandise in its original condition. Exceptions and restrictions apply.", ' ', /*#__PURE__*/(0, _jsxruntime.jsxs)(_link.default, {
+        href: "/page/returns-policy",
+        children: ["See ", site.name, "'s Returns Policy."]
+      })]
+    })]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJDaGVja291dEZvb3RlciIsImNvdl8xNGQ2ZzhjMmoiLCJmIiwic2V0dGluZyIsInNpdGUiLCJzIiwiX3VzZXNldHRpbmdzdG9yZSIsImRlZmF1bHQiLCJfanN4cnVudGltZSIsImpzeHMiLCJjbGFzc05hbWUiLCJqc3giLCJfbGluayIsImhyZWYiLCJuYW1lIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2FwcC9bbG9jYWxlXS9jaGVja291dC9jaGVja291dC1mb290ZXIudHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB1c2VTZXR0aW5nU3RvcmUgZnJvbSAnQC9ob29rcy91c2Utc2V0dGluZy1zdG9yZSdcbmltcG9ydCBMaW5rIGZyb20gJ25leHQvbGluaydcbmltcG9ydCBSZWFjdCBmcm9tICdyZWFjdCdcblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gQ2hlY2tvdXRGb290ZXIoKSB7XG4gIGNvbnN0IHtcbiAgICBzZXR0aW5nOiB7IHNpdGUgfSxcbiAgfSA9IHVzZVNldHRpbmdTdG9yZSgpXG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9XCJib3JkZXItdC0yIHNwYWNlLXktMiBteS00IHB5LTRcIj5cbiAgICAgIDxwPlxuICAgICAgICBOZWVkIGhlbHA/IENoZWNrIG91ciA8TGluayBocmVmPVwiL3BhZ2UvaGVscFwiPkhlbHAgQ2VudGVyPC9MaW5rPiBvcnsnICd9XG4gICAgICAgIDxMaW5rIGhyZWY9XCIvcGFnZS9jb250YWN0LXVzXCI+Q29udGFjdCBVczwvTGluaz57JyAnfVxuICAgICAgPC9wPlxuICAgICAgPHA+XG4gICAgICAgIEZvciBhbiBpdGVtIG9yZGVyZWQgZnJvbSB7c2l0ZS5uYW1lfTogV2hlbiB5b3UgY2xpY2sgdGhlICZhcG9zO1BsYWNlXG4gICAgICAgIFlvdXIgT3JkZXImYXBvczsgYnV0dG9uLCB3ZSB3aWxsIHNlbmQgeW91IGFuIGUtbWFpbCBhY2tub3dsZWRnaW5nXG4gICAgICAgIHJlY2VpcHQgb2YgeW91ciBvcmRlci4gWW91ciBjb250cmFjdCB0byBwdXJjaGFzZSBhbiBpdGVtIHdpbGwgbm90IGJlXG4gICAgICAgIGNvbXBsZXRlIHVudGlsIHdlIHNlbmQgeW91IGFuIGUtbWFpbCBub3RpZnlpbmcgeW91IHRoYXQgdGhlIGl0ZW0gaGFzXG4gICAgICAgIGJlZW4gc2hpcHBlZCB0byB5b3UuIEJ5IHBsYWNpbmcgeW91ciBvcmRlciwgeW91IGFncmVlIHRvIHtzaXRlLm5hbWV9XG4gICAgICAgICZhcG9zO3MgPExpbmsgaHJlZj1cIi9wYWdlL3ByaXZhY3ktcG9saWN5XCI+cHJpdmFjeSBub3RpY2U8L0xpbms+IGFuZFxuICAgICAgICA8TGluayBocmVmPVwiL3BhZ2UvY29uZGl0aW9ucy1vZi11c2VcIj4gY29uZGl0aW9ucyBvZiB1c2U8L0xpbms+LlxuICAgICAgPC9wPlxuICAgICAgPHA+XG4gICAgICAgIFdpdGhpbiAzMCBkYXlzIG9mIGRlbGl2ZXJ5LCB5b3UgbWF5IHJldHVybiBuZXcsIHVub3BlbmVkIG1lcmNoYW5kaXNlIGluXG4gICAgICAgIGl0cyBvcmlnaW5hbCBjb25kaXRpb24uIEV4Y2VwdGlvbnMgYW5kIHJlc3RyaWN0aW9ucyBhcHBseS57JyAnfVxuICAgICAgICA8TGluayBocmVmPVwiL3BhZ2UvcmV0dXJucy1wb2xpY3lcIj5cbiAgICAgICAgICBTZWUge3NpdGUubmFtZX0mYXBvcztzIFJldHVybnMgUG9saWN5LlxuICAgICAgICA8L0xpbms+XG4gICAgICA8L3A+XG4gICAgPC9kaXY+XG4gIClcbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7K0JBSUE7Ozs7OztXQUF3QkEsY0FBQTs7Ozs7Ozs7dUVBSkk7Ozt1RUFDWDs7O3VFQUNDOzs7Ozs7Ozs7Ozs7Ozs7QUFFSCxTQUFTQSxlQUFBO0VBQUE7RUFBQUMsYUFBQSxHQUFBQyxDQUFBO0VBQ3RCLE1BQU07SUFDSkMsT0FBQSxFQUFTO01BQUVDO0lBQUk7RUFBRSxDQUNsQjtFQUFBO0VBQUEsQ0FBQUgsYUFBQSxHQUFBSSxDQUFBLE9BQUcsSUFBQUMsZ0JBQUEsQ0FBQUMsT0FBZTtFQUFBO0VBQUFOLGFBQUEsR0FBQUksQ0FBQTtFQUNuQixvQkFDRSxJQUFBRyxXQUFBLENBQUFDLElBQUEsRUFBQztJQUFJQyxTQUFBLEVBQVU7NEJBQ2IsSUFBQUYsV0FBQSxDQUFBQyxJQUFBLEVBQUM7aUJBQUUseUIsYUFDb0IsSUFBQUQsV0FBQSxDQUFBRyxHQUFBLEVBQUNDLEtBQUEsQ0FBQUwsT0FBSTtRQUFDTSxJQUFBLEVBQUs7a0JBQWE7VUFBa0IsT0FBSSxLLGFBQ25FLElBQUFMLFdBQUEsQ0FBQUcsR0FBQSxFQUFDQyxLQUFBLENBQUFMLE9BQUk7UUFBQ00sSUFBQSxFQUFLO2tCQUFtQjtVQUFrQjtxQkFFbEQsSUFBQUwsV0FBQSxDQUFBQyxJQUFBLEVBQUM7aUJBQUUsNkJBQ3lCTCxJQUFBLENBQUtVLElBQUksRUFBQyxnU0FJc0JWLElBQUEsQ0FBS1UsSUFBSSxFQUFDLE8sYUFDNUQsSUFBQU4sV0FBQSxDQUFBRyxHQUFBLEVBQUNDLEtBQUEsQ0FBQUwsT0FBSTtRQUFDTSxJQUFBLEVBQUs7a0JBQXVCO1VBQXFCLFEsYUFDL0QsSUFBQUwsV0FBQSxDQUFBRyxHQUFBLEVBQUNDLEtBQUEsQ0FBQUwsT0FBSTtRQUFDTSxJQUFBLEVBQUs7a0JBQTBCO1VBQXlCO3FCQUVoRSxJQUFBTCxXQUFBLENBQUFDLElBQUEsRUFBQztpQkFBRSxzSUFFMEQsSyxhQUMzRCxJQUFBRCxXQUFBLENBQUFDLElBQUEsRUFBQ0csS0FBQSxDQUFBTCxPQUFJO1FBQUNNLElBQUEsRUFBSzttQkFBdUIsUUFDM0JULElBQUEsQ0FBS1UsSUFBSSxFQUFDOzs7O0FBS3pCIiwiaWdub3JlTGlzdCI6W119

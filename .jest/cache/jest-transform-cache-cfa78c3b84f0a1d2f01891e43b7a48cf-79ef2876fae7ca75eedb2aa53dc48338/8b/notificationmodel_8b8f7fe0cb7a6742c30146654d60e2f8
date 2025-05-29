@@ -1,0 +1,484 @@
+564a32c49d7d7b1e04f14ccc3a447d61
+"use strict";
+
+/* istanbul ignore next */
+function cov_2jqo07e8wq() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/notification.model.ts";
+  var hash = "fa56395ff17847db9da708e41b7f0a43e22f6733";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/notification.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 27
+        },
+        end: {
+          line: 90,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 92,
+          column: 0
+        },
+        end: {
+          line: 97,
+          column: 2
+        }
+      },
+      "6": {
+        start: {
+          line: 93,
+          column: 4
+        },
+        end: {
+          line: 93,
+          column: 21
+        }
+      },
+      "7": {
+        start: {
+          line: 94,
+          column: 4
+        },
+        end: {
+          line: 94,
+          column: 29
+        }
+      },
+      "8": {
+        start: {
+          line: 95,
+          column: 4
+        },
+        end: {
+          line: 95,
+          column: 25
+        }
+      },
+      "9": {
+        start: {
+          line: 96,
+          column: 4
+        },
+        end: {
+          line: 96,
+          column: 22
+        }
+      },
+      "10": {
+        start: {
+          line: 98,
+          column: 0
+        },
+        end: {
+          line: 101,
+          column: 2
+        }
+      },
+      "11": {
+        start: {
+          line: 99,
+          column: 4
+        },
+        end: {
+          line: 99,
+          column: 25
+        }
+      },
+      "12": {
+        start: {
+          line: 100,
+          column: 4
+        },
+        end: {
+          line: 100,
+          column: 22
+        }
+      },
+      "13": {
+        start: {
+          line: 103,
+          column: 0
+        },
+        end: {
+          line: 106,
+          column: 3
+        }
+      },
+      "14": {
+        start: {
+          line: 107,
+          column: 0
+        },
+        end: {
+          line: 109,
+          column: 3
+        }
+      },
+      "15": {
+        start: {
+          line: 110,
+          column: 0
+        },
+        end: {
+          line: 114,
+          column: 3
+        }
+      },
+      "16": {
+        start: {
+          line: 115,
+          column: 21
+        },
+        end: {
+          line: 115,
+          column: 110
+        }
+      },
+      "17": {
+        start: {
+          line: 116,
+          column: 17
+        },
+        end: {
+          line: 116,
+          column: 29
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 92,
+            column: 40
+          },
+          end: {
+            line: 92,
+            column: 41
+          }
+        },
+        loc: {
+          start: {
+            line: 92,
+            column: 57
+          },
+          end: {
+            line: 97,
+            column: 1
+          }
+        },
+        line: 92
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 98,
+            column: 40
+          },
+          end: {
+            line: 98,
+            column: 41
+          }
+        },
+        loc: {
+          start: {
+            line: 98,
+            column: 57
+          },
+          end: {
+            line: 101,
+            column: 1
+          }
+        },
+        line: 98
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 115,
+            column: 21
+          },
+          end: {
+            line: 115,
+            column: 110
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 115,
+            column: 21
+          },
+          end: {
+            line: 115,
+            column: 50
+          }
+        }, {
+          start: {
+            line: 115,
+            column: 54
+          },
+          end: {
+            line: 115,
+            column: 110
+          }
+        }],
+        line: 115
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/notification.model.ts"],
+      sourcesContent: ["import { Document, Model, model, models, Schema } from 'mongoose'\n\nexport type NotificationType = \n  | 'welcome'\n  | 'order'\n  | 'payment'\n  | 'shipping'\n  | 'account'\n  | 'product'\n  | 'security'\n  | 'system'\n\nexport type NotificationChannel = 'email' | 'push' | 'sms' | 'in_app'\nexport type NotificationPriority = 'low' | 'medium' | 'high' | 'urgent'\nexport type NotificationStatus = 'pending' | 'sent' | 'failed' | 'read'\n\nexport interface INotification extends Document {\n  userId: string\n  type: NotificationType\n  title: string\n  message: string\n  data?: Record<string, any>\n  channels: NotificationChannel[]\n  priority: NotificationPriority\n  status: NotificationStatus\n  read: boolean\n  readAt?: Date\n  expiresAt?: Date\n  metadata?: {\n    browser?: string\n    device?: string\n    ip?: string\n  }\n  createdAt: Date\n  updatedAt: Date\n  markAsRead(): Promise<void>\n  markAsSent(): Promise<void>\n}\n\nconst notificationSchema = new Schema<INotification>(\n  {\n    userId: { type: String, required: true, index: true },\n    type: {\n      type: String,\n      required: true,\n      enum: [\n        'welcome',\n        'order',\n        'payment',\n        'shipping',\n        'account',\n        'product',\n        'security',\n        'system',\n      ],\n    },\n    title: { type: String, required: true },\n    message: { type: String, required: true },\n    data: { type: Schema.Types.Mixed },\n    channels: {\n      type: [String],\n      enum: ['email', 'push', 'sms', 'in_app'],\n      default: ['email'],\n    },\n    priority: {\n      type: String,\n      enum: ['low', 'medium', 'high', 'urgent'],\n      default: 'medium',\n    },\n    status: {\n      type: String,\n      enum: ['pending', 'sent', 'failed', 'read'],\n      default: 'pending',\n    },\n    read: { type: Boolean, default: false },\n    readAt: Date,\n    expiresAt: Date,\n    metadata: {\n      browser: String,\n      device: String,\n      ip: String,\n    },\n  },\n  {\n    timestamps: true,\n  }\n)\n\n// Add methods to the schema\nnotificationSchema.methods.markAsRead = async function () {\n  this.read = true\n  this.readAt = new Date()\n  this.status = 'read'\n  await this.save()\n}\n\nnotificationSchema.methods.markAsSent = async function () {\n  this.status = 'sent'\n  await this.save()\n}\n\n// Add indexes\nnotificationSchema.index({ userId: 1, createdAt: -1 })\nnotificationSchema.index({ status: 1 })\nnotificationSchema.index({ expiresAt: 1 }, { expireAfterSeconds: 0 })\n\nconst Notification = (models.Notification as Model<INotification>) || \n  model<INotification>('Notification', notificationSchema)\n\nexport default Notification"],
+      names: ["notificationSchema", "Schema", "userId", "type", "String", "required", "index", "enum", "title", "message", "data", "Types", "Mixed", "channels", "default", "priority", "status", "read", "Boolean", "readAt", "Date", "expiresAt", "metadata", "browser", "device", "ip", "timestamps", "methods", "markAsRead", "save", "markAsSent", "createdAt", "expireAfterSeconds", "Notification", "models", "model"],
+      mappings: ";;;;+BA6GA;;;eAAA;;;0BA7GuD;AAuCvD,MAAMA,qBAAqB,IAAIC,gBAAM,CACnC;IACEC,QAAQ;QAAEC,MAAMC;QAAQC,UAAU;QAAMC,OAAO;IAAK;IACpDH,MAAM;QACJA,MAAMC;QACNC,UAAU;QACVE,MAAM;YACJ;YACA;YACA;YACA;YACA;YACA;YACA;YACA;SACD;IACH;IACAC,OAAO;QAAEL,MAAMC;QAAQC,UAAU;IAAK;IACtCI,SAAS;QAAEN,MAAMC;QAAQC,UAAU;IAAK;IACxCK,MAAM;QAAEP,MAAMF,gBAAM,CAACU,KAAK,CAACC,KAAK;IAAC;IACjCC,UAAU;QACRV,MAAM;YAACC;SAAO;QACdG,MAAM;YAAC;YAAS;YAAQ;YAAO;SAAS;QACxCO,SAAS;YAAC;SAAQ;IACpB;IACAC,UAAU;QACRZ,MAAMC;QACNG,MAAM;YAAC;YAAO;YAAU;YAAQ;SAAS;QACzCO,SAAS;IACX;IACAE,QAAQ;QACNb,MAAMC;QACNG,MAAM;YAAC;YAAW;YAAQ;YAAU;SAAO;QAC3CO,SAAS;IACX;IACAG,MAAM;QAAEd,MAAMe;QAASJ,SAAS;IAAM;IACtCK,QAAQC;IACRC,WAAWD;IACXE,UAAU;QACRC,SAASnB;QACToB,QAAQpB;QACRqB,IAAIrB;IACN;AACF,GACA;IACEsB,YAAY;AACd;AAGF,4BAA4B;AAC5B1B,mBAAmB2B,OAAO,CAACC,UAAU,GAAG;IACtC,IAAI,CAACX,IAAI,GAAG;IACZ,IAAI,CAACE,MAAM,GAAG,IAAIC;IAClB,IAAI,CAACJ,MAAM,GAAG;IACd,MAAM,IAAI,CAACa,IAAI;AACjB;AAEA7B,mBAAmB2B,OAAO,CAACG,UAAU,GAAG;IACtC,IAAI,CAACd,MAAM,GAAG;IACd,MAAM,IAAI,CAACa,IAAI;AACjB;AAEA,cAAc;AACd7B,mBAAmBM,KAAK,CAAC;IAAEJ,QAAQ;IAAG6B,WAAW,CAAC;AAAE;AACpD/B,mBAAmBM,KAAK,CAAC;IAAEU,QAAQ;AAAE;AACrChB,mBAAmBM,KAAK,CAAC;IAAEe,WAAW;AAAE,GAAG;IAAEW,oBAAoB;AAAE;AAEnE,MAAMC,eAAe,AAACC,gBAAM,CAACD,YAAY,IACvCE,IAAAA,eAAK,EAAgB,gBAAgBnC;MAEvC,WAAeiC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "fa56395ff17847db9da708e41b7f0a43e22f6733"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2jqo07e8wq = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2jqo07e8wq();
+cov_2jqo07e8wq().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2jqo07e8wq().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2jqo07e8wq().f[0]++;
+    cov_2jqo07e8wq().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_2jqo07e8wq().s[3]++, require("mongoose"));
+const notificationSchema =
+/* istanbul ignore next */
+(cov_2jqo07e8wq().s[4]++, new _mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+    index: true
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['welcome', 'order', 'payment', 'shipping', 'account', 'product', 'security', 'system']
+  },
+  title: {
+    type: String,
+    required: true
+  },
+  message: {
+    type: String,
+    required: true
+  },
+  data: {
+    type: _mongoose.Schema.Types.Mixed
+  },
+  channels: {
+    type: [String],
+    enum: ['email', 'push', 'sms', 'in_app'],
+    default: ['email']
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high', 'urgent'],
+    default: 'medium'
+  },
+  status: {
+    type: String,
+    enum: ['pending', 'sent', 'failed', 'read'],
+    default: 'pending'
+  },
+  read: {
+    type: Boolean,
+    default: false
+  },
+  readAt: Date,
+  expiresAt: Date,
+  metadata: {
+    browser: String,
+    device: String,
+    ip: String
+  }
+}, {
+  timestamps: true
+}));
+// Add methods to the schema
+/* istanbul ignore next */
+cov_2jqo07e8wq().s[5]++;
+notificationSchema.methods.markAsRead = async function () {
+  /* istanbul ignore next */
+  cov_2jqo07e8wq().f[1]++;
+  cov_2jqo07e8wq().s[6]++;
+  this.read = true;
+  /* istanbul ignore next */
+  cov_2jqo07e8wq().s[7]++;
+  this.readAt = new Date();
+  /* istanbul ignore next */
+  cov_2jqo07e8wq().s[8]++;
+  this.status = 'read';
+  /* istanbul ignore next */
+  cov_2jqo07e8wq().s[9]++;
+  await this.save();
+};
+/* istanbul ignore next */
+cov_2jqo07e8wq().s[10]++;
+notificationSchema.methods.markAsSent = async function () {
+  /* istanbul ignore next */
+  cov_2jqo07e8wq().f[2]++;
+  cov_2jqo07e8wq().s[11]++;
+  this.status = 'sent';
+  /* istanbul ignore next */
+  cov_2jqo07e8wq().s[12]++;
+  await this.save();
+};
+// Add indexes
+/* istanbul ignore next */
+cov_2jqo07e8wq().s[13]++;
+notificationSchema.index({
+  userId: 1,
+  createdAt: -1
+});
+/* istanbul ignore next */
+cov_2jqo07e8wq().s[14]++;
+notificationSchema.index({
+  status: 1
+});
+/* istanbul ignore next */
+cov_2jqo07e8wq().s[15]++;
+notificationSchema.index({
+  expiresAt: 1
+}, {
+  expireAfterSeconds: 0
+});
+const Notification =
+/* istanbul ignore next */
+(cov_2jqo07e8wq().s[16]++,
+/* istanbul ignore next */
+(cov_2jqo07e8wq().b[0][0]++, _mongoose.models.Notification) ||
+/* istanbul ignore next */
+(cov_2jqo07e8wq().b[0][1]++, (0, _mongoose.model)('Notification', notificationSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_2jqo07e8wq().s[17]++, Notification);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMmpxbzA3ZTh3cSIsImFjdHVhbENvdmVyYWdlIiwicyIsIl9kZWZhdWx0Iiwibm90aWZpY2F0aW9uU2NoZW1hIiwiX21vbmdvb3NlIiwiU2NoZW1hIiwidXNlcklkIiwidHlwZSIsIlN0cmluZyIsInJlcXVpcmVkIiwiaW5kZXgiLCJlbnVtIiwidGl0bGUiLCJtZXNzYWdlIiwiZGF0YSIsIlR5cGVzIiwiTWl4ZWQiLCJjaGFubmVscyIsImRlZmF1bHQiLCJwcmlvcml0eSIsInN0YXR1cyIsInJlYWQiLCJCb29sZWFuIiwicmVhZEF0IiwiRGF0ZSIsImV4cGlyZXNBdCIsIm1ldGFkYXRhIiwiYnJvd3NlciIsImRldmljZSIsImlwIiwidGltZXN0YW1wcyIsIm1ldGhvZHMiLCJtYXJrQXNSZWFkIiwiZiIsInNhdmUiLCJtYXJrQXNTZW50IiwiY3JlYXRlZEF0IiwiZXhwaXJlQWZ0ZXJTZWNvbmRzIiwiTm90aWZpY2F0aW9uIiwiYiIsIm1vZGVscyIsIm1vZGVsIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2xpYi9kYi9tb2RlbHMvbm90aWZpY2F0aW9uLm1vZGVsLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERvY3VtZW50LCBNb2RlbCwgbW9kZWwsIG1vZGVscywgU2NoZW1hIH0gZnJvbSAnbW9uZ29vc2UnXG5cbmV4cG9ydCB0eXBlIE5vdGlmaWNhdGlvblR5cGUgPSBcbiAgfCAnd2VsY29tZSdcbiAgfCAnb3JkZXInXG4gIHwgJ3BheW1lbnQnXG4gIHwgJ3NoaXBwaW5nJ1xuICB8ICdhY2NvdW50J1xuICB8ICdwcm9kdWN0J1xuICB8ICdzZWN1cml0eSdcbiAgfCAnc3lzdGVtJ1xuXG5leHBvcnQgdHlwZSBOb3RpZmljYXRpb25DaGFubmVsID0gJ2VtYWlsJyB8ICdwdXNoJyB8ICdzbXMnIHwgJ2luX2FwcCdcbmV4cG9ydCB0eXBlIE5vdGlmaWNhdGlvblByaW9yaXR5ID0gJ2xvdycgfCAnbWVkaXVtJyB8ICdoaWdoJyB8ICd1cmdlbnQnXG5leHBvcnQgdHlwZSBOb3RpZmljYXRpb25TdGF0dXMgPSAncGVuZGluZycgfCAnc2VudCcgfCAnZmFpbGVkJyB8ICdyZWFkJ1xuXG5leHBvcnQgaW50ZXJmYWNlIElOb3RpZmljYXRpb24gZXh0ZW5kcyBEb2N1bWVudCB7XG4gIHVzZXJJZDogc3RyaW5nXG4gIHR5cGU6IE5vdGlmaWNhdGlvblR5cGVcbiAgdGl0bGU6IHN0cmluZ1xuICBtZXNzYWdlOiBzdHJpbmdcbiAgZGF0YT86IFJlY29yZDxzdHJpbmcsIGFueT5cbiAgY2hhbm5lbHM6IE5vdGlmaWNhdGlvbkNoYW5uZWxbXVxuICBwcmlvcml0eTogTm90aWZpY2F0aW9uUHJpb3JpdHlcbiAgc3RhdHVzOiBOb3RpZmljYXRpb25TdGF0dXNcbiAgcmVhZDogYm9vbGVhblxuICByZWFkQXQ/OiBEYXRlXG4gIGV4cGlyZXNBdD86IERhdGVcbiAgbWV0YWRhdGE/OiB7XG4gICAgYnJvd3Nlcj86IHN0cmluZ1xuICAgIGRldmljZT86IHN0cmluZ1xuICAgIGlwPzogc3RyaW5nXG4gIH1cbiAgY3JlYXRlZEF0OiBEYXRlXG4gIHVwZGF0ZWRBdDogRGF0ZVxuICBtYXJrQXNSZWFkKCk6IFByb21pc2U8dm9pZD5cbiAgbWFya0FzU2VudCgpOiBQcm9taXNlPHZvaWQ+XG59XG5cbmNvbnN0IG5vdGlmaWNhdGlvblNjaGVtYSA9IG5ldyBTY2hlbWE8SU5vdGlmaWNhdGlvbj4oXG4gIHtcbiAgICB1c2VySWQ6IHsgdHlwZTogU3RyaW5nLCByZXF1aXJlZDogdHJ1ZSwgaW5kZXg6IHRydWUgfSxcbiAgICB0eXBlOiB7XG4gICAgICB0eXBlOiBTdHJpbmcsXG4gICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICAgIGVudW06IFtcbiAgICAgICAgJ3dlbGNvbWUnLFxuICAgICAgICAnb3JkZXInLFxuICAgICAgICAncGF5bWVudCcsXG4gICAgICAgICdzaGlwcGluZycsXG4gICAgICAgICdhY2NvdW50JyxcbiAgICAgICAgJ3Byb2R1Y3QnLFxuICAgICAgICAnc2VjdXJpdHknLFxuICAgICAgICAnc3lzdGVtJyxcbiAgICAgIF0sXG4gICAgfSxcbiAgICB0aXRsZTogeyB0eXBlOiBTdHJpbmcsIHJlcXVpcmVkOiB0cnVlIH0sXG4gICAgbWVzc2FnZTogeyB0eXBlOiBTdHJpbmcsIHJlcXVpcmVkOiB0cnVlIH0sXG4gICAgZGF0YTogeyB0eXBlOiBTY2hlbWEuVHlwZXMuTWl4ZWQgfSxcbiAgICBjaGFubmVsczoge1xuICAgICAgdHlwZTogW1N0cmluZ10sXG4gICAgICBlbnVtOiBbJ2VtYWlsJywgJ3B1c2gnLCAnc21zJywgJ2luX2FwcCddLFxuICAgICAgZGVmYXVsdDogWydlbWFpbCddLFxuICAgIH0sXG4gICAgcHJpb3JpdHk6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIGVudW06IFsnbG93JywgJ21lZGl1bScsICdoaWdoJywgJ3VyZ2VudCddLFxuICAgICAgZGVmYXVsdDogJ21lZGl1bScsXG4gICAgfSxcbiAgICBzdGF0dXM6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIGVudW06IFsncGVuZGluZycsICdzZW50JywgJ2ZhaWxlZCcsICdyZWFkJ10sXG4gICAgICBkZWZhdWx0OiAncGVuZGluZycsXG4gICAgfSxcbiAgICByZWFkOiB7IHR5cGU6IEJvb2xlYW4sIGRlZmF1bHQ6IGZhbHNlIH0sXG4gICAgcmVhZEF0OiBEYXRlLFxuICAgIGV4cGlyZXNBdDogRGF0ZSxcbiAgICBtZXRhZGF0YToge1xuICAgICAgYnJvd3NlcjogU3RyaW5nLFxuICAgICAgZGV2aWNlOiBTdHJpbmcsXG4gICAgICBpcDogU3RyaW5nLFxuICAgIH0sXG4gIH0sXG4gIHtcbiAgICB0aW1lc3RhbXBzOiB0cnVlLFxuICB9XG4pXG5cbi8vIEFkZCBtZXRob2RzIHRvIHRoZSBzY2hlbWFcbm5vdGlmaWNhdGlvblNjaGVtYS5tZXRob2RzLm1hcmtBc1JlYWQgPSBhc3luYyBmdW5jdGlvbiAoKSB7XG4gIHRoaXMucmVhZCA9IHRydWVcbiAgdGhpcy5yZWFkQXQgPSBuZXcgRGF0ZSgpXG4gIHRoaXMuc3RhdHVzID0gJ3JlYWQnXG4gIGF3YWl0IHRoaXMuc2F2ZSgpXG59XG5cbm5vdGlmaWNhdGlvblNjaGVtYS5tZXRob2RzLm1hcmtBc1NlbnQgPSBhc3luYyBmdW5jdGlvbiAoKSB7XG4gIHRoaXMuc3RhdHVzID0gJ3NlbnQnXG4gIGF3YWl0IHRoaXMuc2F2ZSgpXG59XG5cbi8vIEFkZCBpbmRleGVzXG5ub3RpZmljYXRpb25TY2hlbWEuaW5kZXgoeyB1c2VySWQ6IDEsIGNyZWF0ZWRBdDogLTEgfSlcbm5vdGlmaWNhdGlvblNjaGVtYS5pbmRleCh7IHN0YXR1czogMSB9KVxubm90aWZpY2F0aW9uU2NoZW1hLmluZGV4KHsgZXhwaXJlc0F0OiAxIH0sIHsgZXhwaXJlQWZ0ZXJTZWNvbmRzOiAwIH0pXG5cbmNvbnN0IE5vdGlmaWNhdGlvbiA9IChtb2RlbHMuTm90aWZpY2F0aW9uIGFzIE1vZGVsPElOb3RpZmljYXRpb24+KSB8fCBcbiAgbW9kZWw8SU5vdGlmaWNhdGlvbj4oJ05vdGlmaWNhdGlvbicsIG5vdGlmaWNhdGlvblNjaGVtYSlcblxuZXhwb3J0IGRlZmF1bHQgTm90aWZpY2F0aW9uIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

@@ -1,0 +1,427 @@
+998ca7d6498fb69a4b3a06474812f936
+"use strict";
+
+/* istanbul ignore next */
+function cov_16nwfra9la() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/utils/session.ts";
+  var hash = "33f397000276e6ef52ee0b12cedce448fe413a77";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/utils/session.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 4
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 6,
+          column: 24
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 0
+        },
+        end: {
+          line: 18,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 8
+        },
+        end: {
+          line: 13,
+          column: 30
+        }
+      },
+      "5": {
+        start: {
+          line: 16,
+          column: 8
+        },
+        end: {
+          line: 16,
+          column: 43
+        }
+      },
+      "6": {
+        start: {
+          line: 19,
+          column: 14
+        },
+        end: {
+          line: 19,
+          column: 35
+        }
+      },
+      "7": {
+        start: {
+          line: 21,
+          column: 20
+        },
+        end: {
+          line: 21,
+          column: 43
+        }
+      },
+      "8": {
+        start: {
+          line: 22,
+          column: 4
+        },
+        end: {
+          line: 22,
+          column: 33
+        }
+      },
+      "9": {
+        start: {
+          line: 25,
+          column: 17
+        },
+        end: {
+          line: 25,
+          column: 39
+        }
+      },
+      "10": {
+        start: {
+          line: 26,
+          column: 4
+        },
+        end: {
+          line: 29,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 5,
+            column: 9
+          },
+          end: {
+            line: 5,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 5,
+            column: 30
+          },
+          end: {
+            line: 10,
+            column: 1
+          }
+        },
+        line: 5
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 12,
+            column: 20
+          },
+          end: {
+            line: 12,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 31
+          },
+          end: {
+            line: 14,
+            column: 5
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 15,
+            column: 33
+          },
+          end: {
+            line: 15,
+            column: 34
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 44
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        line: 15
+      },
+      "3": {
+        name: "getCurrentUser",
+        decl: {
+          start: {
+            line: 20,
+            column: 15
+          },
+          end: {
+            line: 20,
+            column: 29
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 32
+          },
+          end: {
+            line: 23,
+            column: 1
+          }
+        },
+        line: 20
+      },
+      "4": {
+        name: "getCurrentUserWithTimestamp",
+        decl: {
+          start: {
+            line: 24,
+            column: 15
+          },
+          end: {
+            line: 24,
+            column: 42
+          }
+        },
+        loc: {
+          start: {
+            line: 24,
+            column: 45
+          },
+          end: {
+            line: 30,
+            column: 1
+          }
+        },
+        line: 24
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 22,
+            column: 11
+          },
+          end: {
+            line: 22,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 22,
+            column: 11
+          },
+          end: {
+            line: 22,
+            column: 24
+          }
+        }, {
+          start: {
+            line: 22,
+            column: 28
+          },
+          end: {
+            line: 22,
+            column: 32
+          }
+        }],
+        line: 22
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 27,
+            column: 14
+          },
+          end: {
+            line: 27,
+            column: 37
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 27,
+            column: 14
+          },
+          end: {
+            line: 27,
+            column: 24
+          }
+        }, {
+          start: {
+            line: 27,
+            column: 28
+          },
+          end: {
+            line: 27,
+            column: 37
+          }
+        }],
+        line: 27
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/utils/session.ts"],
+      sourcesContent: ["\nimport { auth } from \"@/auth\"; \nexport async function getCurrentUser() {\n  const session = await auth();\n  return session?.user || null;\n}\n\nexport async function getCurrentUserWithTimestamp() {\n  const user = await getCurrentUser();\n  return {\n    user: user?.name || \"unknown\",\n    timestamp: new Date().toISOString(),\n  };\n}\n"],
+      names: ["getCurrentUser", "getCurrentUserWithTimestamp", "session", "auth", "user", "name", "timestamp", "Date", "toISOString"],
+      mappings: ";;;;;;;;;;;IAEsBA,cAAc;eAAdA;;IAKAC,2BAA2B;eAA3BA;;;sBAND;AACd,eAAeD;IACpB,MAAME,UAAU,MAAMC,IAAAA,UAAI;IAC1B,OAAOD,SAASE,QAAQ;AAC1B;AAEO,eAAeH;IACpB,MAAMG,OAAO,MAAMJ;IACnB,OAAO;QACLI,MAAMA,MAAMC,QAAQ;QACpBC,WAAW,IAAIC,OAAOC,WAAW;IACnC;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "33f397000276e6ef52ee0b12cedce448fe413a77"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_16nwfra9la = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_16nwfra9la();
+cov_16nwfra9la().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_16nwfra9la().f[0]++;
+  cov_16nwfra9la().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_16nwfra9la().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: all[name]
+    });
+  }
+}
+/* istanbul ignore next */
+cov_16nwfra9la().s[3]++;
+_export(exports, {
+  getCurrentUser: function () {
+    /* istanbul ignore next */
+    cov_16nwfra9la().f[1]++;
+    cov_16nwfra9la().s[4]++;
+    return getCurrentUser;
+  },
+  getCurrentUserWithTimestamp: function () {
+    /* istanbul ignore next */
+    cov_16nwfra9la().f[2]++;
+    cov_16nwfra9la().s[5]++;
+    return getCurrentUserWithTimestamp;
+  }
+});
+const _auth =
+/* istanbul ignore next */
+(cov_16nwfra9la().s[6]++, require("../../auth"));
+async function getCurrentUser() {
+  /* istanbul ignore next */
+  cov_16nwfra9la().f[3]++;
+  const session =
+  /* istanbul ignore next */
+  (cov_16nwfra9la().s[7]++, await (0, _auth.auth)());
+  /* istanbul ignore next */
+  cov_16nwfra9la().s[8]++;
+  return /* istanbul ignore next */(cov_16nwfra9la().b[0][0]++, session?.user) ||
+  /* istanbul ignore next */
+  (cov_16nwfra9la().b[0][1]++, null);
+}
+async function getCurrentUserWithTimestamp() {
+  /* istanbul ignore next */
+  cov_16nwfra9la().f[4]++;
+  const user =
+  /* istanbul ignore next */
+  (cov_16nwfra9la().s[9]++, await getCurrentUser());
+  /* istanbul ignore next */
+  cov_16nwfra9la().s[10]++;
+  return {
+    user:
+    /* istanbul ignore next */
+    (cov_16nwfra9la().b[1][0]++, user?.name) ||
+    /* istanbul ignore next */
+    (cov_16nwfra9la().b[1][1]++, "unknown"),
+    timestamp: new Date().toISOString()
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJnZXRDdXJyZW50VXNlciIsImNvdl8xNm53ZnJhOWxhIiwiZiIsInMiLCJnZXRDdXJyZW50VXNlcldpdGhUaW1lc3RhbXAiLCJzZXNzaW9uIiwiX2F1dGgiLCJhdXRoIiwiYiIsInVzZXIiLCJuYW1lIiwidGltZXN0YW1wIiwiRGF0ZSIsInRvSVNPU3RyaW5nIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2xpYi91dGlscy9zZXNzaW9uLnRzIl0sInNvdXJjZXNDb250ZW50IjpbIlxuaW1wb3J0IHsgYXV0aCB9IGZyb20gXCJAL2F1dGhcIjsgXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gZ2V0Q3VycmVudFVzZXIoKSB7XG4gIGNvbnN0IHNlc3Npb24gPSBhd2FpdCBhdXRoKCk7XG4gIHJldHVybiBzZXNzaW9uPy51c2VyIHx8IG51bGw7XG59XG5cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZXRDdXJyZW50VXNlcldpdGhUaW1lc3RhbXAoKSB7XG4gIGNvbnN0IHVzZXIgPSBhd2FpdCBnZXRDdXJyZW50VXNlcigpO1xuICByZXR1cm4ge1xuICAgIHVzZXI6IHVzZXI/Lm5hbWUgfHwgXCJ1bmtub3duXCIsXG4gICAgdGltZXN0YW1wOiBuZXcgRGF0ZSgpLnRvSVNPU3RyaW5nKCksXG4gIH07XG59XG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0VBRXNCQSxjQUFjLFdBQUFBLENBQUE7SUFBQTtJQUFBQyxjQUFBLEdBQUFDLENBQUE7SUFBQUQsY0FBQSxHQUFBRSxDQUFBO1dBQWRILGNBQUE7O0VBS0FJLDJCQUEyQixXQUFBQSxDQUFBO0lBQUE7SUFBQUgsY0FBQSxHQUFBQyxDQUFBO0lBQUFELGNBQUEsR0FBQUUsQ0FBQTtXQUEzQkMsMkJBQUE7Ozs7O2tDQU5EO0FBQ2QsZUFBZUosZUFBQTtFQUFBO0VBQUFDLGNBQUEsR0FBQUMsQ0FBQTtFQUNwQixNQUFNRyxPQUFBO0VBQUE7RUFBQSxDQUFBSixjQUFBLEdBQUFFLENBQUEsT0FBVSxNQUFNLElBQUFHLEtBQUEsQ0FBQUMsSUFBSTtFQUFBO0VBQUFOLGNBQUEsR0FBQUUsQ0FBQTtFQUMxQixPQUFPLDJCQUFBRixjQUFBLEdBQUFPLENBQUEsVUFBQUgsT0FBQSxFQUFTSSxJQUFBO0VBQUE7RUFBQSxDQUFBUixjQUFBLEdBQUFPLENBQUEsVUFBUTtBQUMxQjtBQUVPLGVBQWVKLDRCQUFBO0VBQUE7RUFBQUgsY0FBQSxHQUFBQyxDQUFBO0VBQ3BCLE1BQU1PLElBQUE7RUFBQTtFQUFBLENBQUFSLGNBQUEsR0FBQUUsQ0FBQSxPQUFPLE1BQU1ILGNBQUE7RUFBQTtFQUFBQyxjQUFBLEdBQUFFLENBQUE7RUFDbkIsT0FBTztJQUNMTSxJQUFBO0lBQU07SUFBQSxDQUFBUixjQUFBLEdBQUFPLENBQUEsVUFBQUMsSUFBQSxFQUFNQyxJQUFBO0lBQUE7SUFBQSxDQUFBVCxjQUFBLEdBQUFPLENBQUEsVUFBUTtJQUNwQkcsU0FBQSxFQUFXLElBQUlDLElBQUEsR0FBT0MsV0FBVztFQUNuQztBQUNGIiwiaWdub3JlTGlzdCI6W119

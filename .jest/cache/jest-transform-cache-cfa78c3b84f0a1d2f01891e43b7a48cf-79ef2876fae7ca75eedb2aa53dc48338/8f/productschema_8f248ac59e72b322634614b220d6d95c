@@ -1,0 +1,433 @@
+da283e1ecb7c9ce34c58d90bde95e57b
+"use strict";
+
+/* istanbul ignore next */
+function cov_17vjdjrggb() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/seo/product-schema.ts";
+  var hash = "57d2457c8f004e3250cf66bd00d4e3fdcc96d09f";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/seo/product-schema.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 37
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 24
+        },
+        end: {
+          line: 11,
+          column: 61
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 46
+        },
+        end: {
+          line: 13,
+          column: 85
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 20
+        },
+        end: {
+          line: 14,
+          column: 57
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 44,
+          column: 6
+        }
+      },
+      "7": {
+        start: {
+          line: 20,
+          column: 41
+        },
+        end: {
+          line: 20,
+          column: 90
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "generateProductSchema",
+        decl: {
+          start: {
+            line: 12,
+            column: 15
+          },
+          end: {
+            line: 12,
+            column: 36
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 46
+          },
+          end: {
+            line: 45,
+            column: 1
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 20,
+            column: 34
+          },
+          end: {
+            line: 20,
+            column: 35
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 41
+          },
+          end: {
+            line: 20,
+            column: 90
+          }
+        },
+        line: 20
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 14,
+            column: 20
+          },
+          end: {
+            line: 14,
+            column: 57
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 14,
+            column: 20
+          },
+          end: {
+            line: 14,
+            column: 23
+          }
+        }, {
+          start: {
+            line: 14,
+            column: 27
+          },
+          end: {
+            line: 14,
+            column: 57
+          }
+        }],
+        line: 14
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 20,
+            column: 41
+          },
+          end: {
+            line: 20,
+            column: 90
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 20,
+            column: 66
+          },
+          end: {
+            line: 20,
+            column: 69
+          }
+        }, {
+          start: {
+            line: 20,
+            column: 72
+          },
+          end: {
+            line: 20,
+            column: 90
+          }
+        }],
+        line: 20
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 24,
+            column: 18
+          },
+          end: {
+            line: 24,
+            column: 43
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 24,
+            column: 18
+          },
+          end: {
+            line: 24,
+            column: 31
+          }
+        }, {
+          start: {
+            line: 24,
+            column: 35
+          },
+          end: {
+            line: 24,
+            column: 43
+          }
+        }],
+        line: 24
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 37,
+            column: 11
+          },
+          end: {
+            line: 43,
+            column: 9
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 37,
+            column: 11
+          },
+          end: {
+            line: 37,
+            column: 25
+          }
+        }, {
+          start: {
+            line: 37,
+            column: 29
+          },
+          end: {
+            line: 43,
+            column: 9
+          }
+        }],
+        line: 37
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/seo/product-schema.ts"],
+      sourcesContent: ["import { getSetting } from '../actions/setting.actions'\n\nexport async function generateProductSchema(product: {\n  name: string\n  description: string\n  images: string[]\n  price: number\n  currency: string\n  sku: string\n  category: string\n  brand?: string\n  rating?: {\n    average: number\n    count: number\n  }\n}) {\n  const {\n    site: { url, name: siteName },\n  } = await getSetting()\n  const baseUrl = url || 'https://hager-zon.vercel.app'\n\n  return {\n    '@context': 'https://schema.org',\n    '@type': 'Product',\n    name: product.name,\n    description: product.description,\n    image: product.images.map((img) =>\n      img.startsWith('http') ? img : `${baseUrl}${img}`\n    ),\n    sku: product.sku,\n    brand: {\n      '@type': 'Brand',\n      name: product.brand || siteName,\n    },\n    offers: {\n      '@type': 'Offer',\n      price: product.price,\n      priceCurrency: product.currency,\n      availability: 'https://schema.org/InStock',\n      url: `${baseUrl}/product/${product.sku}`,\n      seller: {\n        '@type': 'Organization',\n        name: siteName,\n      },\n    },\n    ...(product.rating && {\n      aggregateRating: {\n        '@type': 'AggregateRating',\n        ratingValue: product.rating.average,\n        reviewCount: product.rating.count,\n      },\n    }),\n  }\n}\n"],
+      names: ["generateProductSchema", "product", "site", "url", "name", "siteName", "getSetting", "baseUrl", "description", "image", "images", "map", "img", "startsWith", "sku", "brand", "offers", "price", "priceCurrency", "currency", "availability", "seller", "rating", "aggregateRating", "ratingValue", "average", "reviewCount", "count"],
+      mappings: ";;;;+BAEsBA;;;eAAAA;;;gCAFK;AAEpB,eAAeA,sBAAsBC,OAa3C;IACC,MAAM,EACJC,MAAM,EAAEC,GAAG,EAAEC,MAAMC,QAAQ,EAAE,EAC9B,GAAG,MAAMC,IAAAA,0BAAU;IACpB,MAAMC,UAAUJ,OAAO;IAEvB,OAAO;QACL,YAAY;QACZ,SAAS;QACTC,MAAMH,QAAQG,IAAI;QAClBI,aAAaP,QAAQO,WAAW;QAChCC,OAAOR,QAAQS,MAAM,CAACC,GAAG,CAAC,CAACC,MACzBA,IAAIC,UAAU,CAAC,UAAUD,MAAM,GAAGL,UAAUK,KAAK;QAEnDE,KAAKb,QAAQa,GAAG;QAChBC,OAAO;YACL,SAAS;YACTX,MAAMH,QAAQc,KAAK,IAAIV;QACzB;QACAW,QAAQ;YACN,SAAS;YACTC,OAAOhB,QAAQgB,KAAK;YACpBC,eAAejB,QAAQkB,QAAQ;YAC/BC,cAAc;YACdjB,KAAK,GAAGI,QAAQ,SAAS,EAAEN,QAAQa,GAAG,EAAE;YACxCO,QAAQ;gBACN,SAAS;gBACTjB,MAAMC;YACR;QACF;QACA,GAAIJ,QAAQqB,MAAM,IAAI;YACpBC,iBAAiB;gBACf,SAAS;gBACTC,aAAavB,QAAQqB,MAAM,CAACG,OAAO;gBACnCC,aAAazB,QAAQqB,MAAM,CAACK,KAAK;YACnC;QACF,CAAC;IACH;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "57d2457c8f004e3250cf66bd00d4e3fdcc96d09f"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_17vjdjrggb = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_17vjdjrggb();
+cov_17vjdjrggb().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_17vjdjrggb().s[1]++;
+Object.defineProperty(exports, "generateProductSchema", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_17vjdjrggb().f[0]++;
+    cov_17vjdjrggb().s[2]++;
+    return generateProductSchema;
+  }
+});
+const _settingactions =
+/* istanbul ignore next */
+(cov_17vjdjrggb().s[3]++, require("../actions/setting.actions"));
+async function generateProductSchema(product) {
+  /* istanbul ignore next */
+  cov_17vjdjrggb().f[1]++;
+  const {
+    site: {
+      url,
+      name: siteName
+    }
+  } =
+  /* istanbul ignore next */
+  (cov_17vjdjrggb().s[4]++, await (0, _settingactions.getSetting)());
+  const baseUrl =
+  /* istanbul ignore next */
+  (cov_17vjdjrggb().s[5]++,
+  /* istanbul ignore next */
+  (cov_17vjdjrggb().b[0][0]++, url) ||
+  /* istanbul ignore next */
+  (cov_17vjdjrggb().b[0][1]++, 'https://hager-zon.vercel.app'));
+  /* istanbul ignore next */
+  cov_17vjdjrggb().s[6]++;
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Product',
+    name: product.name,
+    description: product.description,
+    image: product.images.map(img => {
+      /* istanbul ignore next */
+      cov_17vjdjrggb().f[2]++;
+      cov_17vjdjrggb().s[7]++;
+      return img.startsWith('http') ?
+      /* istanbul ignore next */
+      (cov_17vjdjrggb().b[1][0]++, img) :
+      /* istanbul ignore next */
+      (cov_17vjdjrggb().b[1][1]++, `${baseUrl}${img}`);
+    }),
+    sku: product.sku,
+    brand: {
+      '@type': 'Brand',
+      name:
+      /* istanbul ignore next */
+      (cov_17vjdjrggb().b[2][0]++, product.brand) ||
+      /* istanbul ignore next */
+      (cov_17vjdjrggb().b[2][1]++, siteName)
+    },
+    offers: {
+      '@type': 'Offer',
+      price: product.price,
+      priceCurrency: product.currency,
+      availability: 'https://schema.org/InStock',
+      url: `${baseUrl}/product/${product.sku}`,
+      seller: {
+        '@type': 'Organization',
+        name: siteName
+      }
+    },
+    ...(
+    /* istanbul ignore next */
+    (cov_17vjdjrggb().b[3][0]++, product.rating) &&
+    /* istanbul ignore next */
+    (cov_17vjdjrggb().b[3][1]++, {
+      aggregateRating: {
+        '@type': 'AggregateRating',
+        ratingValue: product.rating.average,
+        reviewCount: product.rating.count
+      }
+    }))
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTd2amRqcmdnYiIsImFjdHVhbENvdmVyYWdlIiwicyIsImdlbmVyYXRlUHJvZHVjdFNjaGVtYSIsInByb2R1Y3QiLCJmIiwic2l0ZSIsInVybCIsIm5hbWUiLCJzaXRlTmFtZSIsIl9zZXR0aW5nYWN0aW9ucyIsImdldFNldHRpbmciLCJiYXNlVXJsIiwiYiIsImRlc2NyaXB0aW9uIiwiaW1hZ2UiLCJpbWFnZXMiLCJtYXAiLCJpbWciLCJzdGFydHNXaXRoIiwic2t1IiwiYnJhbmQiLCJvZmZlcnMiLCJwcmljZSIsInByaWNlQ3VycmVuY3kiLCJjdXJyZW5jeSIsImF2YWlsYWJpbGl0eSIsInNlbGxlciIsInJhdGluZyIsImFnZ3JlZ2F0ZVJhdGluZyIsInJhdGluZ1ZhbHVlIiwiYXZlcmFnZSIsInJldmlld0NvdW50IiwiY291bnQiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL3Nlby9wcm9kdWN0LXNjaGVtYS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBnZXRTZXR0aW5nIH0gZnJvbSAnLi4vYWN0aW9ucy9zZXR0aW5nLmFjdGlvbnMnXG5cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBnZW5lcmF0ZVByb2R1Y3RTY2hlbWEocHJvZHVjdDoge1xuICBuYW1lOiBzdHJpbmdcbiAgZGVzY3JpcHRpb246IHN0cmluZ1xuICBpbWFnZXM6IHN0cmluZ1tdXG4gIHByaWNlOiBudW1iZXJcbiAgY3VycmVuY3k6IHN0cmluZ1xuICBza3U6IHN0cmluZ1xuICBjYXRlZ29yeTogc3RyaW5nXG4gIGJyYW5kPzogc3RyaW5nXG4gIHJhdGluZz86IHtcbiAgICBhdmVyYWdlOiBudW1iZXJcbiAgICBjb3VudDogbnVtYmVyXG4gIH1cbn0pIHtcbiAgY29uc3Qge1xuICAgIHNpdGU6IHsgdXJsLCBuYW1lOiBzaXRlTmFtZSB9LFxuICB9ID0gYXdhaXQgZ2V0U2V0dGluZygpXG4gIGNvbnN0IGJhc2VVcmwgPSB1cmwgfHwgJ2h0dHBzOi8vaGFnZXItem9uLnZlcmNlbC5hcHAnXG5cbiAgcmV0dXJuIHtcbiAgICAnQGNvbnRleHQnOiAnaHR0cHM6Ly9zY2hlbWEub3JnJyxcbiAgICAnQHR5cGUnOiAnUHJvZHVjdCcsXG4gICAgbmFtZTogcHJvZHVjdC5uYW1lLFxuICAgIGRlc2NyaXB0aW9uOiBwcm9kdWN0LmRlc2NyaXB0aW9uLFxuICAgIGltYWdlOiBwcm9kdWN0LmltYWdlcy5tYXAoKGltZykgPT5cbiAgICAgIGltZy5zdGFydHNXaXRoKCdodHRwJykgPyBpbWcgOiBgJHtiYXNlVXJsfSR7aW1nfWBcbiAgICApLFxuICAgIHNrdTogcHJvZHVjdC5za3UsXG4gICAgYnJhbmQ6IHtcbiAgICAgICdAdHlwZSc6ICdCcmFuZCcsXG4gICAgICBuYW1lOiBwcm9kdWN0LmJyYW5kIHx8IHNpdGVOYW1lLFxuICAgIH0sXG4gICAgb2ZmZXJzOiB7XG4gICAgICAnQHR5cGUnOiAnT2ZmZXInLFxuICAgICAgcHJpY2U6IHByb2R1Y3QucHJpY2UsXG4gICAgICBwcmljZUN1cnJlbmN5OiBwcm9kdWN0LmN1cnJlbmN5LFxuICAgICAgYXZhaWxhYmlsaXR5OiAnaHR0cHM6Ly9zY2hlbWEub3JnL0luU3RvY2snLFxuICAgICAgdXJsOiBgJHtiYXNlVXJsfS9wcm9kdWN0LyR7cHJvZHVjdC5za3V9YCxcbiAgICAgIHNlbGxlcjoge1xuICAgICAgICAnQHR5cGUnOiAnT3JnYW5pemF0aW9uJyxcbiAgICAgICAgbmFtZTogc2l0ZU5hbWUsXG4gICAgICB9LFxuICAgIH0sXG4gICAgLi4uKHByb2R1Y3QucmF0aW5nICYmIHtcbiAgICAgIGFnZ3JlZ2F0ZVJhdGluZzoge1xuICAgICAgICAnQHR5cGUnOiAnQWdncmVnYXRlUmF0aW5nJyxcbiAgICAgICAgcmF0aW5nVmFsdWU6IHByb2R1Y3QucmF0aW5nLmF2ZXJhZ2UsXG4gICAgICAgIHJldmlld0NvdW50OiBwcm9kdWN0LnJhdGluZy5jb3VudCxcbiAgICAgIH0sXG4gICAgfSksXG4gIH1cbn1cbiJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQXNCSTtJQUFBQSxjQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxjQUFBO0FBQUFBLGNBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQXBCa0I7Ozs7OztXQUFBQyxxQkFBQTs7Ozs7a0NBRks7QUFFcEIsZUFBZUEsc0JBQXNCQyxPQWEzQztFQUFBO0VBQUFKLGNBQUEsR0FBQUssQ0FBQTtFQUNDLE1BQU07SUFDSkMsSUFBQSxFQUFNO01BQUVDLEdBQUc7TUFBRUMsSUFBQSxFQUFNQztJQUFRO0VBQUUsQ0FDOUI7RUFBQTtFQUFBLENBQUFULGNBQUEsR0FBQUUsQ0FBQSxPQUFHLE1BQU0sSUFBQVEsZUFBQSxDQUFBQyxVQUFVO0VBQ3BCLE1BQU1DLE9BQUE7RUFBQTtFQUFBLENBQUFaLGNBQUEsR0FBQUUsQ0FBQTtFQUFVO0VBQUEsQ0FBQUYsY0FBQSxHQUFBYSxDQUFBLFVBQUFOLEdBQUE7RUFBQTtFQUFBLENBQUFQLGNBQUEsR0FBQWEsQ0FBQSxVQUFPO0VBQUE7RUFBQWIsY0FBQSxHQUFBRSxDQUFBO0VBRXZCLE9BQU87SUFDTCxZQUFZO0lBQ1osU0FBUztJQUNUTSxJQUFBLEVBQU1KLE9BQUEsQ0FBUUksSUFBSTtJQUNsQk0sV0FBQSxFQUFhVixPQUFBLENBQVFVLFdBQVc7SUFDaENDLEtBQUEsRUFBT1gsT0FBQSxDQUFRWSxNQUFNLENBQUNDLEdBQUcsQ0FBRUMsR0FBQSxJQUN6QjtNQUFBO01BQUFsQixjQUFBLEdBQUFLLENBQUE7TUFBQUwsY0FBQSxHQUFBRSxDQUFBO01BQUEsT0FBQWdCLEdBQUEsQ0FBSUMsVUFBVSxDQUFDO01BQUE7TUFBQSxDQUFBbkIsY0FBQSxHQUFBYSxDQUFBLFVBQVVLLEdBQUE7TUFBQTtNQUFBLENBQUFsQixjQUFBLEdBQUFhLENBQUEsVUFBTSxHQUFHRCxPQUFBLEdBQVVNLEdBQUEsRUFBSztJQUFMLENBQUs7SUFFbkRFLEdBQUEsRUFBS2hCLE9BQUEsQ0FBUWdCLEdBQUc7SUFDaEJDLEtBQUEsRUFBTztNQUNMLFNBQVM7TUFDVGIsSUFBQTtNQUFNO01BQUEsQ0FBQVIsY0FBQSxHQUFBYSxDQUFBLFVBQUFULE9BQUEsQ0FBUWlCLEtBQUs7TUFBQTtNQUFBLENBQUFyQixjQUFBLEdBQUFhLENBQUEsVUFBSUosUUFBQTtJQUN6QjtJQUNBYSxNQUFBLEVBQVE7TUFDTixTQUFTO01BQ1RDLEtBQUEsRUFBT25CLE9BQUEsQ0FBUW1CLEtBQUs7TUFDcEJDLGFBQUEsRUFBZXBCLE9BQUEsQ0FBUXFCLFFBQVE7TUFDL0JDLFlBQUEsRUFBYztNQUNkbkIsR0FBQSxFQUFLLEdBQUdLLE9BQUEsWUFBbUJSLE9BQUEsQ0FBUWdCLEdBQUcsRUFBRTtNQUN4Q08sTUFBQSxFQUFRO1FBQ04sU0FBUztRQUNUbkIsSUFBQSxFQUFNQztNQUNSO0lBQ0Y7SUFDQTtJQUFJO0lBQUEsQ0FBQVQsY0FBQSxHQUFBYSxDQUFBLFVBQUFULE9BQUEsQ0FBUXdCLE1BQU07SUFBQTtJQUFBLENBQUE1QixjQUFBLEdBQUFhLENBQUEsVUFBSTtNQUNwQmdCLGVBQUEsRUFBaUI7UUFDZixTQUFTO1FBQ1RDLFdBQUEsRUFBYTFCLE9BQUEsQ0FBUXdCLE1BQU0sQ0FBQ0csT0FBTztRQUNuQ0MsV0FBQSxFQUFhNUIsT0FBQSxDQUFRd0IsTUFBTSxDQUFDSztNQUM5QjtJQUNGLENBQUM7RUFDSDtBQUNGIiwiaWdub3JlTGlzdCI6W119

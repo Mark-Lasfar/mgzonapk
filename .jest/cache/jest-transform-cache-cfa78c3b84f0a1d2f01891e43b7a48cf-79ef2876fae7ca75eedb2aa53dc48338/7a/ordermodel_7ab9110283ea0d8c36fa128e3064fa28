@@ -1,0 +1,340 @@
+2b344ef311e771b387808f5de9c9ba04
+"use strict";
+
+/* istanbul ignore next */
+function cov_ztqbhklvi() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/order.model.ts";
+  var hash = "0666b0036e524e4cf507d82b1b0c655f6a9dba67";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/order.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 139,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 140,
+          column: 0
+        },
+        end: {
+          line: 143,
+          column: 3
+        }
+      },
+      "6": {
+        start: {
+          line: 144,
+          column: 0
+        },
+        end: {
+          line: 147,
+          column: 3
+        }
+      },
+      "7": {
+        start: {
+          line: 148,
+          column: 0
+        },
+        end: {
+          line: 150,
+          column: 3
+        }
+      },
+      "8": {
+        start: {
+          line: 151,
+          column: 14
+        },
+        end: {
+          line: 151,
+          column: 82
+        }
+      },
+      "9": {
+        start: {
+          line: 152,
+          column: 17
+        },
+        end: {
+          line: 152,
+          column: 22
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 151,
+            column: 14
+          },
+          end: {
+            line: 151,
+            column: 82
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 151,
+            column: 14
+          },
+          end: {
+            line: 151,
+            column: 36
+          }
+        }, {
+          start: {
+            line: 151,
+            column: 40
+          },
+          end: {
+            line: 151,
+            column: 82
+          }
+        }],
+        line: 151
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/order.model.ts"],
+      sourcesContent: ["import { Schema, model, models, Document } from 'mongoose'\n\nexport interface IOrder extends Document {\n  userId: string\n  sellerId: string\n  items: Array<{\n    clientId: string\n    name: string\n    slug: string\n    image: string\n    price: number\n    quantity: number\n    color: string\n    size?: string\n  }>\n  itemsPrice: number\n  status: string\n  createdAt: Date\n  updatedAt: Date\n}\n\nconst orderSchema = new Schema<IOrder>(\n  {\n    userId: {\n      type: String,\n      required: [true, 'User ID is required'],\n      index: true,\n    },\n    sellerId: {\n      type: String,\n      required: [true, 'Seller ID is required'],\n      index: true,\n    },\n    items: [\n      {\n        clientId: { type: String, required: [true, 'Client ID is required'] },\n        name: { type: String, required: [true, 'Item name is required'], trim: true },\n        slug: { type: String, required: [true, 'Item slug is required'], trim: true },\n        image: {\n          type: String,\n          required: [true, 'Item image is required'],\n          match: [/^https?:\\/\\/.*\\.(?:png|jpg|jpeg|webp)$/, 'Please provide a valid image URL'],\n        },\n        price: {\n          type: Number,\n          required: [true, 'Item price is required'],\n          min: [0, 'Price cannot be negative'],\n        },\n        quantity: {\n          type: Number,\n          required: [true, 'Item quantity is required'],\n          min: [1, 'Quantity must be at least 1'],\n        },\n        color: { type: String, required: [true, 'Item color is required'], trim: true },\n        size: { type: String, trim: true },\n        _id: false,\n      },\n    ],\n    itemsPrice: {\n      type: Number,\n      required: [true, 'Items price is required'],\n      min: [0, 'Items price cannot be negative'],\n    },\n    status: {\n      type: String,\n      enum: {\n        values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned', 'abandoned'],\n        message: '{VALUE} is not a valid status',\n      },\n      default: 'pending',\n    },\n    createdAt: {\n      type: Date,\n      default: Date.now,\n    },\n    updatedAt: {\n      type: Date,\n      default: Date.now,\n    },\n  },\n  {\n    timestamps: true,\n  }\n)\n\norderSchema.index({ userId: 1, createdAt: -1 });\norderSchema.index({ sellerId: 1, status: 1 });\norderSchema.index({ status: 1 });\n\nconst Order = models.Order || model<IOrder>('Order', orderSchema)\n\nexport default Order"],
+      names: ["orderSchema", "Schema", "userId", "type", "String", "required", "index", "sellerId", "items", "clientId", "name", "trim", "slug", "image", "match", "price", "Number", "min", "quantity", "color", "size", "_id", "itemsPrice", "status", "enum", "values", "message", "default", "createdAt", "Date", "now", "updatedAt", "timestamps", "Order", "models", "model"],
+      mappings: ";;;;+BA2FA;;;eAAA;;;0BA3FgD;AAqBhD,MAAMA,cAAc,IAAIC,gBAAM,CAC5B;IACEC,QAAQ;QACNC,MAAMC;QACNC,UAAU;YAAC;YAAM;SAAsB;QACvCC,OAAO;IACT;IACAC,UAAU;QACRJ,MAAMC;QACNC,UAAU;YAAC;YAAM;SAAwB;QACzCC,OAAO;IACT;IACAE,OAAO;QACL;YACEC,UAAU;gBAAEN,MAAMC;gBAAQC,UAAU;oBAAC;oBAAM;iBAAwB;YAAC;YACpEK,MAAM;gBAAEP,MAAMC;gBAAQC,UAAU;oBAAC;oBAAM;iBAAwB;gBAAEM,MAAM;YAAK;YAC5EC,MAAM;gBAAET,MAAMC;gBAAQC,UAAU;oBAAC;oBAAM;iBAAwB;gBAAEM,MAAM;YAAK;YAC5EE,OAAO;gBACLV,MAAMC;gBACNC,UAAU;oBAAC;oBAAM;iBAAyB;gBAC1CS,OAAO;oBAAC;oBAA0C;iBAAmC;YACvF;YACAC,OAAO;gBACLZ,MAAMa;gBACNX,UAAU;oBAAC;oBAAM;iBAAyB;gBAC1CY,KAAK;oBAAC;oBAAG;iBAA2B;YACtC;YACAC,UAAU;gBACRf,MAAMa;gBACNX,UAAU;oBAAC;oBAAM;iBAA4B;gBAC7CY,KAAK;oBAAC;oBAAG;iBAA8B;YACzC;YACAE,OAAO;gBAAEhB,MAAMC;gBAAQC,UAAU;oBAAC;oBAAM;iBAAyB;gBAAEM,MAAM;YAAK;YAC9ES,MAAM;gBAAEjB,MAAMC;gBAAQO,MAAM;YAAK;YACjCU,KAAK;QACP;KACD;IACDC,YAAY;QACVnB,MAAMa;QACNX,UAAU;YAAC;YAAM;SAA0B;QAC3CY,KAAK;YAAC;YAAG;SAAiC;IAC5C;IACAM,QAAQ;QACNpB,MAAMC;QACNoB,MAAM;YACJC,QAAQ;gBAAC;gBAAW;gBAAc;gBAAW;gBAAa;gBAAa;gBAAY;aAAY;YAC/FC,SAAS;QACX;QACAC,SAAS;IACX;IACAC,WAAW;QACTzB,MAAM0B;QACNF,SAASE,KAAKC,GAAG;IACnB;IACAC,WAAW;QACT5B,MAAM0B;QACNF,SAASE,KAAKC,GAAG;IACnB;AACF,GACA;IACEE,YAAY;AACd;AAGFhC,YAAYM,KAAK,CAAC;IAAEJ,QAAQ;IAAG0B,WAAW,CAAC;AAAE;AAC7C5B,YAAYM,KAAK,CAAC;IAAEC,UAAU;IAAGgB,QAAQ;AAAE;AAC3CvB,YAAYM,KAAK,CAAC;IAAEiB,QAAQ;AAAE;AAE9B,MAAMU,QAAQC,gBAAM,CAACD,KAAK,IAAIE,IAAAA,eAAK,EAAS,SAASnC;MAErD,WAAeiC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "0666b0036e524e4cf507d82b1b0c655f6a9dba67"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_ztqbhklvi = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_ztqbhklvi();
+cov_ztqbhklvi().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_ztqbhklvi().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_ztqbhklvi().f[0]++;
+    cov_ztqbhklvi().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_ztqbhklvi().s[3]++, require("mongoose"));
+const orderSchema =
+/* istanbul ignore next */
+(cov_ztqbhklvi().s[4]++, new _mongoose.Schema({
+  userId: {
+    type: String,
+    required: [true, 'User ID is required'],
+    index: true
+  },
+  sellerId: {
+    type: String,
+    required: [true, 'Seller ID is required'],
+    index: true
+  },
+  items: [{
+    clientId: {
+      type: String,
+      required: [true, 'Client ID is required']
+    },
+    name: {
+      type: String,
+      required: [true, 'Item name is required'],
+      trim: true
+    },
+    slug: {
+      type: String,
+      required: [true, 'Item slug is required'],
+      trim: true
+    },
+    image: {
+      type: String,
+      required: [true, 'Item image is required'],
+      match: [/^https?:\/\/.*\.(?:png|jpg|jpeg|webp)$/, 'Please provide a valid image URL']
+    },
+    price: {
+      type: Number,
+      required: [true, 'Item price is required'],
+      min: [0, 'Price cannot be negative']
+    },
+    quantity: {
+      type: Number,
+      required: [true, 'Item quantity is required'],
+      min: [1, 'Quantity must be at least 1']
+    },
+    color: {
+      type: String,
+      required: [true, 'Item color is required'],
+      trim: true
+    },
+    size: {
+      type: String,
+      trim: true
+    },
+    _id: false
+  }],
+  itemsPrice: {
+    type: Number,
+    required: [true, 'Items price is required'],
+    min: [0, 'Items price cannot be negative']
+  },
+  status: {
+    type: String,
+    enum: {
+      values: ['pending', 'processing', 'shipped', 'delivered', 'cancelled', 'returned', 'abandoned'],
+      message: '{VALUE} is not a valid status'
+    },
+    default: 'pending'
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
+  }
+}, {
+  timestamps: true
+}));
+/* istanbul ignore next */
+cov_ztqbhklvi().s[5]++;
+orderSchema.index({
+  userId: 1,
+  createdAt: -1
+});
+/* istanbul ignore next */
+cov_ztqbhklvi().s[6]++;
+orderSchema.index({
+  sellerId: 1,
+  status: 1
+});
+/* istanbul ignore next */
+cov_ztqbhklvi().s[7]++;
+orderSchema.index({
+  status: 1
+});
+const Order =
+/* istanbul ignore next */
+(cov_ztqbhklvi().s[8]++,
+/* istanbul ignore next */
+(cov_ztqbhklvi().b[0][0]++, _mongoose.models.Order) ||
+/* istanbul ignore next */
+(cov_ztqbhklvi().b[0][1]++, (0, _mongoose.model)('Order', orderSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_ztqbhklvi().s[9]++, Order);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfenRxYmhrbHZpIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiX2RlZmF1bHQiLCJvcmRlclNjaGVtYSIsIl9tb25nb29zZSIsIlNjaGVtYSIsInVzZXJJZCIsInR5cGUiLCJTdHJpbmciLCJyZXF1aXJlZCIsImluZGV4Iiwic2VsbGVySWQiLCJpdGVtcyIsImNsaWVudElkIiwibmFtZSIsInRyaW0iLCJzbHVnIiwiaW1hZ2UiLCJtYXRjaCIsInByaWNlIiwiTnVtYmVyIiwibWluIiwicXVhbnRpdHkiLCJjb2xvciIsInNpemUiLCJfaWQiLCJpdGVtc1ByaWNlIiwic3RhdHVzIiwiZW51bSIsInZhbHVlcyIsIm1lc3NhZ2UiLCJkZWZhdWx0IiwiY3JlYXRlZEF0IiwiRGF0ZSIsIm5vdyIsInVwZGF0ZWRBdCIsInRpbWVzdGFtcHMiLCJPcmRlciIsImIiLCJtb2RlbHMiLCJtb2RlbCJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9saWIvZGIvbW9kZWxzL29yZGVyLm1vZGVsLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IFNjaGVtYSwgbW9kZWwsIG1vZGVscywgRG9jdW1lbnQgfSBmcm9tICdtb25nb29zZSdcblxuZXhwb3J0IGludGVyZmFjZSBJT3JkZXIgZXh0ZW5kcyBEb2N1bWVudCB7XG4gIHVzZXJJZDogc3RyaW5nXG4gIHNlbGxlcklkOiBzdHJpbmdcbiAgaXRlbXM6IEFycmF5PHtcbiAgICBjbGllbnRJZDogc3RyaW5nXG4gICAgbmFtZTogc3RyaW5nXG4gICAgc2x1Zzogc3RyaW5nXG4gICAgaW1hZ2U6IHN0cmluZ1xuICAgIHByaWNlOiBudW1iZXJcbiAgICBxdWFudGl0eTogbnVtYmVyXG4gICAgY29sb3I6IHN0cmluZ1xuICAgIHNpemU/OiBzdHJpbmdcbiAgfT5cbiAgaXRlbXNQcmljZTogbnVtYmVyXG4gIHN0YXR1czogc3RyaW5nXG4gIGNyZWF0ZWRBdDogRGF0ZVxuICB1cGRhdGVkQXQ6IERhdGVcbn1cblxuY29uc3Qgb3JkZXJTY2hlbWEgPSBuZXcgU2NoZW1hPElPcmRlcj4oXG4gIHtcbiAgICB1c2VySWQ6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIHJlcXVpcmVkOiBbdHJ1ZSwgJ1VzZXIgSUQgaXMgcmVxdWlyZWQnXSxcbiAgICAgIGluZGV4OiB0cnVlLFxuICAgIH0sXG4gICAgc2VsbGVySWQ6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIHJlcXVpcmVkOiBbdHJ1ZSwgJ1NlbGxlciBJRCBpcyByZXF1aXJlZCddLFxuICAgICAgaW5kZXg6IHRydWUsXG4gICAgfSxcbiAgICBpdGVtczogW1xuICAgICAge1xuICAgICAgICBjbGllbnRJZDogeyB0eXBlOiBTdHJpbmcsIHJlcXVpcmVkOiBbdHJ1ZSwgJ0NsaWVudCBJRCBpcyByZXF1aXJlZCddIH0sXG4gICAgICAgIG5hbWU6IHsgdHlwZTogU3RyaW5nLCByZXF1aXJlZDogW3RydWUsICdJdGVtIG5hbWUgaXMgcmVxdWlyZWQnXSwgdHJpbTogdHJ1ZSB9LFxuICAgICAgICBzbHVnOiB7IHR5cGU6IFN0cmluZywgcmVxdWlyZWQ6IFt0cnVlLCAnSXRlbSBzbHVnIGlzIHJlcXVpcmVkJ10sIHRyaW06IHRydWUgfSxcbiAgICAgICAgaW1hZ2U6IHtcbiAgICAgICAgICB0eXBlOiBTdHJpbmcsXG4gICAgICAgICAgcmVxdWlyZWQ6IFt0cnVlLCAnSXRlbSBpbWFnZSBpcyByZXF1aXJlZCddLFxuICAgICAgICAgIG1hdGNoOiBbL15odHRwcz86XFwvXFwvLipcXC4oPzpwbmd8anBnfGpwZWd8d2VicCkkLywgJ1BsZWFzZSBwcm92aWRlIGEgdmFsaWQgaW1hZ2UgVVJMJ10sXG4gICAgICAgIH0sXG4gICAgICAgIHByaWNlOiB7XG4gICAgICAgICAgdHlwZTogTnVtYmVyLFxuICAgICAgICAgIHJlcXVpcmVkOiBbdHJ1ZSwgJ0l0ZW0gcHJpY2UgaXMgcmVxdWlyZWQnXSxcbiAgICAgICAgICBtaW46IFswLCAnUHJpY2UgY2Fubm90IGJlIG5lZ2F0aXZlJ10sXG4gICAgICAgIH0sXG4gICAgICAgIHF1YW50aXR5OiB7XG4gICAgICAgICAgdHlwZTogTnVtYmVyLFxuICAgICAgICAgIHJlcXVpcmVkOiBbdHJ1ZSwgJ0l0ZW0gcXVhbnRpdHkgaXMgcmVxdWlyZWQnXSxcbiAgICAgICAgICBtaW46IFsxLCAnUXVhbnRpdHkgbXVzdCBiZSBhdCBsZWFzdCAxJ10sXG4gICAgICAgIH0sXG4gICAgICAgIGNvbG9yOiB7IHR5cGU6IFN0cmluZywgcmVxdWlyZWQ6IFt0cnVlLCAnSXRlbSBjb2xvciBpcyByZXF1aXJlZCddLCB0cmltOiB0cnVlIH0sXG4gICAgICAgIHNpemU6IHsgdHlwZTogU3RyaW5nLCB0cmltOiB0cnVlIH0sXG4gICAgICAgIF9pZDogZmFsc2UsXG4gICAgICB9LFxuICAgIF0sXG4gICAgaXRlbXNQcmljZToge1xuICAgICAgdHlwZTogTnVtYmVyLFxuICAgICAgcmVxdWlyZWQ6IFt0cnVlLCAnSXRlbXMgcHJpY2UgaXMgcmVxdWlyZWQnXSxcbiAgICAgIG1pbjogWzAsICdJdGVtcyBwcmljZSBjYW5ub3QgYmUgbmVnYXRpdmUnXSxcbiAgICB9LFxuICAgIHN0YXR1czoge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgZW51bToge1xuICAgICAgICB2YWx1ZXM6IFsncGVuZGluZycsICdwcm9jZXNzaW5nJywgJ3NoaXBwZWQnLCAnZGVsaXZlcmVkJywgJ2NhbmNlbGxlZCcsICdyZXR1cm5lZCcsICdhYmFuZG9uZWQnXSxcbiAgICAgICAgbWVzc2FnZTogJ3tWQUxVRX0gaXMgbm90IGEgdmFsaWQgc3RhdHVzJyxcbiAgICAgIH0sXG4gICAgICBkZWZhdWx0OiAncGVuZGluZycsXG4gICAgfSxcbiAgICBjcmVhdGVkQXQ6IHtcbiAgICAgIHR5cGU6IERhdGUsXG4gICAgICBkZWZhdWx0OiBEYXRlLm5vdyxcbiAgICB9LFxuICAgIHVwZGF0ZWRBdDoge1xuICAgICAgdHlwZTogRGF0ZSxcbiAgICAgIGRlZmF1bHQ6IERhdGUubm93LFxuICAgIH0sXG4gIH0sXG4gIHtcbiAgICB0aW1lc3RhbXBzOiB0cnVlLFxuICB9XG4pXG5cbm9yZGVyU2NoZW1hLmluZGV4KHsgdXNlcklkOiAxLCBjcmVhdGVkQXQ6IC0xIH0pO1xub3JkZXJTY2hlbWEuaW5kZXgoeyBzZWxsZXJJZDogMSwgc3RhdHVzOiAxIH0pO1xub3JkZXJTY2hlbWEuaW5kZXgoeyBzdGF0dXM6IDEgfSk7XG5cbmNvbnN0IE9yZGVyID0gbW9kZWxzLk9yZGVyIHx8IG1vZGVsPElPcmRlcj4oJ09yZGVyJywgb3JkZXJTY2hlbWEpXG5cbmV4cG9ydCBkZWZhdWx0IE9yZGVyIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUF5QmlCO0lBQUFBLGFBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGFBQUE7QUFBQUEsYUFBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBa0VqQjs7Ozs7O1dBQUFDLFFBQUE7Ozs7O2lDQTNGZ0Q7QUFxQmhELE1BQU1DLFdBQUE7QUFBQTtBQUFBLENBQUFKLGFBQUEsR0FBQUUsQ0FBQSxPQUFjLElBQUlHLFNBQUEsQ0FBQUMsTUFBTSxDQUM1QjtFQUNFQyxNQUFBLEVBQVE7SUFDTkMsSUFBQSxFQUFNQyxNQUFBO0lBQ05DLFFBQUEsRUFBVSxDQUFDLE1BQU0sc0JBQXNCO0lBQ3ZDQyxLQUFBLEVBQU87RUFDVDtFQUNBQyxRQUFBLEVBQVU7SUFDUkosSUFB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

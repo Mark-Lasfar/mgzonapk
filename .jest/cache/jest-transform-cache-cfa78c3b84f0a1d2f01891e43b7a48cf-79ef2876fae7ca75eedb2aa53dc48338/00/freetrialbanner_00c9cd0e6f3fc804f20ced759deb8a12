@@ -1,0 +1,599 @@
+f57a0c92d52c80663f6821f6c3e8c162
+'use client';
+"use strict";
+
+/* istanbul ignore next */
+function cov_9qun5l3n2() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/ui/free-trial-banner.tsx";
+  var hash = "0b5ba52758c5f5895b4a90e0c865110724f44690";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/ui/free-trial-banner.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 31
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 15
+        },
+        end: {
+          line: 13,
+          column: 31
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 16
+        },
+        end: {
+          line: 14,
+          column: 35
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 14
+        },
+        end: {
+          line: 15,
+          column: 31
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 20
+        },
+        end: {
+          line: 16,
+          column: 46
+        }
+      },
+      "8": {
+        start: {
+          line: 18,
+          column: 38
+        },
+        end: {
+          line: 18,
+          column: 65
+        }
+      },
+      "9": {
+        start: {
+          line: 19,
+          column: 19
+        },
+        end: {
+          line: 19,
+          column: 47
+        }
+      },
+      "10": {
+        start: {
+          line: 20,
+          column: 4
+        },
+        end: {
+          line: 26,
+          column: 11
+        }
+      },
+      "11": {
+        start: {
+          line: 21,
+          column: 30
+        },
+        end: {
+          line: 21,
+          column: 72
+        }
+      },
+      "12": {
+        start: {
+          line: 22,
+          column: 8
+        },
+        end: {
+          line: 25,
+          column: 9
+        }
+      },
+      "13": {
+        start: {
+          line: 23,
+          column: 12
+        },
+        end: {
+          line: 23,
+          column: 31
+        }
+      },
+      "14": {
+        start: {
+          line: 24,
+          column: 12
+        },
+        end: {
+          line: 24,
+          column: 63
+        }
+      },
+      "15": {
+        start: {
+          line: 27,
+          column: 25
+        },
+        end: {
+          line: 30,
+          column: 5
+        }
+      },
+      "16": {
+        start: {
+          line: 28,
+          column: 8
+        },
+        end: {
+          line: 28,
+          column: 28
+        }
+      },
+      "17": {
+        start: {
+          line: 29,
+          column: 8
+        },
+        end: {
+          line: 29,
+          column: 58
+        }
+      },
+      "18": {
+        start: {
+          line: 31,
+          column: 4
+        },
+        end: {
+          line: 31,
+          column: 32
+        }
+      },
+      "19": {
+        start: {
+          line: 31,
+          column: 20
+        },
+        end: {
+          line: 31,
+          column: 32
+        }
+      },
+      "20": {
+        start: {
+          line: 32,
+          column: 4
+        },
+        end: {
+          line: 62,
+          column: 7
+        }
+      },
+      "21": {
+        start: {
+          line: 52,
+          column: 37
+        },
+        end: {
+          line: 52,
+          column: 56
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "FreeTrialBanner",
+        decl: {
+          start: {
+            line: 17,
+            column: 9
+          },
+          end: {
+            line: 17,
+            column: 24
+          }
+        },
+        loc: {
+          start: {
+            line: 17,
+            column: 27
+          },
+          end: {
+            line: 63,
+            column: 1
+          }
+        },
+        line: 17
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 20,
+            column: 26
+          },
+          end: {
+            line: 20,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 30
+          },
+          end: {
+            line: 26,
+            column: 5
+          }
+        },
+        line: 20
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 27,
+            column: 25
+          },
+          end: {
+            line: 27,
+            column: 26
+          }
+        },
+        loc: {
+          start: {
+            line: 27,
+            column: 29
+          },
+          end: {
+            line: 30,
+            column: 5
+          }
+        },
+        line: 27
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 52,
+            column: 33
+          },
+          end: {
+            line: 52,
+            column: 34
+          }
+        },
+        loc: {
+          start: {
+            line: 52,
+            column: 37
+          },
+          end: {
+            line: 52,
+            column: 56
+          }
+        },
+        line: 52
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 22,
+            column: 8
+          },
+          end: {
+            line: 25,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 22,
+            column: 8
+          },
+          end: {
+            line: 25,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 22
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 31,
+            column: 4
+          },
+          end: {
+            line: 31,
+            column: 32
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 31,
+            column: 4
+          },
+          end: {
+            line: 31,
+            column: 32
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 31
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/ui/free-trial-banner.tsx"],
+      sourcesContent: ["'use client'\n\nimport { useState, useEffect } from 'react'\nimport { Button } from '@/components/ui/button'\nimport { Card, CardContent, CardFooter } from '@/components/ui/card'\nimport { useRouter } from 'next/navigation'\n\nexport default function FreeTrialBanner() {\n  const [isVisible, setIsVisible] = useState(false)\n  const router = useRouter()\n\n  useEffect(() => {\n    const hasSeenBanner = localStorage.getItem('hasSeenTrialBanner')\n    if (!hasSeenBanner) {\n      setIsVisible(true)\n      localStorage.setItem('hasSeenTrialBanner', 'true')\n    }\n  }, [])\n\n  const handleTryNow = () => {\n    setIsVisible(false)\n    router.push('/sign-in?redirect=/seller/register')\n  }\n\n  if (!isVisible) return null\n\n  return (\n    <Card className=\"fixed bottom-4 right-4 max-w-md z-50\">\n      <CardContent className=\"p-4\">\n        <h2 className=\"text-xl font-bold\">Try Selling for Free!</h2>\n        <p>Start with a 5-day free trial, then just $1/month for the first 3 months. Join our platform now!</p>\n      </CardContent>\n      <CardFooter className=\"flex justify-end gap-2\">\n        <Button variant=\"outline\" onClick={() => setIsVisible(false)}>Dismiss</Button>\n        <Button onClick={handleTryNow}>Try Now</Button>\n      </CardFooter>\n    </Card>\n  )\n}"],
+      names: ["FreeTrialBanner", "isVisible", "setIsVisible", "useState", "router", "useRouter", "useEffect", "hasSeenBanner", "localStorage", "getItem", "setItem", "handleTryNow", "push", "Card", "className", "CardContent", "h2", "p", "CardFooter", "Button", "variant", "onClick"],
+      mappings: "AAAA;;;;;+BAOA;;;eAAwBA;;;;uBALY;wBACb;sBACuB;4BACpB;AAEX,SAASA;IACtB,MAAM,CAACC,WAAWC,aAAa,GAAGC,IAAAA,eAAQ,EAAC;IAC3C,MAAMC,SAASC,IAAAA,qBAAS;IAExBC,IAAAA,gBAAS,EAAC;QACR,MAAMC,gBAAgBC,aAAaC,OAAO,CAAC;QAC3C,IAAI,CAACF,eAAe;YAClBL,aAAa;YACbM,aAAaE,OAAO,CAAC,sBAAsB;QAC7C;IACF,GAAG,EAAE;IAEL,MAAMC,eAAe;QACnBT,aAAa;QACbE,OAAOQ,IAAI,CAAC;IACd;IAEA,IAAI,CAACX,WAAW,OAAO;IAEvB,qBACE,sBAACY,UAAI;QAACC,WAAU;;0BACd,sBAACC,iBAAW;gBAACD,WAAU;;kCACrB,qBAACE;wBAAGF,WAAU;kCAAoB;;kCAClC,qBAACG;kCAAE;;;;0BAEL,sBAACC,gBAAU;gBAACJ,WAAU;;kCACpB,qBAACK,cAAM;wBAACC,SAAQ;wBAAUC,SAAS,IAAMnB,aAAa;kCAAQ;;kCAC9D,qBAACiB,cAAM;wBAACE,SAASV;kCAAc;;;;;;AAIvC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "0b5ba52758c5f5895b4a90e0c865110724f44690"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_9qun5l3n2 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_9qun5l3n2();
+cov_9qun5l3n2().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_9qun5l3n2().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_9qun5l3n2().f[0]++;
+    cov_9qun5l3n2().s[2]++;
+    return FreeTrialBanner;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_9qun5l3n2().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(cov_9qun5l3n2().s[4]++, require("react"));
+const _button =
+/* istanbul ignore next */
+(cov_9qun5l3n2().s[5]++, require("./button"));
+const _card =
+/* istanbul ignore next */
+(cov_9qun5l3n2().s[6]++, require("./card"));
+const _navigation =
+/* istanbul ignore next */
+(cov_9qun5l3n2().s[7]++, require("next/navigation"));
+function FreeTrialBanner() {
+  /* istanbul ignore next */
+  cov_9qun5l3n2().f[1]++;
+  const [isVisible, setIsVisible] =
+  /* istanbul ignore next */
+  (cov_9qun5l3n2().s[8]++, (0, _react.useState)(false));
+  const router =
+  /* istanbul ignore next */
+  (cov_9qun5l3n2().s[9]++, (0, _navigation.useRouter)());
+  /* istanbul ignore next */
+  cov_9qun5l3n2().s[10]++;
+  (0, _react.useEffect)(() => {
+    /* istanbul ignore next */
+    cov_9qun5l3n2().f[2]++;
+    const hasSeenBanner =
+    /* istanbul ignore next */
+    (cov_9qun5l3n2().s[11]++, localStorage.getItem('hasSeenTrialBanner'));
+    /* istanbul ignore next */
+    cov_9qun5l3n2().s[12]++;
+    if (!hasSeenBanner) {
+      /* istanbul ignore next */
+      cov_9qun5l3n2().b[0][0]++;
+      cov_9qun5l3n2().s[13]++;
+      setIsVisible(true);
+      /* istanbul ignore next */
+      cov_9qun5l3n2().s[14]++;
+      localStorage.setItem('hasSeenTrialBanner', 'true');
+    } else
+    /* istanbul ignore next */
+    {
+      cov_9qun5l3n2().b[0][1]++;
+    }
+  }, []);
+  /* istanbul ignore next */
+  cov_9qun5l3n2().s[15]++;
+  const handleTryNow = () => {
+    /* istanbul ignore next */
+    cov_9qun5l3n2().f[3]++;
+    cov_9qun5l3n2().s[16]++;
+    setIsVisible(false);
+    /* istanbul ignore next */
+    cov_9qun5l3n2().s[17]++;
+    router.push('/sign-in?redirect=/seller/register');
+  };
+  /* istanbul ignore next */
+  cov_9qun5l3n2().s[18]++;
+  if (!isVisible) {
+    /* istanbul ignore next */
+    cov_9qun5l3n2().b[1][0]++;
+    cov_9qun5l3n2().s[19]++;
+    return null;
+  } else
+  /* istanbul ignore next */
+  {
+    cov_9qun5l3n2().b[1][1]++;
+  }
+  cov_9qun5l3n2().s[20]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)(_card.Card, {
+    className: "fixed bottom-4 right-4 max-w-md z-50",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsxs)(_card.CardContent, {
+      className: "p-4",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)("h2", {
+        className: "text-xl font-bold",
+        children: "Try Selling for Free!"
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)("p", {
+        children: "Start with a 5-day free trial, then just $1/month for the first 3 months. Join our platform now!"
+      })]
+    }), /*#__PURE__*/(0, _jsxruntime.jsxs)(_card.CardFooter, {
+      className: "flex justify-end gap-2",
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_button.Button, {
+        variant: "outline",
+        onClick: () => {
+          /* istanbul ignore next */
+          cov_9qun5l3n2().f[4]++;
+          cov_9qun5l3n2().s[21]++;
+          return setIsVisible(false);
+        },
+        children: "Dismiss"
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_button.Button, {
+        onClick: handleTryNow,
+        children: "Try Now"
+      })]
+    })]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJGcmVlVHJpYWxCYW5uZXIiLCJjb3ZfOXF1bjVsM24yIiwiZiIsImlzVmlzaWJsZSIsInNldElzVmlzaWJsZSIsInMiLCJfcmVhY3QiLCJ1c2VTdGF0ZSIsInJvdXRlciIsIl9uYXZpZ2F0aW9uIiwidXNlUm91dGVyIiwidXNlRWZmZWN0IiwiaGFzU2VlbkJhbm5lciIsImxvY2FsU3RvcmFnZSIsImdldEl0ZW0iLCJiIiwic2V0SXRlbSIsImhhbmRsZVRyeU5vdyIsInB1c2giLCJfanN4cnVudGltZSIsImpzeHMiLCJfY2FyZCIsIkNhcmQiLCJjbGFzc05hbWUiLCJDYXJkQ29udGVudCIsImpzeCIsIkNhcmRGb290ZXIiLCJfYnV0dG9uIiwiQnV0dG9uIiwidmFyaWFudCIsIm9uQ2xpY2siXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvY29tcG9uZW50cy91aS9mcmVlLXRyaWFsLWJhbm5lci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBjbGllbnQnXG5cbmltcG9ydCB7IHVzZVN0YXRlLCB1c2VFZmZlY3QgfSBmcm9tICdyZWFjdCdcbmltcG9ydCB7IEJ1dHRvbiB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9idXR0b24nXG5pbXBvcnQgeyBDYXJkLCBDYXJkQ29udGVudCwgQ2FyZEZvb3RlciB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9jYXJkJ1xuaW1wb3J0IHsgdXNlUm91dGVyIH0gZnJvbSAnbmV4dC9uYXZpZ2F0aW9uJ1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBGcmVlVHJpYWxCYW5uZXIoKSB7XG4gIGNvbnN0IFtpc1Zpc2libGUsIHNldElzVmlzaWJsZV0gPSB1c2VTdGF0ZShmYWxzZSlcbiAgY29uc3Qgcm91dGVyID0gdXNlUm91dGVyKClcblxuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGNvbnN0IGhhc1NlZW5CYW5uZXIgPSBsb2NhbFN0b3JhZ2UuZ2V0SXRlbSgnaGFzU2VlblRyaWFsQmFubmVyJylcbiAgICBpZiAoIWhhc1NlZW5CYW5uZXIpIHtcbiAgICAgIHNldElzVmlzaWJsZSh0cnVlKVxuICAgICAgbG9jYWxTdG9yYWdlLnNldEl0ZW0oJ2hhc1NlZW5UcmlhbEJhbm5lcicsICd0cnVlJylcbiAgICB9XG4gIH0sIFtdKVxuXG4gIGNvbnN0IGhhbmRsZVRyeU5vdyA9ICgpID0+IHtcbiAgICBzZXRJc1Zpc2libGUoZmFsc2UpXG4gICAgcm91dGVyLnB1c2goJy9zaWduLWluP3JlZGlyZWN0PS9zZWxsZXIvcmVnaXN0ZXInKVxuICB9XG5cbiAgaWYgKCFpc1Zpc2libGUpIHJldHVybiBudWxsXG5cbiAgcmV0dXJuIChcbiAgICA8Q2FyZCBjbGFzc05hbWU9XCJmaXhlZCBib3R0b20tNCByaWdodC00IG1heC13LW1kIHotNTBcIj5cbiAgICAgIDxDYXJkQ29udGVudCBjbGFzc05hbWU9XCJwLTRcIj5cbiAgICAgICAgPGgyIGNsYXNzTmFtZT1cInRleHQteGwgZm9udC1ib2xkXCI+VHJ5IFNlbGxpbmcgZm9yIEZyZWUhPC9oMj5cbiAgICAgICAgPHA+U3RhcnQgd2l0aCBhIDUtZGF5IGZyZWUgdHJpYWwsIHRoZW4ganVzdCAkMS9tb250aCBmb3IgdGhlIGZpcnN0IDMgbW9udGhzLiBKb2luIG91ciBwbGF0Zm9ybSBub3chPC9wPlxuICAgICAgPC9DYXJkQ29udGVudD5cbiAgICAgIDxDYXJkRm9vdGVyIGNsYXNzTmFtZT1cImZsZXgganVzdGlmeS1lbmQgZ2FwLTJcIj5cbiAgICAgICAgPEJ1dHRvbiB2YXJpYW50PVwib3V0bGluZVwiIG9uQ2xpY2s9eygpID0+IHNldElzVmlzaWJsZShmYWxzZSl9PkRpc21pc3M8L0J1dHRvbj5cbiAgICAgICAgPEJ1dHRvbiBvbkNsaWNrPXtoYW5kbGVUcnlOb3d9PlRyeSBOb3c8L0J1dHRvbj5cbiAgICAgIDwvQ2FyZEZvb3Rlcj5cbiAgICA8L0NhcmQ+XG4gIClcbn0iXSwibWFwcGlu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

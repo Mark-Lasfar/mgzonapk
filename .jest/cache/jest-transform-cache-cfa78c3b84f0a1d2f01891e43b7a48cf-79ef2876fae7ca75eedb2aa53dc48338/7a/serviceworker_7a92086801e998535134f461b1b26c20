@@ -1,0 +1,187 @@
+6c7733335fbd0a342179a151dc92cd1f
+"use strict";
+
+/* istanbul ignore next */
+function cov_94lw4tok9() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/firebase/service-worker.ts";
+  var hash = "9c3782c5e94dd9e1dbfecb80b7138f2002df6e4a";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/firebase/service-worker.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 40
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 4
+        },
+        end: {
+          line: 38,
+          column: 4
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "generateFirebaseSwConfig",
+        decl: {
+          start: {
+            line: 11,
+            column: 9
+          },
+          end: {
+            line: 11,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 11,
+            column: 36
+          },
+          end: {
+            line: 39,
+            column: 1
+          }
+        },
+        line: 11
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/firebase/service-worker.ts"],
+      sourcesContent: ["export function generateFirebaseSwConfig() {\n    return `\n  importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');\n  importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');\n  \n  firebase.initializeApp({\n    apiKey: '${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}',\n    authDomain: '${process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}',\n    projectId: '${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}',\n    storageBucket: '${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}',\n    messagingSenderId: '${process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}',\n    appId: '${process.env.NEXT_PUBLIC_FIREBASE_APP_ID}'\n  });\n  \n  const messaging = firebase.messaging();\n  \n  messaging.onBackgroundMessage((payload) => {\n    console.log('Received background message:', payload);\n  \n    const notificationTitle = payload.notification.title;\n    const notificationOptions = {\n      body: payload.notification.body,\n      icon: '/icon.png'\n    };\n  \n    self.registration.showNotification(notificationTitle, notificationOptions);\n  });\n  `;\n  }"],
+      names: ["generateFirebaseSwConfig", "process", "env", "NEXT_PUBLIC_FIREBASE_API_KEY", "NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN", "NEXT_PUBLIC_FIREBASE_PROJECT_ID", "NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET", "NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID", "NEXT_PUBLIC_FIREBASE_APP_ID"],
+      mappings: ";;;;+BAAgBA;;;eAAAA;;;AAAT,SAASA;IACZ,OAAO,CAAC;;;;;aAKC,EAAEC,QAAQC,GAAG,CAACC,4BAA4B,CAAC;iBACvC,EAAEF,QAAQC,GAAG,CAACE,gCAAgC,CAAC;gBAChD,EAAEH,QAAQC,GAAG,CAACG,+BAA+B,CAAC;oBAC1C,EAAEJ,QAAQC,GAAG,CAACI,mCAAmC,CAAC;wBAC9C,EAAEL,QAAQC,GAAG,CAACK,wCAAwC,CAAC;YACnE,EAAEN,QAAQC,GAAG,CAACM,2BAA2B,CAAC;;;;;;;;;;;;;;;;EAgBpD,CAAC;AACD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "9c3782c5e94dd9e1dbfecb80b7138f2002df6e4a"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_94lw4tok9 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_94lw4tok9();
+cov_94lw4tok9().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_94lw4tok9().s[1]++;
+Object.defineProperty(exports, "generateFirebaseSwConfig", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_94lw4tok9().f[0]++;
+    cov_94lw4tok9().s[2]++;
+    return generateFirebaseSwConfig;
+  }
+});
+function generateFirebaseSwConfig() {
+  /* istanbul ignore next */
+  cov_94lw4tok9().f[1]++;
+  cov_94lw4tok9().s[3]++;
+  return `
+  importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-app-compat.js');
+  importScripts('https://www.gstatic.com/firebasejs/9.0.0/firebase-messaging-compat.js');
+  
+  firebase.initializeApp({
+    apiKey: '${process.env.NEXT_PUBLIC_FIREBASE_API_KEY}',
+    authDomain: '${process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN}',
+    projectId: '${process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID}',
+    storageBucket: '${process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET}',
+    messagingSenderId: '${process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID}',
+    appId: '${process.env.NEXT_PUBLIC_FIREBASE_APP_ID}'
+  });
+  
+  const messaging = firebase.messaging();
+  
+  messaging.onBackgroundMessage((payload) => {
+    console.log('Received background message:', payload);
+  
+    const notificationTitle = payload.notification.title;
+    const notificationOptions = {
+      body: payload.notification.body,
+      icon: '/icon.png'
+    };
+  
+    self.registration.showNotification(notificationTitle, notificationOptions);
+  });
+  `;
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJnZW5lcmF0ZUZpcmViYXNlU3dDb25maWciLCJjb3ZfOTRsdzR0b2s5IiwiZiIsInMiLCJwcm9jZXNzIiwiZW52IiwiTkVYVF9QVUJMSUNfRklSRUJBU0VfQVBJX0tFWSIsIk5FWFRfUFVCTElDX0ZJUkVCQVNFX0FVVEhfRE9NQUlOIiwiTkVYVF9QVUJMSUNfRklSRUJBU0VfUFJPSkVDVF9JRCIsIk5FWFRfUFVCTElDX0ZJUkVCQVNFX1NUT1JBR0VfQlVDS0VUIiwiTkVYVF9QVUJMSUNfRklSRUJBU0VfTUVTU0FHSU5HX1NFTkRFUl9JRCIsIk5FWFRfUFVCTElDX0ZJUkVCQVNFX0FQUF9JRCJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9saWIvZmlyZWJhc2Uvc2VydmljZS13b3JrZXIudHMiXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGZ1bmN0aW9uIGdlbmVyYXRlRmlyZWJhc2VTd0NvbmZpZygpIHtcbiAgICByZXR1cm4gYFxuICBpbXBvcnRTY3JpcHRzKCdodHRwczovL3d3dy5nc3RhdGljLmNvbS9maXJlYmFzZWpzLzkuMC4wL2ZpcmViYXNlLWFwcC1jb21wYXQuanMnKTtcbiAgaW1wb3J0U2NyaXB0cygnaHR0cHM6Ly93d3cuZ3N0YXRpYy5jb20vZmlyZWJhc2Vqcy85LjAuMC9maXJlYmFzZS1tZXNzYWdpbmctY29tcGF0LmpzJyk7XG4gIFxuICBmaXJlYmFzZS5pbml0aWFsaXplQXBwKHtcbiAgICBhcGlLZXk6ICcke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX0ZJUkVCQVNFX0FQSV9LRVl9JyxcbiAgICBhdXRoRG9tYWluOiAnJHtwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19GSVJFQkFTRV9BVVRIX0RPTUFJTn0nLFxuICAgIHByb2plY3RJZDogJyR7cHJvY2Vzcy5lbnYuTkVYVF9QVUJMSUNfRklSRUJBU0VfUFJPSkVDVF9JRH0nLFxuICAgIHN0b3JhZ2VCdWNrZXQ6ICcke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX0ZJUkVCQVNFX1NUT1JBR0VfQlVDS0VUfScsXG4gICAgbWVzc2FnaW5nU2VuZGVySWQ6ICcke3Byb2Nlc3MuZW52Lk5FWFRfUFVCTElDX0ZJUkVCQVNFX01FU1NBR0lOR19TRU5ERVJfSUR9JyxcbiAgICBhcHBJZDogJyR7cHJvY2Vzcy5lbnYuTkVYVF9QVUJMSUNfRklSRUJBU0VfQVBQX0lEfSdcbiAgfSk7XG4gIFxuICBjb25zdCBtZXNzYWdpbmcgPSBmaXJlYmFzZS5tZXNzYWdpbmcoKTtcbiAgXG4gIG1lc3NhZ2luZy5vbkJhY2tncm91bmRNZXNzYWdlKChwYXlsb2FkKSA9PiB7XG4gICAgY29uc29sZS5sb2coJ1JlY2VpdmVkIGJhY2tncm91bmQgbWVzc2FnZTonLCBwYXlsb2FkKTtcbiAgXG4gICAgY29uc3Qgbm90aWZpY2F0aW9uVGl0bGUgPSBwYXlsb2FkLm5vdGlmaWNhdGlvbi50aXRsZTtcbiAgICBjb25zdCBub3RpZmljYXRpb25PcHRpb25zID0ge1xuICAgICAgYm9keTogcGF5bG9hZC5ub3RpZmljYXRpb24uYm9keSxcbiAgICAgIGljb246ICcvaWNvbi5wbmcnXG4gICAgfTtcbiAgXG4gICAgc2VsZi5yZWdpc3RyYXRpb24uc2hvd05vdGlmaWNhdGlvbihub3RpZmljYXRpb25UaXRsZSwgbm90aWZpY2F0aW9uT3B0aW9ucyk7XG4gIH0pO1xuICBgO1xuICB9Il0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7K0JBQWdCOzs7Ozs7V0FBQUEsd0JBQUE7OztBQUFULFNBQVNBLHlCQUFBO0VBQUE7RUFBQUMsYUFBQSxHQUFBQyxDQUFBO0VBQUFELGFBQUEsR0FBQUUsQ0FBQTtFQUNaLE9BQU87Ozs7O2VBS0lDLE9BQUEsQ0FBUUMsR0FBRyxDQUFDQyw0QkFBNEI7bUJBQ3BDRixPQUFBLENBQVFDLEdBQUcsQ0FBQ0UsZ0NBQWdDO2tCQUM3Q0gsT0FBQSxDQUFRQyxHQUFHLENBQUNHLCtCQUErQjtzQkFDdkNKLE9BQUEsQ0FBUUMsR0FBRyxDQUFDSSxtQ0FBbUM7MEJBQzNDTCxPQUFBLENBQVFDLEdBQUcsQ0FBQ0ssd0NBQXdDO2NBQ2hFTixPQUFBLENBQVFDLEdBQUcsQ0FBQ00sMkJBQTJCOzs7Ozs7Ozs7Ozs7Ozs7O0dBZ0JsRDtBQUNEIiwiaWdub3JlTGlzdCI6W119

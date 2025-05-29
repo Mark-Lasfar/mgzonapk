@@ -1,0 +1,386 @@
+e09d2ddae27423b589edd8bff1d60796
+'use client';
+"use strict";
+
+/* istanbul ignore next */
+function cov_2cbebkwi33() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/support/tickets/ticket-list.tsx";
+  var hash = "9e41e1be82f2a3d4c768776690d7e9abfa03b2e2";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/support/tickets/ticket-list.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 26
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 19
+        },
+        end: {
+          line: 13,
+          column: 66
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 15
+        },
+        end: {
+          line: 14,
+          column: 31
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 34
+        },
+        end: {
+          line: 16,
+          column: 58
+        }
+      },
+      "7": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 11
+        }
+      },
+      "8": {
+        start: {
+          line: 18,
+          column: 8
+        },
+        end: {
+          line: 18,
+          column: 96
+        }
+      },
+      "9": {
+        start: {
+          line: 18,
+          column: 53
+        },
+        end: {
+          line: 18,
+          column: 63
+        }
+      },
+      "10": {
+        start: {
+          line: 18,
+          column: 78
+        },
+        end: {
+          line: 18,
+          column: 94
+        }
+      },
+      "11": {
+        start: {
+          line: 20,
+          column: 20
+        },
+        end: {
+          line: 37,
+          column: 5
+        }
+      },
+      "12": {
+        start: {
+          line: 38,
+          column: 4
+        },
+        end: {
+          line: 42,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "TicketList",
+        decl: {
+          start: {
+            line: 15,
+            column: 9
+          },
+          end: {
+            line: 15,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 22
+          },
+          end: {
+            line: 43,
+            column: 1
+          }
+        },
+        line: 15
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 17,
+            column: 26
+          },
+          end: {
+            line: 17,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 17,
+            column: 30
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        line: 17
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 18,
+            column: 46
+          },
+          end: {
+            line: 18,
+            column: 47
+          }
+        },
+        loc: {
+          start: {
+            line: 18,
+            column: 53
+          },
+          end: {
+            line: 18,
+            column: 63
+          }
+        },
+        line: 18
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 18,
+            column: 70
+          },
+          end: {
+            line: 18,
+            column: 71
+          }
+        },
+        loc: {
+          start: {
+            line: 18,
+            column: 78
+          },
+          end: {
+            line: 18,
+            column: 94
+          }
+        },
+        line: 18
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/support/tickets/ticket-list.tsx"],
+      sourcesContent: ["'use client';\n\nimport { DataTable } from '@/components/ui/data-table';\nimport { useEffect, useState } from 'react';\n// import { DataTable } from '@../components/ui/data-table';\n\nexport function TicketList() {\n  const [tickets, setTickets] = useState([]);\n\n  useEffect(() => {\n    fetch('/api/v1/support/tickets')\n      .then(res => res.json())\n      .then(data => setTickets(data));\n  }, []);\n\n  const columns = [\n    { accessorKey: 'id', header: 'ID' },\n    { accessorKey: 'title', header: 'Title' },\n    { accessorKey: 'status', header: 'Status' },\n    { accessorKey: 'createdAt', header: 'Created' },\n  ];\n\n  return <DataTable columns={columns} data={tickets} searchKey=\"title\" />;\n}"],
+      names: ["TicketList", "tickets", "setTickets", "useState", "useEffect", "fetch", "then", "res", "json", "data", "columns", "accessorKey", "header", "DataTable", "searchKey"],
+      mappings: "AAAA;;;;;+BAMgBA;;;eAAAA;;;;2BAJU;uBACU;AAG7B,SAASA;IACd,MAAM,CAACC,SAASC,WAAW,GAAGC,IAAAA,eAAQ,EAAC,EAAE;IAEzCC,IAAAA,gBAAS,EAAC;QACRC,MAAM,2BACHC,IAAI,CAACC,CAAAA,MAAOA,IAAIC,IAAI,IACpBF,IAAI,CAACG,CAAAA,OAAQP,WAAWO;IAC7B,GAAG,EAAE;IAEL,MAAMC,UAAU;QACd;YAAEC,aAAa;YAAMC,QAAQ;QAAK;QAClC;YAAED,aAAa;YAASC,QAAQ;QAAQ;QACxC;YAAED,aAAa;YAAUC,QAAQ;QAAS;QAC1C;YAAED,aAAa;YAAaC,QAAQ;QAAU;KAC/C;IAED,qBAAO,qBAACC,oBAAS;QAACH,SAASA;QAASD,MAAMR;QAASa,WAAU;;AAC/D"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "9e41e1be82f2a3d4c768776690d7e9abfa03b2e2"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2cbebkwi33 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2cbebkwi33();
+cov_2cbebkwi33().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2cbebkwi33().s[1]++;
+Object.defineProperty(exports, "TicketList", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2cbebkwi33().f[0]++;
+    cov_2cbebkwi33().s[2]++;
+    return TicketList;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_2cbebkwi33().s[3]++, require("react/jsx-runtime"));
+const _datatable =
+/* istanbul ignore next */
+(cov_2cbebkwi33().s[4]++, require("../../../../components/ui/data-table"));
+const _react =
+/* istanbul ignore next */
+(cov_2cbebkwi33().s[5]++, require("react"));
+function TicketList() {
+  /* istanbul ignore next */
+  cov_2cbebkwi33().f[1]++;
+  const [tickets, setTickets] =
+  /* istanbul ignore next */
+  (cov_2cbebkwi33().s[6]++, (0, _react.useState)([]));
+  /* istanbul ignore next */
+  cov_2cbebkwi33().s[7]++;
+  (0, _react.useEffect)(() => {
+    /* istanbul ignore next */
+    cov_2cbebkwi33().f[2]++;
+    cov_2cbebkwi33().s[8]++;
+    fetch('/api/v1/support/tickets').then(res => {
+      /* istanbul ignore next */
+      cov_2cbebkwi33().f[3]++;
+      cov_2cbebkwi33().s[9]++;
+      return res.json();
+    }).then(data => {
+      /* istanbul ignore next */
+      cov_2cbebkwi33().f[4]++;
+      cov_2cbebkwi33().s[10]++;
+      return setTickets(data);
+    });
+  }, []);
+  const columns =
+  /* istanbul ignore next */
+  (cov_2cbebkwi33().s[11]++, [{
+    accessorKey: 'id',
+    header: 'ID'
+  }, {
+    accessorKey: 'title',
+    header: 'Title'
+  }, {
+    accessorKey: 'status',
+    header: 'Status'
+  }, {
+    accessorKey: 'createdAt',
+    header: 'Created'
+  }]);
+  /* istanbul ignore next */
+  cov_2cbebkwi33().s[12]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)(_datatable.DataTable, {
+    columns: columns,
+    data: tickets,
+    searchKey: "title"
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMmNiZWJrd2kzMyIsImFjdHVhbENvdmVyYWdlIiwicyIsIlRpY2tldExpc3QiLCJmIiwidGlja2V0cyIsInNldFRpY2tldHMiLCJfcmVhY3QiLCJ1c2VTdGF0ZSIsInVzZUVmZmVjdCIsImZldGNoIiwidGhlbiIsInJlcyIsImpzb24iLCJkYXRhIiwiY29sdW1ucyIsImFjY2Vzc29yS2V5IiwiaGVhZGVyIiwiX2pzeHJ1bnRpbWUiLCJqc3giLCJfZGF0YXRhYmxlIiwiRGF0YVRhYmxlIiwic2VhcmNoS2V5Il0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2FwcC9bbG9jYWxlXS9zdXBwb3J0L3RpY2tldHMvdGlja2V0LWxpc3QudHN4Il0sInNvdXJjZXNDb250ZW50IjpbIid1c2UgY2xpZW50JztcblxuaW1wb3J0IHsgRGF0YVRhYmxlIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL2RhdGEtdGFibGUnO1xuaW1wb3J0IHsgdXNlRWZmZWN0LCB1c2VTdGF0ZSB9IGZyb20gJ3JlYWN0Jztcbi8vIGltcG9ydCB7IERhdGFUYWJsZSB9IGZyb20gJ0AuLi9jb21wb25lbnRzL3VpL2RhdGEtdGFibGUnO1xuXG5leHBvcnQgZnVuY3Rpb24gVGlja2V0TGlzdCgpIHtcbiAgY29uc3QgW3RpY2tldHMsIHNldFRpY2tldHNdID0gdXNlU3RhdGUoW10pO1xuXG4gIHVzZUVmZmVjdCgoKSA9PiB7XG4gICAgZmV0Y2goJy9hcGkvdjEvc3VwcG9ydC90aWNrZXRzJylcbiAgICAgIC50aGVuKHJlcyA9PiByZXMuanNvbigpKVxuICAgICAgLnRoZW4oZGF0YSA9PiBzZXRUaWNrZXRzKGRhdGEpKTtcbiAgfSwgW10pO1xuXG4gIGNvbnN0IGNvbHVtbnMgPSBbXG4gICAgeyBhY2Nlc3NvcktleTogJ2lkJywgaGVhZGVyOiAnSUQnIH0sXG4gICAgeyBhY2Nlc3NvcktleTogJ3RpdGxlJywgaGVhZGVyOiAnVGl0bGUnIH0sXG4gICAgeyBhY2Nlc3NvcktleTogJ3N0YXR1cycsIGhlYWRlcjogJ1N0YXR1cycgfSxcbiAgICB7IGFjY2Vzc29yS2V5OiAnY3JlYXRlZEF0JywgaGVhZGVyOiAnQ3JlYXRlZCcgfSxcbiAgXTtcblxuICByZXR1cm4gPERhdGFUYWJsZSBjb2x1bW5zPXtjb2x1bW5zfSBkYXRhPXt0aWNrZXRzfSBzZWFyY2hLZXk9XCJ0aXRsZVwiIC8+O1xufSJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBT1M7SUFBQUEsY0FBQSxZQUFBQSxDQUFBO01BQUEsT0FBQUMsY0FBQTtJQUFBO0VBQUE7RUFBQSxPQUFBQSxjQUFBO0FBQUE7QUFBQUQsY0FBQTtBQUFBQSxjQUFBLEdBQUFFLENBQUE7Ozs7OzsrQkFETzs7Ozs7O1dBQUFDLFVBQUE7Ozs7Ozs7O2tDQUpVOzs7a0NBQ1U7QUFHN0IsU0FBU0EsV0FBQTtFQUFBO0VBQUFILGNBQUEsR0FBQUksQ0FBQTtFQUNkLE1BQU0sQ0FBQ0MsT0FBQSxFQUFTQyxVQUFBLENBQVc7RUFBQTtFQUFBLENBQUFOLGNBQUEsR0FBQUUsQ0FBQSxPQUFHLElBQUFLLE1BQUEsQ0FBQUMsUUFBUSxFQUFDLEVBQUU7RUFBQTtFQUFBUixjQUFBLEdBQUFFLENBQUE7RUFFekMsSUFBQUssTUFBQSxDQUFBRSxTQUFTLEVBQUM7SUFBQTtJQUFBVCxjQUFBLEdBQUFJLENBQUE7SUFBQUosY0FBQSxHQUFBRSxDQUFBO0lBQ1JRLEtBQUEsQ0FBTSwyQkFDSEMsSUFBSSxDQUFDQyxHQUFBLElBQU87TUFBQTtNQUFBWixjQUFBLEdBQUFJLENBQUE7TUFBQUosY0FBQSxHQUFBRSxDQUFBO01BQUEsT0FBQVUsR0FBQSxDQUFJQyxJQUFJO0lBQUEsR0FDcEJGLElBQUksQ0FBQ0csSUFBQSxJQUFRO01BQUE7TUFBQWQsY0FBQSxHQUFBSSxDQUFBO01BQUFKLGNBQUEsR0FBQUUsQ0FBQTtNQUFBLE9BQUFJLFVBQUEsQ0FBV1EsSUFBQTtJQUFBO0VBQzdCLEdBQUcsRUFBRTtFQUVMLE1BQU1DLE9BQUE7RUFBQTtFQUFBLENBQUFmLGNBQUEsR0FBQUUsQ0FBQSxRQUFVLENBQ2Q7SUFBRWMsV0FBQSxFQUFhO0lBQU1DLE1BQUEsRUFBUTtFQUFLLEdBQ2xDO0lBQUVELFdBQUEsRUFBYTtJQUFTQyxNQUFBLEVBQVE7RUFBUSxHQUN4QztJQUFFRCxXQUFBLEVBQWE7SUFBVUMsTUFBQSxFQUFRO0VBQVMsR0FDMUM7SUFBRUQsV0FBQSxFQUFhO0lBQWFDLE1BQUEsRUFBUTtFQUFVLEVBQy9DO0VBQUE7RUFBQWpCLGNBQUEsR0FBQUUsQ0FBQTtFQUVELG9CQUFPLElBQUFnQixXQUFBLENBQUFDLEdBQUEsRUFBQ0MsVUFBQSxDQUFBQyxTQUFTO0lBQUNOLE9BQUEsRUFBU0EsT0FBQTtJQUFTRCxJQUFBLEVBQU1ULE9BQUE7SUFBU2lCLFNBQUEsRUFBVTs7QUFDL0QiLCJpZ25vcmVMaXN0IjpbXX0=

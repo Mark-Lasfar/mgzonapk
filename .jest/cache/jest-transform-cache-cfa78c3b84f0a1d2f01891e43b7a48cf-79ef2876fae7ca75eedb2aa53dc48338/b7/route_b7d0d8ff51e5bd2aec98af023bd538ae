@@ -1,0 +1,303 @@
+a832857adadbde6244985a8996dbf836
+'use server';
+"use strict";
+
+/* istanbul ignore next */
+function cov_2aenmeanom() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/google-auth/route.ts";
+  var hash = "de3c59e8a26e832f68949ccc736dbe227f9528e3";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/google-auth/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 20
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 16
+        },
+        end: {
+          line: 12,
+          column: 38
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 27
+        },
+        end: {
+          line: 13,
+          column: 57
+        }
+      },
+      "5": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 37,
+          column: 5
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 32
+        },
+        end: {
+          line: 16,
+          column: 48
+        }
+      },
+      "7": {
+        start: {
+          line: 17,
+          column: 21
+        },
+        end: {
+          line: 22,
+          column: 10
+        }
+      },
+      "8": {
+        start: {
+          line: 23,
+          column: 23
+        },
+        end: {
+          line: 23,
+          column: 45
+        }
+      },
+      "9": {
+        start: {
+          line: 24,
+          column: 28
+        },
+        end: {
+          line: 24,
+          column: 57
+        }
+      },
+      "10": {
+        start: {
+          line: 25,
+          column: 8
+        },
+        end: {
+          line: 28,
+          column: 11
+        }
+      },
+      "11": {
+        start: {
+          line: 30,
+          column: 8
+        },
+        end: {
+          line: 30,
+          column: 51
+        }
+      },
+      "12": {
+        start: {
+          line: 31,
+          column: 8
+        },
+        end: {
+          line: 36,
+          column: 11
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "POST",
+        decl: {
+          start: {
+            line: 14,
+            column: 15
+          },
+          end: {
+            line: 14,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 25
+          },
+          end: {
+            line: 38,
+            column: 1
+          }
+        },
+        line: 14
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/google-auth/route.ts"],
+      sourcesContent: ["   'use server';\n\n   import { NextRequest, NextResponse } from 'next/server';\n   import { GoogleAuth } from 'google-auth-library';\n\n   export async function POST(req: NextRequest) {\n     try {\n       const { credentials } = await req.json();\n       const auth = new GoogleAuth({\n         credentials,\n         scopes: ['https://www.googleapis.com/auth/cloud-platform'],\n       });\n       const client = await auth.getClient();\n       const accessToken = await client.getAccessToken();\n       return NextResponse.json({ success: true, accessToken });\n     } catch (error) {\n       console.error('Google Auth error:', error);\n       return NextResponse.json({ success: false, error: 'Authentication failed' }, { status: 500 });\n     }\n   }"],
+      names: ["POST", "req", "credentials", "json", "auth", "GoogleAuth", "scopes", "client", "getClient", "accessToken", "getAccessToken", "NextResponse", "success", "error", "console", "status"],
+      mappings: "AAAG;;;;;+BAKsBA;;;eAAAA;;;wBAHoB;mCACf;AAEpB,eAAeA,KAAKC,GAAgB;IACzC,IAAI;QACF,MAAM,EAAEC,WAAW,EAAE,GAAG,MAAMD,IAAIE,IAAI;QACtC,MAAMC,OAAO,IAAIC,6BAAU,CAAC;YAC1BH;YACAI,QAAQ;gBAAC;aAAiD;QAC5D;QACA,MAAMC,SAAS,MAAMH,KAAKI,SAAS;QACnC,MAAMC,cAAc,MAAMF,OAAOG,cAAc;QAC/C,OAAOC,oBAAY,CAACR,IAAI,CAAC;YAAES,SAAS;YAAMH;QAAY;IACxD,EAAE,OAAOI,OAAO;QACdC,QAAQD,KAAK,CAAC,sBAAsBA;QACpC,OAAOF,oBAAY,CAACR,IAAI,CAAC;YAAES,SAAS;YAAOC,OAAO;QAAwB,GAAG;YAAEE,QAAQ;QAAI;IAC7F;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "de3c59e8a26e832f68949ccc736dbe227f9528e3"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2aenmeanom = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2aenmeanom();
+cov_2aenmeanom().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2aenmeanom().s[1]++;
+Object.defineProperty(exports, "POST", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2aenmeanom().f[0]++;
+    cov_2aenmeanom().s[2]++;
+    return POST;
+  }
+});
+const _server =
+/* istanbul ignore next */
+(cov_2aenmeanom().s[3]++, require("next/server"));
+const _googleauthlibrary =
+/* istanbul ignore next */
+(cov_2aenmeanom().s[4]++, require("google-auth-library"));
+async function POST(req) {
+  /* istanbul ignore next */
+  cov_2aenmeanom().f[1]++;
+  cov_2aenmeanom().s[5]++;
+  try {
+    const {
+      credentials
+    } =
+    /* istanbul ignore next */
+    (cov_2aenmeanom().s[6]++, await req.json());
+    const auth =
+    /* istanbul ignore next */
+    (cov_2aenmeanom().s[7]++, new _googleauthlibrary.GoogleAuth({
+      credentials,
+      scopes: ['https://www.googleapis.com/auth/cloud-platform']
+    }));
+    const client =
+    /* istanbul ignore next */
+    (cov_2aenmeanom().s[8]++, await auth.getClient());
+    const accessToken =
+    /* istanbul ignore next */
+    (cov_2aenmeanom().s[9]++, await client.getAccessToken());
+    /* istanbul ignore next */
+    cov_2aenmeanom().s[10]++;
+    return _server.NextResponse.json({
+      success: true,
+      accessToken
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_2aenmeanom().s[11]++;
+    console.error('Google Auth error:', error);
+    /* istanbul ignore next */
+    cov_2aenmeanom().s[12]++;
+    return _server.NextResponse.json({
+      success: false,
+      error: 'Authentication failed'
+    }, {
+      status: 500
+    });
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMmFlbm1lYW5vbSIsImFjdHVhbENvdmVyYWdlIiwicyIsIlBPU1QiLCJyZXEiLCJmIiwiY3JlZGVudGlhbHMiLCJqc29uIiwiYXV0aCIsIl9nb29nbGVhdXRobGlicmFyeSIsIkdvb2dsZUF1dGgiLCJzY29wZXMiLCJjbGllbnQiLCJnZXRDbGllbnQiLCJhY2Nlc3NUb2tlbiIsImdldEFjY2Vzc1Rva2VuIiwiX3NlcnZlciIsIk5leHRSZXNwb25zZSIsInN1Y2Nlc3MiLCJlcnJvciIsImNvbnNvbGUiLCJzdGF0dXMiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvYXBwL2FwaS9nb29nbGUtYXV0aC9yb3V0ZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyIgICAndXNlIHNlcnZlcic7XG5cbiAgIGltcG9ydCB7IE5leHRSZXF1ZXN0LCBOZXh0UmVzcG9uc2UgfSBmcm9tICduZXh0L3NlcnZlcic7XG4gICBpbXBvcnQgeyBHb29nbGVBdXRoIH0gZnJvbSAnZ29vZ2xlLWF1dGgtbGlicmFyeSc7XG5cbiAgIGV4cG9ydCBhc3luYyBmdW5jdGlvbiBQT1NUKHJlcTogTmV4dFJlcXVlc3QpIHtcbiAgICAgdHJ5IHtcbiAgICAgICBjb25zdCB7IGNyZWRlbnRpYWxzIH0gPSBhd2FpdCByZXEuanNvbigpO1xuICAgICAgIGNvbnN0IGF1dGggPSBuZXcgR29vZ2xlQXV0aCh7XG4gICAgICAgICBjcmVkZW50aWFscyxcbiAgICAgICAgIHNjb3BlczogWydodHRwczovL3d3dy5nb29nbGVhcGlzLmNvbS9hdXRoL2Nsb3VkLXBsYXRmb3JtJ10sXG4gICAgICAgfSk7XG4gICAgICAgY29uc3QgY2xpZW50ID0gYXdhaXQgYXV0aC5nZXRDbGllbnQoKTtcbiAgICAgICBjb25zdCBhY2Nlc3NUb2tlbiA9IGF3YWl0IGNsaWVudC5nZXRBY2Nlc3NUb2tlbigpO1xuICAgICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7IHN1Y2Nlc3M6IHRydWUsIGFjY2Vzc1Rva2VuIH0pO1xuICAgICB9IGNhdGNoIChlcnJvcikge1xuICAgICAgIGNvbnNvbGUuZXJyb3IoJ0dvb2dsZSBBdXRoIGVycm9yOicsIGVycm9yKTtcbiAgICAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oeyBzdWNjZXNzOiBmYWxzZSwgZXJyb3I6ICdBdXRoZW50aWNhdGlvbiBmYWlsZWQnIH0sIHsgc3RhdHVzOiA1MDAgfSk7XG4gICAgIH1cbiAgIH0iXSwibWFwcGluZ3MiOiJBQUFHOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQU9JO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBRmtCOzs7Ozs7V0FBQUMsSUFBQTs7Ozs7a0NBSG9COzs7a0NBQ2Y7QUFFcEIsZUFBZUEsS0FBS0MsR0FBZ0I7RUFBQTtFQUFBSixjQUFBLEdBQUFLLENBQUE7RUFBQUwsY0FBQSxHQUFBRSxDQUFBO0VBQ3pDLElBQUk7SUFDRixNQUFNO01BQUVJO0lBQVcsQ0FBRTtJQUFBO0lBQUEsQ0FBQU4sY0FBQSxHQUFBRSxDQUFBLE9BQUcsTUFBTUUsR0FBQSxDQUFJRyxJQUFJO0lBQ3RDLE1BQU1DLElBQUE7SUFBQTtJQUFBLENBQUFSLGNBQUEsR0FBQUUsQ0FBQSxPQUFPLElBQUlPLGtCQUFBLENBQUFDLFVBQVUsQ0FBQztNQUMxQkosV0FBQTtNQUNBSyxNQUFBLEVBQVEsQ0FBQztJQUNYO0lBQ0EsTUFBTUMsTUFBQTtJQUFBO0lBQUEsQ0FBQVosY0FBQSxHQUFBRSxDQUFBLE9BQVMsTUFBTU0sSUFBQSxDQUFLSyxTQUFTO0lBQ25DLE1BQU1DLFdBQUE7SUFBQTtJQUFBLENBQUFkLGNBQUEsR0FBQUUsQ0FBQSxPQUFjLE1BQU1VLE1BQUEsQ0FBT0csY0FBYztJQUFBO0lBQUFmLGNBQUEsR0FBQUUsQ0FBQTtJQUMvQyxPQUFPYyxPQUFBLENBQUFDLFlBQVksQ0FBQ1YsSUFBSSxDQUFDO01BQUVXLE9BQUEsRUFBUztNQUFNSjtJQUFZO0VBQ3hELEVBQUUsT0FBT0ssS0FBQSxFQUFPO0lBQUE7SUFBQW5CLGNBQUEsR0FBQUUsQ0FBQTtJQUNka0IsT0FBQSxDQUFRRCxLQUFLLENBQUMsc0JBQXNCQSxLQUFBO0lBQUE7SUFBQW5CLGNBQUEsR0FBQUUsQ0FBQTtJQUNwQyxPQUFPYyxPQUFBLENBQUFDLFlBQVksQ0FBQ1YsSUFBSSxDQUFDO01BQUVXLE9BQUEsRUFBUztNQUFPQyxLQUFBLEVBQU87SUFBd0IsR0FBRztNQUFFRSxNQUFBLEVBQVE7SUFBSTtFQUM3RjtBQUNGIiwiaWdub3JlTGlzdCI6W119

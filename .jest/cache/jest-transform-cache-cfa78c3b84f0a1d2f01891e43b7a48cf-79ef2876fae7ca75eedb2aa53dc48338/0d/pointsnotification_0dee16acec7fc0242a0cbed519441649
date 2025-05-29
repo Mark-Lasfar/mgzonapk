@@ -1,0 +1,499 @@
+ce26759d03a3c1ed86e551c95396d35d
+"use strict";
+
+/* istanbul ignore next */
+function cov_11gbxepw7d() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/emails/points-notification.ts";
+  var hash = "e3d75ba7c8339ea996e6722eedac86e54496423d";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/emails/points-notification.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 38
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 15
+        },
+        end: {
+          line: 11,
+          column: 41
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 16
+        },
+        end: {
+          line: 12,
+          column: 33
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 15
+        },
+        end: {
+          line: 13,
+          column: 61
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 4
+        },
+        end: {
+          line: 45,
+          column: 5
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 24
+        },
+        end: {
+          line: 16,
+          column: 115
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 21
+        },
+        end: {
+          line: 26,
+          column: 5
+        }
+      },
+      "9": {
+        start: {
+          line: 27,
+          column: 26
+        },
+        end: {
+          line: 32,
+          column: 10
+        }
+      },
+      "10": {
+        start: {
+          line: 33,
+          column: 8
+        },
+        end: {
+          line: 35,
+          column: 9
+        }
+      },
+      "11": {
+        start: {
+          line: 34,
+          column: 12
+        },
+        end: {
+          line: 34,
+          column: 70
+        }
+      },
+      "12": {
+        start: {
+          line: 36,
+          column: 8
+        },
+        end: {
+          line: 38,
+          column: 10
+        }
+      },
+      "13": {
+        start: {
+          line: 40,
+          column: 8
+        },
+        end: {
+          line: 40,
+          column: 64
+        }
+      },
+      "14": {
+        start: {
+          line: 41,
+          column: 8
+        },
+        end: {
+          line: 44,
+          column: 10
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "sendPointsNotification",
+        decl: {
+          start: {
+            line: 14,
+            column: 15
+          },
+          end: {
+            line: 14,
+            column: 37
+          }
+        },
+        loc: {
+          start: {
+            line: 14,
+            column: 84
+          },
+          end: {
+            line: 46,
+            column: 1
+          }
+        },
+        line: 14
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 16,
+            column: 24
+          },
+          end: {
+            line: 16,
+            column: 115
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 16,
+            column: 51
+          },
+          end: {
+            line: 16,
+            column: 81
+          }
+        }, {
+          start: {
+            line: 16,
+            column: 84
+          },
+          end: {
+            line: 16,
+            column: 115
+          }
+        }],
+        line: 16
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 21,
+            column: 13
+          },
+          end: {
+            line: 21,
+            column: 153
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 21,
+            column: 40
+          },
+          end: {
+            line: 21,
+            column: 94
+          }
+        }, {
+          start: {
+            line: 21,
+            column: 97
+          },
+          end: {
+            line: 21,
+            column: 153
+          }
+        }],
+        line: 21
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 33,
+            column: 8
+          },
+          end: {
+            line: 35,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 33,
+            column: 8
+          },
+          end: {
+            line: 35,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 33
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 43,
+            column: 19
+          },
+          end: {
+            line: 43,
+            column: 96
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 43,
+            column: 44
+          },
+          end: {
+            line: 43,
+            column: 57
+          }
+        }, {
+          start: {
+            line: 43,
+            column: 60
+          },
+          end: {
+            line: 43,
+            column: 96
+          }
+        }],
+        line: 43
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/emails/points-notification.ts"],
+      sourcesContent: ["import { EMAIL_CONFIG } from '@/lib/config/email'\nimport { Resend } from 'resend'\n\nconst resend = new Resend(process.env.RESEND_API_KEY)\n\nexport async function sendPointsNotification({\n  userId,\n  email,\n  points,\n  type,\n  description,\n}: {\n  userId: string\n  email: string\n  points: number\n  type: 'points_earned' | 'points_redeemed'\n  description: string\n}) {\n  try {\n    const subject = type === 'points_earned' \n      ? `You Earned ${points} Points!` \n      : `You Redeemed ${points} Points`\n    \n    const html = `\n      <div style=\"font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;\">\n        <h2>${subject}</h2>\n        <p>Hello,</p>\n        <p>${\n          type === 'points_earned'\n            ? `You have earned ${points} points for: ${description}`\n            : `You have redeemed ${points} points for: ${description}`\n        }</p>\n        <p>Check your points balance in your account dashboard.</p>\n        <a href=\"${process.env.NEXT_PUBLIC_BASE_URL}/account\" style=\"display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;\">View Dashboard</a>\n        <p>Best regards,<br/>${EMAIL_CONFIG.FROM.NAME}</p>\n      </div>\n    `\n\n    const { error } = await resend.emails.send({\n      from: `${EMAIL_CONFIG.FROM.NAME} <${EMAIL_CONFIG.FROM.EMAIL}>`,\n      to: email,\n      subject,\n      html,\n    })\n\n    if (error) {\n      throw new Error(`Failed to send email: ${error.message}`)\n    }\n\n    return { success: true }\n  } catch (error) {\n    console.error('Send points notification error:', error)\n    return {\n      success: false,\n      error: error instanceof Error ? error.message : 'Failed to send points notification'\n    }\n  }\n}"],
+      names: ["sendPointsNotification", "resend", "Resend", "process", "env", "RESEND_API_KEY", "userId", "email", "points", "type", "description", "subject", "html", "NEXT_PUBLIC_BASE_URL", "EMAIL_CONFIG", "FROM", "NAME", "error", "emails", "send", "from", "EMAIL", "to", "Error", "message", "success", "console"],
+      mappings: ";;;;+BAKsBA;;;eAAAA;;;uBALO;wBACN;AAEvB,MAAMC,SAAS,IAAIC,cAAM,CAACC,QAAQC,GAAG,CAACC,cAAc;AAE7C,eAAeL,uBAAuB,EAC3CM,MAAM,EACNC,KAAK,EACLC,MAAM,EACNC,IAAI,EACJC,WAAW,EAOZ;IACC,IAAI;QACF,MAAMC,UAAUF,SAAS,kBACrB,CAAC,WAAW,EAAED,OAAO,QAAQ,CAAC,GAC9B,CAAC,aAAa,EAAEA,OAAO,OAAO,CAAC;QAEnC,MAAMI,OAAO,CAAC;;YAEN,EAAED,QAAQ;;WAEX,EACDF,SAAS,kBACL,CAAC,gBAAgB,EAAED,OAAO,aAAa,EAAEE,aAAa,GACtD,CAAC,kBAAkB,EAAEF,OAAO,aAAa,EAAEE,aAAa,CAC7D;;iBAEQ,EAAEP,QAAQC,GAAG,CAACS,oBAAoB,CAAC;6BACvB,EAAEC,mBAAY,CAACC,IAAI,CAACC,IAAI,CAAC;;IAElD,CAAC;QAED,MAAM,EAAEC,KAAK,EAAE,GAAG,MAAMhB,OAAOiB,MAAM,CAACC,IAAI,CAAC;YACzCC,MAAM,GAAGN,mBAAY,CAACC,IAAI,CAACC,IAAI,CAAC,EAAE,EAAEF,mBAAY,CAACC,IAAI,CAACM,KAAK,CAAC,CAAC,CAAC;YAC9DC,IAAIf;YACJI;YACAC;QACF;QAEA,IAAIK,OAAO;YACT,MAAM,IAAIM,MAAM,CAAC,sBAAsB,EAAEN,MAAMO,OAAO,EAAE;QAC1D;QAEA,OAAO;YAAEC,SAAS;QAAK;IACzB,EAAE,OAAOR,OAAO;QACdS,QAAQT,KAAK,CAAC,mCAAmCA;QACjD,OAAO;YACLQ,SAAS;YACTR,OAAOA,iBAAiBM,QAAQN,MAAMO,OAAO,GAAG;QAClD;IACF;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "e3d75ba7c8339ea996e6722eedac86e54496423d"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_11gbxepw7d = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_11gbxepw7d();
+cov_11gbxepw7d().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_11gbxepw7d().s[1]++;
+Object.defineProperty(exports, "sendPointsNotification", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_11gbxepw7d().f[0]++;
+    cov_11gbxepw7d().s[2]++;
+    return sendPointsNotification;
+  }
+});
+const _email =
+/* istanbul ignore next */
+(cov_11gbxepw7d().s[3]++, require("../config/email"));
+const _resend =
+/* istanbul ignore next */
+(cov_11gbxepw7d().s[4]++, require("resend"));
+const resend =
+/* istanbul ignore next */
+(cov_11gbxepw7d().s[5]++, new _resend.Resend(process.env.RESEND_API_KEY));
+async function sendPointsNotification({
+  userId,
+  email,
+  points,
+  type,
+  description
+}) {
+  /* istanbul ignore next */
+  cov_11gbxepw7d().f[1]++;
+  cov_11gbxepw7d().s[6]++;
+  try {
+    const subject =
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().s[7]++, type === 'points_earned' ?
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().b[0][0]++, `You Earned ${points} Points!`) :
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().b[0][1]++, `You Redeemed ${points} Points`));
+    const html =
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().s[8]++, `
+      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+        <h2>${subject}</h2>
+        <p>Hello,</p>
+        <p>${type === 'points_earned' ?
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().b[1][0]++, `You have earned ${points} points for: ${description}`) :
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().b[1][1]++, `You have redeemed ${points} points for: ${description}`)}</p>
+        <p>Check your points balance in your account dashboard.</p>
+        <a href="${process.env.NEXT_PUBLIC_BASE_URL}/account" style="display: inline-block; padding: 10px 20px; background-color: #007bff; color: white; text-decoration: none; border-radius: 5px;">View Dashboard</a>
+        <p>Best regards,<br/>${_email.EMAIL_CONFIG.FROM.NAME}</p>
+      </div>
+    `);
+    const {
+      error
+    } =
+    /* istanbul ignore next */
+    (cov_11gbxepw7d().s[9]++, await resend.emails.send({
+      from: `${_email.EMAIL_CONFIG.FROM.NAME} <${_email.EMAIL_CONFIG.FROM.EMAIL}>`,
+      to: email,
+      subject,
+      html
+    }));
+    /* istanbul ignore next */
+    cov_11gbxepw7d().s[10]++;
+    if (error) {
+      /* istanbul ignore next */
+      cov_11gbxepw7d().b[2][0]++;
+      cov_11gbxepw7d().s[11]++;
+      throw new Error(`Failed to send email: ${error.message}`);
+    } else
+    /* istanbul ignore next */
+    {
+      cov_11gbxepw7d().b[2][1]++;
+    }
+    cov_11gbxepw7d().s[12]++;
+    return {
+      success: true
+    };
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_11gbxepw7d().s[13]++;
+    console.error('Send points notification error:', error);
+    /* istanbul ignore next */
+    cov_11gbxepw7d().s[14]++;
+    return {
+      success: false,
+      error: error instanceof Error ?
+      /* istanbul ignore next */
+      (cov_11gbxepw7d().b[3][0]++, error.message) :
+      /* istanbul ignore next */
+      (cov_11gbxepw7d().b[3][1]++, 'Failed to send points notification')
+    };
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTFnYnhlcHc3ZCIsImFjdHVhbENvdmVyYWdlIiwicyIsInNlbmRQb2ludHNOb3RpZmljYXRpb24iLCJyZXNlbmQiLCJfcmVzZW5kIiwiUmVzZW5kIiwicHJvY2VzcyIsImVudiIsIlJFU0VORF9BUElfS0VZIiwidXNlcklkIiwiZW1haWwiLCJwb2ludHMiLCJ0eXBlIiwiZGVzY3JpcHRpb24iLCJmIiwic3ViamVjdCIsImIiLCJodG1sIiwiTkVYVF9QVUJMSUNfQkFTRV9VUkwiLCJfZW1haWwiLCJFTUFJTF9DT05GSUciLCJGUk9NIiwiTkFNRSIsImVycm9yIiwiZW1haWxzIiwic2VuZCIsImZyb20iLCJFTUFJTCIsInRvIiwiRXJyb3IiLCJtZXNzYWdlIiwic3VjY2VzcyIsImNvbnNvbGUiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL2VtYWlscy9wb2ludHMtbm90aWZpY2F0aW9uLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IEVNQUlMX0NPTkZJRyB9IGZyb20gJ0AvbGliL2NvbmZpZy9lbWFpbCdcbmltcG9ydCB7IFJlc2VuZCB9IGZyb20gJ3Jlc2VuZCdcblxuY29uc3QgcmVzZW5kID0gbmV3IFJlc2VuZChwcm9jZXNzLmVudi5SRVNFTkRfQVBJX0tFWSlcblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIHNlbmRQb2ludHNOb3RpZmljYXRpb24oe1xuICB1c2VySWQsXG4gIGVtYWlsLFxuICBwb2ludHMsXG4gIHR5cGUsXG4gIGRlc2NyaXB0aW9uLFxufToge1xuICB1c2VySWQ6IHN0cmluZ1xuICBlbWFpbDogc3RyaW5nXG4gIHBvaW50czogbnVtYmVyXG4gIHR5cGU6ICdwb2ludHNfZWFybmVkJyB8ICdwb2ludHNfcmVkZWVtZWQnXG4gIGRlc2NyaXB0aW9uOiBzdHJpbmdcbn0pIHtcbiAgdHJ5IHtcbiAgICBjb25zdCBzdWJqZWN0ID0gdHlwZSA9PT0gJ3BvaW50c19lYXJuZWQnIFxuICAgICAgPyBgWW91IEVhcm5lZCAke3BvaW50c30gUG9pbnRzIWAgXG4gICAgICA6IGBZb3UgUmVkZWVtZWQgJHtwb2ludHN9IFBvaW50c2BcbiAgICBcbiAgICBjb25zdCBodG1sID0gYFxuICAgICAgPGRpdiBzdHlsZT1cImZvbnQtZmFtaWx5OiBBcmlhbCwgc2Fucy1zZXJpZjsgbWF4LXdpZHRoOiA2MDBweDsgbWFyZ2luOiAwIGF1dG87IHBhZGRpbmc6IDIwcHg7XCI+XG4gICAgICAgIDxoMj4ke3N1YmplY3R9PC9oMj5cbiAgICAgICAgPHA+SGVsbG8sPC9wPlxuICAgICAgICA8cD4ke1xuICAgICAgICAgIHR5cGUgPT09ICdwb2ludHNfZWFybmVkJ1xuICAgICAgICAgICAgPyBgWW91IGhhdmUgZWFybmVkICR7cG9pbnRzfSBwb2ludHMgZm9yOiAke2Rlc2NyaXB0aW9ufWBcbiAgICAgICAgICAgIDogYFlvdSBoYXZlIHJlZGVlbWVkICR7cG9pbnRzfSBwb2ludHMgZm9yOiAke2Rlc2NyaXB0aW9ufWBcbiAgICAgICAgfTwvcD5cbiAgICAgICAgPHA+Q2hlY2sgeW91ciBwb2ludHMgYmFsYW5jZSBpbiB5b3VyIGFjY291bnQgZGFzaGJvYXJkLjwvcD5cbiAgICAgICAgPGEgaHJlZj1cIiR7cHJvY2Vzcy5lbnYuTkVYVF9QVUJMSUNfQkFTRV9VUkx9L2FjY291bnRcIiBzdHlsZT1cImRpc3BsYXk6IGlubGluZS1ibG9jazsgcGFkZGluZzogMTBweCAyMHB4OyBiYWNrZ3JvdW5kLWNvbG9yOiAjMDA3YmZmOyBjb2xvcjogd2hpdGU7IHRleHQtZGVjb3JhdGlvbjogbm9uZTsgYm9yZGVyLXJhZGl1czogNXB4O1wiPlZpZXcgRGFzaGJvYXJkPC9hPlxuICAgICAgICA8cD5CZXN0IHJlZ2FyZHMsPGJyLz4ke0VNQUlMX0NPTkZJRy5GUk9NLk5BTUV9PC9wPlxuICAgICAgPC9kaXY+XG4gICAgYFxuXG4gICAgY29uc3QgeyBlcnJvciB9ID0gYXdhaXQgcmVzZW5kLmVtYWlscy5zZW5kKHtcbiAgICAgIGZyb206IGAke0VNQUlMX0NPTkZJRy5GUk9NLk5BTUV9IDwke0VNQUlMX0NPTkZJRy5GUk9NLkVNQUlMfT5gLFxuICAgICAgdG86IGVtYWlsLFxuICAgICAgc3ViamVjdCxcbiAgICAgIGh0bWwsXG4gICAgfSlcblxuICAgIGlmIChlcnJvcikge1xuICAgICAgdGhyb3cgbmV3IEVycm9yKGBGYWlsZWQgdG8gc2VuZCBlbWFpbDogJHtlcnJvci5tZXNzYWdlfWApXG4gICAgfVxuXG4gICAgcmV0dXJuIHsgc3VjY2VzczogdHJ1ZSB9XG4gIH0gY2F0Y2ggKGVycm9yKSB7XG4gICAgY29uc29sZS5lcnJvcignU2VuZCBwb2ludHMgbm90aWZpY2F0aW9uIGVycm9yOicsIGVycm9yKVxuICAgIHJldHVybiB7XG4gICAgICBzdWNjZXNzOiBmYWxzZSxcbiAgICAgIGVycm9yOiBlcnJvciBpbnN0YW5jZW9mIEVycm9yID8gZXJyb3IubWVzc2FnZSA6ICdGYWlsZWQgdG8gc2VuZCBwb2ludHMgbm90aWZpY2F0aW9uJ1xuICAgIH1cbiAgfVxufSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

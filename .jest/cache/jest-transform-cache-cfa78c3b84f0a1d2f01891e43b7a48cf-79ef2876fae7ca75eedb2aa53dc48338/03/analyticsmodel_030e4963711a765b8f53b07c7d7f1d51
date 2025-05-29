@@ -1,0 +1,232 @@
+2272fd82a87d8d8c4e05c10587ba6187
+"use strict";
+
+/* istanbul ignore next */
+function cov_13hyfulkmn() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/analytics.model.ts";
+  var hash = "8ecfe97f133ee95e4e2bd9765e29c0b4ae298243";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/analytics.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 24
+        },
+        end: {
+          line: 35,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 36,
+          column: 18
+        },
+        end: {
+          line: 36,
+          column: 98
+        }
+      },
+      "6": {
+        start: {
+          line: 37,
+          column: 17
+        },
+        end: {
+          line: 37,
+          column: 26
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 36,
+            column: 18
+          },
+          end: {
+            line: 36,
+            column: 98
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 36,
+            column: 18
+          },
+          end: {
+            line: 36,
+            column: 44
+          }
+        }, {
+          start: {
+            line: 36,
+            column: 48
+          },
+          end: {
+            line: 36,
+            column: 98
+          }
+        }],
+        line: 36
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/analytics.model.ts"],
+      sourcesContent: ["import { Document, Model, model, models, Schema } from 'mongoose'\n\nexport interface IAnalytics extends Document {\n  _id: string\n  type: 'product' | 'seller' | 'order' | 'user' | 'revenue'\n  date: Date\n  data: {\n    [key: string]: any\n    totalSales?: number\n    totalOrders?: number\n    averageOrderValue?: number\n    conversionRate?: number\n    visitors?: number\n    newCustomers?: number\n    repeatCustomers?: number\n    topProducts?: {\n      productId: string\n      name: string\n      sales: number\n      revenue: number\n    }[]\n    categoryPerformance?: {\n      category: string\n      sales: number\n      revenue: number\n    }[]\n  }\n  metadata?: {\n    [key: string]: any\n  }\n}\n\nconst analyticsSchema = new Schema<IAnalytics>(\n  {\n    type: {\n      type: String,\n      enum: ['product', 'seller', 'order', 'user', 'revenue'],\n      required: true,\n    },\n    date: {\n      type: Date,\n      required: true,\n    },\n    data: {\n      type: Schema.Types.Mixed,\n      required: true,\n    },\n    metadata: Schema.Types.Mixed,\n  },\n  {\n    timestamps: true,\n  }\n)\n\nconst Analytics = (models.Analytics as Model<IAnalytics>) || model<IAnalytics>('Analytics', analyticsSchema)\n\nexport default Analytics"],
+      names: ["analyticsSchema", "Schema", "type", "String", "enum", "required", "date", "Date", "data", "Types", "Mixed", "metadata", "timestamps", "Analytics", "models", "model"],
+      mappings: ";;;;+BAwDA;;;eAAA;;;0BAxDuD;AAgCvD,MAAMA,kBAAkB,IAAIC,gBAAM,CAChC;IACEC,MAAM;QACJA,MAAMC;QACNC,MAAM;YAAC;YAAW;YAAU;YAAS;YAAQ;SAAU;QACvDC,UAAU;IACZ;IACAC,MAAM;QACJJ,MAAMK;QACNF,UAAU;IACZ;IACAG,MAAM;QACJN,MAAMD,gBAAM,CAACQ,KAAK,CAACC,KAAK;QACxBL,UAAU;IACZ;IACAM,UAAUV,gBAAM,CAACQ,KAAK,CAACC,KAAK;AAC9B,GACA;IACEE,YAAY;AACd;AAGF,MAAMC,YAAY,AAACC,gBAAM,CAACD,SAAS,IAA0BE,IAAAA,eAAK,EAAa,aAAaf;MAE5F,WAAea"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "8ecfe97f133ee95e4e2bd9765e29c0b4ae298243"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_13hyfulkmn = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_13hyfulkmn();
+cov_13hyfulkmn().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_13hyfulkmn().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_13hyfulkmn().f[0]++;
+    cov_13hyfulkmn().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_13hyfulkmn().s[3]++, require("mongoose"));
+const analyticsSchema =
+/* istanbul ignore next */
+(cov_13hyfulkmn().s[4]++, new _mongoose.Schema({
+  type: {
+    type: String,
+    enum: ['product', 'seller', 'order', 'user', 'revenue'],
+    required: true
+  },
+  date: {
+    type: Date,
+    required: true
+  },
+  data: {
+    type: _mongoose.Schema.Types.Mixed,
+    required: true
+  },
+  metadata: _mongoose.Schema.Types.Mixed
+}, {
+  timestamps: true
+}));
+const Analytics =
+/* istanbul ignore next */
+(cov_13hyfulkmn().s[5]++,
+/* istanbul ignore next */
+(cov_13hyfulkmn().b[0][0]++, _mongoose.models.Analytics) ||
+/* istanbul ignore next */
+(cov_13hyfulkmn().b[0][1]++, (0, _mongoose.model)('Analytics', analyticsSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_13hyfulkmn().s[6]++, Analytics);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMTNoeWZ1bGttbiIsImFjdHVhbENvdmVyYWdlIiwicyIsIl9kZWZhdWx0IiwiYW5hbHl0aWNzU2NoZW1hIiwiX21vbmdvb3NlIiwiU2NoZW1hIiwidHlwZSIsIlN0cmluZyIsImVudW0iLCJyZXF1aXJlZCIsImRhdGUiLCJEYXRlIiwiZGF0YSIsIlR5cGVzIiwiTWl4ZWQiLCJtZXRhZGF0YSIsInRpbWVzdGFtcHMiLCJBbmFseXRpY3MiLCJiIiwibW9kZWxzIiwibW9kZWwiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL2RiL21vZGVscy9hbmFseXRpY3MubW9kZWwudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgRG9jdW1lbnQsIE1vZGVsLCBtb2RlbCwgbW9kZWxzLCBTY2hlbWEgfSBmcm9tICdtb25nb29zZSdcblxuZXhwb3J0IGludGVyZmFjZSBJQW5hbHl0aWNzIGV4dGVuZHMgRG9jdW1lbnQge1xuICBfaWQ6IHN0cmluZ1xuICB0eXBlOiAncHJvZHVjdCcgfCAnc2VsbGVyJyB8ICdvcmRlcicgfCAndXNlcicgfCAncmV2ZW51ZSdcbiAgZGF0ZTogRGF0ZVxuICBkYXRhOiB7XG4gICAgW2tleTogc3RyaW5nXTogYW55XG4gICAgdG90YWxTYWxlcz86IG51bWJlclxuICAgIHRvdGFsT3JkZXJzPzogbnVtYmVyXG4gICAgYXZlcmFnZU9yZGVyVmFsdWU/OiBudW1iZXJcbiAgICBjb252ZXJzaW9uUmF0ZT86IG51bWJlclxuICAgIHZpc2l0b3JzPzogbnVtYmVyXG4gICAgbmV3Q3VzdG9tZXJzPzogbnVtYmVyXG4gICAgcmVwZWF0Q3VzdG9tZXJzPzogbnVtYmVyXG4gICAgdG9wUHJvZHVjdHM/OiB7XG4gICAgICBwcm9kdWN0SWQ6IHN0cmluZ1xuICAgICAgbmFtZTogc3RyaW5nXG4gICAgICBzYWxlczogbnVtYmVyXG4gICAgICByZXZlbnVlOiBudW1iZXJcbiAgICB9W11cbiAgICBjYXRlZ29yeVBlcmZvcm1hbmNlPzoge1xuICAgICAgY2F0ZWdvcnk6IHN0cmluZ1xuICAgICAgc2FsZXM6IG51bWJlclxuICAgICAgcmV2ZW51ZTogbnVtYmVyXG4gICAgfVtdXG4gIH1cbiAgbWV0YWRhdGE/OiB7XG4gICAgW2tleTogc3RyaW5nXTogYW55XG4gIH1cbn1cblxuY29uc3QgYW5hbHl0aWNzU2NoZW1hID0gbmV3IFNjaGVtYTxJQW5hbHl0aWNzPihcbiAge1xuICAgIHR5cGU6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIGVudW06IFsncHJvZHVjdCcsICdzZWxsZXInLCAnb3JkZXInLCAndXNlcicsICdyZXZlbnVlJ10sXG4gICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICB9LFxuICAgIGRhdGU6IHtcbiAgICAgIHR5cGU6IERhdGUsXG4gICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICB9LFxuICAgIGRhdGE6IHtcbiAgICAgIHR5cGU6IFNjaGVtYS5UeXBlcy5NaXhlZCxcbiAgICAgIHJlcXVpcmVkOiB0cnVlLFxuICAgIH0sXG4gICAgbWV0YWRhdGE6IFNjaGVtYS5UeXBlcy5NaXhlZCxcbiAgfSxcbiAge1xuICAgIHRpbWVzdGFtcHM6IHRydWUsXG4gIH1cbilcblxuY29uc3QgQW5hbHl0aWNzID0gKG1vZGVscy5BbmFseXRpY3MgYXMgTW9kZWw8SUFuYWx5dGljcz4pIHx8IG1vZGVsPElBbmFseXRpY3M+KCdBbmFseXRpY3MnLCBhbmFseXRpY3NTY2hlbWEpXG5cbmV4cG9ydCBkZWZhdWx0IEFuYWx5dGljcyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBb0NhO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBb0JiOzs7Ozs7V0FBQUMsUUFBQTs7Ozs7a0NBeER1RDtBQWdDdkQsTUFBTUMsZUFBQTtBQUFBO0FBQUEsQ0FBQUosY0FBQSxHQUFBRSxDQUFBLE9BQWtCLElBQUlHLFNBQUEsQ0FBQUMsTUFBTSxDQUNoQztFQUNFQyxJQUFBLEVBQU07SUFDSkEsSUFBQSxFQUFNQyxNQUFBO0lBQ05DLElBQUEsRUFBTSxDQUFDLFdBQVcsVUFBVSxTQUFTLFFBQVEsVUFBVTtJQUN2REMsUUFBQSxFQUFVO0VBQ1o7RUFDQUMsSUFBQSxFQUFNO0lBQ0pKLElBQUEsRUFBTUssSUFBQTtJQUNORixRQUFBLEVBQVU7RUFDWjtFQUNBRyxJQUFBLEVBQU07SUFDSk4sSUFBQSxFQUFNRixTQUFBLENBQUFDLE1BQU0sQ0FBQ1EsS0FBSyxDQUFDQyxLQUFLO0lBQ3hCTCxRQUFBLEVBQVU7RUFDWjtFQUNBTSxRQUFBLEVBQVVYLFNBQUEsQ0FBQUMsTUFBTSxDQUFDUSxLQUFLLENBQUNDO0FBQ3pCLEdBQ0E7RUFDRUUsVUFBQSxFQUFZO0FBQ2Q7QUFHRixNQUFNQyxTQUFBO0FBQUE7QUFBQSxDQUFBbEIsY0FBQSxHQUFBRSxDQUFBO0FBQVk7QUFBQSxDQUFBRixjQUFBLEdBQUFtQixDQUFBLFVBQUFkLFNBQUMsQ0FBQWUsTUFBTSxDQUFDRixTQUFTO0FBQUE7QUFBQSxDQUFBbEIsY0FBQSxHQUFBbUIsQ0FBQSxVQUEwQixJQUFBZCxTQUFBLENBQUFnQixLQUFLLEVBQWEsYUFBYWpCLGVBQUE7TUFFNUZELFFBQUE7QUFBQTtBQUFBLENBQUFILGNBQUEsR0FBQUUsQ0FBQSxPQUFlZ0IsU0FBQSIsImlnbm9yZUxpc3QiOltdfQ==

@@ -1,0 +1,238 @@
+308260add447020a7598df813fe71382
+"use strict";
+
+/* istanbul ignore next */
+function cov_qe2yg1jnk() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/config/email.ts";
+  var hash = "c7e00fec9d2f3a673fdef6a3a8a872fa72f2e42e";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/config/email.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 28
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 21
+        },
+        end: {
+          line: 38,
+          column: 1
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 15,
+            column: 14
+          },
+          end: {
+            line: 15,
+            column: 61
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 15,
+            column: 14
+          },
+          end: {
+            line: 15,
+            column: 35
+          }
+        }, {
+          start: {
+            line: 15,
+            column: 39
+          },
+          end: {
+            line: 15,
+            column: 61
+          }
+        }],
+        line: 15
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 21,
+            column: 15
+          },
+          end: {
+            line: 21,
+            column: 62
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 21,
+            column: 15
+          },
+          end: {
+            line: 21,
+            column: 36
+          }
+        }, {
+          start: {
+            line: 21,
+            column: 40
+          },
+          end: {
+            line: 21,
+            column: 62
+          }
+        }],
+        line: 21
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/config/email.ts"],
+      sourcesContent: ["export const EMAIL_CONFIG = {\n  SMTP: {\n    HOST: 'smtp.gmail.com',\n    PORT: 587,\n    USER: process.env.SMTP_USER || 'marklasfar@gmail.com',\n    PASS: process.env.SMTP_PASS,\n    SECURE: false,\n  },\n\n  FROM: {\n    NAME: 'MGZon',\n    EMAIL: process.env.SMTP_USER || 'marklasfar@gmail.com',\n  },\n\n  TEMPLATES: {\n    VERIFICATION: {\n      SUBJECT: 'Email Verification - MGZon',\n    },\n    ORDER_CONFIRMATION: {\n      SUBJECT: 'Order Confirmation - MGZon',\n    },\n    PASSWORD_RESET: {\n      SUBJECT: 'Password Reset - MGZon',\n    },\n  },\n\n  VERIFICATION: {\n    CODE_EXPIRY: 600000,\n    MAX_ATTEMPTS: 5,\n  },\n};"],
+      names: ["EMAIL_CONFIG", "SMTP", "HOST", "PORT", "USER", "process", "env", "SMTP_USER", "PASS", "SMTP_PASS", "SECURE", "FROM", "NAME", "EMAIL", "TEMPLATES", "VERIFICATION", "SUBJECT", "ORDER_CONFIRMATION", "PASSWORD_RESET", "CODE_EXPIRY", "MAX_ATTEMPTS"],
+      mappings: ";;;;+BAAaA;;;eAAAA;;;AAAN,MAAMA,eAAe;IAC1BC,MAAM;QACJC,MAAM;QACNC,MAAM;QACNC,MAAMC,QAAQC,GAAG,CAACC,SAAS,IAAI;QAC/BC,MAAMH,QAAQC,GAAG,CAACG,SAAS;QAC3BC,QAAQ;IACV;IAEAC,MAAM;QACJC,MAAM;QACNC,OAAOR,QAAQC,GAAG,CAACC,SAAS,IAAI;IAClC;IAEAO,WAAW;QACTC,cAAc;YACZC,SAAS;QACX;QACAC,oBAAoB;YAClBD,SAAS;QACX;QACAE,gBAAgB;YACdF,SAAS;QACX;IACF;IAEAD,cAAc;QACZI,aAAa;QACbC,cAAc;IAChB;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "c7e00fec9d2f3a673fdef6a3a8a872fa72f2e42e"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_qe2yg1jnk = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_qe2yg1jnk();
+cov_qe2yg1jnk().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_qe2yg1jnk().s[1]++;
+Object.defineProperty(exports, "EMAIL_CONFIG", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_qe2yg1jnk().f[0]++;
+    cov_qe2yg1jnk().s[2]++;
+    return EMAIL_CONFIG;
+  }
+});
+const EMAIL_CONFIG =
+/* istanbul ignore next */
+(cov_qe2yg1jnk().s[3]++, {
+  SMTP: {
+    HOST: 'smtp.gmail.com',
+    PORT: 587,
+    USER:
+    /* istanbul ignore next */
+    (cov_qe2yg1jnk().b[0][0]++, process.env.SMTP_USER) ||
+    /* istanbul ignore next */
+    (cov_qe2yg1jnk().b[0][1]++, 'marklasfar@gmail.com'),
+    PASS: process.env.SMTP_PASS,
+    SECURE: false
+  },
+  FROM: {
+    NAME: 'MGZon',
+    EMAIL:
+    /* istanbul ignore next */
+    (cov_qe2yg1jnk().b[1][0]++, process.env.SMTP_USER) ||
+    /* istanbul ignore next */
+    (cov_qe2yg1jnk().b[1][1]++, 'marklasfar@gmail.com')
+  },
+  TEMPLATES: {
+    VERIFICATION: {
+      SUBJECT: 'Email Verification - MGZon'
+    },
+    ORDER_CONFIRMATION: {
+      SUBJECT: 'Order Confirmation - MGZon'
+    },
+    PASSWORD_RESET: {
+      SUBJECT: 'Password Reset - MGZon'
+    }
+  },
+  VERIFICATION: {
+    CODE_EXPIRY: 600000,
+    MAX_ATTEMPTS: 5
+  }
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfcWUyeWcxam5rIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiRU1BSUxfQ09ORklHIiwiU01UUCIsIkhPU1QiLCJQT1JUIiwiVVNFUiIsImIiLCJwcm9jZXNzIiwiZW52IiwiU01UUF9VU0VSIiwiUEFTUyIsIlNNVFBfUEFTUyIsIlNFQ1VSRSIsIkZST00iLCJOQU1FIiwiRU1BSUwiLCJURU1QTEFURVMiLCJWRVJJRklDQVRJT04iLCJTVUJKRUNUIiwiT1JERVJfQ09ORklSTUFUSU9OIiwiUEFTU1dPUkRfUkVTRVQiLCJDT0RFX0VYUElSWSIsIk1BWF9BVFRFTVBUUyJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9saWIvY29uZmlnL2VtYWlsLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBjb25zdCBFTUFJTF9DT05GSUcgPSB7XG4gIFNNVFA6IHtcbiAgICBIT1NUOiAnc210cC5nbWFpbC5jb20nLFxuICAgIFBPUlQ6IDU4NyxcbiAgICBVU0VSOiBwcm9jZXNzLmVudi5TTVRQX1VTRVIgfHwgJ21hcmtsYXNmYXJAZ21haWwuY29tJyxcbiAgICBQQVNTOiBwcm9jZXNzLmVudi5TTVRQX1BBU1MsXG4gICAgU0VDVVJFOiBmYWxzZSxcbiAgfSxcblxuICBGUk9NOiB7XG4gICAgTkFNRTogJ01HWm9uJyxcbiAgICBFTUFJTDogcHJvY2Vzcy5lbnYuU01UUF9VU0VSIHx8ICdtYXJrbGFzZmFyQGdtYWlsLmNvbScsXG4gIH0sXG5cbiAgVEVNUExBVEVTOiB7XG4gICAgVkVSSUZJQ0FUSU9OOiB7XG4gICAgICBTVUJKRUNUOiAnRW1haWwgVmVyaWZpY2F0aW9uIC0gTUdab24nLFxuICAgIH0sXG4gICAgT1JERVJfQ09ORklSTUFUSU9OOiB7XG4gICAgICBTVUJKRUNUOiAnT3JkZXIgQ29uZmlybWF0aW9uIC0gTUdab24nLFxuICAgIH0sXG4gICAgUEFTU1dPUkRfUkVTRVQ6IHtcbiAgICAgIFNVQkpFQ1Q6ICdQYXNzd29yZCBSZXNldCAtIE1HWm9uJyxcbiAgICB9LFxuICB9LFxuXG4gIFZFUklGSUNBVElPTjoge1xuICAgIENPREVfRVhQSVJZOiA2MDAwMDAsXG4gICAgTUFYX0FUVEVNUFRTOiA1LFxuICB9LFxufTsiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFLSTtJQUFBQSxhQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxhQUFBO0FBQUFBLGFBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQUxTOzs7Ozs7V0FBQUMsWUFBQTs7O0FBQU4sTUFBTUEsWUFBQTtBQUFBO0FBQUEsQ0FBQUgsYUFBQSxHQUFBRSxDQUFBLE9BQWU7RUFDMUJFLElBQUEsRUFBTTtJQUNKQyxJQUFBLEVBQU07SUFDTkMsSUFBQSxFQUFNO0lBQ05DLElBQUE7SUFBTTtJQUFBLENBQUFQLGFBQUEsR0FBQVEsQ0FBQSxVQUFBQyxPQUFBLENBQVFDLEdBQUcsQ0FBQ0MsU0FBUztJQUFBO0lBQUEsQ0FBQVgsYUFBQSxHQUFBUSxDQUFBLFVBQUk7SUFDL0JJLElBQUEsRUFBTUgsT0FBQSxDQUFRQyxHQUFHLENBQUNHLFNBQVM7SUFDM0JDLE1BQUEsRUFBUTtFQUNWO0VBRUFDLElBQUEsRUFBTTtJQUNKQyxJQUFBLEVBQU07SUFDTkMsS0FBQTtJQUFPO0lBQUEsQ0FBQWpCLGFBQUEsR0FBQVEsQ0FBQSxVQUFBQyxPQUFBLENBQVFDLEdBQUcsQ0FBQ0MsU0FBUztJQUFBO0lBQUEsQ0FBQVgsYUFBQSxHQUFBUSxDQUFBLFVBQUk7RUFDbEM7RUFFQVUsU0FBQSxFQUFXO0lBQ1RDLFlBQUEsRUFBYztNQUNaQyxPQUFBLEVBQVM7SUFDWDtJQUNBQyxrQkFBQSxFQUFvQjtNQUNsQkQsT0FBQSxFQUFTO0lBQ1g7SUFDQUUsY0FBQSxFQUFnQjtNQUNkRixPQUFBLEVBQVM7SUFDWDtFQUNGO0VBRUFELFlBQUEsRUFBYztJQUNaSSxXQUFBLEVBQWE7SUFDYkMsWUFBQSxFQUFjO0VBQ2hCO0FBQ0YiLCJpZ25vcmVMaXN0IjpbXX0=

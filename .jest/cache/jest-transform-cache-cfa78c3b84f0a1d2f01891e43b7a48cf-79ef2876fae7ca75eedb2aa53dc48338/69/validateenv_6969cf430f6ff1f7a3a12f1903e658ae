@@ -1,0 +1,287 @@
+162d0f06023ebcbf20dca91d59939616
+"use strict";
+
+/* istanbul ignore next */
+function cov_1p64rwajkp() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/firebase/validate-env.ts";
+  var hash = "25624f177a5e750d4e98644c00d7216b12386cc5";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/firebase/validate-env.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 35
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 28
+        },
+        end: {
+          line: 19,
+          column: 5
+        }
+      },
+      "4": {
+        start: {
+          line: 20,
+          column: 24
+        },
+        end: {
+          line: 20,
+          column: 80
+        }
+      },
+      "5": {
+        start: {
+          line: 20,
+          column: 58
+        },
+        end: {
+          line: 20,
+          column: 79
+        }
+      },
+      "6": {
+        start: {
+          line: 21,
+          column: 4
+        },
+        end: {
+          line: 23,
+          column: 5
+        }
+      },
+      "7": {
+        start: {
+          line: 22,
+          column: 8
+        },
+        end: {
+          line: 22,
+          column: 102
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "validateFirebaseEnv",
+        decl: {
+          start: {
+            line: 11,
+            column: 9
+          },
+          end: {
+            line: 11,
+            column: 28
+          }
+        },
+        loc: {
+          start: {
+            line: 11,
+            column: 31
+          },
+          end: {
+            line: 24,
+            column: 1
+          }
+        },
+        line: 11
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 20,
+            column: 47
+          },
+          end: {
+            line: 20,
+            column: 48
+          }
+        },
+        loc: {
+          start: {
+            line: 20,
+            column: 58
+          },
+          end: {
+            line: 20,
+            column: 79
+          }
+        },
+        line: 20
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 21,
+            column: 4
+          },
+          end: {
+            line: 23,
+            column: 5
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 21,
+            column: 4
+          },
+          end: {
+            line: 23,
+            column: 5
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 21
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/firebase/validate-env.ts"],
+      sourcesContent: ["export function validateFirebaseEnv() {\n    const requiredEnvVars = [\n      'NEXT_PUBLIC_FIREBASE_API_KEY',\n      'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN',\n      'NEXT_PUBLIC_FIREBASE_PROJECT_ID',\n      'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET',\n      'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID',\n      'NEXT_PUBLIC_FIREBASE_APP_ID'\n    ];\n  \n    const missingVars = requiredEnvVars.filter(\n      varName => !process.env[varName]\n    );\n  \n    if (missingVars.length > 0) {\n      throw new Error(\n        `Missing required Firebase environment variables: ${missingVars.join(', ')}`\n      );\n    }\n  }"],
+      names: ["validateFirebaseEnv", "requiredEnvVars", "missingVars", "filter", "varName", "process", "env", "length", "Error", "join"],
+      mappings: ";;;;+BAAgBA;;;eAAAA;;;AAAT,SAASA;IACZ,MAAMC,kBAAkB;QACtB;QACA;QACA;QACA;QACA;QACA;KACD;IAED,MAAMC,cAAcD,gBAAgBE,MAAM,CACxCC,CAAAA,UAAW,CAACC,QAAQC,GAAG,CAACF,QAAQ;IAGlC,IAAIF,YAAYK,MAAM,GAAG,GAAG;QAC1B,MAAM,IAAIC,MACR,CAAC,iDAAiD,EAAEN,YAAYO,IAAI,CAAC,OAAO;IAEhF;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "25624f177a5e750d4e98644c00d7216b12386cc5"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1p64rwajkp = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1p64rwajkp();
+cov_1p64rwajkp().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1p64rwajkp().s[1]++;
+Object.defineProperty(exports, "validateFirebaseEnv", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1p64rwajkp().f[0]++;
+    cov_1p64rwajkp().s[2]++;
+    return validateFirebaseEnv;
+  }
+});
+function validateFirebaseEnv() {
+  /* istanbul ignore next */
+  cov_1p64rwajkp().f[1]++;
+  const requiredEnvVars =
+  /* istanbul ignore next */
+  (cov_1p64rwajkp().s[3]++, ['NEXT_PUBLIC_FIREBASE_API_KEY', 'NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN', 'NEXT_PUBLIC_FIREBASE_PROJECT_ID', 'NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET', 'NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID', 'NEXT_PUBLIC_FIREBASE_APP_ID']);
+  const missingVars =
+  /* istanbul ignore next */
+  (cov_1p64rwajkp().s[4]++, requiredEnvVars.filter(varName => {
+    /* istanbul ignore next */
+    cov_1p64rwajkp().f[2]++;
+    cov_1p64rwajkp().s[5]++;
+    return !process.env[varName];
+  }));
+  /* istanbul ignore next */
+  cov_1p64rwajkp().s[6]++;
+  if (missingVars.length > 0) {
+    /* istanbul ignore next */
+    cov_1p64rwajkp().b[0][0]++;
+    cov_1p64rwajkp().s[7]++;
+    throw new Error(`Missing required Firebase environment variables: ${missingVars.join(', ')}`);
+  } else
+  /* istanbul ignore next */
+  {
+    cov_1p64rwajkp().b[0][1]++;
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMXA2NHJ3YWprcCIsImFjdHVhbENvdmVyYWdlIiwicyIsInZhbGlkYXRlRmlyZWJhc2VFbnYiLCJmIiwicmVxdWlyZWRFbnZWYXJzIiwibWlzc2luZ1ZhcnMiLCJmaWx0ZXIiLCJ2YXJOYW1lIiwicHJvY2VzcyIsImVudiIsImxlbmd0aCIsImIiLCJFcnJvciIsImpvaW4iXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL2ZpcmViYXNlL3ZhbGlkYXRlLWVudi50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgZnVuY3Rpb24gdmFsaWRhdGVGaXJlYmFzZUVudigpIHtcbiAgICBjb25zdCByZXF1aXJlZEVudlZhcnMgPSBbXG4gICAgICAnTkVYVF9QVUJMSUNfRklSRUJBU0VfQVBJX0tFWScsXG4gICAgICAnTkVYVF9QVUJMSUNfRklSRUJBU0VfQVVUSF9ET01BSU4nLFxuICAgICAgJ05FWFRfUFVCTElDX0ZJUkVCQVNFX1BST0pFQ1RfSUQnLFxuICAgICAgJ05FWFRfUFVCTElDX0ZJUkVCQVNFX1NUT1JBR0VfQlVDS0VUJyxcbiAgICAgICdORVhUX1BVQkxJQ19GSVJFQkFTRV9NRVNTQUdJTkdfU0VOREVSX0lEJyxcbiAgICAgICdORVhUX1BVQkxJQ19GSVJFQkFTRV9BUFBfSUQnXG4gICAgXTtcbiAgXG4gICAgY29uc3QgbWlzc2luZ1ZhcnMgPSByZXF1aXJlZEVudlZhcnMuZmlsdGVyKFxuICAgICAgdmFyTmFtZSA9PiAhcHJvY2Vzcy5lbnZbdmFyTmFtZV1cbiAgICApO1xuICBcbiAgICBpZiAobWlzc2luZ1ZhcnMubGVuZ3RoID4gMCkge1xuICAgICAgdGhyb3cgbmV3IEVycm9yKFxuICAgICAgICBgTWlzc2luZyByZXF1aXJlZCBGaXJlYmFzZSBlbnZpcm9ubWVudCB2YXJpYWJsZXM6ICR7bWlzc2luZ1ZhcnMuam9pbignLCAnKX1gXG4gICAgICApO1xuICAgIH1cbiAgfSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQUtNO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBTFU7Ozs7OztXQUFBQyxtQkFBQTs7O0FBQVQsU0FBU0Esb0JBQUE7RUFBQTtFQUFBSCxjQUFBLEdBQUFJLENBQUE7RUFDWixNQUFNQyxlQUFBO0VBQUE7RUFBQSxDQUFBTCxjQUFBLEdBQUFFLENBQUEsT0FBa0IsQ0FDdEIsZ0NBQ0Esb0NBQ0EsbUNBQ0EsdUNBQ0EsNENBQ0EsOEJBQ0Q7RUFFRCxNQUFNSSxXQUFBO0VBQUE7RUFBQSxDQUFBTixjQUFBLEdBQUFFLENBQUEsT0FBY0csZUFBQSxDQUFnQkUsTUFBTSxDQUN4Q0MsT0FBQSxJQUFXO0lBQUE7SUFBQVIsY0FBQSxHQUFBSSxDQUFBO0lBQUFKLGNBQUEsR0FBQUUsQ0FBQTtJQUFBLFFBQUNPLE9BQUEsQ0FBUUMsR0FBRyxDQUFDRixPQUFBLENBQVE7RUFBUixDQUFRO0VBQUE7RUFBQVIsY0FBQSxHQUFBRSxDQUFBO0VBR2xDLElBQUlJLFdBQUEsQ0FBWUssTUFBTSxHQUFHLEdBQUc7SUFBQTtJQUFBWCxjQUFBLEdBQUFZLENBQUE7SUFBQVosY0FBQSxHQUFBRSxDQUFBO0lBQzFCLE1BQU0sSUFBSVcsS0FBQSxDQUNSLG9EQUFvRFAsV0FBQSxDQUFZUSxJQUFJLENBQUMsT0FBTztFQUVoRjtFQUFBO0VBQUE7SUFBQWQsY0FBQSxHQUFBWSxDQUFBO0VBQUE7QUFDRiIsImlnbm9yZUxpc3QiOltdfQ==

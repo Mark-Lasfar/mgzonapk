@@ -1,0 +1,240 @@
+9df9dd1b8e4fb54f0fcfc81b67d50eb2
+"use strict";
+
+/* istanbul ignore next */
+function cov_ohwzbzvzo() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/points-transaction.model.ts";
+  var hash = "523814f535e67b7808d145142868677a45b95f38";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/points-transaction.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 32
+        },
+        end: {
+          line: 40,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 41,
+          column: 26
+        },
+        end: {
+          line: 41,
+          column: 130
+        }
+      },
+      "6": {
+        start: {
+          line: 42,
+          column: 17
+        },
+        end: {
+          line: 42,
+          column: 34
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 41,
+            column: 26
+          },
+          end: {
+            line: 41,
+            column: 130
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 41,
+            column: 26
+          },
+          end: {
+            line: 41,
+            column: 60
+          }
+        }, {
+          start: {
+            line: 41,
+            column: 64
+          },
+          end: {
+            line: 41,
+            column: 130
+          }
+        }],
+        line: 41
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/points-transaction.model.ts"],
+      sourcesContent: ["import { Document, Model, model, models, Schema } from 'mongoose';\n\nexport interface IPointsTransaction extends Document {\n  userId: string;\n  amount: number;\n  type: 'earn' | 'redeem';\n  description: string;\n  orderId?: string;\n  createdAt: Date;\n}\n\nconst pointsTransactionSchema = new Schema<IPointsTransaction>(\n  {\n    userId: { type: String, required: true, index: true },\n    amount: { type: Number, required: true },\n    type: { type: String, required: true, enum: ['earn', 'redeem'] },\n    description: { type: String, required: true },\n    orderId: { type: String, index: true },\n  },\n  {\n    timestamps: true,\n  }\n);\n\nconst PointsTransaction =\n  models.PointsTransaction || model<IPointsTransaction>('PointsTransaction', pointsTransactionSchema);\nexport default PointsTransaction as Model<IPointsTransaction>;"],
+      names: ["pointsTransactionSchema", "Schema", "userId", "type", "String", "required", "index", "amount", "Number", "enum", "description", "orderId", "timestamps", "PointsTransaction", "models", "model"],
+      mappings: ";;;;+BA0BA;;;eAAA;;;0BA1BuD;AAWvD,MAAMA,0BAA0B,IAAIC,gBAAM,CACxC;IACEC,QAAQ;QAAEC,MAAMC;QAAQC,UAAU;QAAMC,OAAO;IAAK;IACpDC,QAAQ;QAAEJ,MAAMK;QAAQH,UAAU;IAAK;IACvCF,MAAM;QAAEA,MAAMC;QAAQC,UAAU;QAAMI,MAAM;YAAC;YAAQ;SAAS;IAAC;IAC/DC,aAAa;QAAEP,MAAMC;QAAQC,UAAU;IAAK;IAC5CM,SAAS;QAAER,MAAMC;QAAQE,OAAO;IAAK;AACvC,GACA;IACEM,YAAY;AACd;AAGF,MAAMC,oBACJC,gBAAM,CAACD,iBAAiB,IAAIE,IAAAA,eAAK,EAAqB,qBAAqBf;MAC7E,WAAea"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "523814f535e67b7808d145142868677a45b95f38"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_ohwzbzvzo = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_ohwzbzvzo();
+cov_ohwzbzvzo().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_ohwzbzvzo().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_ohwzbzvzo().f[0]++;
+    cov_ohwzbzvzo().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_ohwzbzvzo().s[3]++, require("mongoose"));
+const pointsTransactionSchema =
+/* istanbul ignore next */
+(cov_ohwzbzvzo().s[4]++, new _mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+    index: true
+  },
+  amount: {
+    type: Number,
+    required: true
+  },
+  type: {
+    type: String,
+    required: true,
+    enum: ['earn', 'redeem']
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  orderId: {
+    type: String,
+    index: true
+  }
+}, {
+  timestamps: true
+}));
+const PointsTransaction =
+/* istanbul ignore next */
+(cov_ohwzbzvzo().s[5]++,
+/* istanbul ignore next */
+(cov_ohwzbzvzo().b[0][0]++, _mongoose.models.PointsTransaction) ||
+/* istanbul ignore next */
+(cov_ohwzbzvzo().b[0][1]++, (0, _mongoose.model)('PointsTransaction', pointsTransactionSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_ohwzbzvzo().s[6]++, PointsTransaction);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3Zfb2h3emJ6dnpvIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiX2RlZmF1bHQiLCJwb2ludHNUcmFuc2FjdGlvblNjaGVtYSIsIl9tb25nb29zZSIsIlNjaGVtYSIsInVzZXJJZCIsInR5cGUiLCJTdHJpbmciLCJyZXF1aXJlZCIsImluZGV4IiwiYW1vdW50IiwiTnVtYmVyIiwiZW51bSIsImRlc2NyaXB0aW9uIiwib3JkZXJJZCIsInRpbWVzdGFtcHMiLCJQb2ludHNUcmFuc2FjdGlvbiIsImIiLCJtb2RlbHMiLCJtb2RlbCJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9saWIvZGIvbW9kZWxzL3BvaW50cy10cmFuc2FjdGlvbi5tb2RlbC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBEb2N1bWVudCwgTW9kZWwsIG1vZGVsLCBtb2RlbHMsIFNjaGVtYSB9IGZyb20gJ21vbmdvb3NlJztcblxuZXhwb3J0IGludGVyZmFjZSBJUG9pbnRzVHJhbnNhY3Rpb24gZXh0ZW5kcyBEb2N1bWVudCB7XG4gIHVzZXJJZDogc3RyaW5nO1xuICBhbW91bnQ6IG51bWJlcjtcbiAgdHlwZTogJ2Vhcm4nIHwgJ3JlZGVlbSc7XG4gIGRlc2NyaXB0aW9uOiBzdHJpbmc7XG4gIG9yZGVySWQ/OiBzdHJpbmc7XG4gIGNyZWF0ZWRBdDogRGF0ZTtcbn1cblxuY29uc3QgcG9pbnRzVHJhbnNhY3Rpb25TY2hlbWEgPSBuZXcgU2NoZW1hPElQb2ludHNUcmFuc2FjdGlvbj4oXG4gIHtcbiAgICB1c2VySWQ6IHsgdHlwZTogU3RyaW5nLCByZXF1aXJlZDogdHJ1ZSwgaW5kZXg6IHRydWUgfSxcbiAgICBhbW91bnQ6IHsgdHlwZTogTnVtYmVyLCByZXF1aXJlZDogdHJ1ZSB9LFxuICAgIHR5cGU6IHsgdHlwZTogU3RyaW5nLCByZXF1aXJlZDogdHJ1ZSwgZW51bTogWydlYXJuJywgJ3JlZGVlbSddIH0sXG4gICAgZGVzY3JpcHRpb246IHsgdHlwZTogU3RyaW5nLCByZXF1aXJlZDogdHJ1ZSB9LFxuICAgIG9yZGVySWQ6IHsgdHlwZTogU3RyaW5nLCBpbmRleDogdHJ1ZSB9LFxuICB9LFxuICB7XG4gICAgdGltZXN0YW1wczogdHJ1ZSxcbiAgfVxuKTtcblxuY29uc3QgUG9pbnRzVHJhbnNhY3Rpb24gPVxuICBtb2RlbHMuUG9pbnRzVHJhbnNhY3Rpb24gfHwgbW9kZWw8SVBvaW50c1RyYW5zYWN0aW9uPignUG9pbnRzVHJhbnNhY3Rpb24nLCBwb2ludHNUcmFuc2FjdGlvblNjaGVtYSk7XG5leHBvcnQgZGVmYXVsdCBQb2ludHNUcmFuc2FjdGlvbiBhcyBNb2RlbDxJUG9pbnRzVHJhbnNhY3Rpb24+OyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBYTRDO0lBQUFBLGFBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGFBQUE7QUFBQUEsYUFBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBYTVDOzs7Ozs7V0FBQUMsUUFBQTs7Ozs7aUNBMUJ1RDtBQVd2RCxNQUFNQyx1QkFBQTtBQUFBO0FBQUEsQ0FBQUosYUFBQSxHQUFBRSxDQUFBLE9BQTBCLElBQUlHLFNBQUEsQ0FBQUMsTUFBTSxDQUN4QztFQUNFQyxNQUFBLEVBQVE7SUFBRUMsSUFBQSxFQUFNQyxNQUFBO0lBQVFDLFFBQUEsRUFBVTtJQUFNQyxLQUFBLEVBQU87RUFBSztFQUNwREMsTUFBQSxFQUFRO0lBQUVKLElBQUEsRUFBTUssTUFBQTtJQUFRSCxRQUFBLEVBQVU7RUFBSztFQUN2Q0YsSUFBQSxFQUFNO0lBQUVBLElBQUEsRUFBTUMsTUFBQTtJQUFRQyxRQUFBLEVBQVU7SUFBTUksSUFBQSxFQUFNLENBQUMsUUFBUTtFQUFVO0VBQy9EQyxXQUFBLEVBQWE7SUFBRVAsSUFBQSxFQUFNQyxNQUFBO0lBQVFDLFFBQUEsRUFBVTtFQUFLO0VBQzVDTSxPQUFBLEVBQVM7SUFBRVIsSUFBQSxFQUFNQyxNQUFBO0lBQVFFLEtBQUEsRUFBTztFQUFLO0FBQ3ZDLEdBQ0E7RUFDRU0sVUFBQSxFQUFZO0FBQ2Q7QUFHRixNQUFNQyxpQkFBQTtBQUFBO0FBQUEsQ0FBQWxCLGFBQUEsR0FBQUUsQ0FBQTtBQUNKO0FBQUEsQ0FBQUYsYUFBQSxHQUFBbUIsQ0FBQSxVQUFBZCxTQUFBLENBQUFlLE1BQU0sQ0FBQ0YsaUJBQWlCO0FBQUE7QUFBQSxDQUFBbEIsYUFBQSxHQUFBbUIsQ0FBQSxVQUFJLElBQUFkLFNBQUEsQ0FBQWdCLEtBQUssRUFBcUIscUJBQXFCakIsdUJBQUE7TUFDN0VELFFBQUE7QUFBQTtBQUFBLENBQUFILGFBQUEsR0FBQUUsQ0FBQSxPQUFlZ0IsaUJBQUEiLCJpZ25vcmVMaXN0IjpbXX0=

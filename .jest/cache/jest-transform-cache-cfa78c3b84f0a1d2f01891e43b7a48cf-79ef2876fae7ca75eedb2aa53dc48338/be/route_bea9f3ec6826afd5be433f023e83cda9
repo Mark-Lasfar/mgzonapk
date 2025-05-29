@@ -1,0 +1,865 @@
+effeeed1c834066f7ddeda5064d4b743
+"use strict";
+
+/* istanbul ignore next */
+function cov_1a0gmta96n() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/v1/webhooks/fulfillment/route.ts";
+  var hash = "f8cec10d5634b27b4fa29084bc914e61f0708dc6";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/v1/webhooks/fulfillment/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 20
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 16
+        },
+        end: {
+          line: 11,
+          column: 38
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 30
+        },
+        end: {
+          line: 12,
+          column: 73
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 17
+        },
+        end: {
+          line: 13,
+          column: 67
+        }
+      },
+      "6": {
+        start: {
+          line: 14,
+          column: 28
+        },
+        end: {
+          line: 14,
+          column: 90
+        }
+      },
+      "7": {
+        start: {
+          line: 15,
+          column: 27
+        },
+        end: {
+          line: 15,
+          column: 79
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 6
+        }
+      },
+      "9": {
+        start: {
+          line: 22,
+          column: 22
+        },
+        end: {
+          line: 22,
+          column: 68
+        }
+      },
+      "10": {
+        start: {
+          line: 23,
+          column: 17
+        },
+        end: {
+          line: 23,
+          column: 29
+        }
+      },
+      "11": {
+        start: {
+          line: 24,
+          column: 19
+        },
+        end: {
+          line: 24,
+          column: 74
+        }
+      },
+      "12": {
+        start: {
+          line: 25,
+          column: 4
+        },
+        end: {
+          line: 25,
+          column: 44
+        }
+      },
+      "13": {
+        start: {
+          line: 25,
+          column: 31
+        },
+        end: {
+          line: 25,
+          column: 44
+        }
+      },
+      "14": {
+        start: {
+          line: 26,
+          column: 17
+        },
+        end: {
+          line: 26,
+          column: 61
+        }
+      },
+      "15": {
+        start: {
+          line: 27,
+          column: 19
+        },
+        end: {
+          line: 27,
+          column: 66
+        }
+      },
+      "16": {
+        start: {
+          line: 28,
+          column: 4
+        },
+        end: {
+          line: 28,
+          column: 88
+        }
+      },
+      "17": {
+        start: {
+          line: 31,
+          column: 22
+        },
+        end: {
+          line: 31,
+          column: 69
+        }
+      },
+      "18": {
+        start: {
+          line: 32,
+          column: 21
+        },
+        end: {
+          line: 32,
+          column: 66
+        }
+      },
+      "19": {
+        start: {
+          line: 33,
+          column: 4
+        },
+        end: {
+          line: 79,
+          column: 5
+        }
+      },
+      "20": {
+        start: {
+          line: 35,
+          column: 8
+        },
+        end: {
+          line: 45,
+          column: 9
+        }
+      },
+      "21": {
+        start: {
+          line: 36,
+          column: 12
+        },
+        end: {
+          line: 39,
+          column: 15
+        }
+      },
+      "22": {
+        start: {
+          line: 40,
+          column: 12
+        },
+        end: {
+          line: 44,
+          column: 15
+        }
+      },
+      "23": {
+        start: {
+          line: 46,
+          column: 24
+        },
+        end: {
+          line: 46,
+          column: 44
+        }
+      },
+      "24": {
+        start: {
+          line: 47,
+          column: 8
+        },
+        end: {
+          line: 52,
+          column: 11
+        }
+      },
+      "25": {
+        start: {
+          line: 54,
+          column: 35
+        },
+        end: {
+          line: 54,
+          column: 88
+        }
+      },
+      "26": {
+        start: {
+          line: 56,
+          column: 23
+        },
+        end: {
+          line: 56,
+          column: 88
+        }
+      },
+      "27": {
+        start: {
+          line: 58,
+          column: 8
+        },
+        end: {
+          line: 58,
+          column: 113
+        }
+      },
+      "28": {
+        start: {
+          line: 59,
+          column: 8
+        },
+        end: {
+          line: 63,
+          column: 11
+        }
+      },
+      "29": {
+        start: {
+          line: 65,
+          column: 8
+        },
+        end: {
+          line: 70,
+          column: 11
+        }
+      },
+      "30": {
+        start: {
+          line: 71,
+          column: 8
+        },
+        end: {
+          line: 78,
+          column: 11
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 16,
+            column: 9
+          },
+          end: {
+            line: 16,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 39
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 16
+      },
+      "2": {
+        name: "verifySignature",
+        decl: {
+          start: {
+            line: 21,
+            column: 9
+          },
+          end: {
+            line: 21,
+            column: 24
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 44
+          },
+          end: {
+            line: 29,
+            column: 1
+          }
+        },
+        line: 21
+      },
+      "3": {
+        name: "POST",
+        decl: {
+          start: {
+            line: 30,
+            column: 15
+          },
+          end: {
+            line: 30,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 30,
+            column: 29
+          },
+          end: {
+            line: 80,
+            column: 1
+          }
+        },
+        line: 30
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 35
+          },
+          end: {
+            line: 17,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 41
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        }],
+        line: 17
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 18
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        }],
+        line: 17
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 25,
+            column: 4
+          },
+          end: {
+            line: 25,
+            column: 44
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 25,
+            column: 4
+          },
+          end: {
+            line: 25,
+            column: 44
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 25
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 25,
+            column: 8
+          },
+          end: {
+            line: 25,
+            column: 29
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 25,
+            column: 8
+          },
+          end: {
+            line: 25,
+            column: 18
+          }
+        }, {
+          start: {
+            line: 25,
+            column: 22
+          },
+          end: {
+            line: 25,
+            column: 29
+          }
+        }],
+        line: 25
+      },
+      "4": {
+        loc: {
+          start: {
+            line: 35,
+            column: 8
+          },
+          end: {
+            line: 45,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 35,
+            column: 8
+          },
+          end: {
+            line: 45,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 35
+      },
+      "5": {
+        loc: {
+          start: {
+            line: 35,
+            column: 12
+          },
+          end: {
+            line: 35,
+            column: 60
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 35,
+            column: 12
+          },
+          end: {
+            line: 35,
+            column: 21
+          }
+        }, {
+          start: {
+            line: 35,
+            column: 25
+          },
+          end: {
+            line: 35,
+            column: 60
+          }
+        }],
+        line: 35
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0,
+      "21": 0,
+      "22": 0,
+      "23": 0,
+      "24": 0,
+      "25": 0,
+      "26": 0,
+      "27": 0,
+      "28": 0,
+      "29": 0,
+      "30": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0],
+      "4": [0, 0],
+      "5": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/v1/webhooks/fulfillment/route.ts"],
+      sourcesContent: ["import { NextRequest, NextResponse } from 'next/server';\nimport crypto from 'crypto';\nimport { logger } from '@/lib/api/services/logging';\nimport { UnifiedFulfillmentService } from '@/lib/api/services/unified-fulfillment';\nimport { WebhookDispatcher } from '@/lib/api/webhook-dispatcher';\n\nfunction verifySignature(request: NextRequest, provider: string): boolean {\n  const signature = request.headers.get(`x-${provider}-signature`);\n  const body = request.body;\n  const secret = process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`];\n\n  if (!signature || !secret) return false;\n\n  const hmac = crypto.createHmac('sha256', secret);\n  const digest = hmac.update(JSON.stringify(body)).digest('hex');\n\n  return crypto.timingSafeEqual(\n    Buffer.from(signature),\n    Buffer.from(digest)\n  );\n}\n\nexport async function POST(request: NextRequest) {\n  const requestId = crypto.randomBytes(16).toString('hex');\n  const provider = request.headers.get('x-fulfillment-provider');\n\n  try {\n    // Verify webhook signature\n    if (!provider || !verifySignature(request, provider)) {\n      logger.warn('Invalid webhook signature', { requestId, provider });\n      return NextResponse.json({ error: 'Invalid signature' }, { status: 401 });\n    }\n\n    const payload = await request.json();\n\n    logger.info('Received webhook', {\n      requestId,\n      provider,\n      eventType: payload.eventType,\n      orderId: payload.orderId\n    });\n\n    // Process the webhook based on provider\n    const fulfillmentService = new UnifiedFulfillmentService([\n      // ... provider configurations\n    ]);\n\n    // Update order status\n    const result = await fulfillmentService.handleProviderWebhook(\n      provider,\n      payload\n    );\n\n    // Notify client via websocket\n    await WebhookDispatcher.dispatch(\n      payload.userId,\n      `${provider}.order.updated`,\n      result\n    );\n\n    return NextResponse.json({\n      success: true,\n      requestId,\n      timestamp: new Date().toISOString()\n    });\n\n  } catch (error) {\n    logger.error('Webhook processing error', {\n      requestId,\n      provider,\n      error: error.message,\n      stack: error.stack\n    });\n\n    return NextResponse.json({\n      success: false,\n      error: 'Webhook processing failed',\n      requestId,\n      timestamp: new Date().toISOString()\n    }, { \n      status: 500 \n    });\n  }\n}"],
+      names: ["POST", "verifySignature", "request", "provider", "signature", "headers", "get", "body", "secret", "process", "env", "toUpperCase", "hmac", "crypto", "createHmac", "digest", "update", "JSON", "stringify", "timingSafeEqual", "Buffer", "from", "requestId", "randomBytes", "toString", "logger", "warn", "NextResponse", "json", "error", "status", "payload", "info", "eventType", "orderId", "fulfillmentService", "UnifiedFulfillmentService", "result", "handleProviderWebhook", "WebhookDispatcher", "dispatch", "userId", "success", "timestamp", "Date", "toISOString", "message", "stack"],
+      mappings: ";;;;+BAsBsBA;;;eAAAA;;;wBAtBoB;+DACvB;yBACI;oCACmB;mCACR;;;;;;AAElC,SAASC,gBAAgBC,OAAoB,EAAEC,QAAgB;IAC7D,MAAMC,YAAYF,QAAQG,OAAO,CAACC,GAAG,CAAC,CAAC,EAAE,EAAEH,SAAS,UAAU,CAAC;IAC/D,MAAMI,OAAOL,QAAQK,IAAI;IACzB,MAAMC,SAASC,QAAQC,GAAG,CAAC,GAAGP,SAASQ,WAAW,GAAG,eAAe,CAAC,CAAC;IAEtE,IAAI,CAACP,aAAa,CAACI,QAAQ,OAAO;IAElC,MAAMI,OAAOC,eAAM,CAACC,UAAU,CAAC,UAAUN;IACzC,MAAMO,SAASH,KAAKI,MAAM,CAACC,KAAKC,SAAS,CAACX,OAAOQ,MAAM,CAAC;IAExD,OAAOF,eAAM,CAACM,eAAe,CAC3BC,OAAOC,IAAI,CAACjB,YACZgB,OAAOC,IAAI,CAACN;AAEhB;AAEO,eAAef,KAAKE,OAAoB;IAC7C,MAAMoB,YAAYT,eAAM,CAACU,WAAW,CAAC,IAAIC,QAAQ,CAAC;IAClD,MAAMrB,WAAWD,QAAQG,OAAO,CAACC,GAAG,CAAC;IAErC,IAAI;QACF,2BAA2B;QAC3B,IAAI,CAACH,YAAY,CAACF,gBAAgBC,SAASC,WAAW;YACpDsB,eAAM,CAACC,IAAI,CAAC,6BAA6B;gBAAEJ;gBAAWnB;YAAS;YAC/D,OAAOwB,oBAAY,CAACC,IAAI,CAAC;gBAAEC,OAAO;YAAoB,GAAG;gBAAEC,QAAQ;YAAI;QACzE;QAEA,MAAMC,UAAU,MAAM7B,QAAQ0B,IAAI;QAElCH,eAAM,CAACO,IAAI,CAAC,oBAAoB;YAC9BV;YACAnB;YACA8B,WAAWF,QAAQE,SAAS;YAC5BC,SAASH,QAAQG,OAAO;QAC1B;QAEA,wCAAwC;QACxC,MAAMC,qBAAqB,IAAIC,6CAAyB,CAAC,EAExD;QAED,sBAAsB;QACtB,MAAMC,SAAS,MAAMF,mBAAmBG,qBAAqB,CAC3DnC,UACA4B;QAGF,8BAA8B;QAC9B,MAAMQ,oCAAiB,CAACC,QAAQ,CAC9BT,QAAQU,MAAM,EACd,GAAGtC,SAAS,cAAc,CAAC,EAC3BkC;QAGF,OAAOV,oBAAY,CAACC,IAAI,CAAC;YACvBc,SAAS;YACTpB;YACAqB,WAAW,IAAIC,OAAOC,WAAW;QACnC;IAEF,EAAE,OAAOhB,OAAO;QACdJ,eAAM,CAACI,KAAK,CAAC,4BAA4B;YACvCP;YACAnB;YACA0B,OAAOA,MAAMiB,OAAO;YACpBC,OAAOlB,MAAMkB,KAAK;QACpB;QAEA,OAAOpB,oBAAY,CAACC,IAAI,CAAC;YACvBc,SAAS;YACTb,OAAO;YACPP;YACAqB,WAAW,IAAIC,OAAOC,WAAW;QACnC,GAAG;YACDf,QAAQ;QACV;IACF;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "f8cec10d5634b27b4fa29084bc914e61f0708dc6"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1a0gmta96n = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1a0gmta96n();
+cov_1a0gmta96n().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1a0gmta96n().s[1]++;
+Object.defineProperty(exports, "POST", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1a0gmta96n().f[0]++;
+    cov_1a0gmta96n().s[2]++;
+    return POST;
+  }
+});
+const _server =
+/* istanbul ignore next */
+(cov_1a0gmta96n().s[3]++, require("next/server"));
+const _crypto =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_1a0gmta96n().s[4]++, _interop_require_default(require("crypto")));
+const _logging =
+/* istanbul ignore next */
+(cov_1a0gmta96n().s[5]++, require("../../../../../lib/api/services/logging"));
+const _unifiedfulfillment =
+/* istanbul ignore next */
+(cov_1a0gmta96n().s[6]++, require("../../../../../lib/api/services/unified-fulfillment"));
+const _webhookdispatcher =
+/* istanbul ignore next */
+(cov_1a0gmta96n().s[7]++, require("../../../../../lib/api/webhook-dispatcher"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_1a0gmta96n().f[1]++;
+  cov_1a0gmta96n().s[8]++;
+  return /* istanbul ignore next */(cov_1a0gmta96n().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().b[0][1]++, {
+    default: obj
+  });
+}
+function verifySignature(request, provider) {
+  /* istanbul ignore next */
+  cov_1a0gmta96n().f[2]++;
+  const signature =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[9]++, request.headers.get(`x-${provider}-signature`));
+  const body =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[10]++, request.body);
+  const secret =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[11]++, process.env[`${provider.toUpperCase()}_WEBHOOK_SECRET`]);
+  /* istanbul ignore next */
+  cov_1a0gmta96n().s[12]++;
+  if (
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().b[3][0]++, !signature) ||
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().b[3][1]++, !secret)) {
+    /* istanbul ignore next */
+    cov_1a0gmta96n().b[2][0]++;
+    cov_1a0gmta96n().s[13]++;
+    return false;
+  } else
+  /* istanbul ignore next */
+  {
+    cov_1a0gmta96n().b[2][1]++;
+  }
+  const hmac =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[14]++, _crypto.default.createHmac('sha256', secret));
+  const digest =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[15]++, hmac.update(JSON.stringify(body)).digest('hex'));
+  /* istanbul ignore next */
+  cov_1a0gmta96n().s[16]++;
+  return _crypto.default.timingSafeEqual(Buffer.from(signature), Buffer.from(digest));
+}
+async function POST(request) {
+  /* istanbul ignore next */
+  cov_1a0gmta96n().f[3]++;
+  const requestId =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[17]++, _crypto.default.randomBytes(16).toString('hex'));
+  const provider =
+  /* istanbul ignore next */
+  (cov_1a0gmta96n().s[18]++, request.headers.get('x-fulfillment-provider'));
+  /* istanbul ignore next */
+  cov_1a0gmta96n().s[19]++;
+  try {
+    /* istanbul ignore next */
+    cov_1a0gmta96n().s[20]++;
+    // Verify webhook signature
+    if (
+    /* istanbul ignore next */
+    (cov_1a0gmta96n().b[5][0]++, !provider) ||
+    /* istanbul ignore next */
+    (cov_1a0gmta96n().b[5][1]++, !verifySignature(request, provider))) {
+      /* istanbul ignore next */
+      cov_1a0gmta96n().b[4][0]++;
+      cov_1a0gmta96n().s[21]++;
+      _logging.logger.warn('Invalid webhook signature', {
+        requestId,
+        provider
+      });
+      /* istanbul ignore next */
+      cov_1a0gmta96n().s[22]++;
+      return _server.NextResponse.json({
+        error: 'Invalid signature'
+      }, {
+        status: 401
+      });
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1a0gmta96n().b[4][1]++;
+    }
+    const payload =
+    /* istanbul ignore next */
+    (cov_1a0gmta96n().s[23]++, await request.json());
+    /* istanbul ignore next */
+    cov_1a0gmta96n().s[24]++;
+    _logging.logger.info('Received webhook', {
+      requestId,
+      provider,
+      eventType: payload.eventType,
+      orderId: payload.orderId
+    });
+    // Process the webhook based on provider
+    const fulfillmentService =
+    /* istanbul ignore next */
+    (cov_1a0gmta96n().s[25]++, new _unifiedfulfillment.UnifiedFulfillmentService([]));
+    // Update order status
+    const result =
+    /* istanbul ignore next */
+    (cov_1a0gmta96n().s[26]++, await fulfillmentService.handleProviderWebhook(provider, payload));
+    // Notify client via websocket
+    /* istanbul ignore next */
+    cov_1a0gmta96n().s[27]++;
+    await _webhookdispatcher.WebhookDispatcher.dispatch(payload.userId, `${provider}.order.updated`, result);
+    /* istanbul ignore next */
+    cov_1a0gmta96n().s[28]++;
+    return _server.NextResponse.json({
+      success: true,
+      requestId,
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1a0gmta96n().s[29]++;
+    _logging.logger.error('Webhook processing error', {
+      requestId,
+      provider,
+      error: error.message,
+      stack: error.stack
+    });
+    /* istanbul ignore next */
+    cov_1a0gmta96n().s[30]++;
+    return _server.NextResponse.json({
+      success: false,
+      error: 'Webhook processing failed',
+      requestId,
+      timestamp: new Date().toISOString()
+    }, {
+      status: 500
+    });
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJQT1NUIiwidmVyaWZ5U2lnbmF0dXJlIiwicmVxdWVzdCIsInByb3ZpZGVyIiwiY292XzFhMGdtdGE5Nm4iLCJmIiwic2lnbmF0dXJlIiwicyIsImhlYWRlcnMiLCJnZXQiLCJib2R5Iiwic2VjcmV0IiwicHJvY2VzcyIsImVudiIsInRvVXBwZXJDYXNlIiwiYiIsImhtYWMiLCJfY3J5cHRvIiwiZGVmYXVsdCIsImNyZWF0ZUhtYWMiLCJkaWdlc3QiLCJ1cGRhdGUiLCJKU09OIiwic3RyaW5naWZ5IiwidGltaW5nU2FmZUVxdWFsIiwiQnVmZmVyIiwiZnJvbSIsInJlcXVlc3RJZCIsInJhbmRvbUJ5dGVzIiwidG9TdHJpbmciLCJfbG9nZ2luZyIsImxvZ2dlciIsIndhcm4iLCJfc2VydmVyIiwiTmV4dFJlc3BvbnNlIiwianNvbiIsImVycm9yIiwic3RhdHVzIiwicGF5bG9hZCIsImluZm8iLCJldmVudFR5cGUiLCJvcmRlcklkIiwiZnVsZmlsbG1lbnRTZXJ2aWNlIiwiX3VuaWZpZWRmdWxmaWxsbWVudCIsIlVuaWZpZWRGdWxmaWxsbWVudFNlcnZpY2UiLCJyZXN1bHQiLCJoYW5kbGVQcm92aWRlcldlYmhvb2siLCJfd2ViaG9va2Rpc3BhdGNoZXIiLCJXZWJob29rRGlzcGF0Y2hlciIsImRpc3BhdGNoIiwidXNlcklkIiwic3VjY2VzcyIsInRpbWVzdGFtcCIsIkRhdGUiLCJ0b0lTT1N0cmluZyIsIm1lc3NhZ2UiLCJzdGFjayJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9hcHAvYXBpL3YxL3dlYmhvb2tzL2Z1bGZpbGxtZW50L3JvdXRlLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IE5leHRSZXF1ZXN0LCBOZXh0UmVzcG9uc2UgfSBmcm9tICduZXh0L3NlcnZlcic7XG5pbXBvcnQgY3J5cHRvIGZyb20gJ2NyeXB0byc7XG5pbXBvcnQgeyBsb2dnZXIgfSBmcm9tICdAL2xpYi9hcGkvc2VydmljZXMvbG9nZ2luZyc7XG5pbXBvcnQgeyBVbmlmaWVkRnVsZmlsbG1lbnRTZXJ2aWNlIH0gZnJvbSAnQC9saWIvYXBpL3NlcnZpY2VzL3VuaWZpZWQtZnVsZmlsbG1lbnQnO1xuaW1wb3J0IHsgV2ViaG9va0Rpc3BhdGNoZXIgfSBmcm9tICdAL2xpYi9hcGkvd2ViaG9vay1kaXNwYXRjaGVyJztcblxuZnVuY3Rpb24gdmVyaWZ5U2lnbmF0dXJlKHJlcXVlc3Q6IE5leHRSZXF1ZXN0LCBwcm92aWRlcjogc3RyaW5nKTogYm9vbGVhbiB7XG4gIGNvbnN0IHNpZ25hdHVyZSA9IHJlcXVlc3QuaGVhZGVycy5nZXQoYHgtJHtwcm92aWRlcn0tc2lnbmF0dXJlYCk7XG4gIGNvbnN0IGJvZHkgPSByZXF1ZXN0LmJvZHk7XG4gIGNvbnN0IHNlY3JldCA9IHByb2Nlc3MuZW52W2Ake3Byb3ZpZGVyLnRvVXBwZXJDYXNlKCl9X1dFQkhPT0tfU0VDUkVUYF07XG5cbiAgaWYgKCFzaWduYXR1cmUgfHwgIXNlY3JldCkgcmV0dXJuIGZhbHNlO1xuXG4gIGNvbnN0IGhtYWMgPSBjcnlwdG8uY3JlYXRlSG1hYygnc2hhMjU2Jywgc2VjcmV0KTtcbiAgY29uc3QgZGlnZXN0ID0gaG1hYy51cGRhdGUoSlNPTi5zdHJpbmdpZnkoYm9keSkpLmRpZ2VzdCgnaGV4Jyk7XG5cbiAgcmV0dXJuIGNyeXB0by50aW1pbmdTYWZlRXF1YWwoXG4gICAgQnVmZmVyLmZyb20oc2lnbmF0dXJlKSxcbiAgICBCdWZmZXIuZnJvbShkaWdlc3QpXG4gICk7XG59XG5cbmV4cG9ydCBhc3luYyBmdW5jdGlvbiBQT1NUKHJlcXVlc3Q6IE5leHRSZXF1ZXN0KSB7XG4gIGNvbnN0IHJlcXVlc3RJZCA9IGNyeXB0by5yYW5kb21CeXRlcygxNikudG9TdHJpbmcoJ2hleCcpO1xuICBjb25zdCBwcm92aWRlciA9IHJlcXVlc3QuaGVhZGVycy5nZXQoJ3gtZnVsZmlsbG1lbnQtcHJvdmlkZXInKTtcblxuICB0cnkge1xuICAgIC8vIFZlcmlmeSB3ZWJob29rIHNpZ25hdHVyZVxuICAgIGlmICghcHJvdmlkZXIgfHwgIXZlcmlmeVNpZ25hdHVyZShyZXF1ZXN0LCBwcm92aWRlcikpIHtcbiAgICAgIGxvZ2dlci53YXJuKCdJbnZhbGlkIHdlYmhvb2sgc2lnbmF0dXJlJywgeyByZXF1ZXN0SWQsIHByb3ZpZGVyIH0pO1xuICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKHsgZXJyb3I6ICdJbnZhbGlkIHNpZ25hdHVyZScgfSwgeyBzdGF0dXM6IDQwMSB9KTtcbiAgICB9XG5cbiAgICBjb25zdCBwYXlsb2FkID0gYXdhaXQgcmVxdWVzdC5qc29uKCk7XG5cbiAgICBsb2dnZXIuaW5mbygnUmVjZWl2ZWQgd2ViaG9vaycsIHtcbiAgICAgIHJlcXVlc3RJZCxcbiAgICAgIHByb3ZpZGVyLFxuICAgICAgZXZlbnRUeXBlOiBwYXlsb2FkLmV2ZW50VHlwZSxcbiAgICAgIG9yZGVySWQ6IHBheWxvYWQub3JkZXJJZFxuICAgIH0pO1xuXG4gICAgLy8gUHJvY2VzcyB0aGUgd2ViaG9vayBiYXNlZCBvbiBwcm92aWRlclxuICAgIGNvbnN0IGZ1bGZpbGxtZW50U2VydmljZSA9IG5ldyBVbmlmaWVkRnVsZmlsbG1lbnRTZXJ2aWNlKFtcbiAgICAgIC8vIC4uLiBwcm92aWRlciBjb25maWd1cmF0aW9uc1xuICAgIF0pO1xuXG4gICAgLy8gVXBkYXRlIG9yZGVyIHN0YXR1c1xuICAgIGNvbnN0IHJlc3VsdCA9IGF3YWl0IGZ1bGZpbGxtZW50U2VydmljZS5oYW5kbGVQcm92aWRlcldlYmhvb2soXG4gICAgICBwcm92aWRlcixcbiAgICAgIHBheWxvYWRcbiAgICApO1xuXG4gICAgLy8gTm90aWZ5IGNsaWVudCB2aWEgd2Vic29ja2V0XG4gICAgYXdhaXQgV2ViaG9va0Rpc3BhdGNoZXIuZGlzcGF0Y2goXG4gICAgICBwYXlsb2FkLnVzZXJJZCxcbiAgICAgIGAke3Byb3ZpZGVyfS5vcmRlci51cGRhdGVkYCxcbiAgICAgIHJlc3VsdFxuICAgICk7XG5cbiAgICByZXR1cm4gTmV4dFJlc3BvbnNlLmpzb24oe1xuICAgICAgc3VjY2VzczogdHJ1ZSxcbiAgICAgIHJlcXVlc3RJZCxcbiAgICAgIHRpbWVzdGFtcDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpXG4gICAgfSk7XG5cbiAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICBsb2dnZXIuZXJyb3IoJ1dlYmhvb2sgcHJvY2Vzc2luZyBlcnJvcicsIHtcbiAgICAgIHJlcXVlc3RJZCxcbiAgICAgIHByb3ZpZGVyLFxuICAgICAgZXJyb3I6IGVycm9yLm1lc3NhZ2UsXG4gICAgICBzdGFjazogZXJyb3Iuc3RhY2tcbiAgICB9KTtcblxuICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7XG4gICAgICBzdWNjZXNzOiBmYWxzZSxcbiAgICAgIGVycm9yOiAnV2ViaG9vayBwcm9jZXNzaW5nIGZhaWxlZCcsXG4gICAgICByZXF1ZXN0SWQsXG4gICAgICB0aW1lc3RhbXA6IG5ldyBEYXRlKCkudG9JU09TdHJpbmcoKVxuICAgIH0sIHsgXG4gICAgICBzdGF0dXM6IDUwMCBcbiAgICB9KTtcbiAgfVxufSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

@@ -1,0 +1,496 @@
+24a2ab6181debcaf48f55060024b6875
+"use strict";
+
+/* istanbul ignore next */
+function cov_2hdq95lkd6() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/webhook.model.ts";
+  var hash = "7dddd44671b0f98f60aa5cf6c2ec466fc481f0fb";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/webhook.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 30
+        },
+        end: {
+          line: 12,
+          column: 73
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 4
+        },
+        end: {
+          line: 16,
+          column: 6
+        }
+      },
+      "6": {
+        start: {
+          line: 18,
+          column: 22
+        },
+        end: {
+          line: 57,
+          column: 2
+        }
+      },
+      "7": {
+        start: {
+          line: 58,
+          column: 0
+        },
+        end: {
+          line: 63,
+          column: 3
+        }
+      },
+      "8": {
+        start: {
+          line: 59,
+          column: 4
+        },
+        end: {
+          line: 61,
+          column: 5
+        }
+      },
+      "9": {
+        start: {
+          line: 60,
+          column: 8
+        },
+        end: {
+          line: 60,
+          column: 70
+        }
+      },
+      "10": {
+        start: {
+          line: 62,
+          column: 4
+        },
+        end: {
+          line: 62,
+          column: 11
+        }
+      },
+      "11": {
+        start: {
+          line: 64,
+          column: 16
+        },
+        end: {
+          line: 64,
+          column: 90
+        }
+      },
+      "12": {
+        start: {
+          line: 65,
+          column: 17
+        },
+        end: {
+          line: 65,
+          column: 24
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 13,
+            column: 9
+          },
+          end: {
+            line: 13,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 39
+          },
+          end: {
+            line: 17,
+            column: 1
+          }
+        },
+        line: 13
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 58,
+            column: 26
+          },
+          end: {
+            line: 58,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 58,
+            column: 41
+          },
+          end: {
+            line: 63,
+            column: 1
+          }
+        },
+        line: 58
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 14,
+            column: 11
+          },
+          end: {
+            line: 16,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 14,
+            column: 35
+          },
+          end: {
+            line: 14,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 14,
+            column: 41
+          },
+          end: {
+            line: 16,
+            column: 5
+          }
+        }],
+        line: 14
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 14,
+            column: 11
+          },
+          end: {
+            line: 14,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 14,
+            column: 11
+          },
+          end: {
+            line: 14,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 14,
+            column: 18
+          },
+          end: {
+            line: 14,
+            column: 32
+          }
+        }],
+        line: 14
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 59,
+            column: 4
+          },
+          end: {
+            line: 61,
+            column: 5
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 59,
+            column: 4
+          },
+          end: {
+            line: 61,
+            column: 5
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 59
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 64,
+            column: 16
+          },
+          end: {
+            line: 64,
+            column: 90
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 64,
+            column: 16
+          },
+          end: {
+            line: 64,
+            column: 40
+          }
+        }, {
+          start: {
+            line: 64,
+            column: 44
+          },
+          end: {
+            line: 64,
+            column: 90
+          }
+        }],
+        line: 64
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0, 0],
+      "3": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/webhook.model.ts"],
+      sourcesContent: ["import { Schema, model, models } from 'mongoose';\nimport { WebhookConfig, WebhookEvent } from '@/lib/api/types';\nimport crypto from 'crypto';\n\nconst webhookSchema = new Schema<WebhookConfig>({\n  userId: {\n    type: String,\n    required: true,\n    index: true,\n  },\n  url: {\n    type: String,\n    required: true,\n  },\n  events: [{\n    type: String,\n    enum: [\n      'order.created',\n      'order.updated',\n      'order.fulfilled',\n      'product.created',\n      'product.updated',\n      'product.deleted',\n      'inventory.updated',\n      'customer.created',\n      'customer.updated',\n    ],\n  }],\n  secret: {\n    type: String,\n    required: true,\n  },\n  isActive: {\n    type: Boolean,\n    default: true,\n  },\n  createdAt: {\n    type: Date,\n    default: Date.now,\n  },\n  lastTriggered: Date,\n});\n\nwebhookSchema.pre('save', function(next) {\n  if (this.isNew) {\n    this.secret = crypto.randomBytes(32).toString('hex');\n  }\n  next();\n});\n\nconst Webhook = models.Webhook || model('Webhook', webhookSchema);\n\nexport default Webhook;"],
+      names: ["webhookSchema", "Schema", "userId", "type", "String", "required", "index", "url", "events", "enum", "secret", "isActive", "Boolean", "default", "createdAt", "Date", "now", "lastTriggered", "pre", "next", "isNew", "crypto", "randomBytes", "toString", "Webhook", "models", "model"],
+      mappings: ";;;;+BAoDA;;;eAAA;;;0BApDsC;+DAEnB;;;;;;AAEnB,MAAMA,gBAAgB,IAAIC,gBAAM,CAAgB;IAC9CC,QAAQ;QACNC,MAAMC;QACNC,UAAU;QACVC,OAAO;IACT;IACAC,KAAK;QACHJ,MAAMC;QACNC,UAAU;IACZ;IACAG,QAAQ;QAAC;YACPL,MAAMC;YACNK,MAAM;gBACJ;gBACA;gBACA;gBACA;gBACA;gBACA;gBACA;gBACA;gBACA;aACD;QACH;KAAE;IACFC,QAAQ;QACNP,MAAMC;QACNC,UAAU;IACZ;IACAM,UAAU;QACRR,MAAMS;QACNC,SAAS;IACX;IACAC,WAAW;QACTX,MAAMY;QACNF,SAASE,KAAKC,GAAG;IACnB;IACAC,eAAeF;AACjB;AAEAf,cAAckB,GAAG,CAAC,QAAQ,SAASC,IAAI;IACrC,IAAI,IAAI,CAACC,KAAK,EAAE;QACd,IAAI,CAACV,MAAM,GAAGW,eAAM,CAACC,WAAW,CAAC,IAAIC,QAAQ,CAAC;IAChD;IACAJ;AACF;AAEA,MAAMK,UAAUC,gBAAM,CAACD,OAAO,IAAIE,IAAAA,eAAK,EAAC,WAAW1B;MAEnD,WAAewB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "7dddd44671b0f98f60aa5cf6c2ec466fc481f0fb"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2hdq95lkd6 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2hdq95lkd6();
+cov_2hdq95lkd6().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2hdq95lkd6().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2hdq95lkd6().f[0]++;
+    cov_2hdq95lkd6().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_2hdq95lkd6().s[3]++, require("mongoose"));
+const _crypto =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_2hdq95lkd6().s[4]++, _interop_require_default(require("crypto")));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_2hdq95lkd6().f[1]++;
+  cov_2hdq95lkd6().s[5]++;
+  return /* istanbul ignore next */(cov_2hdq95lkd6().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_2hdq95lkd6().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_2hdq95lkd6().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_2hdq95lkd6().b[0][1]++, {
+    default: obj
+  });
+}
+const webhookSchema =
+/* istanbul ignore next */
+(cov_2hdq95lkd6().s[6]++, new _mongoose.Schema({
+  userId: {
+    type: String,
+    required: true,
+    index: true
+  },
+  url: {
+    type: String,
+    required: true
+  },
+  events: [{
+    type: String,
+    enum: ['order.created', 'order.updated', 'order.fulfilled', 'product.created', 'product.updated', 'product.deleted', 'inventory.updated', 'customer.created', 'customer.updated']
+  }],
+  secret: {
+    type: String,
+    required: true
+  },
+  isActive: {
+    type: Boolean,
+    default: true
+  },
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  lastTriggered: Date
+}));
+/* istanbul ignore next */
+cov_2hdq95lkd6().s[7]++;
+webhookSchema.pre('save', function (next) {
+  /* istanbul ignore next */
+  cov_2hdq95lkd6().f[2]++;
+  cov_2hdq95lkd6().s[8]++;
+  if (this.isNew) {
+    /* istanbul ignore next */
+    cov_2hdq95lkd6().b[2][0]++;
+    cov_2hdq95lkd6().s[9]++;
+    this.secret = _crypto.default.randomBytes(32).toString('hex');
+  } else
+  /* istanbul ignore next */
+  {
+    cov_2hdq95lkd6().b[2][1]++;
+  }
+  cov_2hdq95lkd6().s[10]++;
+  next();
+});
+const Webhook =
+/* istanbul ignore next */
+(cov_2hdq95lkd6().s[11]++,
+/* istanbul ignore next */
+(cov_2hdq95lkd6().b[3][0]++, _mongoose.models.Webhook) ||
+/* istanbul ignore next */
+(cov_2hdq95lkd6().b[3][1]++, (0, _mongoose.model)('Webhook', webhookSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_2hdq95lkd6().s[12]++, Webhook);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJfZGVmYXVsdCIsIndlYmhvb2tTY2hlbWEiLCJjb3ZfMmhkcTk1bGtkNiIsInMiLCJfbW9uZ29vc2UiLCJTY2hlbWEiLCJ1c2VySWQiLCJ0eXBlIiwiU3RyaW5nIiwicmVxdWlyZWQiLCJpbmRleCIsInVybCIsImV2ZW50cyIsImVudW0iLCJzZWNyZXQiLCJpc0FjdGl2ZSIsIkJvb2xlYW4iLCJkZWZhdWx0IiwiY3JlYXRlZEF0IiwiRGF0ZSIsIm5vdyIsImxhc3RUcmlnZ2VyZWQiLCJwcmUiLCJuZXh0IiwiZiIsImlzTmV3IiwiYiIsIl9jcnlwdG8iLCJyYW5kb21CeXRlcyIsInRvU3RyaW5nIiwiV2ViaG9vayIsIm1vZGVscyIsIm1vZGVsIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2xpYi9kYi9tb2RlbHMvd2ViaG9vay5tb2RlbC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBTY2hlbWEsIG1vZGVsLCBtb2RlbHMgfSBmcm9tICdtb25nb29zZSc7XG5pbXBvcnQgeyBXZWJob29rQ29uZmlnLCBXZWJob29rRXZlbnQgfSBmcm9tICdAL2xpYi9hcGkvdHlwZXMnO1xuaW1wb3J0IGNyeXB0byBmcm9tICdjcnlwdG8nO1xuXG5jb25zdCB3ZWJob29rU2NoZW1hID0gbmV3IFNjaGVtYTxXZWJob29rQ29uZmlnPih7XG4gIHVzZXJJZDoge1xuICAgIHR5cGU6IFN0cmluZyxcbiAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICBpbmRleDogdHJ1ZSxcbiAgfSxcbiAgdXJsOiB7XG4gICAgdHlwZTogU3RyaW5nLFxuICAgIHJlcXVpcmVkOiB0cnVlLFxuICB9LFxuICBldmVudHM6IFt7XG4gICAgdHlwZTogU3RyaW5nLFxuICAgIGVudW06IFtcbiAgICAgICdvcmRlci5jcmVhdGVkJyxcbiAgICAgICdvcmRlci51cGRhdGVkJyxcbiAgICAgICdvcmRlci5mdWxmaWxsZWQnLFxuICAgICAgJ3Byb2R1Y3QuY3JlYXRlZCcsXG4gICAgICAncHJvZHVjdC51cGRhdGVkJyxcbiAgICAgICdwcm9kdWN0LmRlbGV0ZWQnLFxuICAgICAgJ2ludmVudG9yeS51cGRhdGVkJyxcbiAgICAgICdjdXN0b21lci5jcmVhdGVkJyxcbiAgICAgICdjdXN0b21lci51cGRhdGVkJyxcbiAgICBdLFxuICB9XSxcbiAgc2VjcmV0OiB7XG4gICAgdHlwZTogU3RyaW5nLFxuICAgIHJlcXVpcmVkOiB0cnVlLFxuICB9LFxuICBpc0FjdGl2ZToge1xuICAgIHR5cGU6IEJvb2xlYW4sXG4gICAgZGVmYXVsdDogdHJ1ZSxcbiAgfSxcbiAgY3JlYXRlZEF0OiB7XG4gICAgdHlwZTogRGF0ZSxcbiAgICBkZWZhdWx0OiBEYXRlLm5vdyxcbiAgfSxcbiAgbGFzdFRyaWdnZXJlZDogRGF0ZSxcbn0pO1xuXG53ZWJob29rU2NoZW1hLnByZSgnc2F2ZScsIGZ1bmN0aW9uKG5leHQpIHtcbiAgaWYgKHRoaXMuaXNOZXcpIHtcbiAgICB0aGlzLnNlY3JldCA9IGNyeXB0by5yYW5kb21CeXRlcygzMikudG9TdHJpbmcoJ2hleCcpO1xuICB9XG4gIG5leHQoKTtcbn0pO1xuXG5jb25zdCBXZWJob29rID0gbW9kZWxzLldlYmhvb2sgfHwgbW9kZWwoJ1dlYmhvb2snLCB3ZWJob29rU2NoZW1hKTtcblxuZXhwb3J0IGRlZmF1bHQgV2ViaG9vazsiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7K0JBb0RBOzs7Ozs7V0FBQUEsUUFBQTs7Ozs7a0NBcERzQzs7O3dFQUVuQjs7Ozs7Ozs7Ozs7Ozs7O0FBRW5CLE1BQU1DLGFBQUE7QUFBQTtBQUFBLENBQUFDLGNBQUEsR0FBQUMsQ0FBQSxPQUFnQixJQUFJQyxTQUFBLENBQUFDLE1BQU0sQ0FBZ0I7RUFDOUNDLE1BQUEsRUFBUTtJQUNOQyxJQUFBLEVBQU1DLE1BQUE7SUFDTkMsUUFBQSxFQUFVO0lBQ1ZDLEtBQUEsRUFBTztFQUNUO0VBQ0FDLEdBQUEsRUFBSztJQUNISixJQUFBLEVBQU1DLE1BQUE7SUFDTkMsUUFBQSxFQUFVO0VBQ1o7RUFDQUcsTUFBQSxFQUFRLENBQUM7SUFDUEwsSUFBQSxFQUFNQyxNQUFBO0lBQ05LLElBQUEsRUFBTSxDQUNKLGlCQUNBLGlCQUNBLG1CQUNBLG1CQUNBLG1CQUNBLG1CQUNBLHFCQUNBLG9CQUNBO0VBRUosRUFBRTtFQUNGQyxNQUFBLEVBQVE7SUFDTlAsSUFBQSxFQUFNQyxNQUFBO0lBQ05DLFFBQUEsRUFBVTtFQUNaO0VBQ0FNLFFBQUEsRUFBVTtJQUNSUixJQUFBLEVBQU1TLE9BQUE7SUFDTkMsT0FBQSxFQUFTO0VBQ1g7RUFDQUMsU0FBQSxFQUFXO0lBQ1RYLElBQUEsRUFBTVksSUFBQTtJQUNORixPQUFBLEVBQVNFLElBQUEsQ0FBS0M7RUFDaEI7RUFDQUMsYUFBQSxFQUFlRjtBQUNqQjtBQUFBO0FBQUFqQixjQUFBLEdBQUFDLENBQUE7QUFFQUYsYUFBQSxDQUFjcUIsR0FBRyxDQUFDLFFBQVEsVUFBU0MsSUFBSTtFQUFBO0VBQUFyQixjQUFBLEdBQUFzQixDQUFBO0VBQUF0QixjQUFBLEdBQUFDLENBQUE7RUFDckMsSUFBSSxJQUFJLENBQUNzQixLQUFLLEVBQUU7SUFBQTtJQUFBdkIsY0FBQSxHQUFBd0IsQ0FBQTtJQUFBeEIsY0FBQSxHQUFBQyxDQUFBO0lBQ2QsSUFBSSxDQUFDVyxNQUFNLEdBQUdhLE9BQUEsQ0FBQVYsT0FBTSxDQUFDVyxXQUFXLENBQUMsSUFBSUMsUUFBUSxDQUFDO0VBQ2hEO0VBQUE7RUFBQTtJQUFBM0IsY0FBQSxHQUFBd0IsQ0FBQTtFQUFBO0VBQUF4QixjQUFBLEdBQUFDLENBQUE7RUFDQW9CLElBQUE7QUFDRjtBQUVBLE1BQU1PLE9BQUE7QUFBQTtBQUFBLENBQUE1QixjQUFBLEdBQUFDLENBQUE7QUFBVTtBQUFBLENBQUFELGNBQUEsR0FBQXdCLENBQUEsVUFBQXRCLFNBQUEsQ0FBQTJCLE1BQU0sQ0FBQ0QsT0FBTztBQUFBO0FBQUEsQ0FBQTVCLGNBQUEsR0FBQXdCLENBQUEsVUFBSSxJQUFBdEIsU0FBQSxDQUFBNEIsS0FBSyxFQUFDLFdBQVcvQixhQUFBO01BRW5ERCxRQUFBO0FBQUE7QUFBQSxDQUFBRSxjQUFBLEdBQUFDLENBQUEsUUFBZTJCLE9BQUEiLCJpZ25vcmVMaXN0IjpbXX0=

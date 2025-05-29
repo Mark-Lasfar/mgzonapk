@@ -1,0 +1,431 @@
+75137277e4c7739ebf96bf67cea666f8
+"use strict";
+
+/* istanbul ignore next */
+function cov_uo4aymed9() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/v1/monitoring/metrics/route.ts";
+  var hash = "0318ac9599585f9656fc8936c3333f52c9a0a90f";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/v1/monitoring/metrics/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 19
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 16
+        },
+        end: {
+          line: 11,
+          column: 38
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 14
+        },
+        end: {
+          line: 12,
+          column: 63
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 12
+        },
+        end: {
+          line: 13,
+          column: 44
+        }
+      },
+      "6": {
+        start: {
+          line: 14,
+          column: 17
+        },
+        end: {
+          line: 14,
+          column: 67
+        }
+      },
+      "7": {
+        start: {
+          line: 15,
+          column: 17
+        },
+        end: {
+          line: 15,
+          column: 67
+        }
+      },
+      "8": {
+        start: {
+          line: 16,
+          column: 16
+        },
+        end: {
+          line: 16,
+          column: 48
+        }
+      },
+      "9": {
+        start: {
+          line: 18,
+          column: 22
+        },
+        end: {
+          line: 18,
+          column: 62
+        }
+      },
+      "10": {
+        start: {
+          line: 19,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 36
+        }
+      },
+      "11": {
+        start: {
+          line: 19,
+          column: 19
+        },
+        end: {
+          line: 19,
+          column: 36
+        }
+      },
+      "12": {
+        start: {
+          line: 20,
+          column: 4
+        },
+        end: {
+          line: 57,
+          column: 5
+        }
+      },
+      "13": {
+        start: {
+          line: 21,
+          column: 8
+        },
+        end: {
+          line: 21,
+          column: 43
+        }
+      },
+      "14": {
+        start: {
+          line: 22,
+          column: 22
+        },
+        end: {
+          line: 22,
+          column: 45
+        }
+      },
+      "15": {
+        start: {
+          line: 23,
+          column: 8
+        },
+        end: {
+          line: 46,
+          column: 11
+        }
+      },
+      "16": {
+        start: {
+          line: 48,
+          column: 8
+        },
+        end: {
+          line: 50,
+          column: 11
+        }
+      },
+      "17": {
+        start: {
+          line: 51,
+          column: 8
+        },
+        end: {
+          line: 56,
+          column: 11
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "GET",
+        decl: {
+          start: {
+            line: 17,
+            column: 15
+          },
+          end: {
+            line: 17,
+            column: 18
+          }
+        },
+        loc: {
+          start: {
+            line: 17,
+            column: 28
+          },
+          end: {
+            line: 58,
+            column: 1
+          }
+        },
+        line: 17
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 19,
+            column: 4
+          },
+          end: {
+            line: 19,
+            column: 36
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 19,
+            column: 4
+          },
+          end: {
+            line: 19,
+            column: 36
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 19
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/v1/monitoring/metrics/route.ts"],
+      sourcesContent: ["import { NextRequest, NextResponse } from 'next/server';\nimport { validateApiKey } from '@/lib/api/middleware/auth';\nimport { connectToDatabase } from '@/lib/db';\nimport { logger } from '@/lib/api/services/logging';\nimport { PrometheusMetrics } from '@/lib/api/services/metrics';\n\nconst metrics = new PrometheusMetrics();\n\nexport async function GET(request: NextRequest) {\n  const authError = await validateApiKey(request);\n  if (authError) return authError;\n\n  try {\n    await connectToDatabase();\n\n    const stats = await metrics.collect();\n    \n    return NextResponse.json({\n      success: true,\n      data: {\n        requests: {\n          total: stats.totalRequests,\n          success: stats.successfulRequests,\n          failed: stats.failedRequests,\n          latency: stats.averageLatency\n        },\n        fulfillment: {\n          pending: stats.pendingOrders,\n          processing: stats.processingOrders,\n          completed: stats.completedOrders,\n          failed: stats.failedOrders\n        },\n        providers: stats.providerMetrics,\n        system: {\n          memory: process.memoryUsage(),\n          cpu: process.cpuUsage(),\n          uptime: process.uptime()\n        }\n      },\n      timestamp: new Date().toISOString()\n    });\n\n  } catch (error) {\n    logger.error('Metrics collection failed', { error });\n    return NextResponse.json({\n      success: false,\n      error: 'Failed to collect metrics'\n    }, { \n      status: 500 \n    });\n  }\n}"],
+      names: ["GET", "metrics", "PrometheusMetrics", "request", "authError", "validateApiKey", "connectToDatabase", "stats", "collect", "NextResponse", "json", "success", "data", "requests", "total", "totalRequests", "successfulRequests", "failed", "failedRequests", "latency", "averageLatency", "fulfillment", "pending", "pendingOrders", "processing", "processingOrders", "completed", "completedOrders", "failedOrders", "providers", "providerMetrics", "system", "memory", "process", "memoryUsage", "cpu", "cpuUsage", "uptime", "timestamp", "Date", "toISOString", "error", "logger", "status"],
+      mappings: ";;;;+BAQsBA;;;eAAAA;;;wBARoB;sBACX;oBACG;yBACX;yBACW;AAElC,MAAMC,UAAU,IAAIC,0BAAiB;AAE9B,eAAeF,IAAIG,OAAoB;IAC5C,MAAMC,YAAY,MAAMC,IAAAA,oBAAc,EAACF;IACvC,IAAIC,WAAW,OAAOA;IAEtB,IAAI;QACF,MAAME,IAAAA,qBAAiB;QAEvB,MAAMC,QAAQ,MAAMN,QAAQO,OAAO;QAEnC,OAAOC,oBAAY,CAACC,IAAI,CAAC;YACvBC,SAAS;YACTC,MAAM;gBACJC,UAAU;oBACRC,OAAOP,MAAMQ,aAAa;oBAC1BJ,SAASJ,MAAMS,kBAAkB;oBACjCC,QAAQV,MAAMW,cAAc;oBAC5BC,SAASZ,MAAMa,cAAc;gBAC/B;gBACAC,aAAa;oBACXC,SAASf,MAAMgB,aAAa;oBAC5BC,YAAYjB,MAAMkB,gBAAgB;oBAClCC,WAAWnB,MAAMoB,eAAe;oBAChCV,QAAQV,MAAMqB,YAAY;gBAC5B;gBACAC,WAAWtB,MAAMuB,eAAe;gBAChCC,QAAQ;oBACNC,QAAQC,QAAQC,WAAW;oBAC3BC,KAAKF,QAAQG,QAAQ;oBACrBC,QAAQJ,QAAQI,MAAM;gBACxB;YACF;YACAC,WAAW,IAAIC,OAAOC,WAAW;QACnC;IAEF,EAAE,OAAOC,OAAO;QACdC,eAAM,CAACD,KAAK,CAAC,6BAA6B;YAAEA;QAAM;QAClD,OAAOhC,oBAAY,CAACC,IAAI,CAAC;YACvBC,SAAS;YACT8B,OAAO;QACT,GAAG;YACDE,QAAQ;QACV;IACF;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "0318ac9599585f9656fc8936c3333f52c9a0a90f"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_uo4aymed9 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_uo4aymed9();
+cov_uo4aymed9().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_uo4aymed9().s[1]++;
+Object.defineProperty(exports, "GET", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_uo4aymed9().f[0]++;
+    cov_uo4aymed9().s[2]++;
+    return GET;
+  }
+});
+const _server =
+/* istanbul ignore next */
+(cov_uo4aymed9().s[3]++, require("next/server"));
+const _auth =
+/* istanbul ignore next */
+(cov_uo4aymed9().s[4]++, require("../../../../../lib/api/middleware/auth"));
+const _db =
+/* istanbul ignore next */
+(cov_uo4aymed9().s[5]++, require("../../../../../lib/db"));
+const _logging =
+/* istanbul ignore next */
+(cov_uo4aymed9().s[6]++, require("../../../../../lib/api/services/logging"));
+const _metrics =
+/* istanbul ignore next */
+(cov_uo4aymed9().s[7]++, require("../../../../../lib/api/services/metrics"));
+const metrics =
+/* istanbul ignore next */
+(cov_uo4aymed9().s[8]++, new _metrics.PrometheusMetrics());
+async function GET(request) {
+  /* istanbul ignore next */
+  cov_uo4aymed9().f[1]++;
+  const authError =
+  /* istanbul ignore next */
+  (cov_uo4aymed9().s[9]++, await (0, _auth.validateApiKey)(request));
+  /* istanbul ignore next */
+  cov_uo4aymed9().s[10]++;
+  if (authError) {
+    /* istanbul ignore next */
+    cov_uo4aymed9().b[0][0]++;
+    cov_uo4aymed9().s[11]++;
+    return authError;
+  } else
+  /* istanbul ignore next */
+  {
+    cov_uo4aymed9().b[0][1]++;
+  }
+  cov_uo4aymed9().s[12]++;
+  try {
+    /* istanbul ignore next */
+    cov_uo4aymed9().s[13]++;
+    await (0, _db.connectToDatabase)();
+    const stats =
+    /* istanbul ignore next */
+    (cov_uo4aymed9().s[14]++, await metrics.collect());
+    /* istanbul ignore next */
+    cov_uo4aymed9().s[15]++;
+    return _server.NextResponse.json({
+      success: true,
+      data: {
+        requests: {
+          total: stats.totalRequests,
+          success: stats.successfulRequests,
+          failed: stats.failedRequests,
+          latency: stats.averageLatency
+        },
+        fulfillment: {
+          pending: stats.pendingOrders,
+          processing: stats.processingOrders,
+          completed: stats.completedOrders,
+          failed: stats.failedOrders
+        },
+        providers: stats.providerMetrics,
+        system: {
+          memory: process.memoryUsage(),
+          cpu: process.cpuUsage(),
+          uptime: process.uptime()
+        }
+      },
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_uo4aymed9().s[16]++;
+    _logging.logger.error('Metrics collection failed', {
+      error
+    });
+    /* istanbul ignore next */
+    cov_uo4aymed9().s[17]++;
+    return _server.NextResponse.json({
+      success: false,
+      error: 'Failed to collect metrics'
+    }, {
+      status: 500
+    });
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfdW80YXltZWQ5IiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiR0VUIiwibWV0cmljcyIsIl9tZXRyaWNzIiwiUHJvbWV0aGV1c01ldHJpY3MiLCJyZXF1ZXN0IiwiZiIsImF1dGhFcnJvciIsIl9hdXRoIiwidmFsaWRhdGVBcGlLZXkiLCJiIiwiX2RiIiwiY29ubmVjdFRvRGF0YWJhc2UiLCJzdGF0cyIsImNvbGxlY3QiLCJfc2VydmVyIiwiTmV4dFJlc3BvbnNlIiwianNvbiIsInN1Y2Nlc3MiLCJkYXRhIiwicmVxdWVzdHMiLCJ0b3RhbCIsInRvdGFsUmVxdWVzdHMiLCJzdWNjZXNzZnVsUmVxdWVzdHMiLCJmYWlsZWQiLCJmYWlsZWRSZXF1ZXN0cyIsImxhdGVuY3kiLCJhdmVyYWdlTGF0ZW5jeSIsImZ1bGZpbGxtZW50IiwicGVuZGluZyIsInBlbmRpbmdPcmRlcnMiLCJwcm9jZXNzaW5nIiwicHJvY2Vzc2luZ09yZGVycyIsImNvbXBsZXRlZCIsImNvbXBsZXRlZE9yZGVycyIsImZhaWxlZE9yZGVycyIsInByb3ZpZGVycyIsInByb3ZpZGVyTWV0cmljcyIsInN5c3RlbSIsIm1lbW9yeSIsInByb2Nlc3MiLCJtZW1vcnlVc2FnZSIsImNwdSIsImNwdVVzYWdlIiwidXB0aW1lIiwidGltZXN0YW1wIiwiRGF0ZSIsInRvSVNPU3RyaW5nIiwiZXJyb3IiLCJfbG9nZ2luZyIsImxvZ2dlciIsInN0YXR1cyJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9hcHAvYXBpL3YxL21vbml0b3JpbmcvbWV0cmljcy9yb3V0ZS50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBOZXh0UmVxdWVzdCwgTmV4dFJlc3BvbnNlIH0gZnJvbSAnbmV4dC9zZXJ2ZXInO1xuaW1wb3J0IHsgdmFsaWRhdGVBcGlLZXkgfSBmcm9tICdAL2xpYi9hcGkvbWlkZGxld2FyZS9hdXRoJztcbmltcG9ydCB7IGNvbm5lY3RUb0RhdGFiYXNlIH0gZnJvbSAnQC9saWIvZGInO1xuaW1wb3J0IHsgbG9nZ2VyIH0gZnJvbSAnQC9saWIvYXBpL3NlcnZpY2VzL2xvZ2dpbmcnO1xuaW1wb3J0IHsgUHJvbWV0aGV1c01ldHJpY3MgfSBmcm9tICdAL2xpYi9hcGkvc2VydmljZXMvbWV0cmljcyc7XG5cbmNvbnN0IG1ldHJpY3MgPSBuZXcgUHJvbWV0aGV1c01ldHJpY3MoKTtcblxuZXhwb3J0IGFzeW5jIGZ1bmN0aW9uIEdFVChyZXF1ZXN0OiBOZXh0UmVxdWVzdCkge1xuICBjb25zdCBhdXRoRXJyb3IgPSBhd2FpdCB2YWxpZGF0ZUFwaUtleShyZXF1ZXN0KTtcbiAgaWYgKGF1dGhFcnJvcikgcmV0dXJuIGF1dGhFcnJvcjtcblxuICB0cnkge1xuICAgIGF3YWl0IGNvbm5lY3RUb0RhdGFiYXNlKCk7XG5cbiAgICBjb25zdCBzdGF0cyA9IGF3YWl0IG1ldHJpY3MuY29sbGVjdCgpO1xuICAgIFxuICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7XG4gICAgICBzdWNjZXNzOiB0cnVlLFxuICAgICAgZGF0YToge1xuICAgICAgICByZXF1ZXN0czoge1xuICAgICAgICAgIHRvdGFsOiBzdGF0cy50b3RhbFJlcXVlc3RzLFxuICAgICAgICAgIHN1Y2Nlc3M6IHN0YXRzLnN1Y2Nlc3NmdWxSZXF1ZXN0cyxcbiAgICAgICAgICBmYWlsZWQ6IHN0YXRzLmZhaWxlZFJlcXVlc3RzLFxuICAgICAgICAgIGxhdGVuY3k6IHN0YXRzLmF2ZXJhZ2VMYXRlbmN5XG4gICAgICAgIH0sXG4gICAgICAgIGZ1bGZpbGxtZW50OiB7XG4gICAgICAgICAgcGVuZGluZzogc3RhdHMucGVuZGluZ09yZGVycyxcbiAgICAgICAgICBwcm9jZXNzaW5nOiBzdGF0cy5wcm9jZXNzaW5nT3JkZXJzLFxuICAgICAgICAgIGNvbXBsZXRlZDogc3RhdHMuY29tcGxldGVkT3JkZXJzLFxuICAgICAgICAgIGZhaWxlZDogc3RhdHMuZmFpbGVkT3JkZXJzXG4gICAgICAgIH0sXG4gICAgICAgIHByb3ZpZGVyczogc3RhdHMucHJvdmlkZXJNZXRyaWNzLFxuICAgICAgICBzeXN0ZW06IHtcbiAgICAgICAgICBtZW1vcnk6IHByb2Nlc3MubWVtb3J5VXNhZ2UoKSxcbiAgICAgICAgICBjcHU6IHByb2Nlc3MuY3B1VXNhZ2UoKSxcbiAgICAgICAgICB1cHRpbWU6IHByb2Nlc3MudXB0aW1lKClcbiAgICAgICAgfVxuICAgICAgfSxcbiAgICAgIHRpbWVzdGFtcDogbmV3IERhdGUoKS50b0lTT1N0cmluZygpXG4gICAgfSk7XG5cbiAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICBsb2dnZXIuZXJyb3IoJ01ldHJpY3MgY29sbGVjdGlvbiBmYWlsZWQnLCB7IGVycm9yIH0pO1xuICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih7XG4gICAgICBzdWNjZXNzOiBmYWxzZSxcbiAgICAgIGVycm9yOiAnRmFpbGVkIHRvIGNvbGxlY3QgbWV0cmljcydcbiAgICB9LCB7IFxuICAgICAgc3RhdHVzOiA1MDAgXG4gICAgfSk7XG4gIH1cbn0iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBTU07SUFBQUEsYUFBQSxZQUFBQSxDQUFBO01BQUEsT0FBQUMsY0FBQTtJQUFBO0VBQUE7RUFBQSxP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

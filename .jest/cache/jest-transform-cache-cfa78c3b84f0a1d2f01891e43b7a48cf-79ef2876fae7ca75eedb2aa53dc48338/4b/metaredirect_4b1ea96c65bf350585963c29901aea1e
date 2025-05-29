@@ -1,0 +1,411 @@
+db98451123b244a01e6bae1a535c23f3
+'use client';
+"use strict";
+
+/* istanbul ignore next */
+function cov_u2wt6solh() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/meta-redirect.tsx";
+  var hash = "c3a3c12d5283433e88d12fcd4f6d9c2bcfb1ff2f";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/meta-redirect.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 28
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 15
+        },
+        end: {
+          line: 13,
+          column: 31
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 20
+        },
+        end: {
+          line: 14,
+          column: 46
+        }
+      },
+      "6": {
+        start: {
+          line: 16,
+          column: 19
+        },
+        end: {
+          line: 16,
+          column: 47
+        }
+      },
+      "7": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 26,
+          column: 7
+        }
+      },
+      "8": {
+        start: {
+          line: 18,
+          column: 24
+        },
+        end: {
+          line: 20,
+          column: 17
+        }
+      },
+      "9": {
+        start: {
+          line: 19,
+          column: 12
+        },
+        end: {
+          line: 19,
+          column: 28
+        }
+      },
+      "10": {
+        start: {
+          line: 21,
+          column: 8
+        },
+        end: {
+          line: 21,
+          column: 41
+        }
+      },
+      "11": {
+        start: {
+          line: 21,
+          column: 19
+        },
+        end: {
+          line: 21,
+          column: 40
+        }
+      },
+      "12": {
+        start: {
+          line: 27,
+          column: 4
+        },
+        end: {
+          line: 38,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "MetaRedirect",
+        decl: {
+          start: {
+            line: 15,
+            column: 9
+          },
+          end: {
+            line: 15,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 41
+          },
+          end: {
+            line: 39,
+            column: 1
+          }
+        },
+        line: 15
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 17,
+            column: 26
+          },
+          end: {
+            line: 17,
+            column: 27
+          }
+        },
+        loc: {
+          start: {
+            line: 17,
+            column: 30
+          },
+          end: {
+            line: 22,
+            column: 5
+          }
+        },
+        line: 17
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 18,
+            column: 35
+          },
+          end: {
+            line: 18,
+            column: 36
+          }
+        },
+        loc: {
+          start: {
+            line: 18,
+            column: 39
+          },
+          end: {
+            line: 20,
+            column: 9
+          }
+        },
+        line: 18
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 21,
+            column: 15
+          },
+          end: {
+            line: 21,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 19
+          },
+          end: {
+            line: 21,
+            column: 40
+          }
+        },
+        line: 21
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 15,
+            column: 28
+          },
+          end: {
+            line: 15,
+            column: 37
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 15,
+            column: 36
+          },
+          end: {
+            line: 15,
+            column: 37
+          }
+        }],
+        line: 15
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/meta-redirect.tsx"],
+      sourcesContent: ["'use client'\n\nimport { useEffect } from 'react'\nimport { useRouter } from 'next/navigation'\n\ninterface MetaRedirectProps {\n  to: string\n  delay?: number\n}\n\nexport default function MetaRedirect({ to, delay = 0 }: MetaRedirectProps) {\n  const router = useRouter()\n\n  useEffect(() => {\n    const timeout = setTimeout(() => {\n      router.push(to)\n    }, delay)\n\n    return () => clearTimeout(timeout)\n  }, [to, delay, router])\n\n  return (\n    <>\n      <meta httpEquiv=\"refresh\" content={`${delay / 1000};url=${to}`} />\n      <link rel=\"canonical\" href={to} />\n    </>\n  )\n}\n"],
+      names: ["MetaRedirect", "to", "delay", "router", "useRouter", "useEffect", "timeout", "setTimeout", "push", "clearTimeout", "meta", "httpEquiv", "content", "link", "rel", "href"],
+      mappings: "AAAA;;;;;+BAUA;;;eAAwBA;;;;uBARE;4BACA;AAOX,SAASA,aAAa,EAAEC,EAAE,EAAEC,QAAQ,CAAC,EAAqB;IACvE,MAAMC,SAASC,IAAAA,qBAAS;IAExBC,IAAAA,gBAAS,EAAC;QACR,MAAMC,UAAUC,WAAW;YACzBJ,OAAOK,IAAI,CAACP;QACd,GAAGC;QAEH,OAAO,IAAMO,aAAaH;IAC5B,GAAG;QAACL;QAAIC;QAAOC;KAAO;IAEtB,qBACE;;0BACE,qBAACO;gBAAKC,WAAU;gBAAUC,SAAS,GAAGV,QAAQ,KAAK,KAAK,EAAED,IAAI;;0BAC9D,qBAACY;gBAAKC,KAAI;gBAAYC,MAAMd;;;;AAGlC"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "c3a3c12d5283433e88d12fcd4f6d9c2bcfb1ff2f"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_u2wt6solh = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_u2wt6solh();
+cov_u2wt6solh().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_u2wt6solh().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_u2wt6solh().f[0]++;
+    cov_u2wt6solh().s[2]++;
+    return MetaRedirect;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_u2wt6solh().s[3]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(cov_u2wt6solh().s[4]++, require("react"));
+const _navigation =
+/* istanbul ignore next */
+(cov_u2wt6solh().s[5]++, require("next/navigation"));
+function MetaRedirect({
+  to,
+  delay =
+  /* istanbul ignore next */
+  (cov_u2wt6solh().b[0][0]++, 0)
+}) {
+  /* istanbul ignore next */
+  cov_u2wt6solh().f[1]++;
+  const router =
+  /* istanbul ignore next */
+  (cov_u2wt6solh().s[6]++, (0, _navigation.useRouter)());
+  /* istanbul ignore next */
+  cov_u2wt6solh().s[7]++;
+  (0, _react.useEffect)(() => {
+    /* istanbul ignore next */
+    cov_u2wt6solh().f[2]++;
+    const timeout =
+    /* istanbul ignore next */
+    (cov_u2wt6solh().s[8]++, setTimeout(() => {
+      /* istanbul ignore next */
+      cov_u2wt6solh().f[3]++;
+      cov_u2wt6solh().s[9]++;
+      router.push(to);
+    }, delay));
+    /* istanbul ignore next */
+    cov_u2wt6solh().s[10]++;
+    return () => {
+      /* istanbul ignore next */
+      cov_u2wt6solh().f[4]++;
+      cov_u2wt6solh().s[11]++;
+      return clearTimeout(timeout);
+    };
+  }, [to, delay, router]);
+  /* istanbul ignore next */
+  cov_u2wt6solh().s[12]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)("meta", {
+      httpEquiv: "refresh",
+      content: `${delay / 1000};url=${to}`
+    }), /*#__PURE__*/(0, _jsxruntime.jsx)("link", {
+      rel: "canonical",
+      href: to
+    })]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfdTJ3dDZzb2xoIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiTWV0YVJlZGlyZWN0IiwidG8iLCJkZWxheSIsImIiLCJmIiwicm91dGVyIiwiX25hdmlnYXRpb24iLCJ1c2VSb3V0ZXIiLCJfcmVhY3QiLCJ1c2VFZmZlY3QiLCJ0aW1lb3V0Iiwic2V0VGltZW91dCIsInB1c2giLCJjbGVhclRpbWVvdXQiLCJfanN4cnVudGltZSIsImpzeHMiLCJGcmFnbWVudCIsImpzeCIsImh0dHBFcXVpdiIsImNvbnRlbnQiLCJyZWwiLCJocmVmIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2NvbXBvbmVudHMvbWV0YS1yZWRpcmVjdC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBjbGllbnQnXG5cbmltcG9ydCB7IHVzZUVmZmVjdCB9IGZyb20gJ3JlYWN0J1xuaW1wb3J0IHsgdXNlUm91dGVyIH0gZnJvbSAnbmV4dC9uYXZpZ2F0aW9uJ1xuXG5pbnRlcmZhY2UgTWV0YVJlZGlyZWN0UHJvcHMge1xuICB0bzogc3RyaW5nXG4gIGRlbGF5PzogbnVtYmVyXG59XG5cbmV4cG9ydCBkZWZhdWx0IGZ1bmN0aW9uIE1ldGFSZWRpcmVjdCh7IHRvLCBkZWxheSA9IDAgfTogTWV0YVJlZGlyZWN0UHJvcHMpIHtcbiAgY29uc3Qgcm91dGVyID0gdXNlUm91dGVyKClcblxuICB1c2VFZmZlY3QoKCkgPT4ge1xuICAgIGNvbnN0IHRpbWVvdXQgPSBzZXRUaW1lb3V0KCgpID0+IHtcbiAgICAgIHJvdXRlci5wdXNoKHRvKVxuICAgIH0sIGRlbGF5KVxuXG4gICAgcmV0dXJuICgpID0+IGNsZWFyVGltZW91dCh0aW1lb3V0KVxuICB9LCBbdG8sIGRlbGF5LCByb3V0ZXJdKVxuXG4gIHJldHVybiAoXG4gICAgPD5cbiAgICAgIDxtZXRhIGh0dHBFcXVpdj1cInJlZnJlc2hcIiBjb250ZW50PXtgJHtkZWxheSAvIDEwMDB9O3VybD0ke3RvfWB9IC8+XG4gICAgICA8bGluayByZWw9XCJjYW5vbmljYWxcIiBocmVmPXt0b30gLz5cbiAgICA8Lz5cbiAgKVxufVxuIl0sIm1hcHBpbmdzIjoiQUFBQTs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFXUTtJQUFBQSxhQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxhQUFBO0FBQUFBLGFBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQURSOzs7Ozs7V0FBd0JDLFlBQUE7Ozs7Ozs7O2lDQVJFOzs7aUNBQ0E7QUFPWCxTQUFTQSxhQUFhO0VBQUVDLEVBQUU7RUFBRUMsS0FBQTtFQUFBO0VBQUEsQ0FBQUwsYUFBQSxHQUFBTSxDQUFBLFVBQVEsQ0FBQztBQUFBLENBQXFCO0VBQUE7RUFBQU4sYUFBQSxHQUFBTyxDQUFBO0VBQ3ZFLE1BQU1DLE1BQUE7RUFBQTtFQUFBLENBQUFSLGFBQUEsR0FBQUUsQ0FBQSxPQUFTLElBQUFPLFdBQUEsQ0FBQUMsU0FBUztFQUFBO0VBQUFWLGFBQUEsR0FBQUUsQ0FBQTtFQUV4QixJQUFBUyxNQUFBLENBQUFDLFNBQVMsRUFBQztJQUFBO0lBQUFaLGFBQUEsR0FBQU8sQ0FBQTtJQUNSLE1BQU1NLE9BQUE7SUFBQTtJQUFBLENBQUFiLGFBQUEsR0FBQUUsQ0FBQSxPQUFVWSxVQUFBLENBQVc7TUFBQTtNQUFBZCxhQUFBLEdBQUFPLENBQUE7TUFBQVAsYUFBQSxHQUFBRSxDQUFBO01BQ3pCTSxNQUFBLENBQU9PLElBQUksQ0FBQ1gsRUFBQTtJQUNkLEdBQUdDLEtBQUE7SUFBQTtJQUFBTCxhQUFBLEdBQUFFLENBQUE7SUFFSCxPQUFPLE1BQU07TUFBQTtNQUFBRixhQUFBLEdBQUFPLENBQUE7TUFBQVAsYUFBQSxHQUFBRSxDQUFBO01BQUEsT0FBQWMsWUFBQSxDQUFhSCxPQUFBO0lBQUE7RUFDNUIsR0FBRyxDQUFDVCxFQUFBLEVBQUlDLEtBQUEsRUFBT0csTUFBQSxDQUFPO0VBQUE7RUFBQVIsYUFBQSxHQUFBRSxDQUFBO0VBRXRCLG9CQUNFLElBQUFlLFdBQUEsQ0FBQUMsSUFBQSxFQUFBRCxXQUFBLENBQUFFLFFBQUE7NEJBQ0UsSUFBQUYsV0FBQSxDQUFBRyxHQUFBLEVBQUM7TUFBS0MsU0FBQSxFQUFVO01BQVVDLE9BQUEsRUFBUyxHQUFHakIsS0FBQSxHQUFRLFlBQVlELEVBQUE7cUJBQzFELElBQUFhLFdBQUEsQ0FBQUcsR0FBQSxFQUFDO01BQUtHLEdBQUEsRUFBSTtNQUFZQyxJQUFBLEVBQU1wQjs7O0FBR2xDIiwiaWdub3JlTGlzdCI6W119

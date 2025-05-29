@@ -1,0 +1,376 @@
+d5ca6f052b5674abfecece5a616aab24
+"use strict";
+
+/* istanbul ignore next */
+function cov_1txewu1sow() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/auth/authenticate/route.ts";
+  var hash = "150e4bedb1d74ecc607d782ff04a67bc79309ffb";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/auth/authenticate/route.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 20
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 16
+        },
+        end: {
+          line: 11,
+          column: 38
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 14
+        },
+        end: {
+          line: 12,
+          column: 45
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 4
+        },
+        end: {
+          line: 32,
+          column: 5
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 28
+        },
+        end: {
+          line: 15,
+          column: 44
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 21
+        },
+        end: {
+          line: 16,
+          column: 67
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 8
+        },
+        end: {
+          line: 23,
+          column: 9
+        }
+      },
+      "9": {
+        start: {
+          line: 18,
+          column: 12
+        },
+        end: {
+          line: 22,
+          column: 15
+        }
+      },
+      "10": {
+        start: {
+          line: 24,
+          column: 8
+        },
+        end: {
+          line: 24,
+          column: 47
+        }
+      },
+      "11": {
+        start: {
+          line: 26,
+          column: 8
+        },
+        end: {
+          line: 26,
+          column: 54
+        }
+      },
+      "12": {
+        start: {
+          line: 27,
+          column: 8
+        },
+        end: {
+          line: 31,
+          column: 11
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "POST",
+        decl: {
+          start: {
+            line: 13,
+            column: 15
+          },
+          end: {
+            line: 13,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 25
+          },
+          end: {
+            line: 33,
+            column: 1
+          }
+        },
+        line: 13
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 8
+          },
+          end: {
+            line: 23,
+            column: 9
+          }
+        },
+        type: "if",
+        locations: [{
+          start: {
+            line: 17,
+            column: 8
+          },
+          end: {
+            line: 23,
+            column: 9
+          }
+        }, {
+          start: {
+            line: undefined,
+            column: undefined
+          },
+          end: {
+            line: undefined,
+            column: undefined
+          }
+        }],
+        line: 17
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 28,
+            column: 19
+          },
+          end: {
+            line: 28,
+            column: 83
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 28,
+            column: 44
+          },
+          end: {
+            line: 28,
+            column: 57
+          }
+        }, {
+          start: {
+            line: 28,
+            column: 60
+          },
+          end: {
+            line: 28,
+            column: 83
+          }
+        }],
+        line: 28
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/api/auth/authenticate/route.ts"],
+      sourcesContent: ["import { NextResponse } from 'next/server';\nimport { authenticateUser } from '@/lib/auth';\n\nexport async function POST(req: Request) {\n  try {\n    const credentials = await req.json();\n    const user = await authenticateUser(credentials);\n    \n    if (!user) {\n      return NextResponse.json(\n        { error: 'Invalid credentials' },\n        { status: 401 }\n      );\n    }\n\n    return NextResponse.json(user);\n  } catch (error) {\n    console.error('Authentication error:', error);\n    return NextResponse.json(\n      { error: error instanceof Error ? error.message : 'Authentication failed' },\n      { status: 500 }\n    );\n  }\n}"],
+      names: ["POST", "req", "credentials", "json", "user", "authenticateUser", "NextResponse", "error", "status", "console", "Error", "message"],
+      mappings: ";;;;+BAGsBA;;;eAAAA;;;wBAHO;sBACI;AAE1B,eAAeA,KAAKC,GAAY;IACrC,IAAI;QACF,MAAMC,cAAc,MAAMD,IAAIE,IAAI;QAClC,MAAMC,OAAO,MAAMC,IAAAA,sBAAgB,EAACH;QAEpC,IAAI,CAACE,MAAM;YACT,OAAOE,oBAAY,CAACH,IAAI,CACtB;gBAAEI,OAAO;YAAsB,GAC/B;gBAAEC,QAAQ;YAAI;QAElB;QAEA,OAAOF,oBAAY,CAACH,IAAI,CAACC;IAC3B,EAAE,OAAOG,OAAO;QACdE,QAAQF,KAAK,CAAC,yBAAyBA;QACvC,OAAOD,oBAAY,CAACH,IAAI,CACtB;YAAEI,OAAOA,iBAAiBG,QAAQH,MAAMI,OAAO,GAAG;QAAwB,GAC1E;YAAEH,QAAQ;QAAI;IAElB;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "150e4bedb1d74ecc607d782ff04a67bc79309ffb"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1txewu1sow = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1txewu1sow();
+cov_1txewu1sow().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1txewu1sow().s[1]++;
+Object.defineProperty(exports, "POST", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1txewu1sow().f[0]++;
+    cov_1txewu1sow().s[2]++;
+    return POST;
+  }
+});
+const _server =
+/* istanbul ignore next */
+(cov_1txewu1sow().s[3]++, require("next/server"));
+const _auth =
+/* istanbul ignore next */
+(cov_1txewu1sow().s[4]++, require("../../../../lib/auth"));
+async function POST(req) {
+  /* istanbul ignore next */
+  cov_1txewu1sow().f[1]++;
+  cov_1txewu1sow().s[5]++;
+  try {
+    const credentials =
+    /* istanbul ignore next */
+    (cov_1txewu1sow().s[6]++, await req.json());
+    const user =
+    /* istanbul ignore next */
+    (cov_1txewu1sow().s[7]++, await (0, _auth.authenticateUser)(credentials));
+    /* istanbul ignore next */
+    cov_1txewu1sow().s[8]++;
+    if (!user) {
+      /* istanbul ignore next */
+      cov_1txewu1sow().b[0][0]++;
+      cov_1txewu1sow().s[9]++;
+      return _server.NextResponse.json({
+        error: 'Invalid credentials'
+      }, {
+        status: 401
+      });
+    } else
+    /* istanbul ignore next */
+    {
+      cov_1txewu1sow().b[0][1]++;
+    }
+    cov_1txewu1sow().s[10]++;
+    return _server.NextResponse.json(user);
+  } catch (error) {
+    /* istanbul ignore next */
+    cov_1txewu1sow().s[11]++;
+    console.error('Authentication error:', error);
+    /* istanbul ignore next */
+    cov_1txewu1sow().s[12]++;
+    return _server.NextResponse.json({
+      error: error instanceof Error ?
+      /* istanbul ignore next */
+      (cov_1txewu1sow().b[1][0]++, error.message) :
+      /* istanbul ignore next */
+      (cov_1txewu1sow().b[1][1]++, 'Authentication failed')
+    }, {
+      status: 500
+    });
+  }
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMXR4ZXd1MXNvdyIsImFjdHVhbENvdmVyYWdlIiwicyIsIlBPU1QiLCJyZXEiLCJmIiwiY3JlZGVudGlhbHMiLCJqc29uIiwidXNlciIsIl9hdXRoIiwiYXV0aGVudGljYXRlVXNlciIsImIiLCJfc2VydmVyIiwiTmV4dFJlc3BvbnNlIiwiZXJyb3IiLCJzdGF0dXMiLCJjb25zb2xlIiwiRXJyb3IiLCJtZXNzYWdlIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2FwcC9hcGkvYXV0aC9hdXRoZW50aWNhdGUvcm91dGUudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgTmV4dFJlc3BvbnNlIH0gZnJvbSAnbmV4dC9zZXJ2ZXInO1xuaW1wb3J0IHsgYXV0aGVudGljYXRlVXNlciB9IGZyb20gJ0AvbGliL2F1dGgnO1xuXG5leHBvcnQgYXN5bmMgZnVuY3Rpb24gUE9TVChyZXE6IFJlcXVlc3QpIHtcbiAgdHJ5IHtcbiAgICBjb25zdCBjcmVkZW50aWFscyA9IGF3YWl0IHJlcS5qc29uKCk7XG4gICAgY29uc3QgdXNlciA9IGF3YWl0IGF1dGhlbnRpY2F0ZVVzZXIoY3JlZGVudGlhbHMpO1xuICAgIFxuICAgIGlmICghdXNlcikge1xuICAgICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxuICAgICAgICB7IGVycm9yOiAnSW52YWxpZCBjcmVkZW50aWFscycgfSxcbiAgICAgICAgeyBzdGF0dXM6IDQwMSB9XG4gICAgICApO1xuICAgIH1cblxuICAgIHJldHVybiBOZXh0UmVzcG9uc2UuanNvbih1c2VyKTtcbiAgfSBjYXRjaCAoZXJyb3IpIHtcbiAgICBjb25zb2xlLmVycm9yKCdBdXRoZW50aWNhdGlvbiBlcnJvcjonLCBlcnJvcik7XG4gICAgcmV0dXJuIE5leHRSZXNwb25zZS5qc29uKFxuICAgICAgeyBlcnJvcjogZXJyb3IgaW5zdGFuY2VvZiBFcnJvciA/IGVycm9yLm1lc3NhZ2UgOiAnQXV0aGVudGljYXRpb24gZmFpbGVkJyB9LFxuICAgICAgeyBzdGF0dXM6IDUwMCB9XG4gICAgKTtcbiAgfVxufSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFNSTtJQUFBQSxjQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxjQUFBO0FBQUFBLGNBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQUhrQjs7Ozs7O1dBQUFDLElBQUE7Ozs7O2tDQUhPOzs7a0NBQ0k7QUFFMUIsZUFBZUEsS0FBS0MsR0FBWTtFQUFBO0VBQUFKLGNBQUEsR0FBQUssQ0FBQTtFQUFBTCxjQUFBLEdBQUFFLENBQUE7RUFDckMsSUFBSTtJQUNGLE1BQU1JLFdBQUE7SUFBQTtJQUFBLENBQUFOLGNBQUEsR0FBQUUsQ0FBQSxPQUFjLE1BQU1FLEdBQUEsQ0FBSUcsSUFBSTtJQUNsQyxNQUFNQyxJQUFBO0lBQUE7SUFBQSxDQUFBUixjQUFBLEdBQUFFLENBQUEsT0FBTyxNQUFNLElBQUFPLEtBQUEsQ0FBQUMsZ0JBQWdCLEVBQUNKLFdBQUE7SUFBQTtJQUFBTixjQUFBLEdBQUFFLENBQUE7SUFFcEMsSUFBSSxDQUFDTSxJQUFBLEVBQU07TUFBQTtNQUFBUixjQUFBLEdBQUFXLENBQUE7TUFBQVgsY0FBQSxHQUFBRSxDQUFBO01BQ1QsT0FBT1UsT0FBQSxDQUFBQyxZQUFZLENBQUNOLElBQUksQ0FDdEI7UUFBRU8sS0FBQSxFQUFPO01BQXNCLEdBQy9CO1FBQUVDLE1BQUEsRUFBUTtNQUFJO0lBRWxCO0lBQUE7SUFBQTtNQUFBZixjQUFBLEdBQUFXLENBQUE7SUFBQTtJQUFBWCxjQUFBLEdBQUFFLENBQUE7SUFFQSxPQUFPVSxPQUFBLENBQUFDLFlBQVksQ0FBQ04sSUFBSSxDQUFDQyxJQUFBO0VBQzNCLEVBQUUsT0FBT00sS0FBQSxFQUFPO0lBQUE7SUFBQWQsY0FBQSxHQUFBRSxDQUFBO0lBQ2RjLE9BQUEsQ0FBUUYsS0FBSyxDQUFDLHlCQUF5QkEsS0FBQTtJQUFBO0lBQUFkLGNBQUEsR0FBQUUsQ0FBQTtJQUN2QyxPQUFPVSxPQUFBLENBQUFDLFlBQVksQ0FBQ04sSUFBSSxDQUN0QjtNQUFFTyxLQUFBLEVBQU9BLEtBQUEsWUFBaUJHLEtBQUE7TUFBQTtNQUFBLENBQUFqQixjQUFBLEdBQUFXLENBQUEsVUFBUUcsS0FBQSxDQUFNSSxPQUFPO01BQUE7TUFBQSxDQUFBbEIsY0FBQSxHQUFBVyxDQUFBLFVBQUc7SUFBd0IsR0FDMUU7TUFBRUksTUFBQSxFQUFRO0lBQUk7RUFFbEI7QUFDRiIsImlnbm9yZUxpc3QiOltdfQ==

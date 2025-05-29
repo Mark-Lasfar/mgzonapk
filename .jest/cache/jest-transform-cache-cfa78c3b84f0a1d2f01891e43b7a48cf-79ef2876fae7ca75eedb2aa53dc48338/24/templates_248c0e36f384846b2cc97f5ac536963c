@@ -1,0 +1,669 @@
+799e8b623b0416703bc7bb7cc0d33aa0
+"use strict";
+
+/* istanbul ignore next */
+function cov_q2ojya6a6() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/services/email/templates.ts";
+  var hash = "cef511893d1e9ec93de4a98525fc536a1793b337";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/services/email/templates.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 30
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 15
+        },
+        end: {
+          line: 11,
+          column: 44
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 15
+        },
+        end: {
+          line: 52,
+          column: 1
+        }
+      },
+      "5": {
+        start: {
+          line: 53,
+          column: 23
+        },
+        end: {
+          line: 197,
+          column: 1
+        }
+      },
+      "6": {
+        start: {
+          line: 54,
+          column: 33
+        },
+        end: {
+          line: 88,
+          column: 9
+        }
+      },
+      "7": {
+        start: {
+          line: 89,
+          column: 39
+        },
+        end: {
+          line: 135,
+          column: 9
+        }
+      },
+      "8": {
+        start: {
+          line: 106,
+          column: 40
+        },
+        end: {
+          line: 112,
+          column: 15
+        }
+      },
+      "9": {
+        start: {
+          line: 129,
+          column: 26
+        },
+        end: {
+          line: 129,
+          column: 105
+        }
+      },
+      "10": {
+        start: {
+          line: 136,
+          column: 40
+        },
+        end: {
+          line: 169,
+          column: 9
+        }
+      },
+      "11": {
+        start: {
+          line: 170,
+          column: 54
+        },
+        end: {
+          line: 196,
+          column: 9
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 54,
+            column: 18
+          },
+          end: {
+            line: 54,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 54,
+            column: 33
+          },
+          end: {
+            line: 88,
+            column: 9
+          }
+        },
+        line: 54
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 89,
+            column: 23
+          },
+          end: {
+            line: 89,
+            column: 24
+          }
+        },
+        loc: {
+          start: {
+            line: 89,
+            column: 39
+          },
+          end: {
+            line: 135,
+            column: 9
+          }
+        },
+        line: 89
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 106,
+            column: 32
+          },
+          end: {
+            line: 106,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 106,
+            column: 40
+          },
+          end: {
+            line: 112,
+            column: 15
+          }
+        },
+        line: 106
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 129,
+            column: 18
+          },
+          end: {
+            line: 129,
+            column: 19
+          }
+        },
+        loc: {
+          start: {
+            line: 129,
+            column: 26
+          },
+          end: {
+            line: 129,
+            column: 105
+          }
+        },
+        line: 129
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 136,
+            column: 19
+          },
+          end: {
+            line: 136,
+            column: 20
+          }
+        },
+        loc: {
+          start: {
+            line: 136,
+            column: 40
+          },
+          end: {
+            line: 169,
+            column: 9
+          }
+        },
+        line: 136
+      },
+      "6": {
+        name: "(anonymous_6)",
+        decl: {
+          start: {
+            line: 170,
+            column: 20
+          },
+          end: {
+            line: 170,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 170,
+            column: 54
+          },
+          end: {
+            line: 196,
+            column: 9
+          }
+        },
+        line: 170
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 181,
+            column: 12
+          },
+          end: {
+            line: 181,
+            column: 94
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 181,
+            column: 29
+          },
+          end: {
+            line: 181,
+            column: 89
+          }
+        }, {
+          start: {
+            line: 181,
+            column: 92
+          },
+          end: {
+            line: 181,
+            column: 94
+          }
+        }],
+        line: 181
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 192,
+            column: 2
+          },
+          end: {
+            line: 192,
+            column: 60
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 192,
+            column: 19
+          },
+          end: {
+            line: 192,
+            column: 55
+          }
+        }, {
+          start: {
+            line: 192,
+            column: 58
+          },
+          end: {
+            line: 192,
+            column: 60
+          }
+        }],
+        line: 192
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/services/email/templates.ts"],
+      sourcesContent: ["import { EMAIL_CONFIG } from '@/lib/config/email';\n\nconst styles = `\n  .email-container { \n    font-family: Arial, sans-serif; \n    max-width: 600px; \n    margin: 0 auto; \n    padding: 20px; \n    background-color: #ffffff;\n  }\n  .email-header { \n    text-align: center; \n    margin-bottom: 30px;\n  }\n  .email-code, .email-box {\n    background-color: #f4f4f4; \n    padding: 15px; \n    text-align: center; \n    font-size: 24px; \n    letter-spacing: 2px; \n    margin: 20px 0; \n    border-radius: 5px;\n  }\n  .email-footer { \n    margin-top: 30px; \n    text-align: center; \n    font-size: 12px; \n    color: #666;\n  }\n  table {\n    width: 100%; \n    border-collapse: collapse;\n    margin-top: 20px;\n  }\n  th, td {\n    padding: 10px; \n    border: 1px solid #ddd;\n    text-align: left;\n  }\n  th {\n    background-color: #f8f9fa;\n  }\n`;\n\nexport const emailTemplates = {\n  verification: (name: string, code: string) => ({\n    subject: EMAIL_CONFIG.TEMPLATES.VERIFICATION.SUBJECT,\n    from: `${EMAIL_CONFIG.TEMPLATES.VERIFICATION.FROM_NAME} <${EMAIL_CONFIG.TEMPLATES.VERIFICATION.FROM_EMAIL}>`,\n    html: `\n      <!DOCTYPE html>\n      <html>\n      <head><style>${styles}</style></head>\n      <body>\n        <div class=\"email-container\">\n          <div class=\"email-header\"><h1>Email Verification</h1></div>\n          <p>Hello ${name},</p>\n          <p>Please use this code to verify your email:</p>\n          <div class=\"email-code\"><strong>${code}</strong></div>\n          <p>This code will expire in 10 minutes.</p>\n          <p>If you didn't request this code, please ignore this email.</p>\n          <div class=\"email-footer\">\n            <p>This is an automated message from MGZon</p>\n            <p>&copy; ${new Date().getFullYear()} MGZon. All rights reserved.</p>\n          </div>\n        </div>\n      </body>\n      </html>\n    `,\n    text: `\nHello ${name},\n\nPlease use this code to verify your email:\n${code}\n\nThis code will expire in 10 minutes.\nIf you didn't request this code, please ignore this email.\n\nMGZon \xA9 ${new Date().getFullYear()}\n    `\n  }),\n\n  orderConfirmation: (user: { name: string }, order: any) => ({\n    subject: EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.SUBJECT,\n    from: `${EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.FROM_NAME} <${EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.FROM_EMAIL}>`,\n    html: `\n      <!DOCTYPE html>\n      <html>\n      <head><style>${styles}</style></head>\n      <body>\n        <div class=\"email-container\">\n          <div class=\"email-header\"><h1>Order Confirmation</h1></div>\n          <p>Thanks for your order, ${user.name}!</p>\n          <p>Your order <strong>#${order._id}</strong> has been confirmed.</p>\n          <table>\n            <thead>\n              <tr><th>Item</th><th>Qty</th><th>Total</th></tr>\n            </thead>\n            <tbody>\n              ${order.items.map((item: any) => `\n                <tr>\n                  <td>${item.name}</td>\n                  <td>${item.quantity}</td>\n                  <td>$${(item.price * item.quantity).toFixed(2)}</td>\n                </tr>\n              `).join('')}\n            </tbody>\n          </table>\n          <p><strong>Total:</strong> $${order.totalPrice.toFixed(2)}</p>\n          <p>Expected Delivery: ${new Date(order.expectedDeliveryDate).toLocaleDateString()}</p>\n          <div class=\"email-footer\">\n            <p>View your order <a href=\"${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}\">here</a>.</p>\n          </div>\n        </div>\n      </body>\n      </html>\n    `,\n    text: `\nThanks for your order, ${user.name}!\nOrder #${order._id}\n\nItems:\n${order.items.map((item: any) => `${item.name} x ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`).join('\\n')}\n\nTotal: $${order.totalPrice.toFixed(2)}\nExpected Delivery: ${new Date(order.expectedDeliveryDate).toLocaleDateString()}\nView: ${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}\n    `\n  }),\n\n  passwordReset: (name: string, resetToken: string) => ({\n    subject: EMAIL_CONFIG.TEMPLATES.PASSWORD_RESET.SUBJECT,\n    from: `${EMAIL_CONFIG.TEMPLATES.PASSWORD_RESET.FROM_NAME} <${EMAIL_CONFIG.TEMPLATES.PASSWORD_RESET.FROM_EMAIL}>`,\n    html: `\n      <!DOCTYPE html>\n      <html>\n      <head><style>${styles}</style></head>\n      <body>\n        <div class=\"email-container\">\n          <div class=\"email-header\"><h1>Password Reset</h1></div>\n          <p>Hello ${name},</p>\n          <p>Click the link below to reset your password:</p>\n          <div class=\"email-box\">\n            <a href=\"${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetToken}\">Reset Password</a>\n          </div>\n          <p>This link will expire in 1 hour.</p>\n          <p>If you didn't request this, ignore this email.</p>\n          <div class=\"email-footer\">\n            <p>MGZon Security Team</p>\n          </div>\n        </div>\n      </body>\n      </html>\n    `,\n    text: `\nHello ${name},\n\nClick the link to reset your password:\n${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetToken}\n\nThis link will expire in 1 hour.\nIf you didn't request this, ignore this email.\n    `\n  }),\n\n  shipmentUpdate: (order: any, status: string, trackingNumber?: string) => ({\n    subject: `Order ${status} - MGZon`,\n    from: `MGZon Orders <orders@mgzon.com>`,\n    html: `\n      <!DOCTYPE html>\n      <html>\n      <head><style>${styles}</style></head>\n      <body>\n        <div class=\"email-container\">\n          <div class=\"email-header\"><h1>Shipment Update</h1></div>\n          <p>Your order <strong>#${order._id}</strong> has been ${status}.</p>\n          ${trackingNumber ? `<p>Tracking Number: <strong>${trackingNumber}</strong></p>` : ''}\n          <p>Track your order <a href=\"${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}\">here</a>.</p>\n          <div class=\"email-footer\">\n            <p>MGZon Shipping</p>\n          </div>\n        </div>\n      </body>\n      </html>\n    `,\n    text: `\nYour order #${order._id} has been ${status}.\n${trackingNumber ? `Tracking Number: ${trackingNumber}` : ''}\n\nTrack here: ${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}\n    `\n  }),\n};\n"],
+      names: ["emailTemplates", "styles", "verification", "name", "code", "subject", "EMAIL_CONFIG", "TEMPLATES", "VERIFICATION", "SUBJECT", "from", "FROM_NAME", "FROM_EMAIL", "html", "Date", "getFullYear", "text", "orderConfirmation", "user", "order", "ORDER_CONFIRMATION", "_id", "items", "map", "item", "quantity", "price", "toFixed", "join", "totalPrice", "expectedDeliveryDate", "toLocaleDateString", "process", "env", "NEXT_PUBLIC_BASE_URL", "passwordReset", "resetToken", "PASSWORD_RESET", "shipmentUpdate", "status", "trackingNumber"],
+      mappings: "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"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "cef511893d1e9ec93de4a98525fc536a1793b337"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_q2ojya6a6 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_q2ojya6a6();
+cov_q2ojya6a6().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_q2ojya6a6().s[1]++;
+Object.defineProperty(exports, "emailTemplates", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_q2ojya6a6().f[0]++;
+    cov_q2ojya6a6().s[2]++;
+    return emailTemplates;
+  }
+});
+const _email =
+/* istanbul ignore next */
+(cov_q2ojya6a6().s[3]++, require("../../config/email"));
+const styles =
+/* istanbul ignore next */
+(cov_q2ojya6a6().s[4]++, `
+  .email-container { 
+    font-family: Arial, sans-serif; 
+    max-width: 600px; 
+    margin: 0 auto; 
+    padding: 20px; 
+    background-color: #ffffff;
+  }
+  .email-header { 
+    text-align: center; 
+    margin-bottom: 30px;
+  }
+  .email-code, .email-box {
+    background-color: #f4f4f4; 
+    padding: 15px; 
+    text-align: center; 
+    font-size: 24px; 
+    letter-spacing: 2px; 
+    margin: 20px 0; 
+    border-radius: 5px;
+  }
+  .email-footer { 
+    margin-top: 30px; 
+    text-align: center; 
+    font-size: 12px; 
+    color: #666;
+  }
+  table {
+    width: 100%; 
+    border-collapse: collapse;
+    margin-top: 20px;
+  }
+  th, td {
+    padding: 10px; 
+    border: 1px solid #ddd;
+    text-align: left;
+  }
+  th {
+    background-color: #f8f9fa;
+  }
+`);
+const emailTemplates =
+/* istanbul ignore next */
+(cov_q2ojya6a6().s[5]++, {
+  verification: (name, code) => {
+    /* istanbul ignore next */
+    cov_q2ojya6a6().f[1]++;
+    cov_q2ojya6a6().s[6]++;
+    return {
+      subject: _email.EMAIL_CONFIG.TEMPLATES.VERIFICATION.SUBJECT,
+      from: `${_email.EMAIL_CONFIG.TEMPLATES.VERIFICATION.FROM_NAME} <${_email.EMAIL_CONFIG.TEMPLATES.VERIFICATION.FROM_EMAIL}>`,
+      html: `
+      <!DOCTYPE html>
+      <html>
+      <head><style>${styles}</style></head>
+      <body>
+        <div class="email-container">
+          <div class="email-header"><h1>Email Verification</h1></div>
+          <p>Hello ${name},</p>
+          <p>Please use this code to verify your email:</p>
+          <div class="email-code"><strong>${code}</strong></div>
+          <p>This code will expire in 10 minutes.</p>
+          <p>If you didn't request this code, please ignore this email.</p>
+          <div class="email-footer">
+            <p>This is an automated message from MGZon</p>
+            <p>&copy; ${new Date().getFullYear()} MGZon. All rights reserved.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+      text: `
+Hello ${name},
+
+Please use this code to verify your email:
+${code}
+
+This code will expire in 10 minutes.
+If you didn't request this code, please ignore this email.
+
+MGZon © ${new Date().getFullYear()}
+    `
+    };
+  },
+  orderConfirmation: (user, order) => {
+    /* istanbul ignore next */
+    cov_q2ojya6a6().f[2]++;
+    cov_q2ojya6a6().s[7]++;
+    return {
+      subject: _email.EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.SUBJECT,
+      from: `${_email.EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.FROM_NAME} <${_email.EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.FROM_EMAIL}>`,
+      html: `
+      <!DOCTYPE html>
+      <html>
+      <head><style>${styles}</style></head>
+      <body>
+        <div class="email-container">
+          <div class="email-header"><h1>Order Confirmation</h1></div>
+          <p>Thanks for your order, ${user.name}!</p>
+          <p>Your order <strong>#${order._id}</strong> has been confirmed.</p>
+          <table>
+            <thead>
+              <tr><th>Item</th><th>Qty</th><th>Total</th></tr>
+            </thead>
+            <tbody>
+              ${order.items.map(item => {
+        /* istanbul ignore next */
+        cov_q2ojya6a6().f[3]++;
+        cov_q2ojya6a6().s[8]++;
+        return `
+                <tr>
+                  <td>${item.name}</td>
+                  <td>${item.quantity}</td>
+                  <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                </tr>
+              `;
+      }).join('')}
+            </tbody>
+          </table>
+          <p><strong>Total:</strong> $${order.totalPrice.toFixed(2)}</p>
+          <p>Expected Delivery: ${new Date(order.expectedDeliveryDate).toLocaleDateString()}</p>
+          <div class="email-footer">
+            <p>View your order <a href="${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}">here</a>.</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+      text: `
+Thanks for your order, ${user.name}!
+Order #${order._id}
+
+Items:
+${order.items.map(item => {
+        /* istanbul ignore next */
+        cov_q2ojya6a6().f[4]++;
+        cov_q2ojya6a6().s[9]++;
+        return `${item.name} x ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`;
+      }).join('\n')}
+
+Total: $${order.totalPrice.toFixed(2)}
+Expected Delivery: ${new Date(order.expectedDeliveryDate).toLocaleDateString()}
+View: ${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}
+    `
+    };
+  },
+  passwordReset: (name, resetToken) => {
+    /* istanbul ignore next */
+    cov_q2ojya6a6().f[5]++;
+    cov_q2ojya6a6().s[10]++;
+    return {
+      subject: _email.EMAIL_CONFIG.TEMPLATES.PASSWORD_RESET.SUBJECT,
+      from: `${_email.EMAIL_CONFIG.TEMPLATES.PASSWORD_RESET.FROM_NAME} <${_email.EMAIL_CONFIG.TEMPLATES.PASSWORD_RESET.FROM_EMAIL}>`,
+      html: `
+      <!DOCTYPE html>
+      <html>
+      <head><style>${styles}</style></head>
+      <body>
+        <div class="email-container">
+          <div class="email-header"><h1>Password Reset</h1></div>
+          <p>Hello ${name},</p>
+          <p>Click the link below to reset your password:</p>
+          <div class="email-box">
+            <a href="${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetToken}">Reset Password</a>
+          </div>
+          <p>This link will expire in 1 hour.</p>
+          <p>If you didn't request this, ignore this email.</p>
+          <div class="email-footer">
+            <p>MGZon Security Team</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+      text: `
+Hello ${name},
+
+Click the link to reset your password:
+${process.env.NEXT_PUBLIC_BASE_URL}/reset-password/${resetToken}
+
+This link will expire in 1 hour.
+If you didn't request this, ignore this email.
+    `
+    };
+  },
+  shipmentUpdate: (order, status, trackingNumber) => {
+    /* istanbul ignore next */
+    cov_q2ojya6a6().f[6]++;
+    cov_q2ojya6a6().s[11]++;
+    return {
+      subject: `Order ${status} - MGZon`,
+      from: `MGZon Orders <orders@mgzon.com>`,
+      html: `
+      <!DOCTYPE html>
+      <html>
+      <head><style>${styles}</style></head>
+      <body>
+        <div class="email-container">
+          <div class="email-header"><h1>Shipment Update</h1></div>
+          <p>Your order <strong>#${order._id}</strong> has been ${status}.</p>
+          ${trackingNumber ?
+      /* istanbul ignore next */
+      (cov_q2ojya6a6().b[0][0]++, `<p>Tracking Number: <strong>${trackingNumber}</strong></p>`) :
+      /* istanbul ignore next */
+      (cov_q2ojya6a6().b[0][1]++, '')}
+          <p>Track your order <a href="${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}">here</a>.</p>
+          <div class="email-footer">
+            <p>MGZon Shipping</p>
+          </div>
+        </div>
+      </body>
+      </html>
+    `,
+      text: `
+Your order #${order._id} has been ${status}.
+${trackingNumber ?
+      /* istanbul ignore next */
+      (cov_q2ojya6a6().b[1][0]++, `Tracking Number: ${trackingNumber}`) :
+      /* istanbul ignore next */
+      (cov_q2ojya6a6().b[1][1]++, '')}
+
+Track here: ${process.env.NEXT_PUBLIC_BASE_URL}/orders/${order._id}
+    `
+    };
+  }
+});
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJlbWFpbFRlbXBsYXRlcyIsInN0eWxlcyIsImNvdl9xMm9qeWE2YTYiLCJzIiwidmVyaWZpY2F0aW9uIiwibmFtZSIsImNvZGUiLCJmIiwic3ViamVjdCIsIl9lbWFpbCIsIkVNQUlMX0NPTkZJRyIsIlRFTVBMQVRFUyIsIlZFUklGSUNBVElPTiIsIlNVQkpFQ1QiLCJmcm9tIiwiRlJPTV9OQU1FIiwiRlJPTV9FTUFJTCIsImh0bWwiLCJEYXRlIiwiZ2V0RnVsbFllYXIiLCJ0ZXh0Iiwib3JkZXJDb25maXJtYXRpb24iLCJ1c2VyIiwib3JkZXIiLCJPUkRFUl9DT05GSVJNQVRJT04iLCJfaWQiLCJpdGVtcyIsIm1hcCIsIml0ZW0iLCJxdWFudGl0eSIsInByaWNlIiwidG9GaXhlZCIsImpvaW4iLCJ0b3RhbFByaWNlIiwiZXhwZWN0ZWREZWxpdmVyeURhdGUiLCJ0b0xvY2FsZURhdGVTdHJpbmciLCJwcm9jZXNzIiwiZW52IiwiTkVYVF9QVUJMSUNfQkFTRV9VUkwiLCJwYXNzd29yZFJlc2V0IiwicmVzZXRUb2tlbiIsIlBBU1NXT1JEX1JFU0VUIiwic2hpcG1lbnRVcGRhdGUiLCJzdGF0dXMiLCJ0cmFja2luZ051bWJlciIsImIiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL3NlcnZpY2VzL2VtYWlsL3RlbXBsYXRlcy50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBFTUFJTF9DT05GSUcgfSBmcm9tICdAL2xpYi9jb25maWcvZW1haWwnO1xuXG5jb25zdCBzdHlsZXMgPSBgXG4gIC5lbWFpbC1jb250YWluZXIgeyBcbiAgICBmb250LWZhbWlseTogQXJpYWwsIHNhbnMtc2VyaWY7IFxuICAgIG1heC13aWR0aDogNjAwcHg7IFxuICAgIG1hcmdpbjogMCBhdXRvOyBcbiAgICBwYWRkaW5nOiAyMHB4OyBcbiAgICBiYWNrZ3JvdW5kLWNvbG9yOiAjZmZmZmZmO1xuICB9XG4gIC5lbWFpbC1oZWFkZXIgeyBcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7IFxuICAgIG1hcmdpbi1ib3R0b206IDMwcHg7XG4gIH1cbiAgLmVtYWlsLWNvZGUsIC5lbWFpbC1ib3gge1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNmNGY0ZjQ7IFxuICAgIHBhZGRpbmc6IDE1cHg7IFxuICAgIHRleHQtYWxpZ246IGNlbnRlcjsgXG4gICAgZm9udC1zaXplOiAyNHB4OyBcbiAgICBsZXR0ZXItc3BhY2luZzogMnB4OyBcbiAgICBtYXJnaW46IDIwcHggMDsgXG4gICAgYm9yZGVyLXJhZGl1czogNXB4O1xuICB9XG4gIC5lbWFpbC1mb290ZXIgeyBcbiAgICBtYXJnaW4tdG9wOiAzMHB4OyBcbiAgICB0ZXh0LWFsaWduOiBjZW50ZXI7IFxuICAgIGZvbnQtc2l6ZTogMTJweDsgXG4gICAgY29sb3I6ICM2NjY7XG4gIH1cbiAgdGFibGUge1xuICAgIHdpZHRoOiAxMDAlOyBcbiAgICBib3JkZXItY29sbGFwc2U6IGNvbGxhcHNlO1xuICAgIG1hcmdpbi10b3A6IDIwcHg7XG4gIH1cbiAgdGgsIHRkIHtcbiAgICBwYWRkaW5nOiAxMHB4OyBcbiAgICBib3JkZXI6IDFweCBzb2xpZCAjZGRkO1xuICAgIHRleHQtYWxpZ246IGxlZnQ7XG4gIH1cbiAgdGgge1xuICAgIGJhY2tncm91bmQtY29sb3I6ICNmOGY5ZmE7XG4gIH1cbmA7XG5cbmV4cG9ydCBjb25zdCBlbWFpbFRlbXBsYXRlcyA9IHtcbiAgdmVyaWZpY2F0aW9uOiAobmFtZTogc3RyaW5nLCBjb2RlOiBzdHJpbmcpID0+ICh7XG4gICAgc3ViamVjdDogRU1BSUxfQ09ORklHLlRFTVBMQVRFUy5WRVJJRklDQVRJT04uU1VCSkVDVCxcbiAgICBmcm9tOiBgJHtFTUFJTF9DT05GSUcuVEVNUExBVEVTLlZFUklGSUNBVElPTi5GUk9NX05BTUV9IDwke0VNQUlMX0NPTkZJRy5URU1QTEFURVMuVkVSSUZJQ0FUSU9OLkZST01fRU1BSUx9PmAsXG4gICAgaHRtbDogYFxuICAgICAgPCFET0NUWVBFIGh0bWw+XG4gICAgICA8aHRtbD5cbiAgICAgIDxoZWFkPjxzdHlsZT4ke3N0eWxlc308L3N0eWxlPjwvaGVhZD5cbiAgICAgIDxib2R5PlxuICAgICAgICA8ZGl2IGNsYXNzPVwiZW1haWwtY29udGFpbmVyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzcz1cImVtYWlsLWhlYWRlclwiPjxoMT5FbWFpbCBWZXJpZmljYXRpb248L2gxPjwvZGl2PlxuICAgICAgICAgIDxwPkhlbGxvICR7bmFtZX0sPC9wPlxuICAgICAgICAgIDxwPlBsZWFzZSB1c2UgdGhpcyBjb2RlIHRvIHZlcmlmeSB5b3VyIGVtYWlsOjwvcD5cbiAgICAgICAgICA8ZGl2IGNsYXNzPVwiZW1haWwtY29kZVwiPjxzdHJvbmc+JHtjb2RlfTwvc3Ryb25nPjwvZGl2PlxuICAgICAgICAgIDxwPlRoaXMgY29kZSB3aWxsIGV4cGlyZSBpbiAxMCBtaW51dGVzLjwvcD5cbiAgICAgICAgICA8cD5JZiB5b3UgZGlkbid0IHJlcXVlc3QgdGhpcyBjb2RlLCBwbGVhc2UgaWdub3JlIHRoaXMgZW1haWwuPC9wPlxuICAgICAgICAgIDxkaXYgY2xhc3M9XCJlbWFpbC1mb290ZXJcIj5cbiAgICAgICAgICAgIDxwPlRoaXMgaXMgYW4gYXV0b21hdGVkIG1lc3NhZ2UgZnJvbSBNR1pvbjwvcD5cbiAgICAgICAgICAgIDxwPiZjb3B5OyAke25ldyBEYXRlKCkuZ2V0RnVsbFllYXIoKX0gTUdab24uIEFsbCByaWdodHMgcmVzZXJ2ZWQuPC9wPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L2Rpdj5cbiAgICAgIDwvYm9keT5cbiAgICAgIDwvaHRtbD5cbiAgICBgLFxuICAgIHRleHQ6IGBcbkhlbGxvICR7bmFtZX0sXG5cblBsZWFzZSB1c2UgdGhpcyBjb2RlIHRvIHZlcmlmeSB5b3VyIGVtYWlsOlxuJHtjb2RlfVxuXG5UaGlzIGNvZGUgd2lsbCBleHBpcmUgaW4gMTAgbWludXRlcy5cbklmIHlvdSBkaWRuJ3QgcmVxdWVzdCB0aGlzIGNvZGUsIHBsZWFzZSBpZ25vcmUgdGhpcyBlbWFpbC5cblxuTUdab24gwqkgJHtuZXcgRGF0ZSgpLmdldEZ1bGxZZWFyKCl9XG4gICAgYFxuICB9KSxcblxuICBvcmRlckNvbmZpcm1hdGlvbjogKHVzZXI6IHsgbmFtZTogc3RyaW5nIH0sIG9yZGVyOiBhbnkpID0+ICh7XG4gICAgc3ViamVjdDogRU1BSUxfQ09ORklHLlRFTVBMQVRFUy5PUkRFUl9DT05GSVJNQVRJT04uU1VCSkVDVCxcbiAgICBmcm9tOiBgJHtFTUFJTF9DT05GSUcuVEVNUExBVEVTLk9SREVSX0NPTkZJUk1BVElPTi5GUk9NX05BTUV9IDwke0VNQUlMX0NPTkZJRy5URU1QTEFURVMuT1JERVJfQ09ORklSTUFUSU9OLkZST01fRU1BSUx9PmAsXG4gICAgaHRtbDogYFxuICAgICAgPCFET0NUWVBFIGh0bWw+XG4gICAgICA8aHRtbD5cbiAgICAgIDxoZWFkPjxzdHlsZT4ke3N0eWxlc308L3N0eWxlPjwvaGVhZD5cbiAgICAgIDxib2R5PlxuICAgICAgICA8ZGl2IGNsYXNzPVwiZW1haWwtY29udGFpbmVyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzcz1cImVtYWlsLWhlYWRlclwiPjxoMT5PcmRlciBDb25maXJtYXRpb248L2gxPjwvZGl2PlxuICAgICAgICAgIDxwPlRoYW5rcyBmb3IgeW91ciBvcmRlciwgJHt1c2VyLm5hbWV9ITwvcD5cbiAgICAgICAgICA8cD5Zb3VyIG9yZGVyIDxzdHJvbmc+IyR7b3JkZXIuX2lkfTwvc3Ryb25nPiBoYXMgYmVlbiBjb25maXJtZWQuPC9wPlxuICAgICAgICAgIDx0YWJsZT5cbiAgICAgICAgICAgIDx0aGVhZD5cbiAgICAgICAgICAgICAgPHRyPjx0aD5JdGVtPC90aD48dGg+UXR5PC90aD48dGg+VG90YWw8L3RoPjwvdHI+XG4gICAgICAgICAgICA8L3RoZWFkPlxuICAgICAgICAgICAgPHRib2R5PlxuICAgICAgICAgICAgICAke29yZGVyLml0ZW1zLm1hcCgoaXRlbTogYW55KSA9PiBgXG4gICAgICAgICAgICAgICAgPHRyPlxuICAgICAgICAgICAgICAgICAgPHRkPiR7aXRlbS5uYW1lfTwvdGQ+XG4gICAgICAgICAgICAgICAgICA8dGQ+JHtpdGVtLnF1YW50aXR5fTwvdGQ+XG4gICAgICAgICAgICAgICAgICA8dGQ+JCR7KGl0ZW0ucHJpY2UgKiBpdGVtLnF1YW50aXR5KS50b0ZpeGVkKDIpfTwvdGQ+XG4gICAgICAgICAgICAgICAgPC90cj5cbiAgICAgICAgICAgICAgYCkuam9pbignJyl9XG4gICAgICAgICAgICA8L3Rib2R5PlxuICAgICAgICAgIDwvdGFibGU+XG4gICAgICAgICAgPHA+PHN0cm9uZz5Ub3RhbDo8L3N0cm9uZz4gJCR7b3JkZXIudG90YWxQcmljZS50b0ZpeGVkKDIpfTwvcD5cbiAgICAgICAgICA8cD5FeHBlY3RlZCBEZWxpdmVyeTogJHtuZXcgRGF0ZShvcmRlci5leHBlY3RlZERlbGl2ZXJ5RGF0ZSkudG9Mb2NhbGVEYXRlU3RyaW5nKCl9PC9wPlxuICAgICAgICAgIDxkaXYgY2xhc3M9XCJlbWFpbC1mb290ZXJcIj5cbiAgICAgICAgICAgIDxwPlZpZXcgeW91ciBvcmRlciA8YSBocmVmPVwiJHtwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQVNFX1VSTH0vb3JkZXJzLyR7b3JkZXIuX2lkfVwiPmhlcmU8L2E+LjwvcD5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2JvZHk+XG4gICAgICA8L2h0bWw+XG4gICAgYCxcbiAgICB0ZXh0OiBgXG5UaGFua3MgZm9yIHlvdXIgb3JkZXIsICR7dXNlci5uYW1lfSFcbk9yZGVyICMke29yZGVyLl9pZH1cblxuSXRlbXM6XG4ke29yZGVyLml0ZW1zLm1hcCgoaXRlbTogYW55KSA9PiBgJHtpdGVtLm5hbWV9IHggJHtpdGVtLnF1YW50aXR5fSAtICQkeyhpdGVtLnByaWNlICogaXRlbS5xdWFudGl0eSkudG9GaXhlZCgyKX1gKS5qb2luKCdcXG4nKX1cblxuVG90YWw6ICQke29yZGVyLnRvdGFsUHJpY2UudG9GaXhlZCgyKX1cbkV4cGVjdGVkIERlbGl2ZXJ5OiAke25ldyBEYXRlKG9yZGVyLmV4cGVjdGVkRGVsaXZlcnlEYXRlKS50b0xvY2FsZURhdGVTdHJpbmcoKX1cblZpZXc6ICR7cHJvY2Vzcy5lbnYuTkVYVF9QVUJMSUNfQkFTRV9VUkx9L29yZGVycy8ke29yZGVyLl9pZH1cbiAgICBgXG4gIH0pLFxuXG4gIHBhc3N3b3JkUmVzZXQ6IChuYW1lOiBzdHJpbmcsIHJlc2V0VG9rZW46IHN0cmluZykgPT4gKHtcbiAgICBzdWJqZWN0OiBFTUFJTF9DT05GSUcuVEVNUExBVEVTLlBBU1NXT1JEX1JFU0VULlNVQkpFQ1QsXG4gICAgZnJvbTogYCR7RU1BSUxfQ09ORklHLlRFTVBMQVRFUy5QQVNTV09SRF9SRVNFVC5GUk9NX05BTUV9IDwke0VNQUlMX0NPTkZJRy5URU1QTEFURVMuUEFTU1dPUkRfUkVTRVQuRlJPTV9FTUFJTH0+YCxcbiAgICBodG1sOiBgXG4gICAgICA8IURPQ1RZUEUgaHRtbD5cbiAgICAgIDxodG1sPlxuICAgICAgPGhlYWQ+PHN0eWxlPiR7c3R5bGVzfTwvc3R5bGU+PC9oZWFkPlxuICAgICAgPGJvZHk+XG4gICAgICAgIDxkaXYgY2xhc3M9XCJlbWFpbC1jb250YWluZXJcIj5cbiAgICAgICAgICA8ZGl2IGNsYXNzPVwiZW1haWwtaGVhZGVyXCI+PGgxPlBhc3N3b3JkIFJlc2V0PC9oMT48L2Rpdj5cbiAgICAgICAgICA8cD5IZWxsbyAke25hbWV9LDwvcD5cbiAgICAgICAgICA8cD5DbGljayB0aGUgbGluayBiZWxvdyB0byByZXNldCB5b3VyIHBhc3N3b3JkOjwvcD5cbiAgICAgICAgICA8ZGl2IGNsYXNzPVwiZW1haWwtYm94XCI+XG4gICAgICAgICAgICA8YSBocmVmPVwiJHtwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQVNFX1VSTH0vcmVzZXQtcGFzc3dvcmQvJHtyZXNldFRva2VufVwiPlJlc2V0IFBhc3N3b3JkPC9hPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDxwPlRoaXMgbGluayB3aWxsIGV4cGlyZSBpbiAxIGhvdXIuPC9wPlxuICAgICAgICAgIDxwPklmIHlvdSBkaWRuJ3QgcmVxdWVzdCB0aGlzLCBpZ25vcmUgdGhpcyBlbWFpbC48L3A+XG4gICAgICAgICAgPGRpdiBjbGFzcz1cImVtYWlsLWZvb3RlclwiPlxuICAgICAgICAgICAgPHA+TUdab24gU2VjdXJpdHkgVGVhbTwvcD5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2JvZHk+XG4gICAgICA8L2h0bWw+XG4gICAgYCxcbiAgICB0ZXh0OiBgXG5IZWxsbyAke25hbWV9LFxuXG5DbGljayB0aGUgbGluayB0byByZXNldCB5b3VyIHBhc3N3b3JkOlxuJHtwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQVNFX1VSTH0vcmVzZXQtcGFzc3dvcmQvJHtyZXNldFRva2VufVxuXG5UaGlzIGxpbmsgd2lsbCBleHBpcmUgaW4gMSBob3VyLlxuSWYgeW91IGRpZG4ndCByZXF1ZXN0IHRoaXMsIGlnbm9yZSB0aGlzIGVtYWlsLlxuICAgIGBcbiAgfSksXG5cbiAgc2hpcG1lbnRVcGRhdGU6IChvcmRlcjogYW55LCBzdGF0dXM6IHN0cmluZywgdHJhY2tpbmdOdW1iZXI/OiBzdHJpbmcpID0+ICh7XG4gICAgc3ViamVjdDogYE9yZGVyICR7c3RhdHVzfSAtIE1HWm9uYCxcbiAgICBmcm9tOiBgTUdab24gT3JkZXJzIDxvcmRlcnNAbWd6b24uY29tPmAsXG4gICAgaHRtbDogYFxuICAgICAgPCFET0NUWVBFIGh0bWw+XG4gICAgICA8aHRtbD5cbiAgICAgIDxoZWFkPjxzdHlsZT4ke3N0eWxlc308L3N0eWxlPjwvaGVhZD5cbiAgICAgIDxib2R5PlxuICAgICAgICA8ZGl2IGNsYXNzPVwiZW1haWwtY29udGFpbmVyXCI+XG4gICAgICAgICAgPGRpdiBjbGFzcz1cImVtYWlsLWhlYWRlclwiPjxoMT5TaGlwbWVudCBVcGRhdGU8L2gxPjwvZGl2PlxuICAgICAgICAgIDxwPllvdXIgb3JkZXIgPHN0cm9uZz4jJHtvcmRlci5faWR9PC9zdHJvbmc+IGhhcyBiZWVuICR7c3RhdHVzfS48L3A+XG4gICAgICAgICAgJHt0cmFja2luZ051bWJlciA/IGA8cD5UcmFja2luZyBOdW1iZXI6IDxzdHJvbmc+JHt0cmFja2luZ051bWJlcn08L3N0cm9uZz48L3A+YCA6ICcnfVxuICAgICAgICAgIDxwPlRyYWNrIHlvdXIgb3JkZXIgPGEgaHJlZj1cIiR7cHJvY2Vzcy5lbnYuTkVYVF9QVUJMSUNfQkFTRV9VUkx9L29yZGVycy8ke29yZGVyLl9pZH1cIj5oZXJlPC9hPi48L3A+XG4gICAgICAgICAgPGRpdiBjbGFzcz1cImVtYWlsLWZvb3RlclwiPlxuICAgICAgICAgICAgPHA+TUdab24gU2hpcHBpbmc8L3A+XG4gICAgICAgICAgPC9kaXY+XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC9ib2R5PlxuICAgICAgPC9odG1sPlxuICAgIGAsXG4gICAgdGV4dDogYFxuWW91ciBvcmRlciAjJHtvcmRlci5faWR9IGhhcyBiZWVuICR7c3RhdHVzfS5cbiR7dHJhY2tpbmdOdW1iZXIgPyBgVHJhY2tpbmcgTnVtYmVyOiAke3RyYWNraW5nTnVtYmVyfWAgOiAnJ31cblxuVHJhY2sgaGVyZTogJHtwcm9jZXNzLmVudi5ORVhUX1BVQkxJQ19CQVNFX1VSTH0vb3JkZXJzLyR7b3JkZXIuX2lkfVxuICAgIGBcbiAgfSksXG59O1xuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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

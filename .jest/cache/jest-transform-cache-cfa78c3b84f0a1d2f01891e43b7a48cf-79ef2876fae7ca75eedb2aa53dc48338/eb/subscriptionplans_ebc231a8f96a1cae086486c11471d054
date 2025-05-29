@@ -1,0 +1,183 @@
+b78622080e1227f41d99622b7b35a784
+"use strict";
+
+/* istanbul ignore next */
+function cov_v05f0hsv() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/utils/subscription-plans.ts";
+  var hash = "c1c5dc9ec0c340dfd6fdbe28b3edf4f60029a996";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/utils/subscription-plans.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 33
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 26
+        },
+        end: {
+          line: 66,
+          column: 1
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/utils/subscription-plans.ts"],
+      sourcesContent: ["export interface SubscriptionPlan {\n    id: string;\n    name: string;\n    price: number;\n    pointsCost: number;\n    description: string;\n    features: {\n      productsLimit: number;\n      commission: number;\n      prioritySupport: boolean;\n      instantPayouts: boolean;\n    };\n    isTrial?: boolean;\n    trialDuration?: number;\n  }\n  \n  export const subscriptionPlans: SubscriptionPlan[] = [\n    {\n      id: 'trial',\n      name: 'Trial',\n      price: 1,\n      pointsCost: 20,\n      description: 'Trial plan for new sellers, $1/month for first 3 months.',\n      features: { productsLimit: 50, commission: 7, prioritySupport: false, instantPayouts: false },\n      isTrial: true,\n      trialDuration: 3,\n    },\n    {\n      id: 'basic',\n      name: 'Basic',\n      price: 10,\n      pointsCost: 200,\n      description: 'Access to basic features, 100 product limit, 5% commission.',\n      features: { productsLimit: 100, commission: 5, prioritySupport: false, instantPayouts: false },\n    },\n    {\n      id: 'pro',\n      name: 'Pro',\n      price: 30,\n      pointsCost: 600,\n      description: 'Access to premium features, 500 product limit, 3% commission, priority support.',\n      features: { productsLimit: 500, commission: 3, prioritySupport: true, instantPayouts: false },\n    },\n    {\n      id: 'vip',\n      name: 'VIP',\n      price: 100,\n      pointsCost: 2000,\n      description: 'Customized solutions, unlimited products, 1% commission, priority support, instant payouts.',\n      features: { productsLimit: Infinity, commission: 1, prioritySupport: true, instantPayouts: true },\n    },\n  ];"],
+      names: ["subscriptionPlans", "id", "name", "price", "pointsCost", "description", "features", "productsLimit", "commission", "prioritySupport", "instantPayouts", "isTrial", "trialDuration", "Infinity"],
+      mappings: ";;;;+BAgBeA;;;eAAAA;;;AAAN,MAAMA,oBAAwC;IACnD;QACEC,IAAI;QACJC,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YAAEC,eAAe;YAAIC,YAAY;YAAGC,iBAAiB;YAAOC,gBAAgB;QAAM;QAC5FC,SAAS;QACTC,eAAe;IACjB;IACA;QACEX,IAAI;QACJC,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YAAEC,eAAe;YAAKC,YAAY;YAAGC,iBAAiB;YAAOC,gBAAgB;QAAM;IAC/F;IACA;QACET,IAAI;QACJC,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YAAEC,eAAe;YAAKC,YAAY;YAAGC,iBAAiB;YAAMC,gBAAgB;QAAM;IAC9F;IACA;QACET,IAAI;QACJC,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YAAEC,eAAeM;YAAUL,YAAY;YAAGC,iBAAiB;YAAMC,gBAAgB;QAAK;IAClG;CACD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "c1c5dc9ec0c340dfd6fdbe28b3edf4f60029a996"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_v05f0hsv = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_v05f0hsv();
+cov_v05f0hsv().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_v05f0hsv().s[1]++;
+Object.defineProperty(exports, "subscriptionPlans", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_v05f0hsv().f[0]++;
+    cov_v05f0hsv().s[2]++;
+    return subscriptionPlans;
+  }
+});
+const subscriptionPlans =
+/* istanbul ignore next */
+(cov_v05f0hsv().s[3]++, [{
+  id: 'trial',
+  name: 'Trial',
+  price: 1,
+  pointsCost: 20,
+  description: 'Trial plan for new sellers, $1/month for first 3 months.',
+  features: {
+    productsLimit: 50,
+    commission: 7,
+    prioritySupport: false,
+    instantPayouts: false
+  },
+  isTrial: true,
+  trialDuration: 3
+}, {
+  id: 'basic',
+  name: 'Basic',
+  price: 10,
+  pointsCost: 200,
+  description: 'Access to basic features, 100 product limit, 5% commission.',
+  features: {
+    productsLimit: 100,
+    commission: 5,
+    prioritySupport: false,
+    instantPayouts: false
+  }
+}, {
+  id: 'pro',
+  name: 'Pro',
+  price: 30,
+  pointsCost: 600,
+  description: 'Access to premium features, 500 product limit, 3% commission, priority support.',
+  features: {
+    productsLimit: 500,
+    commission: 3,
+    prioritySupport: true,
+    instantPayouts: false
+  }
+}, {
+  id: 'vip',
+  name: 'VIP',
+  price: 100,
+  pointsCost: 2000,
+  description: 'Customized solutions, unlimited products, 1% commission, priority support, instant payouts.',
+  features: {
+    productsLimit: Infinity,
+    commission: 1,
+    prioritySupport: true,
+    instantPayouts: true
+  }
+}]);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfdjA1ZjBoc3YiLCJhY3R1YWxDb3ZlcmFnZSIsInMiLCJzdWJzY3JpcHRpb25QbGFucyIsImlkIiwibmFtZSIsInByaWNlIiwicG9pbnRzQ29zdCIsImRlc2NyaXB0aW9uIiwiZmVhdHVyZXMiLCJwcm9kdWN0c0xpbWl0IiwiY29tbWlzc2lvbiIsInByaW9yaXR5U3VwcG9ydCIsImluc3RhbnRQYXlvdXRzIiwiaXNUcmlhbCIsInRyaWFsRHVyYXRpb24iLCJJbmZpbml0eSJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9saWIvdXRpbHMvc3Vic2NyaXB0aW9uLXBsYW5zLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImV4cG9ydCBpbnRlcmZhY2UgU3Vic2NyaXB0aW9uUGxhbiB7XG4gICAgaWQ6IHN0cmluZztcbiAgICBuYW1lOiBzdHJpbmc7XG4gICAgcHJpY2U6IG51bWJlcjtcbiAgICBwb2ludHNDb3N0OiBudW1iZXI7XG4gICAgZGVzY3JpcHRpb246IHN0cmluZztcbiAgICBmZWF0dXJlczoge1xuICAgICAgcHJvZHVjdHNMaW1pdDogbnVtYmVyO1xuICAgICAgY29tbWlzc2lvbjogbnVtYmVyO1xuICAgICAgcHJpb3JpdHlTdXBwb3J0OiBib29sZWFuO1xuICAgICAgaW5zdGFudFBheW91dHM6IGJvb2xlYW47XG4gICAgfTtcbiAgICBpc1RyaWFsPzogYm9vbGVhbjtcbiAgICB0cmlhbER1cmF0aW9uPzogbnVtYmVyO1xuICB9XG4gIFxuICBleHBvcnQgY29uc3Qgc3Vic2NyaXB0aW9uUGxhbnM6IFN1YnNjcmlwdGlvblBsYW5bXSA9IFtcbiAgICB7XG4gICAgICBpZDogJ3RyaWFsJyxcbiAgICAgIG5hbWU6ICdUcmlhbCcsXG4gICAgICBwcmljZTogMSxcbiAgICAgIHBvaW50c0Nvc3Q6IDIwLFxuICAgICAgZGVzY3JpcHRpb246ICdUcmlhbCBwbGFuIGZvciBuZXcgc2VsbGVycywgJDEvbW9udGggZm9yIGZpcnN0IDMgbW9udGhzLicsXG4gICAgICBmZWF0dXJlczogeyBwcm9kdWN0c0xpbWl0OiA1MCwgY29tbWlzc2lvbjogNywgcHJpb3JpdHlTdXBwb3J0OiBmYWxzZSwgaW5zdGFudFBheW91dHM6IGZhbHNlIH0sXG4gICAgICBpc1RyaWFsOiB0cnVlLFxuICAgICAgdHJpYWxEdXJhdGlvbjogMyxcbiAgICB9LFxuICAgIHtcbiAgICAgIGlkOiAnYmFzaWMnLFxuICAgICAgbmFtZTogJ0Jhc2ljJyxcbiAgICAgIHByaWNlOiAxMCxcbiAgICAgIHBvaW50c0Nvc3Q6IDIwMCxcbiAgICAgIGRlc2NyaXB0aW9uOiAnQWNjZXNzIHRvIGJhc2ljIGZlYXR1cmVzLCAxMDAgcHJvZHVjdCBsaW1pdCwgNSUgY29tbWlzc2lvbi4nLFxuICAgICAgZmVhdHVyZXM6IHsgcHJvZHVjdHNMaW1pdDogMTAwLCBjb21taXNzaW9uOiA1LCBwcmlvcml0eVN1cHBvcnQ6IGZhbHNlLCBpbnN0YW50UGF5b3V0czogZmFsc2UgfSxcbiAgICB9LFxuICAgIHtcbiAgICAgIGlkOiAncHJvJyxcbiAgICAgIG5hbWU6ICdQcm8nLFxuICAgICAgcHJpY2U6IDMwLFxuICAgICAgcG9pbnRzQ29zdDogNjAwLFxuICAgICAgZGVzY3JpcHRpb246ICdBY2Nlc3MgdG8gcHJlbWl1bSBmZWF0dXJlcywgNTAwIHByb2R1Y3QgbGltaXQsIDMlIGNvbW1pc3Npb24sIHByaW9yaXR5IHN1cHBvcnQuJyxcbiAgICAgIGZlYXR1cmVzOiB7IHByb2R1Y3RzTGltaXQ6IDUwMCwgY29tbWlzc2lvbjogMywgcHJpb3JpdHlTdXBwb3J0OiB0cnVlLCBpbnN0YW50UGF5b3V0czogZmFsc2UgfSxcbiAgICB9LFxuICAgIHtcbiAgICAgIGlkOiAndmlwJyxcbiAgICAgIG5hbWU6ICdWSVAnLFxuICAgICAgcHJpY2U6IDEwMCxcbiAgICAgIHBvaW50c0Nvc3Q6IDIwMDAsXG4gICAgICBkZXNjcmlwdGlvbjogJ0N1c3RvbWl6ZWQgc29sdXRpb25zLCB1bmxpbWl0ZWQgcHJvZHVjdHMsIDElIGNvbW1pc3Npb24sIHByaW9yaXR5IHN1cHBvcnQsIGluc3RhbnQgcGF5b3V0cy4nLFxuICAgICAgZmVhdHVyZXM6IHsgcHJvZHVjdHNMaW1pdDogSW5maW5pdHksIGNvbW1pc3Npb246IDEsIHByaW9yaXR5U3VwcG9ydDogdHJ1ZSwgaW5zdGFudFBheW91dHM6IHRydWUgfSxcbiAgICB9LFxuICBdOyJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBcUJNO0lBQUFBLFlBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELFlBQUE7QUFBQUEsWUFBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBTFM7Ozs7OztXQUFBQyxpQkFBQTs7O0FBQU4sTUFBTUEsaUJBQUE7QUFBQTtBQUFBLENBQUFILFlBQUEsR0FBQUUsQ0FBQSxPQUF3QyxDQUNuRDtFQUNFRSxFQUFBLEVBQUk7RUFDSkMsSUFBQSxFQUFNO0VBQ05DLEtBQUEsRUFBTztFQUNQQyxVQUFBLEVBQVk7RUFDWkMsV0FBQSxFQUFhO0VBQ2JDLFFBQUEsRUFBVTtJQUFFQyxhQUFBLEVBQWU7SUFBSUMsVUFBQSxFQUFZO0lBQUdDLGVBQUEsRUFBaUI7SUFBT0MsY0FBQSxFQUFnQjtFQUFNO0VBQzVGQyxPQUFBLEVBQVM7RUFDVEMsYUFBQSxFQUFlO0FBQ2pCLEdBQ0E7RUFDRVgsRUFBQSxFQUFJO0VBQ0pDLElBQUEsRUFBTTtFQUNOQyxLQUFBLEVBQU87RUFDUEMsVUFBQSxFQUFZO0VBQ1pDLFdBQUEsRUFBYTtFQUNiQyxRQUFBLEVBQVU7SUFBRUMsYUFBQSxFQUFlO0lBQUtDLFVBQUEsRUFBWTtJQUFHQyxlQUFBLEVBQWlCO0lBQU9DLGNBQUEsRUFBZ0I7RUFBTTtBQUMvRixHQUNBO0VBQ0VULEVBQUEsRUFBSTtFQUNKQyxJQUFBLEVBQU07RUFDTkMsS0FBQSxFQUFPO0VBQ1BDLFVBQUEsRUFBWTtFQUNaQyxXQUFBLEVBQWE7RUFDYkMsUUFBQSxFQUFVO0lBQUVDLGFBQUEsRUFBZTtJQUFLQyxVQUFBLEVBQVk7SUFBR0MsZUFBQSxFQUFpQjtJQUFNQyxjQUFBLEVBQWdCO0VBQU07QUFDOUYsR0FDQTtFQUNFVCxFQUFBLEVBQUk7RUFDSkMsSUFBQSxFQUFNO0VBQ05DLEtBQUEsRUFBTztFQUNQQyxVQUFBLEVBQVk7RUFDWkMsV0FBQSxFQUFhO0VBQ2JDLFFBQUEsRUFBVTtJQUFFQyxhQUFBLEVBQWVNLFFBQUE7SUFBVUwsVUFBQSxFQUFZO0lBQUdDLGVBQUEsRUFBaUI7SUFBTUMsY0FBQSxFQUFnQjtFQUFLO0FBQ2xHLEVBQ0QiLCJpZ25vcmVMaXN0IjpbXX0=

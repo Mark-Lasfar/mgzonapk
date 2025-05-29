@@ -1,0 +1,250 @@
+83808a585d01cd4ac60f67d8bec3e98d
+"use strict";
+
+/* istanbul ignore next */
+function cov_2rafwlmwe5() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/separator-or.tsx";
+  var hash = "6e124b3b7e5d4a7b3f866e11eaa039f7101bdc11";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/separator-or.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 20
+        },
+        end: {
+          line: 11,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 24
+        },
+        end: {
+          line: 20,
+          column: 1
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 7
+        }
+      },
+      "6": {
+        start: {
+          line: 21,
+          column: 17
+        },
+        end: {
+          line: 21,
+          column: 32
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 12,
+            column: 24
+          },
+          end: {
+            line: 12,
+            column: 25
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 40
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 12
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 22
+          },
+          end: {
+            line: 17,
+            column: 38
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 22
+          },
+          end: {
+            line: 17,
+            column: 30
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 34
+          },
+          end: {
+            line: 17,
+            column: 38
+          }
+        }],
+        line: 17
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/separator-or.tsx"],
+      sourcesContent: ["import { ReactNode } from 'react'\n\nconst SeparatorWithOr = ({ children }: { children?: ReactNode }) => {\n  return (\n    <div className=\"h-5 border-b my-5 text-center w-full\">\n      <span className=\"bg-background absolute left-1/2 -translate-x-1/2 mt-2 text-gray-500\">\n        {children ?? 'or'}\n      </span>\n    </div>\n  )\n}\n\nexport default SeparatorWithOr\n"],
+      names: ["SeparatorWithOr", "children", "div", "className", "span"],
+      mappings: ";;;;+BAYA;;;eAAA;;;;AAVA,MAAMA,kBAAkB,CAAC,EAAEC,QAAQ,EAA4B;IAC7D,qBACE,qBAACC;QAAIC,WAAU;kBACb,cAAA,qBAACC;YAAKD,WAAU;sBACbF,YAAY;;;AAIrB;MAEA,WAAeD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "6e124b3b7e5d4a7b3f866e11eaa039f7101bdc11"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2rafwlmwe5 = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2rafwlmwe5();
+cov_2rafwlmwe5().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2rafwlmwe5().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2rafwlmwe5().f[0]++;
+    cov_2rafwlmwe5().s[2]++;
+    return _default;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_2rafwlmwe5().s[3]++, require("react/jsx-runtime"));
+/* istanbul ignore next */
+cov_2rafwlmwe5().s[4]++;
+const SeparatorWithOr = ({
+  children
+}) => {
+  /* istanbul ignore next */
+  cov_2rafwlmwe5().f[1]++;
+  cov_2rafwlmwe5().s[5]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+    className: "h-5 border-b my-5 text-center w-full",
+    children: /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+      className: "bg-background absolute left-1/2 -translate-x-1/2 mt-2 text-gray-500",
+      children:
+      /* istanbul ignore next */
+      (cov_2rafwlmwe5().b[0][0]++, children) ??
+      /* istanbul ignore next */
+      (cov_2rafwlmwe5().b[0][1]++, 'or')
+    })
+  });
+};
+const _default =
+/* istanbul ignore next */
+(cov_2rafwlmwe5().s[6]++, SeparatorWithOr);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMnJhZndsbXdlNSIsImFjdHVhbENvdmVyYWdlIiwicyIsIl9kZWZhdWx0IiwiU2VwYXJhdG9yV2l0aE9yIiwiY2hpbGRyZW4iLCJmIiwiX2pzeHJ1bnRpbWUiLCJqc3giLCJjbGFzc05hbWUiLCJiIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2NvbXBvbmVudHMvc2hhcmVkL3NlcGFyYXRvci1vci50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgUmVhY3ROb2RlIH0gZnJvbSAncmVhY3QnXG5cbmNvbnN0IFNlcGFyYXRvcldpdGhPciA9ICh7IGNoaWxkcmVuIH06IHsgY2hpbGRyZW4/OiBSZWFjdE5vZGUgfSkgPT4ge1xuICByZXR1cm4gKFxuICAgIDxkaXYgY2xhc3NOYW1lPVwiaC01IGJvcmRlci1iIG15LTUgdGV4dC1jZW50ZXIgdy1mdWxsXCI+XG4gICAgICA8c3BhbiBjbGFzc05hbWU9XCJiZy1iYWNrZ3JvdW5kIGFic29sdXRlIGxlZnQtMS8yIC10cmFuc2xhdGUteC0xLzIgbXQtMiB0ZXh0LWdyYXktNTAwXCI+XG4gICAgICAgIHtjaGlsZHJlbiA/PyAnb3InfVxuICAgICAgPC9zcGFuPlxuICAgIDwvZGl2PlxuICApXG59XG5cbmV4cG9ydCBkZWZhdWx0IFNlcGFyYXRvcldpdGhPclxuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBS1k7SUFBQUEsY0FBQSxZQUFBQSxDQUFBO01BQUEsT0FBQUMsY0FBQTtJQUFBO0VBQUE7RUFBQSxPQUFBQSxjQUFBO0FBQUE7QUFBQUQsY0FBQTtBQUFBQSxjQUFBLEdBQUFFLENBQUE7Ozs7OzsrQkFPWjs7Ozs7O1dBQUFDLFFBQUE7Ozs7Ozs7O0FBVkEsTUFBTUMsZUFBQSxHQUFrQkEsQ0FBQztFQUFFQztBQUFRLENBQTRCO0VBQUE7RUFBQUwsY0FBQSxHQUFBTSxDQUFBO0VBQUFOLGNBQUEsR0FBQUUsQ0FBQTtFQUM3RCxvQkFDRSxJQUFBSyxXQUFBLENBQUFDLEdBQUEsRUFBQztJQUFJQyxTQUFBLEVBQVU7Y0FDYixpQkFBQUYsV0FBQSxDQUFBQyxHQUFBLEVBQUM7TUFBS0MsU0FBQSxFQUFVOztNQUNiO01BQUEsQ0FBQVQsY0FBQSxHQUFBVSxDQUFBLFVBQUFMLFFBQUE7TUFBQTtNQUFBLENBQUFMLGNBQUEsR0FBQVUsQ0FBQSxVQUFZOzs7QUFJckI7TUFFQVAsUUFBQTtBQUFBO0FBQUEsQ0FBQUgsY0FBQSxHQUFBRSxDQUFBLE9BQWVFLGVBQUEiLCJpZ25vcmVMaXN0IjpbXX0=

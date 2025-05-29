@@ -1,0 +1,236 @@
+18d0008e049bc423ba54481f8a2b7cfb
+"use strict";
+
+/* istanbul ignore next */
+function cov_1ipd7305yv() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/web-page.model.ts";
+  var hash = "063a0a949fcf1c605d1d35305c25b2989110490c";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/web-page.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 22
+        },
+        end: {
+          line: 33,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 34,
+          column: 16
+        },
+        end: {
+          line: 34,
+          column: 90
+        }
+      },
+      "6": {
+        start: {
+          line: 35,
+          column: 17
+        },
+        end: {
+          line: 35,
+          column: 24
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 34,
+            column: 16
+          },
+          end: {
+            line: 34,
+            column: 90
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 34,
+            column: 16
+          },
+          end: {
+            line: 34,
+            column: 40
+          }
+        }, {
+          start: {
+            line: 34,
+            column: 44
+          },
+          end: {
+            line: 34,
+            column: 90
+          }
+        }],
+        line: 34
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/web-page.model.ts"],
+      sourcesContent: ["import { IWebPageInput } from '@/types'\nimport { Document, Model, model, models, Schema } from 'mongoose'\n\nexport interface IWebPage extends Document, IWebPageInput {\n  _id: string\n  createdAt: Date\n  updatedAt: Date\n}\n\nconst webPageSchema = new Schema<IWebPage>(\n  {\n    title: {\n      type: String,\n      required: true,\n    },\n    slug: {\n      type: String,\n      required: true,\n      unique: true,\n    },\n    content: {\n      type: String,\n      required: true,\n    },\n    isPublished: {\n      type: Boolean,\n      required: true,\n      default: false,\n    },\n  },\n  {\n    timestamps: true,\n  }\n)\n\nconst WebPage =\n  (models.WebPage as Model<IWebPage>) ||\n  model<IWebPage>('WebPage', webPageSchema)\n\nexport default WebPage\n"],
+      names: ["webPageSchema", "Schema", "title", "type", "String", "required", "slug", "unique", "content", "isPublished", "Boolean", "default", "timestamps", "WebPage", "models", "model"],
+      mappings: ";;;;+BAuCA;;;eAAA;;;0BAtCuD;AAQvD,MAAMA,gBAAgB,IAAIC,gBAAM,CAC9B;IACEC,OAAO;QACLC,MAAMC;QACNC,UAAU;IACZ;IACAC,MAAM;QACJH,MAAMC;QACNC,UAAU;QACVE,QAAQ;IACV;IACAC,SAAS;QACPL,MAAMC;QACNC,UAAU;IACZ;IACAI,aAAa;QACXN,MAAMO;QACNL,UAAU;QACVM,SAAS;IACX;AACF,GACA;IACEC,YAAY;AACd;AAGF,MAAMC,UACJ,AAACC,gBAAM,CAACD,OAAO,IACfE,IAAAA,eAAK,EAAW,WAAWf;MAE7B,WAAea"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "063a0a949fcf1c605d1d35305c25b2989110490c"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1ipd7305yv = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1ipd7305yv();
+cov_1ipd7305yv().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1ipd7305yv().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1ipd7305yv().f[0]++;
+    cov_1ipd7305yv().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_1ipd7305yv().s[3]++, require("mongoose"));
+const webPageSchema =
+/* istanbul ignore next */
+(cov_1ipd7305yv().s[4]++, new _mongoose.Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  slug: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  content: {
+    type: String,
+    required: true
+  },
+  isPublished: {
+    type: Boolean,
+    required: true,
+    default: false
+  }
+}, {
+  timestamps: true
+}));
+const WebPage =
+/* istanbul ignore next */
+(cov_1ipd7305yv().s[5]++,
+/* istanbul ignore next */
+(cov_1ipd7305yv().b[0][0]++, _mongoose.models.WebPage) ||
+/* istanbul ignore next */
+(cov_1ipd7305yv().b[0][1]++, (0, _mongoose.model)('WebPage', webPageSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_1ipd7305yv().s[6]++, WebPage);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMWlwZDczMDV5diIsImFjdHVhbENvdmVyYWdlIiwicyIsIl9kZWZhdWx0Iiwid2ViUGFnZVNjaGVtYSIsIl9tb25nb29zZSIsIlNjaGVtYSIsInRpdGxlIiwidHlwZSIsIlN0cmluZyIsInJlcXVpcmVkIiwic2x1ZyIsInVuaXF1ZSIsImNvbnRlbnQiLCJpc1B1Ymxpc2hlZCIsIkJvb2xlYW4iLCJkZWZhdWx0IiwidGltZXN0YW1wcyIsIldlYlBhZ2UiLCJiIiwibW9kZWxzIiwibW9kZWwiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL2RiL21vZGVscy93ZWItcGFnZS5tb2RlbC50cyJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBJV2ViUGFnZUlucHV0IH0gZnJvbSAnQC90eXBlcydcbmltcG9ydCB7IERvY3VtZW50LCBNb2RlbCwgbW9kZWwsIG1vZGVscywgU2NoZW1hIH0gZnJvbSAnbW9uZ29vc2UnXG5cbmV4cG9ydCBpbnRlcmZhY2UgSVdlYlBhZ2UgZXh0ZW5kcyBEb2N1bWVudCwgSVdlYlBhZ2VJbnB1dCB7XG4gIF9pZDogc3RyaW5nXG4gIGNyZWF0ZWRBdDogRGF0ZVxuICB1cGRhdGVkQXQ6IERhdGVcbn1cblxuY29uc3Qgd2ViUGFnZVNjaGVtYSA9IG5ldyBTY2hlbWE8SVdlYlBhZ2U+KFxuICB7XG4gICAgdGl0bGU6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIHJlcXVpcmVkOiB0cnVlLFxuICAgIH0sXG4gICAgc2x1Zzoge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgICB1bmlxdWU6IHRydWUsXG4gICAgfSxcbiAgICBjb250ZW50OiB7XG4gICAgICB0eXBlOiBTdHJpbmcsXG4gICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICB9LFxuICAgIGlzUHVibGlzaGVkOiB7XG4gICAgICB0eXBlOiBCb29sZWFuLFxuICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgICBkZWZhdWx0OiBmYWxzZSxcbiAgICB9LFxuICB9LFxuICB7XG4gICAgdGltZXN0YW1wczogdHJ1ZSxcbiAgfVxuKVxuXG5jb25zdCBXZWJQYWdlID1cbiAgKG1vZGVscy5XZWJQYWdlIGFzIE1vZGVsPElXZWJQYWdlPikgfHxcbiAgbW9kZWw8SVdlYlBhZ2U+KCdXZWJQYWdlJywgd2ViUGFnZVNjaGVtYSlcblxuZXhwb3J0IGRlZmF1bHQgV2ViUGFnZVxuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7SUFjSTtJQUFBQSxjQUFBLFlBQUFBLENBQUE7TUFBQSxPQUFBQyxjQUFBO0lBQUE7RUFBQTtFQUFBLE9BQUFBLGNBQUE7QUFBQTtBQUFBRCxjQUFBO0FBQUFBLGNBQUEsR0FBQUUsQ0FBQTs7Ozs7OytCQXlCSjs7Ozs7O1dBQUFDLFFBQUE7Ozs7O2tDQXRDdUQ7QUFRdkQsTUFBTUMsYUFBQTtBQUFBO0FBQUEsQ0FBQUosY0FBQSxHQUFBRSxDQUFBLE9BQWdCLElBQUlHLFNBQUEsQ0FBQUMsTUFBTSxDQUM5QjtFQUNFQyxLQUFBLEVBQU87SUFDTEMsSUFBQSxFQUFNQyxNQUFBO0lBQ05DLFFBQUEsRUFBVTtFQUNaO0VBQ0FDLElBQUEsRUFBTTtJQUNKSCxJQUFBLEVBQU1DLE1BQUE7SUFDTkMsUUFBQSxFQUFVO0lBQ1ZFLE1BQUEsRUFBUTtFQUNWO0VBQ0FDLE9BQUEsRUFBUztJQUNQTCxJQUFBLEVBQU1DLE1BQUE7SUFDTkMsUUFBQSxFQUFVO0VBQ1o7RUFDQUksV0FBQSxFQUFhO0lBQ1hOLElBQUEsRUFBTU8sT0FBQTtJQUNOTCxRQUFBLEVBQVU7SUFDVk0sT0FBQSxFQUFTO0VBQ1g7QUFDRixHQUNBO0VBQ0VDLFVBQUEsRUFBWTtBQUNkO0FBR0YsTUFBTUMsT0FBQTtBQUFBO0FBQUEsQ0FBQWxCLGNBQUEsR0FBQUUsQ0FBQTtBQUNKO0FBQUEsQ0FBQUYsY0FBQSxHQUFBbUIsQ0FBQSxVQUFBZCxTQUFDLENBQUFlLE1BQU0sQ0FBQ0YsT0FBTztBQUFBO0FBQUEsQ0FBQWxCLGNBQUEsR0FBQW1CLENBQUEsVUFDZixJQUFBZCxTQUFBLENBQUFnQixLQUFLLEVBQVcsV0FBV2pCLGFBQUE7TUFFN0JELFFBQUE7QUFBQTtBQUFBLENBQUFILGNBQUEsR0FBQUUsQ0FBQSxPQUFlZ0IsT0FBQSIsImlnbm9yZUxpc3QiOltdfQ==

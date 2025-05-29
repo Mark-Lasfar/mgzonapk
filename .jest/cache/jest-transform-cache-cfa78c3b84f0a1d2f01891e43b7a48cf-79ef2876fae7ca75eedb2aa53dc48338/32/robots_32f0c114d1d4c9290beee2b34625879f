@@ -1,0 +1,195 @@
+04fcbcacde5f9a345cd55c4d7e5967fc
+"use strict";
+
+/* istanbul ignore next */
+function cov_2kenzp4vfb() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/robots.ts";
+  var hash = "3691d8a5c84bcca1aa66299aab043c518f3a7ab6";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/robots.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 22
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 50
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 4
+        },
+        end: {
+          line: 81,
+          column: 6
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "robots",
+        decl: {
+          start: {
+            line: 11,
+            column: 15
+          },
+          end: {
+            line: 11,
+            column: 21
+          }
+        },
+        loc: {
+          start: {
+            line: 11,
+            column: 24
+          },
+          end: {
+            line: 82,
+            column: 1
+          }
+        },
+        line: 11
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/robots.ts"],
+      sourcesContent: ["import { MetadataRoute } from 'next'\n\nexport default async function robots(): Promise<MetadataRoute.Robots> {\n  const baseUrl = 'https://hager-zon.vercel.app'\n\n  return {\n    rules: [\n      {\n        userAgent: '*',\n        allow: ['/$', '/index.html', '/main.css', '/main.js'],\n        disallow: [\n          '/admin/',\n          '/dashboard/',\n          '/api/',\n          '/private/',\n          '/account/',\n          '/test/',\n          '/staging/',\n          '/wp-admin/',\n          '/wp-login.php',\n          '/tmp/',\n        ],\n      },\n      {\n        userAgent: 'Googlebot',\n        allow: ['/products/', '/blog/', '/categories/'],\n        disallow: ['/tmp/', '/search/'],\n      },\n      {\n        userAgent: 'Bingbot',\n        allow: ['/products/', '/blog/', '/categories/'],\n        disallow: ['/search/'],\n      },\n      {\n        userAgent: [\n          'GPTBot',\n          'ChatGPT-User',\n          'Anthropic-ai',\n          'Claude-Web',\n          'Google-Extended',\n          'CCBot',\n          'PerplexityBot',\n        ],\n        disallow: ['/'],\n      },\n    ],\n    sitemap: [\n      `${baseUrl}/sitemap.xml`,\n      `${baseUrl}/sitemap-products.xml`,\n      `${baseUrl}/sitemap-blog.xml`,\n      `${baseUrl}/sitemap-images.xml`,\n    ],\n    host: baseUrl,\n  }\n}"],
+      names: ["robots", "baseUrl", "rules", "userAgent", "allow", "disallow", "sitemap", "host"],
+      mappings: ";;;;+BAEA;;;eAA8BA;;;AAAf,eAAeA;IAC5B,MAAMC,UAAU;IAEhB,OAAO;QACLC,OAAO;YACL;gBACEC,WAAW;gBACXC,OAAO;oBAAC;oBAAM;oBAAe;oBAAa;iBAAW;gBACrDC,UAAU;oBACR;oBACA;oBACA;oBACA;oBACA;oBACA;oBACA;oBACA;oBACA;oBACA;iBACD;YACH;YACA;gBACEF,WAAW;gBACXC,OAAO;oBAAC;oBAAc;oBAAU;iBAAe;gBAC/CC,UAAU;oBAAC;oBAAS;iBAAW;YACjC;YACA;gBACEF,WAAW;gBACXC,OAAO;oBAAC;oBAAc;oBAAU;iBAAe;gBAC/CC,UAAU;oBAAC;iBAAW;YACxB;YACA;gBACEF,WAAW;oBACT;oBACA;oBACA;oBACA;oBACA;oBACA;oBACA;iBACD;gBACDE,UAAU;oBAAC;iBAAI;YACjB;SACD;QACDC,SAAS;YACP,GAAGL,QAAQ,YAAY,CAAC;YACxB,GAAGA,QAAQ,qBAAqB,CAAC;YACjC,GAAGA,QAAQ,iBAAiB,CAAC;YAC7B,GAAGA,QAAQ,mBAAmB,CAAC;SAChC;QACDM,MAAMN;IACR;AACF"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "3691d8a5c84bcca1aa66299aab043c518f3a7ab6"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_2kenzp4vfb = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_2kenzp4vfb();
+cov_2kenzp4vfb().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_2kenzp4vfb().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_2kenzp4vfb().f[0]++;
+    cov_2kenzp4vfb().s[2]++;
+    return robots;
+  }
+});
+async function robots() {
+  /* istanbul ignore next */
+  cov_2kenzp4vfb().f[1]++;
+  const baseUrl =
+  /* istanbul ignore next */
+  (cov_2kenzp4vfb().s[3]++, 'https://hager-zon.vercel.app');
+  /* istanbul ignore next */
+  cov_2kenzp4vfb().s[4]++;
+  return {
+    rules: [{
+      userAgent: '*',
+      allow: ['/$', '/index.html', '/main.css', '/main.js'],
+      disallow: ['/admin/', '/dashboard/', '/api/', '/private/', '/account/', '/test/', '/staging/', '/wp-admin/', '/wp-login.php', '/tmp/']
+    }, {
+      userAgent: 'Googlebot',
+      allow: ['/products/', '/blog/', '/categories/'],
+      disallow: ['/tmp/', '/search/']
+    }, {
+      userAgent: 'Bingbot',
+      allow: ['/products/', '/blog/', '/categories/'],
+      disallow: ['/search/']
+    }, {
+      userAgent: ['GPTBot', 'ChatGPT-User', 'Anthropic-ai', 'Claude-Web', 'Google-Extended', 'CCBot', 'PerplexityBot'],
+      disallow: ['/']
+    }],
+    sitemap: [`${baseUrl}/sitemap.xml`, `${baseUrl}/sitemap-products.xml`, `${baseUrl}/sitemap-blog.xml`, `${baseUrl}/sitemap-images.xml`],
+    host: baseUrl
+  };
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJyb2JvdHMiLCJjb3ZfMmtlbnpwNHZmYiIsImYiLCJiYXNlVXJsIiwicyIsInJ1bGVzIiwidXNlckFnZW50IiwiYWxsb3ciLCJkaXNhbGxvdyIsInNpdGVtYXAiLCJob3N0Il0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2FwcC9yb2JvdHMudHMiXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgTWV0YWRhdGFSb3V0ZSB9IGZyb20gJ25leHQnXG5cbmV4cG9ydCBkZWZhdWx0IGFzeW5jIGZ1bmN0aW9uIHJvYm90cygpOiBQcm9taXNlPE1ldGFkYXRhUm91dGUuUm9ib3RzPiB7XG4gIGNvbnN0IGJhc2VVcmwgPSAnaHR0cHM6Ly9oYWdlci16b24udmVyY2VsLmFwcCdcblxuICByZXR1cm4ge1xuICAgIHJ1bGVzOiBbXG4gICAgICB7XG4gICAgICAgIHVzZXJBZ2VudDogJyonLFxuICAgICAgICBhbGxvdzogWycvJCcsICcvaW5kZXguaHRtbCcsICcvbWFpbi5jc3MnLCAnL21haW4uanMnXSxcbiAgICAgICAgZGlzYWxsb3c6IFtcbiAgICAgICAgICAnL2FkbWluLycsXG4gICAgICAgICAgJy9kYXNoYm9hcmQvJyxcbiAgICAgICAgICAnL2FwaS8nLFxuICAgICAgICAgICcvcHJpdmF0ZS8nLFxuICAgICAgICAgICcvYWNjb3VudC8nLFxuICAgICAgICAgICcvdGVzdC8nLFxuICAgICAgICAgICcvc3RhZ2luZy8nLFxuICAgICAgICAgICcvd3AtYWRtaW4vJyxcbiAgICAgICAgICAnL3dwLWxvZ2luLnBocCcsXG4gICAgICAgICAgJy90bXAvJyxcbiAgICAgICAgXSxcbiAgICAgIH0sXG4gICAgICB7XG4gICAgICAgIHVzZXJBZ2VudDogJ0dvb2dsZWJvdCcsXG4gICAgICAgIGFsbG93OiBbJy9wcm9kdWN0cy8nLCAnL2Jsb2cvJywgJy9jYXRlZ29yaWVzLyddLFxuICAgICAgICBkaXNhbGxvdzogWycvdG1wLycsICcvc2VhcmNoLyddLFxuICAgICAgfSxcbiAgICAgIHtcbiAgICAgICAgdXNlckFnZW50OiAnQmluZ2JvdCcsXG4gICAgICAgIGFsbG93OiBbJy9wcm9kdWN0cy8nLCAnL2Jsb2cvJywgJy9jYXRlZ29yaWVzLyddLFxuICAgICAgICBkaXNhbGxvdzogWycvc2VhcmNoLyddLFxuICAgICAgfSxcbiAgICAgIHtcbiAgICAgICAgdXNlckFnZW50OiBbXG4gICAgICAgICAgJ0dQVEJvdCcsXG4gICAgICAgICAgJ0NoYXRHUFQtVXNlcicsXG4gICAgICAgICAgJ0FudGhyb3BpYy1haScsXG4gICAgICAgICAgJ0NsYXVkZS1XZWInLFxuICAgICAgICAgICdHb29nbGUtRXh0ZW5kZWQnLFxuICAgICAgICAgICdDQ0JvdCcsXG4gICAgICAgICAgJ1BlcnBsZXhpdHlCb3QnLFxuICAgICAgICBdLFxuICAgICAgICBkaXNhbGxvdzogWycvJ10sXG4gICAgICB9LFxuICAgIF0sXG4gICAgc2l0ZW1hcDogW1xuICAgICAgYCR7YmFzZVVybH0vc2l0ZW1hcC54bWxgLFxuICAgICAgYCR7YmFzZVVybH0vc2l0ZW1hcC1wcm9kdWN0cy54bWxgLFxuICAgICAgYCR7YmFzZVVybH0vc2l0ZW1hcC1ibG9nLnhtbGAsXG4gICAgICBgJHtiYXNlVXJsfS9zaXRlbWFwLWltYWdlcy54bWxgLFxuICAgIF0sXG4gICAgaG9zdDogYmFzZVVybCxcbiAgfVxufSJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7K0JBRUE7Ozs7OztXQUE4QkEsTUFBQTs7O0FBQWYsZUFBZUEsT0FBQTtFQUFBO0VBQUFDLGNBQUEsR0FBQUMsQ0FBQTtFQUM1QixNQUFNQyxPQUFBO0VBQUE7RUFBQSxDQUFBRixjQUFBLEdBQUFHLENBQUEsT0FBVTtFQUFBO0VBQUFILGNBQUEsR0FBQUcsQ0FBQTtFQUVoQixPQUFPO0lBQ0xDLEtBQUEsRUFBTyxDQUNMO01BQ0VDLFNBQUEsRUFBVztNQUNYQyxLQUFBLEVBQU8sQ0FBQyxNQUFNLGVBQWUsYUFBYSxXQUFXO01BQ3JEQyxRQUFBLEVBQVUsQ0FDUixXQUNBLGVBQ0EsU0FDQSxhQUNBLGFBQ0EsVUFDQSxhQUNBLGNBQ0EsaUJBQ0E7SUFFSixHQUNBO01BQ0VGLFNBQUEsRUFBVztNQUNYQyxLQUFBLEVBQU8sQ0FBQyxjQUFjLFVBQVUsZUFBZTtNQUMvQ0MsUUFBQSxFQUFVLENBQUMsU0FBUztJQUN0QixHQUNBO01BQ0VGLFNBQUEsRUFBVztNQUNYQyxLQUFBLEVBQU8sQ0FBQyxjQUFjLFVBQVUsZUFBZTtNQUMvQ0MsUUFBQSxFQUFVLENBQUM7SUFDYixHQUNBO01BQ0VGLFNBQUEsRUFBVyxDQUNULFVBQ0EsZ0JBQ0EsZ0JBQ0EsY0FDQSxtQkFDQSxTQUNBLGdCQUNEO01BQ0RFLFFBQUEsRUFBVSxDQUFDO0lBQ2IsRUFDRDtJQUNEQyxPQUFBLEVBQVMsQ0FDUCxHQUFHTixPQUFBLGNBQXFCLEVBQ3hCLEdBQUdBLE9BQUEsdUJBQThCLEVBQ2pDLEdBQUdBLE9BQUEsbUJBQTBCLEVBQzdCLEdBQUdBLE9BQUEscUJBQTRCLENBQ2hDO0lBQ0RPLElBQUEsRUFBTVA7RUFDUjtBQUNGIiwiaWdub3JlTGlzdCI6W119

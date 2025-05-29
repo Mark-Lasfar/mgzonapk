@@ -1,0 +1,386 @@
+5ce9a11da643ae27526d66aa5c92d552
+"use strict";
+
+/* istanbul ignore next */
+function cov_soellvwea() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/checkout/layout.tsx";
+  var hash = "5a0c36b2c2a58d907d3bf6cbab17a921a1549f31";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/checkout/layout.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 30
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 20
+        },
+        end: {
+          line: 11,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 21
+        },
+        end: {
+          line: 12,
+          column: 44
+        }
+      },
+      "5": {
+        start: {
+          line: 13,
+          column: 29
+        },
+        end: {
+          line: 13,
+          column: 76
+        }
+      },
+      "6": {
+        start: {
+          line: 14,
+          column: 28
+        },
+        end: {
+          line: 14,
+          column: 74
+        }
+      },
+      "7": {
+        start: {
+          line: 15,
+          column: 29
+        },
+        end: {
+          line: 15,
+          column: 71
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 4
+        },
+        end: {
+          line: 19,
+          column: 6
+        }
+      },
+      "9": {
+        start: {
+          line: 22,
+          column: 4
+        },
+        end: {
+          line: 62,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 16,
+            column: 9
+          },
+          end: {
+            line: 16,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 16,
+            column: 39
+          },
+          end: {
+            line: 20,
+            column: 1
+          }
+        },
+        line: 16
+      },
+      "2": {
+        name: "CheckoutLayout",
+        decl: {
+          start: {
+            line: 21,
+            column: 9
+          },
+          end: {
+            line: 21,
+            column: 23
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 38
+          },
+          end: {
+            line: 63,
+            column: 1
+          }
+        },
+        line: 21
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 35
+          },
+          end: {
+            line: 17,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 41
+          },
+          end: {
+            line: 19,
+            column: 5
+          }
+        }],
+        line: 17
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 17,
+            column: 11
+          },
+          end: {
+            line: 17,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 17,
+            column: 18
+          },
+          end: {
+            line: 17,
+            column: 32
+          }
+        }],
+        line: 17
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/checkout/layout.tsx"],
+      sourcesContent: ["import { HelpCircle } from 'lucide-react'\nimport Image from 'next/image'\nimport Link from 'next/link'\nimport React from 'react'\n\nexport default function CheckoutLayout({\n  children,\n}: {\n  children: React.ReactNode\n}) {\n  return (\n    <div className=\"p-4\">\n      <header className=\"bg-card mb-4 border-b\">\n        <div className=\"max-w-6xl mx-auto flex justify-between items-center\">\n          <Link href=\"/\">\n            <Image\n              src=\"/icons/logo.svg\"\n              alt=\"logo\"\n              width={70}\n              height={70}\n              style={{\n                maxWidth: '100%',\n                height: 'auto',\n              }}\n            />\n          </Link>\n          <div>\n            <h1 className=\"text-3xl\">Checkout</h1>\n          </div>\n          <div>\n            <Link href=\"/page/help\">\n              <HelpCircle className=\"w-6 h-6\" />\n            </Link>\n          </div>\n        </div>\n      </header>\n      {children}\n    </div>\n  )\n}\n"],
+      names: ["CheckoutLayout", "children", "div", "className", "header", "Link", "href", "Image", "src", "alt", "width", "height", "style", "maxWidth", "h1", "HelpCircle"],
+      mappings: ";;;;+BAKA;;;eAAwBA;;;;6BALG;8DACT;6DACD;8DACC;;;;;;AAEH,SAASA,eAAe,EACrCC,QAAQ,EAGT;IACC,qBACE,sBAACC;QAAIC,WAAU;;0BACb,qBAACC;gBAAOD,WAAU;0BAChB,cAAA,sBAACD;oBAAIC,WAAU;;sCACb,qBAACE,aAAI;4BAACC,MAAK;sCACT,cAAA,qBAACC,cAAK;gCACJC,KAAI;gCACJC,KAAI;gCACJC,OAAO;gCACPC,QAAQ;gCACRC,OAAO;oCACLC,UAAU;oCACVF,QAAQ;gCACV;;;sCAGJ,qBAACT;sCACC,cAAA,qBAACY;gCAAGX,WAAU;0CAAW;;;sCAE3B,qBAACD;sCACC,cAAA,qBAACG,aAAI;gCAACC,MAAK;0CACT,cAAA,qBAACS,uBAAU;oCAACZ,WAAU;;;;;;;YAK7BF;;;AAGP"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "5a0c36b2c2a58d907d3bf6cbab17a921a1549f31"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_soellvwea = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_soellvwea();
+cov_soellvwea().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_soellvwea().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_soellvwea().f[0]++;
+    cov_soellvwea().s[2]++;
+    return CheckoutLayout;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_soellvwea().s[3]++, require("react/jsx-runtime"));
+const _lucidereact =
+/* istanbul ignore next */
+(cov_soellvwea().s[4]++, require("lucide-react"));
+const _image =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_soellvwea().s[5]++, _interop_require_default(require("next/image")));
+const _link =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_soellvwea().s[6]++, _interop_require_default(require("next/link")));
+const _react =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_soellvwea().s[7]++, _interop_require_default(require("react")));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_soellvwea().f[1]++;
+  cov_soellvwea().s[8]++;
+  return /* istanbul ignore next */(cov_soellvwea().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_soellvwea().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_soellvwea().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_soellvwea().b[0][1]++, {
+    default: obj
+  });
+}
+function CheckoutLayout({
+  children
+}) {
+  /* istanbul ignore next */
+  cov_soellvwea().f[2]++;
+  cov_soellvwea().s[9]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+    className: "p-4",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsx)("header", {
+      className: "bg-card mb-4 border-b",
+      children: /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        className: "max-w-6xl mx-auto flex justify-between items-center",
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+          href: "/",
+          children: /*#__PURE__*/(0, _jsxruntime.jsx)(_image.default, {
+            src: "/icons/logo.svg",
+            alt: "logo",
+            width: 70,
+            height: 70,
+            style: {
+              maxWidth: '100%',
+              height: 'auto'
+            }
+          })
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+          children: /*#__PURE__*/(0, _jsxruntime.jsx)("h1", {
+            className: "text-3xl",
+            children: "Checkout"
+          })
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+          children: /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+            href: "/page/help",
+            children: /*#__PURE__*/(0, _jsxruntime.jsx)(_lucidereact.HelpCircle, {
+              className: "w-6 h-6"
+            })
+          })
+        })]
+      })
+    }), children]
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJDaGVja291dExheW91dCIsImNoaWxkcmVuIiwiY292X3NvZWxsdndlYSIsImYiLCJzIiwiX2pzeHJ1bnRpbWUiLCJqc3hzIiwiY2xhc3NOYW1lIiwianN4IiwiX2xpbmsiLCJkZWZhdWx0IiwiaHJlZiIsIl9pbWFnZSIsInNyYyIsImFsdCIsIndpZHRoIiwiaGVpZ2h0Iiwic3R5bGUiLCJtYXhXaWR0aCIsIl9sdWNpZGVyZWFjdCIsIkhlbHBDaXJjbGUiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvYXBwL1tsb2NhbGVdL2NoZWNrb3V0L2xheW91dC50c3giXSwic291cmNlc0NvbnRlbnQiOlsiaW1wb3J0IHsgSGVscENpcmNsZSB9IGZyb20gJ2x1Y2lkZS1yZWFjdCdcbmltcG9ydCBJbWFnZSBmcm9tICduZXh0L2ltYWdlJ1xuaW1wb3J0IExpbmsgZnJvbSAnbmV4dC9saW5rJ1xuaW1wb3J0IFJlYWN0IGZyb20gJ3JlYWN0J1xuXG5leHBvcnQgZGVmYXVsdCBmdW5jdGlvbiBDaGVja291dExheW91dCh7XG4gIGNoaWxkcmVuLFxufToge1xuICBjaGlsZHJlbjogUmVhY3QuUmVhY3ROb2RlXG59KSB7XG4gIHJldHVybiAoXG4gICAgPGRpdiBjbGFzc05hbWU9XCJwLTRcIj5cbiAgICAgIDxoZWFkZXIgY2xhc3NOYW1lPVwiYmctY2FyZCBtYi00IGJvcmRlci1iXCI+XG4gICAgICAgIDxkaXYgY2xhc3NOYW1lPVwibWF4LXctNnhsIG14LWF1dG8gZmxleCBqdXN0aWZ5LWJldHdlZW4gaXRlbXMtY2VudGVyXCI+XG4gICAgICAgICAgPExpbmsgaHJlZj1cIi9cIj5cbiAgICAgICAgICAgIDxJbWFnZVxuICAgICAgICAgICAgICBzcmM9XCIvaWNvbnMvbG9nby5zdmdcIlxuICAgICAgICAgICAgICBhbHQ9XCJsb2dvXCJcbiAgICAgICAgICAgICAgd2lkdGg9ezcwfVxuICAgICAgICAgICAgICBoZWlnaHQ9ezcwfVxuICAgICAgICAgICAgICBzdHlsZT17e1xuICAgICAgICAgICAgICAgIG1heFdpZHRoOiAnMTAwJScsXG4gICAgICAgICAgICAgICAgaGVpZ2h0OiAnYXV0bycsXG4gICAgICAgICAgICAgIH19XG4gICAgICAgICAgICAvPlxuICAgICAgICAgIDwvTGluaz5cbiAgICAgICAgICA8ZGl2PlxuICAgICAgICAgICAgPGgxIGNsYXNzTmFtZT1cInRleHQtM3hsXCI+Q2hlY2tvdXQ8L2gxPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgIDxkaXY+XG4gICAgICAgICAgICA8TGluayBocmVmPVwiL3BhZ2UvaGVscFwiPlxuICAgICAgICAgICAgICA8SGVscENpcmNsZSBjbGFzc05hbWU9XCJ3LTYgaC02XCIgLz5cbiAgICAgICAgICAgIDwvTGluaz5cbiAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgPC9kaXY+XG4gICAgICA8L2hlYWRlcj5cbiAgICAgIHtjaGlsZHJlbn1cbiAgICA8L2Rpdj5cbiAgKVxufVxuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OzsrQkFLQTs7Ozs7O1dBQXdCQSxjQUFBOzs7Ozs7OztpQ0FMRzs7O3VFQUNUOzs7dUVBQ0Q7Ozt1RUFDQzs7Ozs7Ozs7Ozs7Ozs7O0FBRUgsU0FBU0EsZUFBZTtFQUNyQ0M7QUFBUSxDQUdUO0VBQUE7RUFBQUMsYUFBQSxHQUFBQyxDQUFBO0VBQUFELGFBQUEsR0FBQUUsQ0FBQTtFQUNDLG9CQUNFLElBQUFDLFdBQUEsQ0FBQUMsSUFBQSxFQUFDO0lBQUlDLFNBQUEsRUFBVTs0QkFDYixJQUFBRixXQUFBLENBQUFHLEdBQUEsRUFBQztNQUFPRCxTQUFBLEVBQVU7Z0JBQ2hCLGlCQUFBRixXQUFBLENBQUFDLElBQUEsRUFBQztRQUFJQyxTQUFBLEVBQVU7Z0NBQ2IsSUFBQUYsV0FBQSxDQUFBRyxHQUFBLEVBQUNDLEtBQUEsQ0FBQUMsT0FBSTtVQUFDQyxJQUFBLEVBQUs7b0JBQ1QsaUJBQUFOLFdBQUEsQ0FBQUcsR0FBQSxFQUFDSSxNQUFBLENBQUFGLE9BQUs7WUFDSkcsR0FBQSxFQUFJO1lBQ0pDLEdBQUEsRUFBSTtZQUNKQyxLQUFBLEVBQU87WUFDUEMsTUFBQSxFQUFRO1lBQ1JDLEtBQUEsRUFBTztjQUNMQyxRQUFBLEVBQVU7Y0FDVkYsTUFBQSxFQUFRO1lBQ1Y7O3lCQUdKLElBQUFYLFdBQUEsQ0FBQUcsR0FBQSxFQUFDO29CQUNDLGlCQUFBSCxXQUFBLENBQUFHLEdBQUEsRUFBQztZQUFHRCxTQUFBLEVBQVU7c0JBQVc7O3lCQUUzQixJQUFBRixXQUFBLENBQUFHLEdBQUEsRUFBQztvQkFDQyxpQkFBQUgsV0FBQSxDQUFBRyxHQUFBLEVBQUNDLEtBQUEsQ0FBQUMsT0FBSTtZQUFDQyxJQUFBLEVBQUs7c0JBQ1QsaUJBQUFOLFdBQUEsQ0FBQUcsR0FBQSxFQUFDVyxZQUFBLENBQUFDLFVBQVU7Y0FBQ2IsU0FBQSxFQUFVOzs7OztRQUs3Qk4sUUFBQTs7QUFHUCIsImlnbm9yZUxpc3QiOltdfQ==

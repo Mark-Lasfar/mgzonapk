@@ -1,0 +1,50 @@
+User-agent: *
+Allow: /$
+Allow: /index.html
+Allow: /main.css
+Allow: /main.js
+Disallow: /admin/
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /private/
+Disallow: /account/
+Disallow: /test/
+Disallow: /staging/
+Disallow: /wp-admin/
+Disallow: /wp-login.php
+Disallow: /tmp/
+
+User-agent: Googlebot
+Allow: /products/
+Allow: /blog/
+Allow: /categories/
+Disallow: /tmp/
+Disallow: /search/
+
+User-agent: Bingbot
+Allow: /products/
+Allow: /blog/
+Allow: /categories/
+Disallow: /search/
+
+User-agent: GPTBot
+Disallow: /
+User-agent: ChatGPT-User
+Disallow: /
+User-agent: Anthropic-ai
+Disallow: /
+User-agent: Claude-Web
+Disallow: /
+User-agent: Google-Extended
+Disallow: /
+User-agent: CCBot
+Disallow: /
+User-agent: PerplexityBot
+Disallow: /
+
+Host: https://hager-zon.vercel.app
+
+Sitemap: https://hager-zon.vercel.app/sitemap.xml
+Sitemap: https://hager-zon.vercel.app/sitemap-products.xml
+Sitemap: https://hager-zon.vercel.app/sitemap-blog.xml
+Sitemap: https://hager-zon.vercel.app/sitemap-images.xml

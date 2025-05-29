@@ -1,0 +1,166 @@
+3c7cece2a786a46db6a4aac040ac275d
+"use strict";
+
+/* istanbul ignore next */
+function cov_yfvyetabj() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/config/subscription-plans.ts";
+  var hash = "9808a2ae788370480e9788be39e1e0dba20f016d";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/config/subscription-plans.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 34
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 27
+        },
+        end: {
+          line: 48,
+          column: 1
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/config/subscription-plans.ts"],
+      sourcesContent: ["export const SUBSCRIPTION_PLANS = [\n    {\n      name: 'Basic',\n      price: 10,\n      pointsCost: 200,\n      description: 'Access to basic features, 100 product limit, 5% commission.',\n      features: {\n        productsLimit: 100,\n        commission: 5,\n        prioritySupport: false,\n        instantPayouts: false,\n      },\n    },\n    {\n      name: 'Pro',\n      price: 30,\n      pointsCost: 600,\n      description: 'Access to premium features, 500 product limit, 3% commission, priority support.',\n      features: {\n        productsLimit: 500,\n        commission: 3,\n        prioritySupport: true,\n        instantPayouts: false,\n      },\n    },\n    {\n      name: 'VIP',\n      price: 100,\n      pointsCost: 2000,\n      description: 'Customized solutions, unlimited products, 1% commission, priority support, instant payouts.',\n      features: {\n        productsLimit: Infinity,\n        commission: 1,\n        prioritySupport: true,\n        instantPayouts: true,\n      },\n    },\n  ] as const"],
+      names: ["SUBSCRIPTION_PLANS", "name", "price", "pointsCost", "description", "features", "productsLimit", "commission", "prioritySupport", "instantPayouts", "Infinity"],
+      mappings: ";;;;+BAAaA;;;eAAAA;;;AAAN,MAAMA,qBAAqB;IAC9B;QACEC,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YACRC,eAAe;YACfC,YAAY;YACZC,iBAAiB;YACjBC,gBAAgB;QAClB;IACF;IACA;QACER,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YACRC,eAAe;YACfC,YAAY;YACZC,iBAAiB;YACjBC,gBAAgB;QAClB;IACF;IACA;QACER,MAAM;QACNC,OAAO;QACPC,YAAY;QACZC,aAAa;QACbC,UAAU;YACRC,eAAeI;YACfH,YAAY;YACZC,iBAAiB;YACjBC,gBAAgB;QAClB;IACF;CACD"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "9808a2ae788370480e9788be39e1e0dba20f016d"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_yfvyetabj = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_yfvyetabj();
+cov_yfvyetabj().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_yfvyetabj().s[1]++;
+Object.defineProperty(exports, "SUBSCRIPTION_PLANS", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_yfvyetabj().f[0]++;
+    cov_yfvyetabj().s[2]++;
+    return SUBSCRIPTION_PLANS;
+  }
+});
+const SUBSCRIPTION_PLANS =
+/* istanbul ignore next */
+(cov_yfvyetabj().s[3]++, [{
+  name: 'Basic',
+  price: 10,
+  pointsCost: 200,
+  description: 'Access to basic features, 100 product limit, 5% commission.',
+  features: {
+    productsLimit: 100,
+    commission: 5,
+    prioritySupport: false,
+    instantPayouts: false
+  }
+}, {
+  name: 'Pro',
+  price: 30,
+  pointsCost: 600,
+  description: 'Access to premium features, 500 product limit, 3% commission, priority support.',
+  features: {
+    productsLimit: 500,
+    commission: 3,
+    prioritySupport: true,
+    instantPayouts: false
+  }
+}, {
+  name: 'VIP',
+  price: 100,
+  pointsCost: 2000,
+  description: 'Customized solutions, unlimited products, 1% commission, priority support, instant payouts.',
+  features: {
+    productsLimit: Infinity,
+    commission: 1,
+    prioritySupport: true,
+    instantPayouts: true
+  }
+}]);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfeWZ2eWV0YWJqIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiU1VCU0NSSVBUSU9OX1BMQU5TIiwibmFtZSIsInByaWNlIiwicG9pbnRzQ29zdCIsImRlc2NyaXB0aW9uIiwiZmVhdHVyZXMiLCJwcm9kdWN0c0xpbWl0IiwiY29tbWlzc2lvbiIsInByaW9yaXR5U3VwcG9ydCIsImluc3RhbnRQYXlvdXRzIiwiSW5maW5pdHkiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvbGliL2NvbmZpZy9zdWJzY3JpcHRpb24tcGxhbnMudHMiXSwic291cmNlc0NvbnRlbnQiOlsiZXhwb3J0IGNvbnN0IFNVQlNDUklQVElPTl9QTEFOUyA9IFtcbiAgICB7XG4gICAgICBuYW1lOiAnQmFzaWMnLFxuICAgICAgcHJpY2U6IDEwLFxuICAgICAgcG9pbnRzQ29zdDogMjAwLFxuICAgICAgZGVzY3JpcHRpb246ICdBY2Nlc3MgdG8gYmFzaWMgZmVhdHVyZXMsIDEwMCBwcm9kdWN0IGxpbWl0LCA1JSBjb21taXNzaW9uLicsXG4gICAgICBmZWF0dXJlczoge1xuICAgICAgICBwcm9kdWN0c0xpbWl0OiAxMDAsXG4gICAgICAgIGNvbW1pc3Npb246IDUsXG4gICAgICAgIHByaW9yaXR5U3VwcG9ydDogZmFsc2UsXG4gICAgICAgIGluc3RhbnRQYXlvdXRzOiBmYWxzZSxcbiAgICAgIH0sXG4gICAgfSxcbiAgICB7XG4gICAgICBuYW1lOiAnUHJvJyxcbiAgICAgIHByaWNlOiAzMCxcbiAgICAgIHBvaW50c0Nvc3Q6IDYwMCxcbiAgICAgIGRlc2NyaXB0aW9uOiAnQWNjZXNzIHRvIHByZW1pdW0gZmVhdHVyZXMsIDUwMCBwcm9kdWN0IGxpbWl0LCAzJSBjb21taXNzaW9uLCBwcmlvcml0eSBzdXBwb3J0LicsXG4gICAgICBmZWF0dXJlczoge1xuICAgICAgICBwcm9kdWN0c0xpbWl0OiA1MDAsXG4gICAgICAgIGNvbW1pc3Npb246IDMsXG4gICAgICAgIHByaW9yaXR5U3VwcG9ydDogdHJ1ZSxcbiAgICAgICAgaW5zdGFudFBheW91dHM6IGZhbHNlLFxuICAgICAgfSxcbiAgICB9LFxuICAgIHtcbiAgICAgIG5hbWU6ICdWSVAnLFxuICAgICAgcHJpY2U6IDEwMCxcbiAgICAgIHBvaW50c0Nvc3Q6IDIwMDAsXG4gICAgICBkZXNjcmlwdGlvbjogJ0N1c3RvbWl6ZWQgc29sdXRpb25zLCB1bmxpbWl0ZWQgcHJvZHVjdHMsIDElIGNvbW1pc3Npb24sIHByaW9yaXR5IHN1cHBvcnQsIGluc3RhbnQgcGF5b3V0cy4nLFxuICAgICAgZmVhdHVyZXM6IHtcbiAgICAgICAgcHJvZHVjdHNMaW1pdDogSW5maW5pdHksXG4gICAgICAgIGNvbW1pc3Npb246IDEsXG4gICAgICAgIHByaW9yaXR5U3VwcG9ydDogdHJ1ZSxcbiAgICAgICAgaW5zdGFudFBheW91dHM6IHRydWUsXG4gICAgICB9LFxuICAgIH0sXG4gIF0gYXMgY29uc3QiXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQUtNO0lBQUFBLGFBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGFBQUE7QUFBQUEsYUFBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBTE87Ozs7OztXQUFBQyxrQkFBQTs7O0FBQU4sTUFBTUEsa0JBQUE7QUFBQTtBQUFBLENBQUFILGFBQUEsR0FBQUUsQ0FBQSxPQUFxQixDQUM5QjtFQUNFRSxJQUFBLEVBQU07RUFDTkMsS0FBQSxFQUFPO0VBQ1BDLFVBQUEsRUFBWTtFQUNaQyxXQUFBLEVBQWE7RUFDYkMsUUFBQSxFQUFVO0lBQ1JDLGFBQUEsRUFBZTtJQUNmQyxVQUFBLEVBQVk7SUFDWkMsZUFBQSxFQUFpQjtJQUNqQkMsY0FBQSxFQUFnQjtFQUNsQjtBQUNGLEdBQ0E7RUFDRVIsSUFBQSxFQUFNO0VBQ05DLEtBQUEsRUFBTztFQUNQQyxVQUFBLEVBQVk7RUFDWkMsV0FBQSxFQUFhO0VBQ2JDLFFBQUEsRUFBVTtJQUNSQyxhQUFBLEVBQWU7SUFDZkMsVUFBQSxFQUFZO0lBQ1pDLGVBQUEsRUFBaUI7SUFDakJDLGNBQUEsRUFBZ0I7RUFDbEI7QUFDRixHQUNBO0VBQ0VSLElBQUEsRUFBTTtFQUNOQyxLQUFBLEVBQU87RUFDUEMsVUFBQSxFQUFZO0VBQ1pDLFdBQUEsRUFBYTtFQUNiQyxRQUFBLEVBQVU7SUFDUkMsYUFBQSxFQUFlSSxRQUFBO0lBQ2ZILFVBQUEsRUFBWTtJQUNaQyxlQUFBLEVBQWlCO0lBQ2pCQyxjQUFBLEVBQWdCO0VBQ2xCO0FBQ0YsRUFDRCIsImlnbm9yZUxpc3QiOltdfQ==

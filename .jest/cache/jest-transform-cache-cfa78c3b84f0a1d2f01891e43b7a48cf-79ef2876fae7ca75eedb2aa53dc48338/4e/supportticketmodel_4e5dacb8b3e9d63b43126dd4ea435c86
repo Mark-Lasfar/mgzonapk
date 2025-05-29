@@ -1,0 +1,270 @@
+adeb98961a1f4559cc355bf1146def89
+"use strict";
+
+/* istanbul ignore next */
+function cov_1yqb7pk0qq() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/support-ticket.model.ts";
+  var hash = "56933a7ba3a55872da647f3fe7329186c4aa201c";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/support-ticket.model.ts",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 18
+        },
+        end: {
+          line: 11,
+          column: 37
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 28
+        },
+        end: {
+          line: 80,
+          column: 2
+        }
+      },
+      "5": {
+        start: {
+          line: 81,
+          column: 22
+        },
+        end: {
+          line: 81,
+          column: 114
+        }
+      },
+      "6": {
+        start: {
+          line: 82,
+          column: 17
+        },
+        end: {
+          line: 82,
+          column: 30
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 81,
+            column: 22
+          },
+          end: {
+            line: 81,
+            column: 114
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 81,
+            column: 22
+          },
+          end: {
+            line: 81,
+            column: 52
+          }
+        }, {
+          start: {
+            line: 81,
+            column: 56
+          },
+          end: {
+            line: 81,
+            column: 114
+          }
+        }],
+        line: 81
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    f: {
+      "0": 0
+    },
+    b: {
+      "0": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/db/models/support-ticket.model.ts"],
+      sourcesContent: ["import { Document, Model, model, models, Schema } from 'mongoose'\n\nexport interface ISupportTicket extends Document {\n  _id: string\n  userId: string\n  orderId?: string\n  subject: string\n  description: string\n  category: string\n  priority: 'low' | 'medium' | 'high'\n  status: 'open' | 'in_progress' | 'resolved' | 'closed'\n  assignedTo?: string\n  messages: {\n    sender: string\n    message: string\n    attachments: string[]\n    createdAt: Date\n  }[]\n  createdAt: Date\n  updatedAt: Date\n  resolvedAt?: Date\n}\n\nconst supportTicketSchema = new Schema<ISupportTicket>(\n  {\n    userId: {\n      type: Schema.Types.ObjectId,\n      ref: 'User',\n      required: true,\n    },\n    orderId: {\n      type: Schema.Types.ObjectId,\n      ref: 'Order',\n    },\n    subject: {\n      type: String,\n      required: true,\n    },\n    description: {\n      type: String,\n      required: true,\n    },\n    category: {\n      type: String,\n      required: true,\n    },\n    priority: {\n      type: String,\n      enum: ['low', 'medium', 'high'],\n      default: 'medium',\n    },\n    status: {\n      type: String,\n      enum: ['open', 'in_progress', 'resolved', 'closed'],\n      default: 'open',\n    },\n    assignedTo: {\n      type: Schema.Types.ObjectId,\n      ref: 'User',\n    },\n    messages: [\n      {\n        sender: {\n          type: Schema.Types.ObjectId,\n          ref: 'User',\n          required: true,\n        },\n        message: {\n          type: String,\n          required: true,\n        },\n        attachments: [String],\n        createdAt: {\n          type: Date,\n          default: Date.now,\n        },\n      },\n    ],\n    resolvedAt: Date,\n  },\n  {\n    timestamps: true,\n  }\n)\n\nconst SupportTicket =\n  (models.SupportTicket as Model<ISupportTicket>) ||\n  model<ISupportTicket>('SupportTicket', supportTicketSchema)\n\nexport default SupportTicket"],
+      names: ["supportTicketSchema", "Schema", "userId", "type", "Types", "ObjectId", "ref", "required", "orderId", "subject", "String", "description", "category", "priority", "enum", "default", "status", "assignedTo", "messages", "sender", "message", "attachments", "createdAt", "Date", "now", "resolvedAt", "timestamps", "SupportTicket", "models", "model"],
+      mappings: ";;;;+BAyFA;;;eAAA;;;0BAzFuD;AAuBvD,MAAMA,sBAAsB,IAAIC,gBAAM,CACpC;IACEC,QAAQ;QACNC,MAAMF,gBAAM,CAACG,KAAK,CAACC,QAAQ;QAC3BC,KAAK;QACLC,UAAU;IACZ;IACAC,SAAS;QACPL,MAAMF,gBAAM,CAACG,KAAK,CAACC,QAAQ;QAC3BC,KAAK;IACP;IACAG,SAAS;QACPN,MAAMO;QACNH,UAAU;IACZ;IACAI,aAAa;QACXR,MAAMO;QACNH,UAAU;IACZ;IACAK,UAAU;QACRT,MAAMO;QACNH,UAAU;IACZ;IACAM,UAAU;QACRV,MAAMO;QACNI,MAAM;YAAC;YAAO;YAAU;SAAO;QAC/BC,SAAS;IACX;IACAC,QAAQ;QACNb,MAAMO;QACNI,MAAM;YAAC;YAAQ;YAAe;YAAY;SAAS;QACnDC,SAAS;IACX;IACAE,YAAY;QACVd,MAAMF,gBAAM,CAACG,KAAK,CAACC,QAAQ;QAC3BC,KAAK;IACP;IACAY,UAAU;QACR;YACEC,QAAQ;gBACNhB,MAAMF,gBAAM,CAACG,KAAK,CAACC,QAAQ;gBAC3BC,KAAK;gBACLC,UAAU;YACZ;YACAa,SAAS;gBACPjB,MAAMO;gBACNH,UAAU;YACZ;YACAc,aAAa;gBAACX;aAAO;YACrBY,WAAW;gBACTnB,MAAMoB;gBACNR,SAASQ,KAAKC,GAAG;YACnB;QACF;KACD;IACDC,YAAYF;AACd,GACA;IACEG,YAAY;AACd;AAGF,MAAMC,gBACJ,AAACC,gBAAM,CAACD,aAAa,IACrBE,IAAAA,eAAK,EAAiB,iBAAiB7B;MAEzC,WAAe2B"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "56933a7ba3a55872da647f3fe7329186c4aa201c"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_1yqb7pk0qq = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_1yqb7pk0qq();
+cov_1yqb7pk0qq().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_1yqb7pk0qq().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_1yqb7pk0qq().f[0]++;
+    cov_1yqb7pk0qq().s[2]++;
+    return _default;
+  }
+});
+const _mongoose =
+/* istanbul ignore next */
+(cov_1yqb7pk0qq().s[3]++, require("mongoose"));
+const supportTicketSchema =
+/* istanbul ignore next */
+(cov_1yqb7pk0qq().s[4]++, new _mongoose.Schema({
+  userId: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  orderId: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'Order'
+  },
+  subject: {
+    type: String,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  category: {
+    type: String,
+    required: true
+  },
+  priority: {
+    type: String,
+    enum: ['low', 'medium', 'high'],
+    default: 'medium'
+  },
+  status: {
+    type: String,
+    enum: ['open', 'in_progress', 'resolved', 'closed'],
+    default: 'open'
+  },
+  assignedTo: {
+    type: _mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  messages: [{
+    sender: {
+      type: _mongoose.Schema.Types.ObjectId,
+      ref: 'User',
+      required: true
+    },
+    message: {
+      type: String,
+      required: true
+    },
+    attachments: [String],
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  }],
+  resolvedAt: Date
+}, {
+  timestamps: true
+}));
+const SupportTicket =
+/* istanbul ignore next */
+(cov_1yqb7pk0qq().s[5]++,
+/* istanbul ignore next */
+(cov_1yqb7pk0qq().b[0][0]++, _mongoose.models.SupportTicket) ||
+/* istanbul ignore next */
+(cov_1yqb7pk0qq().b[0][1]++, (0, _mongoose.model)('SupportTicket', supportTicketSchema)));
+const _default =
+/* istanbul ignore next */
+(cov_1yqb7pk0qq().s[6]++, SupportTicket);
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfMXlxYjdwazBxcSIsImFjdHVhbENvdmVyYWdlIiwicyIsIl9kZWZhdWx0Iiwic3VwcG9ydFRpY2tldFNjaGVtYSIsIl9tb25nb29zZSIsIlNjaGVtYSIsInVzZXJJZCIsInR5cGUiLCJUeXBlcyIsIk9iamVjdElkIiwicmVmIiwicmVxdWlyZWQiLCJvcmRlcklkIiwic3ViamVjdCIsIlN0cmluZyIsImRlc2NyaXB0aW9uIiwiY2F0ZWdvcnkiLCJwcmlvcml0eSIsImVudW0iLCJkZWZhdWx0Iiwic3RhdHVzIiwiYXNzaWduZWRUbyIsIm1lc3NhZ2VzIiwic2VuZGVyIiwibWVzc2FnZSIsImF0dGFjaG1lbnRzIiwiY3JlYXRlZEF0IiwiRGF0ZSIsIm5vdyIsInJlc29sdmVkQXQiLCJ0aW1lc3RhbXBzIiwiU3VwcG9ydFRpY2tldCIsImIiLCJtb2RlbHMiLCJtb2RlbCJdLCJzb3VyY2VzIjpbIi9ob21lL2hhZ2VyL25ldy9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIgKDMpL215LW5leHRqcy1wcm9qZWN0LW1hc3Rlci9saWIvZGIvbW9kZWxzL3N1cHBvcnQtdGlja2V0Lm1vZGVsLnRzIl0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IERvY3VtZW50LCBNb2RlbCwgbW9kZWwsIG1vZGVscywgU2NoZW1hIH0gZnJvbSAnbW9uZ29vc2UnXG5cbmV4cG9ydCBpbnRlcmZhY2UgSVN1cHBvcnRUaWNrZXQgZXh0ZW5kcyBEb2N1bWVudCB7XG4gIF9pZDogc3RyaW5nXG4gIHVzZXJJZDogc3RyaW5nXG4gIG9yZGVySWQ/OiBzdHJpbmdcbiAgc3ViamVjdDogc3RyaW5nXG4gIGRlc2NyaXB0aW9uOiBzdHJpbmdcbiAgY2F0ZWdvcnk6IHN0cmluZ1xuICBwcmlvcml0eTogJ2xvdycgfCAnbWVkaXVtJyB8ICdoaWdoJ1xuICBzdGF0dXM6ICdvcGVuJyB8ICdpbl9wcm9ncmVzcycgfCAncmVzb2x2ZWQnIHwgJ2Nsb3NlZCdcbiAgYXNzaWduZWRUbz86IHN0cmluZ1xuICBtZXNzYWdlczoge1xuICAgIHNlbmRlcjogc3RyaW5nXG4gICAgbWVzc2FnZTogc3RyaW5nXG4gICAgYXR0YWNobWVudHM6IHN0cmluZ1tdXG4gICAgY3JlYXRlZEF0OiBEYXRlXG4gIH1bXVxuICBjcmVhdGVkQXQ6IERhdGVcbiAgdXBkYXRlZEF0OiBEYXRlXG4gIHJlc29sdmVkQXQ/OiBEYXRlXG59XG5cbmNvbnN0IHN1cHBvcnRUaWNrZXRTY2hlbWEgPSBuZXcgU2NoZW1hPElTdXBwb3J0VGlja2V0PihcbiAge1xuICAgIHVzZXJJZDoge1xuICAgICAgdHlwZTogU2NoZW1hLlR5cGVzLk9iamVjdElkLFxuICAgICAgcmVmOiAnVXNlcicsXG4gICAgICByZXF1aXJlZDogdHJ1ZSxcbiAgICB9LFxuICAgIG9yZGVySWQ6IHtcbiAgICAgIHR5cGU6IFNjaGVtYS5UeXBlcy5PYmplY3RJZCxcbiAgICAgIHJlZjogJ09yZGVyJyxcbiAgICB9LFxuICAgIHN1YmplY3Q6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIHJlcXVpcmVkOiB0cnVlLFxuICAgIH0sXG4gICAgZGVzY3JpcHRpb246IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIHJlcXVpcmVkOiB0cnVlLFxuICAgIH0sXG4gICAgY2F0ZWdvcnk6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIHJlcXVpcmVkOiB0cnVlLFxuICAgIH0sXG4gICAgcHJpb3JpdHk6IHtcbiAgICAgIHR5cGU6IFN0cmluZyxcbiAgICAgIGVudW06IFsnbG93JywgJ21lZGl1bScsICdoaWdoJ10sXG4gICAgICBkZWZhdWx0OiAnbWVkaXVtJyxcbiAgICB9LFxuICAgIHN0YXR1czoge1xuICAgICAgdHlwZTogU3RyaW5nLFxuICAgICAgZW51bTogWydvcGVuJywgJ2luX3Byb2dyZXNzJywgJ3Jlc29sdmVkJywgJ2Nsb3NlZCddLFxuICAgICAgZGVmYXVsdDogJ29wZW4nLFxuICAgIH0sXG4gICAgYXNzaWduZWRUbzoge1xuICAgICAgdHlwZTogU2NoZW1hLlR5cGVzLk9iamVjdElkLFxuICAgICAgcmVmOiAnVXNlcicsXG4gICAgfSxcbiAgICBtZXNzYWdlczogW1xuICAgICAge1xuICAgICAgICBzZW5kZXI6IHtcbiAgICAgICAgICB0eXBlOiBTY2hlbWEuVHlwZXMuT2JqZWN0SWQsXG4gICAgICAgICAgcmVmOiAnVXNlcicsXG4gICAgICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgICAgIH0sXG4gICAgICAgIG1lc3NhZ2U6IHtcbiAgICAgICAgICB0eXBlOiBTdHJpbmcsXG4gICAgICAgICAgcmVxdWlyZWQ6IHRydWUsXG4gICAgICAgIH0sXG4gICAgICAgIGF0dGFjaG1lbnRzOiBbU3RyaW5nXSxcbiAgICAgICAgY3JlYXRlZEF0OiB7XG4gICAgICAgICAgdHlwZTogRGF0ZSxcbiAgICAgICAgICBkZWZhdWx0OiBEYXRlLm5vdyxcbiAgICAgICAgfSxcbiAgICAgIH0sXG4gICAgXSxcbiAgICByZXNvbHZlZEF0OiBEYXRlLFxuICB9LFxuICB7XG4gICAgdGltZXN0YW1wczogdHJ1ZSxcbiAgfVxuKVxuXG5jb25zdCBTdXBwb3J0VGlja2V0ID1cbiAgKG1vZGVscy5TdXBwb3J0VGlja2V0IGFzIE1vZGVsPElTdXBwb3J0VGlja2V0PikgfHxcbiAgbW9kZWw8SVN1cHBvcnRUaWNrZXQ+KCdTdXBwb3J0VGlja2V0Jywgc3VwcG9ydFRpY2tldFNjaGVtYSlcblxuZXhwb3J0IGRlZmF1bHQgU3VwcG9ydFRpY2tldCJdLCJtYXBwaW5ncyI6Ijs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7O0lBNEJNO0lBQUFBLGNBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGNBQUE7QUFBQUEsY0FBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBNkROOzs7Ozs7V0FBQUMsUUFBQTs7Ozs7a0NBekZ1RDtBQXVCdkQsTUFBTUMsbUJBQUE7QUFBQTtBQUFBLENBQUFKLGNBQUEsR0FBQUUsQ0FBQSxPQUFzQixJQUFJRyxTQUFBLENBQUFDLE1BQU0sQ0FDcEM7RUFDRUMsTUFBQSxFQUFRO0lBQ05DLElBQUEsRUFBTUgsU0FBQSxDQUFBQyxNQUFNLENBQUNHLEtBQUssQ0FBQ0MsUUFBUTtJQUMzQkMsR0FBQSxFQUFLO0lBQ0xDLFFBQUEsRUFBVTtFQUNaO0VBQ0FDLE9BQUEsRUFBUztJQUNQTCxJQUFBLEVBQU1ILFNBQUEsQ0FBQUMsTUFBTSxDQUFDRyxLQUFLLENBQUNDLFFBQVE7SUFDM0JDLEdBQUEsRUFBSztFQUNQO0VBQ0FHLE9BQUEsRUFBUztJQUNQTixJQUFBLEVBQU1PLE1BQUE7SUFDTkgsUUFBQSxFQUFVO0VBQ1o7RUFDQUksV0FBQSxFQUFhO0lBQ1hSLElBQUEsRUFBTU8sTUFBQTtJQUNOSCxRQUFBLEVBQVU7RUFDWjtFQUNBSyxRQUFBLEVBQVU7SUFDUlQsSUFBQSxFQUFNTyxNQUFBO0lBQ05ILFFBQUEsRUFBVTtFQUNaO0VBQ0FNLFFBQUEsRUFBVTtJQUNSVixJQUFBLEVBQU1PLE1BQUE7SUFDTkksSUFBQSxFQUFNLENBQUMsT0FBTyxVQUFVLE9BQU87SUFDL0JDLE9BQUEsRUFBUztFQUNYO0VBQ0FDLE1BQUEsRUFBUTtJQUNOYixJQUFBLEVBQU1PLE1BQUE7SUFDTkksSUFBQSxFQUFNLENBQUMsUUFBUSxlQUFlLFlBQVksU0FBUztJQUNuREMsT0FBQSxFQUFTO0VBQ1g7RUFDQUUsVUFBQSxFQUFZO0lBQ1ZkLElBQUEsRUFBTUgsU0FBQSxDQUFBQyxNQUFNLENBQUNHLEtBQUssQ0FBQ0MsUUFBUTtJQUMzQkMsR0FBQSxFQUFLO0VBQ1A7RUFDQVksUUFBQSxFQUFVLENBQ1I7SUFDRUMsTUFBQSxFQUFRO01BQ05oQixJQUFBLEVBQU1ILFNBQUEsQ0FBQUMsTUFBTSxDQUFDRyxLQUFLLENBQUNDLFFBQVE7TUFDM0JDLEdBQUEsRUFBSztNQUNMQyxRQUFBLEVBQVU7SUFDWjtJQUNBYSxPQUFBLEVBQVM7TUFDUGpCLElBQUEsRUFBTU8sTUFBQTtNQUNOSCxRQUFBLEVBQVU7SUFDWjtJQUNBYyxXQUFBLEVBQWEsQ0FBQ1gsTUFBQSxDQUFPO0lBQ3JCWSxTQUFBLEVBQVc7TUFDVG5CLElBQUEsRUFBTW9CLElBQUE7TUFDTlIsT0FBQSxFQUFTUSxJQUFBLENBQUtDO0lBQ2hCO0VBQ0YsRUFDRDtFQUNEQyxVQUFBLEVBQVlGO0FBQ2QsR0FDQTtFQUNFRyxVQUFBLEVBQVk7QUFDZDtBQUdGLE1BQU1DLGFBQUE7QUFBQTtBQUFBLENBQUFoQyxjQUFBLEdBQUFFLENBQUE7QUFDSjtBQUFBLENBQUFGLGNBQUEsR0FBQWlDLENBQUEsVUFBQTVCLFNBQUMsQ0FBQTZCLE1BQU0sQ0FBQ0YsYUFBYTtBQUFBO0FBQUEsQ0FBQWhDLGNBQUEsR0FBQWlDLENBQUEsVUFDckIsSUFBQTVCLFNBQUEsQ0FBQThCLEtBQUssRUFBaUIsaUJBQWlCL0IsbUJBQUE7TUFFekNELFFBQUE7QUFBQTtBQUFBLENBQUFILGNBQUEsR0FBQUUsQ0FBQSxPQUFlOEIsYUFBQSIsImlnbm9yZUxpc3QiOltdfQ==

@@ -1,0 +1,574 @@
+5519a98caa1c7954c25c81005d04f6cd
+"use strict";
+
+/* istanbul ignore next */
+function cov_canp81izy() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/(root)/account/manage/name/page.tsx";
+  var hash = "7d4d1113e2cd562c54e2331d7248479e5b1dca09";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/(root)/account/manage/name/page.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 4
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "2": {
+        start: {
+          line: 6,
+          column: 24
+        },
+        end: {
+          line: 9,
+          column: 7
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 0
+        },
+        end: {
+          line: 18,
+          column: 3
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 8
+        },
+        end: {
+          line: 13,
+          column: 27
+        }
+      },
+      "5": {
+        start: {
+          line: 16,
+          column: 8
+        },
+        end: {
+          line: 16,
+          column: 24
+        }
+      },
+      "6": {
+        start: {
+          line: 19,
+          column: 20
+        },
+        end: {
+          line: 19,
+          column: 48
+        }
+      },
+      "7": {
+        start: {
+          line: 20,
+          column: 15
+        },
+        end: {
+          line: 20,
+          column: 41
+        }
+      },
+      "8": {
+        start: {
+          line: 21,
+          column: 14
+        },
+        end: {
+          line: 21,
+          column: 47
+        }
+      },
+      "9": {
+        start: {
+          line: 22,
+          column: 21
+        },
+        end: {
+          line: 22,
+          column: 46
+        }
+      },
+      "10": {
+        start: {
+          line: 23,
+          column: 28
+        },
+        end: {
+          line: 23,
+          column: 74
+        }
+      },
+      "11": {
+        start: {
+          line: 24,
+          column: 14
+        },
+        end: {
+          line: 24,
+          column: 61
+        }
+      },
+      "12": {
+        start: {
+          line: 25,
+          column: 24
+        },
+        end: {
+          line: 25,
+          column: 80
+        }
+      },
+      "13": {
+        start: {
+          line: 27,
+          column: 4
+        },
+        end: {
+          line: 29,
+          column: 6
+        }
+      },
+      "14": {
+        start: {
+          line: 31,
+          column: 19
+        },
+        end: {
+          line: 31,
+          column: 37
+        }
+      },
+      "15": {
+        start: {
+          line: 32,
+          column: 17
+        },
+        end: {
+          line: 34,
+          column: 1
+        }
+      },
+      "16": {
+        start: {
+          line: 36,
+          column: 20
+        },
+        end: {
+          line: 36,
+          column: 43
+        }
+      },
+      "17": {
+        start: {
+          line: 37,
+          column: 21
+        },
+        end: {
+          line: 37,
+          column: 60
+        }
+      },
+      "18": {
+        start: {
+          line: 38,
+          column: 4
+        },
+        end: {
+          line: 88,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "_export",
+        decl: {
+          start: {
+            line: 5,
+            column: 9
+          },
+          end: {
+            line: 5,
+            column: 16
+          }
+        },
+        loc: {
+          start: {
+            line: 5,
+            column: 30
+          },
+          end: {
+            line: 10,
+            column: 1
+          }
+        },
+        line: 5
+      },
+      "1": {
+        name: "(anonymous_1)",
+        decl: {
+          start: {
+            line: 12,
+            column: 13
+          },
+          end: {
+            line: 12,
+            column: 14
+          }
+        },
+        loc: {
+          start: {
+            line: 12,
+            column: 24
+          },
+          end: {
+            line: 14,
+            column: 5
+          }
+        },
+        line: 12
+      },
+      "2": {
+        name: "(anonymous_2)",
+        decl: {
+          start: {
+            line: 15,
+            column: 14
+          },
+          end: {
+            line: 15,
+            column: 15
+          }
+        },
+        loc: {
+          start: {
+            line: 15,
+            column: 25
+          },
+          end: {
+            line: 17,
+            column: 5
+          }
+        },
+        line: 15
+      },
+      "3": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 26,
+            column: 9
+          },
+          end: {
+            line: 26,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 26,
+            column: 39
+          },
+          end: {
+            line: 30,
+            column: 1
+          }
+        },
+        line: 26
+      },
+      "4": {
+        name: "ProfilePage",
+        decl: {
+          start: {
+            line: 35,
+            column: 15
+          },
+          end: {
+            line: 35,
+            column: 26
+          }
+        },
+        loc: {
+          start: {
+            line: 35,
+            column: 29
+          },
+          end: {
+            line: 89,
+            column: 1
+          }
+        },
+        line: 35
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 27,
+            column: 11
+          },
+          end: {
+            line: 29,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 27,
+            column: 35
+          },
+          end: {
+            line: 27,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 27,
+            column: 41
+          },
+          end: {
+            line: 29,
+            column: 5
+          }
+        }],
+        line: 27
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 27,
+            column: 11
+          },
+          end: {
+            line: 27,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 27,
+            column: 11
+          },
+          end: {
+            line: 27,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 27,
+            column: 18
+          },
+          end: {
+            line: 27,
+            column: 32
+          }
+        }],
+        line: 27
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/(root)/account/manage/name/page.tsx"],
+      sourcesContent: ["import { Metadata } from 'next'\nimport { SessionProvider } from 'next-auth/react'\n\nimport { auth } from '@/auth'\n\nimport { ProfileForm } from './profile-form'\nimport Link from 'next/link'\nimport { Card, CardContent } from '@/components/ui/card'\nimport { getSetting } from '@/lib/actions/setting.actions'\n\nconst PAGE_TITLE = 'Change Your Name'\nexport const metadata: Metadata = {\n  title: PAGE_TITLE,\n}\n\nexport default async function ProfilePage() {\n  const session = await auth()\n  const { site } = await getSetting()\n  return (\n    <div className=\"mb-24\">\n      <SessionProvider session={session}>\n        <div className=\"flex gap-2 \">\n          <Link href=\"/account\">Your Account</Link>\n          <span>\u203A</span>\n          <Link href=\"/account/manage\">Login & Security</Link>\n          <span>\u203A</span>\n          <span>{PAGE_TITLE}</span>\n        </div>\n        <h1 className=\"h1-bold py-4\">{PAGE_TITLE}</h1>\n        <Card className=\"max-w-2xl\">\n          <CardContent className=\"p-4 flex justify-between flex-wrap\">\n            <p className=\"text-sm py-2\">\n              If you want to change the name associated with your {site.name}\n              &apos;s account, you may do so below. Be sure to click the Save\n              Changes button when you are done.\n            </p>\n            <ProfileForm />\n          </CardContent>\n        </Card>\n      </SessionProvider>\n    </div>\n  )\n}\n"],
+      names: ["ProfilePage", "metadata", "PAGE_TITLE", "title", "session", "auth", "site", "getSetting", "div", "className", "SessionProvider", "Link", "href", "span", "h1", "Card", "CardContent", "p", "name", "ProfileForm"],
+      mappings: ";;;;;;;;;;;IAeA,OA2BC;eA3B6BA;;IAJjBC,QAAQ;eAARA;;;;uBAVmB;sBAEX;6BAEO;6DACX;sBACiB;gCACP;;;;;;AAE3B,MAAMC,aAAa;AACZ,MAAMD,WAAqB;IAChCE,OAAOD;AACT;AAEe,eAAeF;IAC5B,MAAMI,UAAU,MAAMC,IAAAA,UAAI;IAC1B,MAAM,EAAEC,IAAI,EAAE,GAAG,MAAMC,IAAAA,0BAAU;IACjC,qBACE,qBAACC;QAAIC,WAAU;kBACb,cAAA,sBAACC,sBAAe;YAACN,SAASA;;8BACxB,sBAACI;oBAAIC,WAAU;;sCACb,qBAACE,aAAI;4BAACC,MAAK;sCAAW;;sCACtB,qBAACC;sCAAK;;sCACN,qBAACF,aAAI;4BAACC,MAAK;sCAAkB;;sCAC7B,qBAACC;sCAAK;;sCACN,qBAACA;sCAAMX;;;;8BAET,qBAACY;oBAAGL,WAAU;8BAAgBP;;8BAC9B,qBAACa,UAAI;oBAACN,WAAU;8BACd,cAAA,sBAACO,iBAAW;wBAACP,WAAU;;0CACrB,sBAACQ;gCAAER,WAAU;;oCAAe;oCAC2BH,KAAKY,IAAI;oCAAC;;;0CAIjE,qBAACC,wBAAW;;;;;;;AAMxB"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "7d4d1113e2cd562c54e2331d7248479e5b1dca09"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_canp81izy = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_canp81izy();
+cov_canp81izy().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function _export(target, all) {
+  /* istanbul ignore next */
+  cov_canp81izy().f[0]++;
+  cov_canp81izy().s[1]++;
+  for (var name in all) {
+    /* istanbul ignore next */
+    cov_canp81izy().s[2]++;
+    Object.defineProperty(target, name, {
+      enumerable: true,
+      get: all[name]
+    });
+  }
+}
+/* istanbul ignore next */
+cov_canp81izy().s[3]++;
+_export(exports, {
+  default: function () {
+    /* istanbul ignore next */
+    cov_canp81izy().f[1]++;
+    cov_canp81izy().s[4]++;
+    return ProfilePage;
+  },
+  metadata: function () {
+    /* istanbul ignore next */
+    cov_canp81izy().f[2]++;
+    cov_canp81izy().s[5]++;
+    return metadata;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_canp81izy().s[6]++, require("react/jsx-runtime"));
+const _react =
+/* istanbul ignore next */
+(cov_canp81izy().s[7]++, require("next-auth/react"));
+const _auth =
+/* istanbul ignore next */
+(cov_canp81izy().s[8]++, require("../../../../../../auth"));
+const _profileform =
+/* istanbul ignore next */
+(cov_canp81izy().s[9]++, require("./profile-form"));
+const _link =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_canp81izy().s[10]++, _interop_require_default(require("next/link")));
+const _card =
+/* istanbul ignore next */
+(cov_canp81izy().s[11]++, require("../../../../../../components/ui/card"));
+const _settingactions =
+/* istanbul ignore next */
+(cov_canp81izy().s[12]++, require("../../../../../../lib/actions/setting.actions"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_canp81izy().f[3]++;
+  cov_canp81izy().s[13]++;
+  return /* istanbul ignore next */(cov_canp81izy().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_canp81izy().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_canp81izy().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_canp81izy().b[0][1]++, {
+    default: obj
+  });
+}
+const PAGE_TITLE =
+/* istanbul ignore next */
+(cov_canp81izy().s[14]++, 'Change Your Name');
+const metadata =
+/* istanbul ignore next */
+(cov_canp81izy().s[15]++, {
+  title: PAGE_TITLE
+});
+async function ProfilePage() {
+  /* istanbul ignore next */
+  cov_canp81izy().f[4]++;
+  const session =
+  /* istanbul ignore next */
+  (cov_canp81izy().s[16]++, await (0, _auth.auth)());
+  const {
+    site
+  } =
+  /* istanbul ignore next */
+  (cov_canp81izy().s[17]++, await (0, _settingactions.getSetting)());
+  /* istanbul ignore next */
+  cov_canp81izy().s[18]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+    className: "mb-24",
+    children: /*#__PURE__*/(0, _jsxruntime.jsxs)(_react.SessionProvider, {
+      session: session,
+      children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        className: "flex gap-2 ",
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+          href: "/account",
+          children: "Your Account"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          children: "›"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+          href: "/account/manage",
+          children: "Login & Security"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          children: "›"
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          children: PAGE_TITLE
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)("h1", {
+        className: "h1-bold py-4",
+        children: PAGE_TITLE
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_card.Card, {
+        className: "max-w-2xl",
+        children: /*#__PURE__*/(0, _jsxruntime.jsxs)(_card.CardContent, {
+          className: "p-4 flex justify-between flex-wrap",
+          children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("p", {
+            className: "text-sm py-2",
+            children: ["If you want to change the name associated with your ", site.name, "'s account, you may do so below. Be sure to click the Save Changes button when you are done."]
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)(_profileform.ProfileForm, {})]
+        })
+      })]
+    })
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJkZWZhdWx0IiwiY292X2NhbnA4MWl6eSIsImYiLCJzIiwiUHJvZmlsZVBhZ2UiLCJtZXRhZGF0YSIsIlBBR0VfVElUTEUiLCJ0aXRsZSIsInNlc3Npb24iLCJfYXV0aCIsImF1dGgiLCJzaXRlIiwiX3NldHRpbmdhY3Rpb25zIiwiZ2V0U2V0dGluZyIsIl9qc3hydW50aW1lIiwianN4IiwiY2xhc3NOYW1lIiwianN4cyIsIl9yZWFjdCIsIlNlc3Npb25Qcm92aWRlciIsIl9saW5rIiwiaHJlZiIsIl9jYXJkIiwiQ2FyZCIsIkNhcmRDb250ZW50IiwibmFtZSIsIl9wcm9maWxlZm9ybSIsIlByb2ZpbGVGb3JtIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2FwcC9bbG9jYWxlXS8ocm9vdCkvYWNjb3VudC9tYW5hZ2UvbmFtZS9wYWdlLnRzeCJdLCJzb3VyY2VzQ29udGVudCI6WyJpbXBvcnQgeyBNZXRhZGF0YSB9IGZyb20gJ25leHQnXG5pbXBvcnQgeyBTZXNzaW9uUHJvdmlkZXIgfSBmcm9tICduZXh0LWF1dGgvcmVhY3QnXG5cbmltcG9ydCB7IGF1dGggfSBmcm9tICdAL2F1dGgnXG5cbmltcG9ydCB7IFByb2ZpbGVGb3JtIH0gZnJvbSAnLi9wcm9maWxlLWZvcm0nXG5pbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnXG5pbXBvcnQgeyBDYXJkLCBDYXJkQ29udGVudCB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9jYXJkJ1xuaW1wb3J0IHsgZ2V0U2V0dGluZyB9IGZyb20gJ0AvbGliL2FjdGlvbnMvc2V0dGluZy5hY3Rpb25zJ1xuXG5jb25zdCBQQUdFX1RJVExFID0gJ0NoYW5nZSBZb3VyIE5hbWUnXG5leHBvcnQgY29uc3QgbWV0YWRhdGE6IE1ldGFkYXRhID0ge1xuICB0aXRsZTogUEFHRV9USVRMRSxcbn1cblxuZXhwb3J0IGRlZmF1bHQgYXN5bmMgZnVuY3Rpb24gUHJvZmlsZVBhZ2UoKSB7XG4gIGNvbnN0IHNlc3Npb24gPSBhd2FpdCBhdXRoKClcbiAgY29uc3QgeyBzaXRlIH0gPSBhd2FpdCBnZXRTZXR0aW5nKClcbiAgcmV0dXJuIChcbiAgICA8ZGl2IGNsYXNzTmFtZT1cIm1iLTI0XCI+XG4gICAgICA8U2Vzc2lvblByb3ZpZGVyIHNlc3Npb249e3Nlc3Npb259PlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZ2FwLTIgXCI+XG4gICAgICAgICAgPExpbmsgaHJlZj1cIi9hY2NvdW50XCI+WW91ciBBY2NvdW50PC9MaW5rPlxuICAgICAgICAgIDxzcGFuPuKAujwvc3Bhbj5cbiAgICAgICAgICA8TGluayBocmVmPVwiL2FjY291bnQvbWFuYWdlXCI+TG9naW4gJiBTZWN1cml0eTwvTGluaz5cbiAgICAgICAgICA8c3Bhbj7igLo8L3NwYW4+XG4gICAgICAgICAgPHNwYW4+e1BBR0VfVElUTEV9PC9zcGFuPlxuICAgICAgICA8L2Rpdj5cbiAgICAgICAgPGgxIGNsYXNzTmFtZT1cImgxLWJvbGQgcHktNFwiPntQQUdFX1RJVExFfTwvaDE+XG4gICAgICAgIDxDYXJkIGNsYXNzTmFtZT1cIm1heC13LTJ4bFwiPlxuICAgICAgICAgIDxDYXJkQ29udGVudCBjbGFzc05hbWU9XCJwLTQgZmxleCBqdXN0aWZ5LWJldHdlZW4gZmxleC13cmFwXCI+XG4gICAgICAgICAgICA8cCBjbGFzc05hbWU9XCJ0ZXh0LXNtIHB5LTJcIj5cbiAgICAgICAgICAgICAgSWYgeW91IHdhbnQgdG8gY2hhbmdlIHRoZSBuYW1lIGFzc29jaWF0ZWQgd2l0aCB5b3VyIHtzaXRlLm5hbWV9XG4gICAgICAgICAgICAgICZhcG9zO3MgYWNjb3VudCwgeW91IG1heSBkbyBzbyBiZWxvdy4gQmUgc3VyZSB0byBjbGljayB0aGUgU2F2ZVxuICAgICAgICAgICAgICBDaGFuZ2VzIGJ1dHRvbiB3aGVuIHlvdSBhcmUgZG9uZS5cbiAgICAgICAgICAgIDwvcD5cbiAgICAgICAgICAgIDxQcm9maWxlRm9ybSAvPlxuICAgICAgICAgIDwvQ2FyZENvbnRlbnQ+XG4gICAgICAgIDwvQ2FyZD5cbiAgICAgIDwvU2Vzc2lvblByb3ZpZGVyPlxuICAgIDwvZGl2PlxuICApXG59XG4iXSwibWFwcGluZ3MiOiI7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztFQWVBQSxPQTJCQyxXQUFBQSxDQUFBO0lBQUE7SUFBQUMsYUFBQSxHQUFBQyxDQUFBO0lBQUFELGFBQUEsR0FBQUUsQ0FBQTtXQTNCNkJDLFdBQUE7O0VBSmpCQyxRQUFRLFdBQUFBLENBQUE7SUFBQTtJQUFBSixhQUFBLEdBQUFDLENBQUE7SUFBQUQsYUFBQSxHQUFBRSxDQUFBO1dBQVJFLFFBQUE7Ozs7Ozs7O2lDQVZtQjs7O2lDQUVYOzs7aUNBRU87Ozt3RUFDWDs7O2tDQUNpQjs7O2tDQUNQOzs7Ozs7Ozs7Ozs7Ozs7QUFFM0IsTUFBTUMsVUFBQTtBQUFBO0FBQUEsQ0FBQUwsYUFBQSxHQUFBRSxDQUFBLFFBQWE7QUFDWixNQUFNRSxRQUFBO0FBQUE7QUFBQSxDQUFBSixhQUFBLEdBQUFFLENBQUEsUUFBcUI7RUFDaENJLEtBQUEsRUFBT0Q7QUFDVDtBQUVlLGVBQWVGLFlBQUE7RUFBQTtFQUFBSCxhQUFBLEdBQUFDLENBQUE7RUFDNUIsTUFBTU0sT0FBQTtFQUFBO0VBQUEsQ0FBQVAsYUFBQSxHQUFBRSxDQUFBLFFBQVUsTUFBTSxJQUFBTSxLQUFBLENBQUFDLElBQUk7RUFDMUIsTUFBTTtJQUFFQztFQUFJLENBQUU7RUFBQTtFQUFBLENBQUFWLGFBQUEsR0FBQUUsQ0FBQSxRQUFHLE1BQU0sSUFBQVMsZUFBQSxDQUFBQyxVQUFVO0VBQUE7RUFBQVosYUFBQSxHQUFBRSxDQUFBO0VBQ2pDLG9CQUNFLElBQUFXLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO0lBQUlDLFNBQUEsRUFBVTtjQUNiLGlCQUFBRixXQUFBLENBQUFHLElBQUEsRUFBQ0MsTUFBQSxDQUFBQyxlQUFlO01BQUNYLE9BQUEsRUFBU0EsT0FBQTs4QkFDeEIsSUFBQU0sV0FBQSxDQUFBRyxJQUFBLEVBQUM7UUFBSUQsU0FBQSxFQUFVO2dDQUNiLElBQUFGLFdBQUEsQ0FBQUMsR0FBQSxFQUFDSyxLQUFBLENBQUFwQixPQUFJO1VBQUNxQixJQUFBLEVBQUs7b0JBQVc7eUJBQ3RCLElBQUFQLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO29CQUFLO3lCQUNOLElBQUFELFdBQUEsQ0FBQUMsR0FBQSxFQUFDSyxLQUFBLENBQUFwQixPQUFJO1VBQUNxQixJQUFBLEVBQUs7b0JBQWtCO3lCQUM3QixJQUFBUCxXQUFBLENBQUFDLEdBQUEsRUFBQztvQkFBSzt5QkFDTixJQUFBRCxXQUFBLENBQUFDLEdBQUEsRUFBQztvQkFBTVQ7O3VCQUVULElBQUFRLFdBQUEsQ0FBQUMsR0FBQSxFQUFDO1FBQUdDLFNBQUEsRUFBVTtrQkFBZ0JWO3VCQUM5QixJQUFBUSxXQUFBLENBQUFDLEdBQUEsRUFBQ08sS0FBQSxDQUFBQyxJQUFJO1FBQUNQLFNBQUEsRUFBVTtrQkFDZCxpQkFBQUYsV0FBQSxDQUFBRyxJQUFBLEVBQUNLLEtBQUEsQ0FBQUUsV0FBVztVQUFDUixTQUFBLEVBQVU7a0NBQ3JCLElBQUFGLFdBQUEsQ0FBQUcsSUFBQSxFQUFDO1lBQUVELFNBQUEsRUFBVTt1QkFBZSx3REFDMkJMLElBQUEsQ0FBS2MsSUFBSSxFQUFDOzJCQUlqRSxJQUFBWCxXQUFBLENBQUFDLEdBQUEsRUFBQ1csWUFBQSxDQUFBQyxXQUFXOzs7OztBQU14QiIsImlnbm9yZUxpc3QiOltdfQ==

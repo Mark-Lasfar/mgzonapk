@@ -1,0 +1,195 @@
+300f7895e78f0cb27e8f085498949451
+"use strict";
+
+/* istanbul ignore next */
+function cov_fsisohqam() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/ui/skeleton.tsx";
+  var hash = "4f8e276843e54e6cdb7b4706d994805f84047a34";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/ui/skeleton.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 2,
+          column: 0
+        },
+        end: {
+          line: 4,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 5,
+          column: 0
+        },
+        end: {
+          line: 10,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 8,
+          column: 8
+        },
+        end: {
+          line: 8,
+          column: 24
+        }
+      },
+      "3": {
+        start: {
+          line: 11,
+          column: 20
+        },
+        end: {
+          line: 11,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 12,
+          column: 15
+        },
+        end: {
+          line: 12,
+          column: 41
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 4
+        },
+        end: {
+          line: 17,
+          column: 7
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 7,
+            column: 9
+          },
+          end: {
+            line: 7,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 7,
+            column: 20
+          },
+          end: {
+            line: 9,
+            column: 5
+          }
+        },
+        line: 7
+      },
+      "1": {
+        name: "Skeleton",
+        decl: {
+          start: {
+            line: 13,
+            column: 9
+          },
+          end: {
+            line: 13,
+            column: 17
+          }
+        },
+        loc: {
+          start: {
+            line: 13,
+            column: 43
+          },
+          end: {
+            line: 18,
+            column: 1
+          }
+        },
+        line: 13
+      }
+    },
+    branchMap: {},
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0
+    },
+    b: {},
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/ui/skeleton.tsx"],
+      sourcesContent: ["import { cn } from '@/lib/utils'\n\nfunction Skeleton({\n  className,\n  ...props\n}: React.HTMLAttributes<HTMLDivElement>) {\n  return (\n    <div\n      className={cn('animate-pulse rounded-md bg-primary/10', className)}\n      {...props}\n    />\n  )\n}\n\nexport { Skeleton }\n"],
+      names: ["Skeleton", "className", "props", "div", "cn"],
+      mappings: ";;;;+BAcSA;;;eAAAA;;;;uBAdU;AAEnB,SAASA,SAAS,EAChBC,SAAS,EACT,GAAGC,OACkC;IACrC,qBACE,qBAACC;QACCF,WAAWG,IAAAA,SAAE,EAAC,0CAA0CH;QACvD,GAAGC,KAAK;;AAGf"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "4f8e276843e54e6cdb7b4706d994805f84047a34"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_fsisohqam = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_fsisohqam();
+cov_fsisohqam().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_fsisohqam().s[1]++;
+Object.defineProperty(exports, "Skeleton", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_fsisohqam().f[0]++;
+    cov_fsisohqam().s[2]++;
+    return Skeleton;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_fsisohqam().s[3]++, require("react/jsx-runtime"));
+const _utils =
+/* istanbul ignore next */
+(cov_fsisohqam().s[4]++, require("../../lib/utils"));
+function Skeleton({
+  className,
+  ...props
+}) {
+  /* istanbul ignore next */
+  cov_fsisohqam().f[1]++;
+  cov_fsisohqam().s[5]++;
+  return /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+    className: (0, _utils.cn)('animate-pulse rounded-md bg-primary/10', className),
+    ...props
+  });
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJjb3ZfZnNpc29ocWFtIiwiYWN0dWFsQ292ZXJhZ2UiLCJzIiwiU2tlbGV0b24iLCJjbGFzc05hbWUiLCJwcm9wcyIsImYiLCJfanN4cnVudGltZSIsImpzeCIsIl91dGlscyIsImNuIl0sInNvdXJjZXMiOlsiL2hvbWUvaGFnZXIvbmV3L215LW5leHRqcy1wcm9qZWN0LW1hc3RlciAoMykvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyL2NvbXBvbmVudHMvdWkvc2tlbGV0b24udHN4Il0sInNvdXJjZXNDb250ZW50IjpbImltcG9ydCB7IGNuIH0gZnJvbSAnQC9saWIvdXRpbHMnXG5cbmZ1bmN0aW9uIFNrZWxldG9uKHtcbiAgY2xhc3NOYW1lLFxuICAuLi5wcm9wc1xufTogUmVhY3QuSFRNTEF0dHJpYnV0ZXM8SFRNTERpdkVsZW1lbnQ+KSB7XG4gIHJldHVybiAoXG4gICAgPGRpdlxuICAgICAgY2xhc3NOYW1lPXtjbignYW5pbWF0ZS1wdWxzZSByb3VuZGVkLW1kIGJnLXByaW1hcnkvMTAnLCBjbGFzc05hbWUpfVxuICAgICAgey4uLnByb3BzfVxuICAgIC8+XG4gIClcbn1cblxuZXhwb3J0IHsgU2tlbGV0b24gfVxuIl0sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztJQVNVO0lBQUFBLGFBQUEsWUFBQUEsQ0FBQTtNQUFBLE9BQUFDLGNBQUE7SUFBQTtFQUFBO0VBQUEsT0FBQUEsY0FBQTtBQUFBO0FBQUFELGFBQUE7QUFBQUEsYUFBQSxHQUFBRSxDQUFBOzs7Ozs7K0JBS0Q7Ozs7OztXQUFBQyxRQUFBOzs7Ozs7OztpQ0FkVTtBQUVuQixTQUFTQSxTQUFTO0VBQ2hCQyxTQUFTO0VBQ1QsR0FBR0M7QUFBQSxDQUNrQztFQUFBO0VBQUFMLGFBQUEsR0FBQU0sQ0FBQTtFQUFBTixhQUFBLEdBQUFFLENBQUE7RUFDckMsb0JBQ0UsSUFBQUssV0FBQSxDQUFBQyxHQUFBLEVBQUM7SUFDQ0osU0FBQSxFQUFXLElBQUFLLE1BQUEsQ0FBQUMsRUFBRSxFQUFDLDBDQUEwQ04sU0FBQTtJQUN2RCxHQUFHQzs7QUFHViIsImlnbm9yZUxpc3QiOltdfQ==

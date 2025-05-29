@@ -1,0 +1,818 @@
+78bcce6c53c29934eb5ebf2d1a8ede17
+'use client';
+"use strict";
+
+/* istanbul ignore next */
+function cov_xnhpveg9b() {
+  var path = "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/product/rating-summary.tsx";
+  var hash = "f9093633c81bb4a406bad79c9ebd4a6653e1e000";
+  var global = new Function("return this")();
+  var gcv = "__coverage__";
+  var coverageData = {
+    path: "/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/product/rating-summary.tsx",
+    statementMap: {
+      "0": {
+        start: {
+          line: 3,
+          column: 0
+        },
+        end: {
+          line: 5,
+          column: 3
+        }
+      },
+      "1": {
+        start: {
+          line: 6,
+          column: 0
+        },
+        end: {
+          line: 11,
+          column: 3
+        }
+      },
+      "2": {
+        start: {
+          line: 9,
+          column: 8
+        },
+        end: {
+          line: 9,
+          column: 29
+        }
+      },
+      "3": {
+        start: {
+          line: 12,
+          column: 20
+        },
+        end: {
+          line: 12,
+          column: 48
+        }
+      },
+      "4": {
+        start: {
+          line: 13,
+          column: 18
+        },
+        end: {
+          line: 13,
+          column: 46
+        }
+      },
+      "5": {
+        start: {
+          line: 14,
+          column: 30
+        },
+        end: {
+          line: 14,
+          column: 75
+        }
+      },
+      "6": {
+        start: {
+          line: 15,
+          column: 19
+        },
+        end: {
+          line: 15,
+          column: 48
+        }
+      },
+      "7": {
+        start: {
+          line: 16,
+          column: 28
+        },
+        end: {
+          line: 16,
+          column: 74
+        }
+      },
+      "8": {
+        start: {
+          line: 17,
+          column: 17
+        },
+        end: {
+          line: 17,
+          column: 44
+        }
+      },
+      "9": {
+        start: {
+          line: 18,
+          column: 16
+        },
+        end: {
+          line: 18,
+          column: 42
+        }
+      },
+      "10": {
+        start: {
+          line: 19,
+          column: 18
+        },
+        end: {
+          line: 19,
+          column: 38
+        }
+      },
+      "11": {
+        start: {
+          line: 20,
+          column: 21
+        },
+        end: {
+          line: 20,
+          column: 44
+        }
+      },
+      "12": {
+        start: {
+          line: 22,
+          column: 4
+        },
+        end: {
+          line: 24,
+          column: 6
+        }
+      },
+      "13": {
+        start: {
+          line: 27,
+          column: 14
+        },
+        end: {
+          line: 27,
+          column: 46
+        }
+      },
+      "14": {
+        start: {
+          line: 28,
+          column: 31
+        },
+        end: {
+          line: 85,
+          column: 5
+        }
+      },
+      "15": {
+        start: {
+          line: 29,
+          column: 45
+        },
+        end: {
+          line: 32,
+          column: 15
+        }
+      },
+      "16": {
+        start: {
+          line: 29,
+          column: 74
+        },
+        end: {
+          line: 32,
+          column: 13
+        }
+      },
+      "17": {
+        start: {
+          line: 33,
+          column: 8
+        },
+        end: {
+          line: 84,
+          column: 11
+        }
+      },
+      "18": {
+        start: {
+          line: 57,
+          column: 72
+        },
+        end: {
+          line: 57,
+          column: 91
+        }
+      },
+      "19": {
+        start: {
+          line: 57,
+          column: 137
+        },
+        end: {
+          line: 81,
+          column: 34
+        }
+      },
+      "20": {
+        start: {
+          line: 86,
+          column: 4
+        },
+        end: {
+          line: 138,
+          column: 68
+        }
+      }
+    },
+    fnMap: {
+      "0": {
+        name: "(anonymous_0)",
+        decl: {
+          start: {
+            line: 8,
+            column: 9
+          },
+          end: {
+            line: 8,
+            column: 10
+          }
+        },
+        loc: {
+          start: {
+            line: 8,
+            column: 20
+          },
+          end: {
+            line: 10,
+            column: 5
+          }
+        },
+        line: 8
+      },
+      "1": {
+        name: "_interop_require_default",
+        decl: {
+          start: {
+            line: 21,
+            column: 9
+          },
+          end: {
+            line: 21,
+            column: 33
+          }
+        },
+        loc: {
+          start: {
+            line: 21,
+            column: 39
+          },
+          end: {
+            line: 25,
+            column: 1
+          }
+        },
+        line: 21
+      },
+      "2": {
+        name: "RatingSummary",
+        decl: {
+          start: {
+            line: 26,
+            column: 9
+          },
+          end: {
+            line: 26,
+            column: 22
+          }
+        },
+        loc: {
+          start: {
+            line: 26,
+            column: 94
+          },
+          end: {
+            line: 139,
+            column: 1
+          }
+        },
+        line: 26
+      },
+      "3": {
+        name: "(anonymous_3)",
+        decl: {
+          start: {
+            line: 28,
+            column: 31
+          },
+          end: {
+            line: 28,
+            column: 32
+          }
+        },
+        loc: {
+          start: {
+            line: 28,
+            column: 35
+          },
+          end: {
+            line: 85,
+            column: 5
+          }
+        },
+        line: 28
+      },
+      "4": {
+        name: "(anonymous_4)",
+        decl: {
+          start: {
+            line: 29,
+            column: 68
+          },
+          end: {
+            line: 29,
+            column: 69
+          }
+        },
+        loc: {
+          start: {
+            line: 29,
+            column: 74
+          },
+          end: {
+            line: 32,
+            column: 13
+          }
+        },
+        line: 29
+      },
+      "5": {
+        name: "(anonymous_5)",
+        decl: {
+          start: {
+            line: 57,
+            column: 64
+          },
+          end: {
+            line: 57,
+            column: 65
+          }
+        },
+        loc: {
+          start: {
+            line: 57,
+            column: 72
+          },
+          end: {
+            line: 57,
+            column: 91
+          }
+        },
+        line: 57
+      },
+      "6": {
+        name: "(anonymous_6)",
+        decl: {
+          start: {
+            line: 57,
+            column: 97
+          },
+          end: {
+            line: 57,
+            column: 98
+          }
+        },
+        loc: {
+          start: {
+            line: 57,
+            column: 137
+          },
+          end: {
+            line: 81,
+            column: 34
+          }
+        },
+        line: 57
+      }
+    },
+    branchMap: {
+      "0": {
+        loc: {
+          start: {
+            line: 22,
+            column: 11
+          },
+          end: {
+            line: 24,
+            column: 5
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 22,
+            column: 35
+          },
+          end: {
+            line: 22,
+            column: 38
+          }
+        }, {
+          start: {
+            line: 22,
+            column: 41
+          },
+          end: {
+            line: 24,
+            column: 5
+          }
+        }],
+        line: 22
+      },
+      "1": {
+        loc: {
+          start: {
+            line: 22,
+            column: 11
+          },
+          end: {
+            line: 22,
+            column: 32
+          }
+        },
+        type: "binary-expr",
+        locations: [{
+          start: {
+            line: 22,
+            column: 11
+          },
+          end: {
+            line: 22,
+            column: 14
+          }
+        }, {
+          start: {
+            line: 22,
+            column: 18
+          },
+          end: {
+            line: 22,
+            column: 32
+          }
+        }],
+        line: 22
+      },
+      "2": {
+        loc: {
+          start: {
+            line: 26,
+            column: 36
+          },
+          end: {
+            line: 26,
+            column: 49
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 26,
+            column: 48
+          },
+          end: {
+            line: 26,
+            column: 49
+          }
+        }],
+        line: 26
+      },
+      "3": {
+        loc: {
+          start: {
+            line: 26,
+            column: 51
+          },
+          end: {
+            line: 26,
+            column: 65
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 26,
+            column: 64
+          },
+          end: {
+            line: 26,
+            column: 65
+          }
+        }],
+        line: 26
+      },
+      "4": {
+        loc: {
+          start: {
+            line: 26,
+            column: 67
+          },
+          end: {
+            line: 26,
+            column: 90
+          }
+        },
+        type: "default-arg",
+        locations: [{
+          start: {
+            line: 26,
+            column: 88
+          },
+          end: {
+            line: 26,
+            column: 90
+          }
+        }],
+        line: 26
+      },
+      "5": {
+        loc: {
+          start: {
+            line: 86,
+            column: 11
+          },
+          end: {
+            line: 138,
+            column: 67
+          }
+        },
+        type: "cond-expr",
+        locations: [{
+          start: {
+            line: 86,
+            column: 37
+          },
+          end: {
+            line: 138,
+            column: 6
+          }
+        }, {
+          start: {
+            line: 138,
+            column: 23
+          },
+          end: {
+            line: 138,
+            column: 67
+          }
+        }],
+        line: 86
+      }
+    },
+    s: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0,
+      "7": 0,
+      "8": 0,
+      "9": 0,
+      "10": 0,
+      "11": 0,
+      "12": 0,
+      "13": 0,
+      "14": 0,
+      "15": 0,
+      "16": 0,
+      "17": 0,
+      "18": 0,
+      "19": 0,
+      "20": 0
+    },
+    f: {
+      "0": 0,
+      "1": 0,
+      "2": 0,
+      "3": 0,
+      "4": 0,
+      "5": 0,
+      "6": 0
+    },
+    b: {
+      "0": [0, 0],
+      "1": [0, 0],
+      "2": [0],
+      "3": [0],
+      "4": [0],
+      "5": [0, 0]
+    },
+    inputSourceMap: {
+      version: 3,
+      sources: ["/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/components/shared/product/rating-summary.tsx"],
+      sourcesContent: ["'use client'\n\nimport { Progress } from '@/components/ui/progress'\nimport Rating from './rating'\nimport { Separator } from '@/components/ui/separator'\nimport Link from 'next/link'\nimport {\n  Popover,\n  PopoverContent,\n  PopoverTrigger,\n} from '@/components/ui/popover'\nimport { Button } from '@/components/ui/button'\nimport { useTranslations } from 'next-intl'\nimport { ChevronDownIcon } from 'lucide-react'\n\ntype RatingSummaryProps = {\n  asPopover?: boolean\n  avgRating: number\n  numReviews: number\n  ratingDistribution: {\n    rating: number\n    count: number\n  }[]\n}\n\nexport default function RatingSummary({\n  asPopover,\n  avgRating = 0,\n  numReviews = 0,\n  ratingDistribution = [],\n}: RatingSummaryProps) {\n  const t = useTranslations()\n  const RatingDistribution = () => {\n    const ratingPercentageDistribution = ratingDistribution.map((x) => ({\n      ...x,\n      percentage: Math.round((x.count / numReviews) * 100),\n    }))\n\n    return (\n      <>\n        <div className=\"flex flex-wrap items-center gap-1 cursor-help\">\n          <Rating rating={avgRating} />\n          <span className=\"text-lg font-semibold\">\n            {t('Product.avgRating out of 5', {\n              avgRating: avgRating.toFixed(1),\n            })}\n          </span>\n        </div>\n        <div className=\"text-lg \">\n          {t('Product.numReviews ratings', { numReviews })}\n        </div>\n\n        <div className=\"space-y-3\">\n          {ratingPercentageDistribution\n            .sort((a, b) => b.rating - a.rating)\n            .map(({ rating, percentage }) => (\n              <div\n                key={rating}\n                className=\"grid grid-cols-[50px_1fr_30px] gap-2 items-center\"\n              >\n                <div className=\"text-sm\">\n                  {' '}\n                  {t('Product.rating star', { rating })}\n                </div>\n                <Progress value={percentage} className=\"h-4\" />\n                <div className=\"text-sm text-right\">{percentage}%</div>\n              </div>\n            ))}\n        </div>\n      </>\n    )\n  }\n\n  return asPopover ? (\n    <div className=\"flex items-center gap-1\">\n      <Popover>\n        <PopoverTrigger asChild>\n          <Button variant=\"ghost\" className=\"px-2 [&_svg]:size-6 text-base\">\n            <span>{avgRating.toFixed(1)}</span>\n            <Rating rating={avgRating} />\n            <ChevronDownIcon className=\"w-5 h-5 text-muted-foreground\" />\n          </Button>\n        </PopoverTrigger>\n        <PopoverContent className=\"w-auto p-4\" align=\"end\">\n          <div className=\"flex flex-col gap-2\">\n            <RatingDistribution />\n            <Separator />\n\n            <Link className=\"highlight-link text-center\" href=\"#reviews\">\n              {t('Product.See customer reviews')}\n            </Link>\n          </div>\n        </PopoverContent>\n      </Popover>\n      <div className=\" \">\n        <Link href=\"#reviews\" className=\"highlight-link\">\n          {t('Product.numReviews ratings', { numReviews })}\n        </Link>\n      </div>\n    </div>\n  ) : (\n    <RatingDistribution />\n  )\n}\n"],
+      names: ["RatingSummary", "asPopover", "avgRating", "numReviews", "ratingDistribution", "t", "useTranslations", "RatingDistribution", "ratingPercentageDistribution", "map", "x", "percentage", "Math", "round", "count", "div", "className", "Rating", "rating", "span", "toFixed", "sort", "a", "b", "Progress", "value", "Popover", "PopoverTrigger", "asChild", "Button", "variant", "ChevronDownIcon", "PopoverContent", "align", "Separator", "Link", "href"],
+      mappings: "AAAA;;;;;+BAyBA;;;eAAwBA;;;;0BAvBC;+DACN;2BACO;6DACT;yBAKV;wBACgB;0BACS;6BACA;;;;;;AAYjB,SAASA,cAAc,EACpCC,SAAS,EACTC,YAAY,CAAC,EACbC,aAAa,CAAC,EACdC,qBAAqB,EAAE,EACJ;IACnB,MAAMC,IAAIC,IAAAA,yBAAe;IACzB,MAAMC,qBAAqB;QACzB,MAAMC,+BAA+BJ,mBAAmBK,GAAG,CAAC,CAACC,IAAO,CAAA;gBAClE,GAAGA,CAAC;gBACJC,YAAYC,KAAKC,KAAK,CAAC,AAACH,EAAEI,KAAK,GAAGX,aAAc;YAClD,CAAA;QAEA,qBACE;;8BACE,sBAACY;oBAAIC,WAAU;;sCACb,qBAACC,eAAM;4BAACC,QAAQhB;;sCAChB,qBAACiB;4BAAKH,WAAU;sCACbX,EAAE,8BAA8B;gCAC/BH,WAAWA,UAAUkB,OAAO,CAAC;4BAC/B;;;;8BAGJ,qBAACL;oBAAIC,WAAU;8BACZX,EAAE,8BAA8B;wBAAEF;oBAAW;;8BAGhD,qBAACY;oBAAIC,WAAU;8BACZR,6BACEa,IAAI,CAAC,CAACC,GAAGC,IAAMA,EAAEL,MAAM,GAAGI,EAAEJ,MAAM,EAClCT,GAAG,CAAC,CAAC,EAAES,MAAM,EAAEP,UAAU,EAAE,iBAC1B,sBAACI;4BAECC,WAAU;;8CAEV,sBAACD;oCAAIC,WAAU;;wCACZ;wCACAX,EAAE,uBAAuB;4CAAEa;wCAAO;;;8CAErC,qBAACM,kBAAQ;oCAACC,OAAOd;oCAAYK,WAAU;;8CACvC,sBAACD;oCAAIC,WAAU;;wCAAsBL;wCAAW;;;;2BAR3CO;;;;IAcnB;IAEA,OAAOjB,0BACL,sBAACc;QAAIC,WAAU;;0BACb,sBAACU,gBAAO;;kCACN,qBAACC,uBAAc;wBAACC,OAAO;kCACrB,cAAA,sBAACC,cAAM;4BAACC,SAAQ;4BAAQd,WAAU;;8CAChC,qBAACG;8CAAMjB,UAAUkB,OAAO,CAAC;;8CACzB,qBAACH,eAAM;oCAACC,QAAQhB;;8CAChB,qBAAC6B,4BAAe;oCAACf,WAAU;;;;;kCAG/B,qBAACgB,uBAAc;wBAAChB,WAAU;wBAAaiB,OAAM;kCAC3C,cAAA,sBAAClB;4BAAIC,WAAU;;8CACb,qBAACT;8CACD,qBAAC2B,oBAAS;8CAEV,qBAACC,aAAI;oCAACnB,WAAU;oCAA6BoB,MAAK;8CAC/C/B,EAAE;;;;;;;0BAKX,qBAACU;gBAAIC,WAAU;0BACb,cAAA,qBAACmB,aAAI;oBAACC,MAAK;oBAAWpB,WAAU;8BAC7BX,EAAE,8BAA8B;wBAAEF;oBAAW;;;;uBAKpD,qBAACI;AAEL"
+    },
+    _coverageSchema: "1a1c01bbd47fc00a2c39e90264f33305004495a9",
+    hash: "f9093633c81bb4a406bad79c9ebd4a6653e1e000"
+  };
+  var coverage = global[gcv] || (global[gcv] = {});
+  if (!coverage[path] || coverage[path].hash !== hash) {
+    coverage[path] = coverageData;
+  }
+  var actualCoverage = coverage[path];
+  {
+    // @ts-ignore
+    cov_xnhpveg9b = function () {
+      return actualCoverage;
+    };
+  }
+  return actualCoverage;
+}
+cov_xnhpveg9b();
+cov_xnhpveg9b().s[0]++;
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+/* istanbul ignore next */
+cov_xnhpveg9b().s[1]++;
+Object.defineProperty(exports, "default", {
+  enumerable: true,
+  get: function () {
+    /* istanbul ignore next */
+    cov_xnhpveg9b().f[0]++;
+    cov_xnhpveg9b().s[2]++;
+    return RatingSummary;
+  }
+});
+const _jsxruntime =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[3]++, require("react/jsx-runtime"));
+const _progress =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[4]++, require("../../ui/progress"));
+const _rating =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_xnhpveg9b().s[5]++, _interop_require_default(require("./rating")));
+const _separator =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[6]++, require("../../ui/separator"));
+const _link =
+/* istanbul ignore next */
+(/*#__PURE__*/cov_xnhpveg9b().s[7]++, _interop_require_default(require("next/link")));
+const _popover =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[8]++, require("../../ui/popover"));
+const _button =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[9]++, require("../../ui/button"));
+const _nextintl =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[10]++, require("next-intl"));
+const _lucidereact =
+/* istanbul ignore next */
+(cov_xnhpveg9b().s[11]++, require("lucide-react"));
+function _interop_require_default(obj) {
+  /* istanbul ignore next */
+  cov_xnhpveg9b().f[1]++;
+  cov_xnhpveg9b().s[12]++;
+  return /* istanbul ignore next */(cov_xnhpveg9b().b[1][0]++, obj) &&
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().b[1][1]++, obj.__esModule) ?
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().b[0][0]++, obj) :
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().b[0][1]++, {
+    default: obj
+  });
+}
+function RatingSummary({
+  asPopover,
+  avgRating =
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().b[2][0]++, 0),
+  numReviews =
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().b[3][0]++, 0),
+  ratingDistribution =
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().b[4][0]++, [])
+}) {
+  /* istanbul ignore next */
+  cov_xnhpveg9b().f[2]++;
+  const t =
+  /* istanbul ignore next */
+  (cov_xnhpveg9b().s[13]++, (0, _nextintl.useTranslations)());
+  /* istanbul ignore next */
+  cov_xnhpveg9b().s[14]++;
+  const RatingDistribution = () => {
+    /* istanbul ignore next */
+    cov_xnhpveg9b().f[3]++;
+    const ratingPercentageDistribution =
+    /* istanbul ignore next */
+    (cov_xnhpveg9b().s[15]++, ratingDistribution.map(x => {
+      /* istanbul ignore next */
+      cov_xnhpveg9b().f[4]++;
+      cov_xnhpveg9b().s[16]++;
+      return {
+        ...x,
+        percentage: Math.round(x.count / numReviews * 100)
+      };
+    }));
+    /* istanbul ignore next */
+    cov_xnhpveg9b().s[17]++;
+    return /*#__PURE__*/(0, _jsxruntime.jsxs)(_jsxruntime.Fragment, {
+      children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+        className: "flex flex-wrap items-center gap-1 cursor-help",
+        children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_rating.default, {
+          rating: avgRating
+        }), /*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+          className: "text-lg font-semibold",
+          children: t('Product.avgRating out of 5', {
+            avgRating: avgRating.toFixed(1)
+          })
+        })]
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+        className: "text-lg ",
+        children: t('Product.numReviews ratings', {
+          numReviews
+        })
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+        className: "space-y-3",
+        children: ratingPercentageDistribution.sort((a, b) => {
+          /* istanbul ignore next */
+          cov_xnhpveg9b().f[5]++;
+          cov_xnhpveg9b().s[18]++;
+          return b.rating - a.rating;
+        }).map(({
+          rating,
+          percentage
+        }) => {
+          /* istanbul ignore next */
+          cov_xnhpveg9b().f[6]++;
+          cov_xnhpveg9b().s[19]++;
+          return /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+            className: "grid grid-cols-[50px_1fr_30px] gap-2 items-center",
+            children: [/*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+              className: "text-sm",
+              children: [' ', t('Product.rating star', {
+                rating
+              })]
+            }), /*#__PURE__*/(0, _jsxruntime.jsx)(_progress.Progress, {
+              value: percentage,
+              className: "h-4"
+            }), /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+              className: "text-sm text-right",
+              children: [percentage, "%"]
+            })]
+          }, rating);
+        })
+      })]
+    });
+  };
+  /* istanbul ignore next */
+  cov_xnhpveg9b().s[20]++;
+  return asPopover ?
+  /* istanbul ignore next */
+  (/*#__PURE__*/cov_xnhpveg9b().b[5][0]++, (0, _jsxruntime.jsxs)("div", {
+    className: "flex items-center gap-1",
+    children: [/*#__PURE__*/(0, _jsxruntime.jsxs)(_popover.Popover, {
+      children: [/*#__PURE__*/(0, _jsxruntime.jsx)(_popover.PopoverTrigger, {
+        asChild: true,
+        children: /*#__PURE__*/(0, _jsxruntime.jsxs)(_button.Button, {
+          variant: "ghost",
+          className: "px-2 [&_svg]:size-6 text-base",
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)("span", {
+            children: avgRating.toFixed(1)
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)(_rating.default, {
+            rating: avgRating
+          }), /*#__PURE__*/(0, _jsxruntime.jsx)(_lucidereact.ChevronDownIcon, {
+            className: "w-5 h-5 text-muted-foreground"
+          })]
+        })
+      }), /*#__PURE__*/(0, _jsxruntime.jsx)(_popover.PopoverContent, {
+        className: "w-auto p-4",
+        align: "end",
+        children: /*#__PURE__*/(0, _jsxruntime.jsxs)("div", {
+          className: "flex flex-col gap-2",
+          children: [/*#__PURE__*/(0, _jsxruntime.jsx)(RatingDistribution, {}), /*#__PURE__*/(0, _jsxruntime.jsx)(_separator.Separator, {}), /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+            className: "highlight-link text-center",
+            href: "#reviews",
+            children: t('Product.See customer reviews')
+          })]
+        })
+      })]
+    }), /*#__PURE__*/(0, _jsxruntime.jsx)("div", {
+      className: " ",
+      children: /*#__PURE__*/(0, _jsxruntime.jsx)(_link.default, {
+        href: "#reviews",
+        className: "highlight-link",
+        children: t('Product.numReviews ratings', {
+          numReviews
+        })
+      })
+    })]
+  })) :
+  /* istanbul ignore next */
+  (/*#__PURE__*/cov_xnhpveg9b().b[5][1]++, (0, _jsxruntime.jsx)(RatingDistribution, {}));
+}
+//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJuYW1lcyI6WyJSYXRpbmdTdW1tYXJ5IiwiYXNQb3BvdmVyIiwiYXZnUmF0aW5nIiwiY292X3huaHB2ZWc5YiIsImIiLCJudW1SZXZpZXdzIiwicmF0aW5nRGlzdHJpYnV0aW9uIiwiZiIsInQiLCJzIiwiX25leHRpbnRsIiwidXNlVHJhbnNsYXRpb25zIiwiUmF0aW5nRGlzdHJpYnV0aW9uIiwicmF0aW5nUGVyY2VudGFnZURpc3RyaWJ1dGlvbiIsIm1hcCIsIngiLCJwZXJjZW50YWdlIiwiTWF0aCIsInJvdW5kIiwiY291bnQiLCJfanN4cnVudGltZSIsImpzeHMiLCJGcmFnbWVudCIsImNsYXNzTmFtZSIsImpzeCIsIl9yYXRpbmciLCJkZWZhdWx0IiwicmF0aW5nIiwidG9GaXhlZCIsInNvcnQiLCJhIiwiX3Byb2dyZXNzIiwiUHJvZ3Jlc3MiLCJ2YWx1ZSIsIl9wb3BvdmVyIiwiUG9wb3ZlciIsIlBvcG92ZXJUcmlnZ2VyIiwiYXNDaGlsZCIsIl9idXR0b24iLCJCdXR0b24iLCJ2YXJpYW50IiwiX2x1Y2lkZXJlYWN0IiwiQ2hldnJvbkRvd25JY29uIiwiUG9wb3ZlckNvbnRlbnQiLCJhbGlnbiIsIl9zZXBhcmF0b3IiLCJTZXBhcmF0b3IiLCJfbGluayIsImhyZWYiXSwic291cmNlcyI6WyIvaG9tZS9oYWdlci9uZXcvbXktbmV4dGpzLXByb2plY3QtbWFzdGVyICgzKS9teS1uZXh0anMtcHJvamVjdC1tYXN0ZXIvY29tcG9uZW50cy9zaGFyZWQvcHJvZHVjdC9yYXRpbmctc3VtbWFyeS50c3giXSwic291cmNlc0NvbnRlbnQiOlsiJ3VzZSBjbGllbnQnXG5cbmltcG9ydCB7IFByb2dyZXNzIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL3Byb2dyZXNzJ1xuaW1wb3J0IFJhdGluZyBmcm9tICcuL3JhdGluZydcbmltcG9ydCB7IFNlcGFyYXRvciB9IGZyb20gJ0AvY29tcG9uZW50cy91aS9zZXBhcmF0b3InXG5pbXBvcnQgTGluayBmcm9tICduZXh0L2xpbmsnXG5pbXBvcnQge1xuICBQb3BvdmVyLFxuICBQb3BvdmVyQ29udGVudCxcbiAgUG9wb3ZlclRyaWdnZXIsXG59IGZyb20gJ0AvY29tcG9uZW50cy91aS9wb3BvdmVyJ1xuaW1wb3J0IHsgQnV0dG9uIH0gZnJvbSAnQC9jb21wb25lbnRzL3VpL2J1dHRvbidcbmltcG9ydCB7IHVzZVRyYW5zbGF0aW9ucyB9IGZyb20gJ25leHQtaW50bCdcbmltcG9ydCB7IENoZXZyb25Eb3duSWNvbiB9IGZyb20gJ2x1Y2lkZS1yZWFjdCdcblxudHlwZSBSYXRpbmdTdW1tYXJ5UHJvcHMgPSB7XG4gIGFzUG9wb3Zlcj86IGJvb2xlYW5cbiAgYXZnUmF0aW5nOiBudW1iZXJcbiAgbnVtUmV2aWV3czogbnVtYmVyXG4gIHJhdGluZ0Rpc3RyaWJ1dGlvbjoge1xuICAgIHJhdGluZzogbnVtYmVyXG4gICAgY291bnQ6IG51bWJlclxuICB9W11cbn1cblxuZXhwb3J0IGRlZmF1bHQgZnVuY3Rpb24gUmF0aW5nU3VtbWFyeSh7XG4gIGFzUG9wb3ZlcixcbiAgYXZnUmF0aW5nID0gMCxcbiAgbnVtUmV2aWV3cyA9IDAsXG4gIHJhdGluZ0Rpc3RyaWJ1dGlvbiA9IFtdLFxufTogUmF0aW5nU3VtbWFyeVByb3BzKSB7XG4gIGNvbnN0IHQgPSB1c2VUcmFuc2xhdGlvbnMoKVxuICBjb25zdCBSYXRpbmdEaXN0cmlidXRpb24gPSAoKSA9PiB7XG4gICAgY29uc3QgcmF0aW5nUGVyY2VudGFnZURpc3RyaWJ1dGlvbiA9IHJhdGluZ0Rpc3RyaWJ1dGlvbi5tYXAoKHgpID0+ICh7XG4gICAgICAuLi54LFxuICAgICAgcGVyY2VudGFnZTogTWF0aC5yb3VuZCgoeC5jb3VudCAvIG51bVJldmlld3MpICogMTAwKSxcbiAgICB9KSlcblxuICAgIHJldHVybiAoXG4gICAgICA8PlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggZmxleC13cmFwIGl0ZW1zLWNlbnRlciBnYXAtMSBjdXJzb3ItaGVscFwiPlxuICAgICAgICAgIDxSYXRpbmcgcmF0aW5nPXthdmdSYXRpbmd9IC8+XG4gICAgICAgICAgPHNwYW4gY2xhc3NOYW1lPVwidGV4dC1sZyBmb250LXNlbWlib2xkXCI+XG4gICAgICAgICAgICB7dCgnUHJvZHVjdC5hdmdSYXRpbmcgb3V0IG9mIDUnLCB7XG4gICAgICAgICAgICAgIGF2Z1JhdGluZzogYXZnUmF0aW5nLnRvRml4ZWQoMSksXG4gICAgICAgICAgICB9KX1cbiAgICAgICAgICA8L3NwYW4+XG4gICAgICAgIDwvZGl2PlxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInRleHQtbGcgXCI+XG4gICAgICAgICAge3QoJ1Byb2R1Y3QubnVtUmV2aWV3cyByYXRpbmdzJywgeyBudW1SZXZpZXdzIH0pfVxuICAgICAgICA8L2Rpdj5cblxuICAgICAgICA8ZGl2IGNsYXNzTmFtZT1cInNwYWNlLXktM1wiPlxuICAgICAgICAgIHtyYXRpbmdQZXJjZW50YWdlRGlzdHJpYnV0aW9uXG4gICAgICAgICAgICAuc29ydCgoYSwgYikgPT4gYi5yYXRpbmcgLSBhLnJhdGluZylcbiAgICAgICAgICAgIC5tYXAoKHsgcmF0aW5nLCBwZXJjZW50YWdlIH0pID0+IChcbiAgICAgICAgICAgICAgPGRpdlxuICAgICAgICAgICAgICAgIGtleT17cmF0aW5nfVxuICAgICAgICAgICAgICAgIGNsYXNzTmFtZT1cImdyaWQgZ3JpZC1jb2xzLVs1MHB4XzFmcl8zMHB4XSBnYXAtMiBpdGVtcy1jZW50ZXJcIlxuICAgICAgICAgICAgICA+XG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LXNtXCI+XG4gICAgICAgICAgICAgICAgICB7JyAnfVxuICAgICAgICAgICAgICAgICAge3QoJ1Byb2R1Y3QucmF0aW5nIHN0YXInLCB7IHJhdGluZyB9KX1cbiAgICAgICAgICAgICAgICA8L2Rpdj5cbiAgICAgICAgICAgICAgICA8UHJvZ3Jlc3MgdmFsdWU9e3BlcmNlbnRhZ2V9IGNsYXNzTmFtZT1cImgtNFwiIC8+XG4gICAgICAgICAgICAgICAgPGRpdiBjbGFzc05hbWU9XCJ0ZXh0LXNtIHRleHQtcmlnaHRcIj57cGVyY2VudGFnZX0lPC9kaXY+XG4gICAgICAgICAgICAgIDwvZGl2PlxuICAgICAgICAgICAgKSl9XG4gICAgICAgIDwvZGl2PlxuICAgICAgPC8+XG4gICAgKVxuICB9XG5cbiAgcmV0dXJuIGFzUG9wb3ZlciA/IChcbiAgICA8ZGl2IGNsYXNzTmFtZT1cImZsZXggaXRlbXMtY2VudGVyIGdhcC0xXCI+XG4gICAgICA8UG9wb3Zlcj5cbiAgICAgICAgPFBvcG92ZXJUcmlnZ2VyIGFzQ2hpbGQ+XG4gICAgICAgICAgPEJ1dHRvbiB2YXJpYW50PVwiZ2hvc3RcIiBjbGFzc05hbWU9XCJweC0yIFsmX3N2Z106c2l6ZS02IHRleHQtYmFzZVwiPlxuICAgICAgICAgICAgPHNwYW4+e2F2Z1JhdGluZy50b0ZpeGVkKDEpfTwvc3Bhbj5cbiAgICAgICAgICAgIDxSYXRpbmcgcmF0aW5nPXthdmdSYXRpbmd9IC8+XG4gICAgICAgICAgICA8Q2hldnJvbkRvd25JY29uIGNsYXNzTmFtZT1cInctNSBoLTUgdGV4dC1tdXRlZC1mb3JlZ3JvdW5kXCIgLz5cbiAgICAgICAgICA8L0J1dHRvbj5cbiAgICAgICAgPC9Qb3BvdmVyVHJpZ2dlcj5cbiAgICAgICAgPFBvcG92ZXJDb250ZW50IGNsYXNzTmFtZT1cInctYXV0byBwLTRcIiBhbGlnbj1cImVuZFwiPlxuICAgICAgICAgIDxkaXYgY2xhc3NOYW1lPVwiZmxleCBmbGV4LWNvbCBnYXAtMlwiPlxuICAgICAgICAgICAgPFJhdGluZ0Rpc3RyaWJ1dGlvbiAvPlxuICAgICAgICAgICAgPFNlcGFyYXRvciAvPlxuXG4gICAgICAgICAgICA8TGluayBjbGFzc05hbWU9XCJoaWdobGlnaHQtbGluayB0ZXh0LWNlbnRlclwiIGhyZWY9XCIjcmV2aWV3c1wiPlxuICAgICAgICAgICAgICB7dCgnUHJvZHVjdC5TZWUgY3VzdG9tZXIgcmV2aWV3cycpfVxuICAgICAgICAgICAgPC9MaW5rPlxuICAgICAgICAgIDwvZGl2PlxuICAgICAgICA8L1BvcG92ZXJDb250ZW50PlxuICAgICAgPC9Qb3BvdmVyPlxuICAgICAgPGRpdiBjbGFzc05hbWU9XCIgXCI+XG4gICAgICAgIDxMaW5rIGhyZWY9XCIjcmV2aWV3c1wiIGNsYXNzTmFtZT1cImhpZ2hsaWdodC1saW5rXCI+XG4gICAgICAgICAge3QoJ1Byb2R1Y3QubnVtUmV2aWV3cyByYXRpbmdzJywgeyBudW1SZXZpZXdzIH0pfVxuICAgICAgICA8L0xpbms+XG4gICAgICA8L2Rpdj5cbiAgICA8L2Rpdj5cbiAgKSA6IChcbiAgICA8UmF0aW5nRGlzdHJpYnV0aW9uIC8+XG4gIClcbn1cbiJdLCJtYXBwaW5ncyI6IkFBQUE7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7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
