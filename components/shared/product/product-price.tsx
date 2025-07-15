@@ -1,7 +1,8 @@
 'use client'
-import useSettingStore from '@/hooks/use-setting-store'
+// import useSettingStore from '@/hooks/use-setting-store'
 import { cn, round2 } from '@/lib/utils'
 import { useFormatter, useTranslations } from 'next-intl'
+import useSettingStore from '../../../hooks/use-setting-store'
 
 const ProductPrice = ({
   price,

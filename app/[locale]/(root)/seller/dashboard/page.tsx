@@ -29,11 +29,12 @@ import {
   ResponsiveContainer,
 } from 'recharts';
 import { Copy, Share2 } from 'lucide-react';
-
-import BrowsingHistoryList from '@/components/shared/browsing-history-list'
-
-import { getPointsBalance, getPointsHistory } from '@/lib/actions/points.actions'
-import { formatDateTime } from '@/lib/utils'
+import BrowsingHistoryList from '@/components/shared/browsing-history-list';
+import { getPointsBalance, getPointsHistory } from '@/lib/actions/points.actions';
+import { formatDateTime } from '@/lib/utils';
+import Confetti from 'react-confetti';
+import { motion } from 'framer-motion';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 interface DashboardStats {
   totalSales: number;
@@ -46,10 +47,7 @@ interface DashboardStats {
     orders: number;
     averageValue: number;
   };
-  salesData: Array<{
-    name: string;
-    sales: number;
-  }>;
+  salesData: Array<{ name: string; sales: number }>;
 }
 
 interface Notification {
@@ -59,6 +57,14 @@ interface Notification {
   message: string;
   read: boolean;
   createdAt: string;
+}
+
+interface PointsTransaction {
+  _id?: string;
+  amount: number;
+  type: 'earn' | 'redeem';
+  description: string;
+  createdAt: Date | string;
 }
 
 export default function DashboardPage() {
@@ -73,18 +79,16 @@ export default function DashboardPage() {
     totalProducts: 0,
     averageRating: 0,
     lastUpdate: new Date().toISOString(),
-    monthlyStats: {
-      revenue: 0,
-      orders: 0,
-      averageValue: 0,
-    },
+    monthlyStats: { revenue: 0, orders: 0, averageValue: 0 },
     salesData: [],
   });
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [pointsBalance, setPointsBalance] = useState<number>(0);
-  const [pointsHistory, setPointsHistory] = useState<
-    Array<{ _id: string; amount: number; type: 'earn' | 'redeem'; description: string; createdAt: Date }>
-  >([]);
+  const [pointsHistory, setPointsHistory] = useState<PointsTransaction[]>([]);
+  const [redeemLoading, setRedeemLoading] = useState(false);
+  const [redeemError, setRedeemError] = useState<string | null>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -95,48 +99,49 @@ export default function DashboardPage() {
       try {
         setLoading(true);
 
-        // جلب بيانات الـ Dashboard
-        const statsRes = await fetch('/api/seller/dashboard');
-        if (!statsRes.ok) {
-          throw new Error(t('errors.fetchFailed'));
-        }
-        const statsData = await statsRes.json();
-        if (!statsData.success) {
-          throw new Error(statsData.message || t('errors.fetchFailed'));
-        }
-        setStats({
-          ...statsData.data,
-          lastUpdate: new Date().toISOString(),
-        });
+        const [statsRes, profileRes, notificationsRes, pointsBalanceData, pointsHistoryData, welcomeRes] =
+          await Promise.all([
+            fetch('/api/seller/dashboard'),
+            fetch('/api/seller/profile'),
+            fetch('/api/seller/notifications?limit=10&skip=0'),
+            session.user.id ? getPointsBalance(session.user.id) : Promise.resolve(0),
+            session.user.id ? getPointsHistory(session.user.id) : Promise.resolve([]),
+            fetch('/api/seller/welcome-status'),
+          ]);
 
-        // جلب بيانات الملف الشخصي
-        const profileRes = await fetch('/api/seller/profile');
-        if (!profileRes.ok) {
-          throw new Error(t('errors.fetchProfileFailed'));
-        }
+        if (!statsRes.ok) throw new Error(t('errors.fetchFailed'));
+        const statsData = await statsRes.json();
+        if (!statsData.success) throw new Error(statsData.message || t('errors.fetchFailed'));
+        setStats({ ...statsData.data, lastUpdate: new Date().toISOString() });
+
+        if (!profileRes.ok) throw new Error(t('errors.fetchProfileFailed'));
         const profileData = await profileRes.json();
         if (profileData.success && profileData.data.customSiteUrl) {
           setCustomSiteUrl(profileData.data.customSiteUrl);
         }
 
-        // جلب الإشعارات
-        const notificationsRes = await fetch('/api/seller/notifications?limit=10&skip=0');
-        if (!notificationsRes.ok) {
-          throw new Error(t('errors.fetchNotificationsFailed'));
-        }
+        if (!notificationsRes.ok) throw new Error(t('errors.fetchNotificationsFailed'));
         const notificationsData = await notificationsRes.json();
-        if (!notificationsData.success) {
+        if (!notificationsData.success)
           throw new Error(notificationsData.message || t('errors.fetchNotificationsFailed'));
-        }
         setNotifications(notificationsData.data);
 
-        // جلب رصيد النقاط وتاريخ النقاط
-        const pointsBalanceData = await getPointsBalance(session.user.id);
-        const pointsHistoryData = await getPointsHistory(session.user.id);
-
         setPointsBalance(pointsBalanceData);
-        setPointsHistory(pointsHistoryData);
+        setPointsHistory(
+          pointsHistoryData.map((tx: PointsTransaction) => ({
+            ...tx,
+            createdAt: typeof tx.createdAt === 'string' ? new Date(tx.createdAt) : tx.createdAt,
+          }))
+        );
 
+        if (welcomeRes.ok) {
+          const welcomeData = await welcomeRes.json();
+          if (welcomeData.success && welcomeData.showWelcome) {
+            setShowWelcome(true);
+            setShowConfetti(true);
+            setTimeout(() => setShowConfetti(false), 5000);
+          }
+        }
       } catch (err) {
         setError(t('errors.fetchFailed'));
       } finally {
@@ -146,15 +151,64 @@ export default function DashboardPage() {
     loadData();
   }, [t, status, session]);
 
+  const handleRedeemPoints = async () => {
+    if (!session?.user?.id) return;
+    setRedeemLoading(true);
+    setRedeemError(null);
+    try {
+      const response = await fetch('/api/seller/redeem-points', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          points: 50,
+          currency: 'usd',
+          description: 'Redeem points for subscription discount',
+        }),
+      });
+      const data = await response.json();
+      if (!data.success) {
+        throw new Error(data.message || t('errors.pointsRedeemFailed'));
+      }
+      setPointsBalance(data.data.pointsBalance || pointsBalance - 50);
+      setPointsHistory([
+        {
+          amount: 50,
+          type: 'redeem',
+          description: 'Redeem points for subscription discount',
+          createdAt: new Date(),
+        },
+        ...pointsHistory,
+      ]);
+      alert(t('messages.pointsRedeemed'));
+    } catch (err: any) {
+      setRedeemError(err.message || t('errors.pointsRedeemFailed'));
+    } finally {
+      setRedeemLoading(false);
+    }
+  };
+
+  const handleCloseWelcome = async () => {
+    setShowWelcome(false);
+    try {
+      await fetch('/api/seller/welcome-status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ seen: true }),
+      });
+    } catch (err) {
+      console.error('Failed to update welcome status:', err);
+    }
+  };
+
   const formattedDate = new Intl.DateTimeFormat('ar-EG', {
     dateStyle: 'medium',
     timeStyle: 'short',
     timeZone: 'UTC',
   }).format(new Date(stats.lastUpdate));
 
-  const userName = session?.user?.name || 'مستخدم غير معروف';
+  const userName = session?.user?.name || t('unknownUser');
   const siteLink = customSiteUrl
-    ? `${process.env.NEXT_PUBLIC_BASE_URL}/${session?.user?.locale || 'en'}/${customSiteUrl}`
+    ? `${process.env.NEXT_PUBLIC_BASE_URL}/en/${customSiteUrl}`
     : '';
 
   const handleCopyLink = () => {
@@ -168,12 +222,12 @@ export default function DashboardPage() {
     if (siteLink && navigator.share) {
       try {
         await navigator.share({
-          title: t('shareSiteTitle', { businessName: session?.user?.name }),
+          title: t('shareSiteTitle', { businessName: session?.user?.name || '' }),
           text: t('shareSiteText'),
           url: siteLink,
         });
       } catch (err) {
-        console.error('فشل المشاركة:', err);
+        console.error('Share failed:', err);
       }
     }
   };
@@ -198,10 +252,7 @@ export default function DashboardPage() {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen p-4">
         <div className="text-red-500 mb-4">{error}</div>
-        <Button
-          onClick={() => window.location.reload()}
-          className="px-4 py-2"
-        >
+        <Button onClick={() => window.location.reload()} className="px-4 py-2">
           {t('retry')}
         </Button>
       </div>
@@ -210,6 +261,39 @@ export default function DashboardPage() {
 
   return (
     <div className="p-6 space-y-6">
+      {showConfetti && <Confetti width={window.innerWidth} height={window.innerHeight} />}
+      <Dialog open={showWelcome} onOpenChange={handleCloseWelcome}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>{t('welcome.title')}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <p>{t('welcome.message', { name: userName })}</p>
+            <p>{t('welcome.points', { points: 50 })}</p>
+            <p>{t('welcome.pointsUsage')}</p>
+            <p>{t('welcome.withdrawalInfo')}</p>
+            <motion.div
+              className="flex justify-center space-x-4"
+              initial={{ y: 50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              transition={{ duration: 0.5 }}
+            >
+              {['🎈', '🎉', '🎁'].map((emoji, index) => (
+                <motion.span
+                  key={index}
+                  animate={{ y: [0, -20, 0], rotate: [0, 10, -10, 0] }}
+                  transition={{ duration: 2, repeat: Infinity, delay: index * 0.2 }}
+                  className="text-2xl"
+                >
+                  {emoji}
+                </motion.span>
+              ))}
+            </motion.div>
+            <Button onClick={handleCloseWelcome}>{t('welcome.close')}</Button>
+          </div>
+        </DialogContent>
+      </Dialog>
+
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <h1 className="text-2xl font-bold">{t('title')}</h1>
         {customSiteUrl && (
@@ -249,11 +333,10 @@ export default function DashboardPage() {
             </TooltipProvider>
           </div>
         )}
-        <div className="text-sm text-gray-500">{formattedDate}</div>
       </div>
+      <div className="text-sm text-gray-500">{formattedDate}</div>
 
-      {/* قسم الإشعارات */}
-      <Card className="bg-white">
+      <Card className="bg-card">
         <CardHeader>
           <CardTitle>{t('notifications')}</CardTitle>
         </CardHeader>
@@ -282,9 +365,8 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      {/* بيانات الإحصائيات والنقاط */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="bg-white">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-sm font-medium">{t('totalSales')}</CardTitle>
           </CardHeader>
@@ -292,8 +374,7 @@ export default function DashboardPage() {
             <div className="text-2xl font-bold">{formatCurrency(stats.totalSales)}</div>
           </CardContent>
         </Card>
-
-        <Card className="bg-white">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-sm font-medium">{t('totalOrders')}</CardTitle>
           </CardHeader>
@@ -301,8 +382,7 @@ export default function DashboardPage() {
             <div className="text-2xl font-bold">{stats.totalOrders}</div>
           </CardContent>
         </Card>
-
-        <Card className="bg-white">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-sm font-medium">{t('totalProducts')}</CardTitle>
           </CardHeader>
@@ -310,8 +390,7 @@ export default function DashboardPage() {
             <div className="text-2xl font-bold">{stats.totalProducts}</div>
           </CardContent>
         </Card>
-
-        <Card className="bg-white">
+        <Card className="bg-card">
           <CardHeader>
             <CardTitle className="text-sm font-medium">{t('averageRating')}</CardTitle>
           </CardHeader>
@@ -321,8 +400,7 @@ export default function DashboardPage() {
         </Card>
       </div>
 
-      {/* رسومات بيانية */}
-      <Card className="bg-white">
+      <Card className="bg-card">
         <CardHeader>
           <CardTitle>{t('weeklySales')}</CardTitle>
         </CardHeader>
@@ -333,7 +411,7 @@ export default function DashboardPage() {
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="name" />
                 <YAxis />
-                <RechartsTooltip formatter={(value) => formatCurrency(Number(value))} />
+                <RechartsTooltip formatter={(value: number) => formatCurrency(value)} />
                 <Legend />
                 <Bar dataKey="sales" fill="#8884d8" name={t('sales')} />
               </BarChart>
@@ -342,7 +420,7 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      <Card className="bg-white">
+      <Card className="bg-card">
         <CardHeader>
           <CardTitle>{t('monthlyOverview')}</CardTitle>
         </CardHeader>
@@ -364,28 +442,40 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
 
-      <div className="mt-8">
-        <h2 className="text-xl font-bold">Points Balance</h2>
-        <p className="text-muted-foreground">Your current points: {pointsBalance}</p>
-        <h3 className="text-lg font-bold mt-4">Points History</h3>
-        <div className="mt-2">
-          {pointsHistory.length > 0 ? (
-            <ul className="space-y-2">
-              {pointsHistory.map((tx) => (
-                <li key={tx._id} className="border-b py-2">
-                  <p>{tx.description}</p>
-                  <p>
-                    {tx.type === 'earn' ? '+' : '-'}{tx.amount} points on{' '}
-                    {formatDateTime(tx.createdAt).dateTime}
-                  </p>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <p>No points transactions yet.</p>
-          )}
-        </div>
-      </div>
+      <Card className="bg-card">
+        <CardHeader>
+          <CardTitle>{t('points')}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <p className="text-muted-foreground">
+              {t('currentPointsBalance', { points: pointsBalance })}
+            </p>
+            {redeemError && <p className="text-red-500">{redeemError}</p>}
+            {pointsBalance >= 50 && (
+              <Button onClick={handleRedeemPoints} disabled={redeemLoading}>
+                {redeemLoading ? t('redeeming') : t('redeemPoints')}
+              </Button>
+            )}
+            <h3 className="text-lg font-semibold">{t('pointsHistory')}</h3>
+            {pointsHistory.length > 0 ? (
+              <ul className="space-y-2">
+                {pointsHistory.map((tx) => (
+                  <li key={tx._id} className="border-b py-2">
+                    <p>{tx.description}</p>
+                    <p>
+                      {tx.type === 'earn' ? '+' : '-'}{tx.amount} {t('points')} on{' '}
+                      {formatDateTime(new Date(tx.createdAt)).dateTime}
+                    </p>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>{t('noPointsTransactions')}</p>
+            )}
+          </div>
+        </CardContent>
+      </Card>
 
       <BrowsingHistoryList className="mt-16" />
 

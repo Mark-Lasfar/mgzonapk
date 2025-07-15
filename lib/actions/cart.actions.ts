@@ -27,7 +27,7 @@ export async function addToCart(
 ): Promise<{ success: boolean; message?: string; cart?: ICart }> {
   let t;
   try {
-    t = await getTranslations({ locale, namespace: 'cart' });
+    t = await getTranslations({ locale, namespace: 'Cart' });
   } catch (error) {
     console.error('Failed to load translations:', error);
     t = (key: string) => key;
@@ -40,25 +40,25 @@ export async function addToCart(
 
     try {
       if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(productId)) {
-        throw new Error(t('invalidData'));
+        throw new Error(t('invalid data'));
       }
       if (quantity < 1) {
-        throw new Error(t('invalidQuantity'));
+        throw new Error(t('invalid quantity'));
       }
 
       const product = await Product.findById(productId).session(session);
       if (!product) {
-        throw new Error(t('productNotFound'));
+        throw new Error(t('product not found'));
       }
       if (product.countInStock < quantity) {
-        throw new Error(t('insufficientStock'));
+        throw new Error(t('insufficient stock'));
       }
 
-      if (selectedColor && !product.colors.some(c => c.name === selectedColor && c.inStock)) {
-        throw new Error(t('colorNotAvailable'));
+      if (selectedColor && !product.colors.some((c: any) => c.name === selectedColor && c.inStock)) {
+        throw new Error(t('color not available'));
       }
-      if (selectedSize && !product.sizes.some(s => s.name === selectedSize && s.inStock)) {
-        throw new Error(t('sizeNotAvailable'));
+      if (selectedSize && !product.sizes.some((s: any) => s.name === selectedSize && s.inStock)) {
+        throw new Error(t('size not available'));
       }
 
       let cart = await Cart.findOne({ userId }).session(session);
@@ -75,7 +75,7 @@ export async function addToCart(
       if (existingItemIndex >= 0) {
         const newQuantity = cart.items[existingItemIndex].quantity + quantity;
         if (product.countInStock < newQuantity) {
-          throw new Error(t('insufficientStock'));
+          throw new Error(t('insufficient stock'));
         }
         cart.items[existingItemIndex].quantity = newQuantity;
       } else {
@@ -85,12 +85,17 @@ export async function addToCart(
           quantity,
           price: product.pricing.finalPrice,
           image: product.images[0],
-          selectedColor: selectedColor || null,
-          selectedSize: selectedSize || null,
+          selectedColor: selectedColor || undefined,
+          selectedSize: selectedSize || undefined,
+
+
+
+
+          
         });
       }
 
-      product.countInStock -= quantity;
+      product.countInStock  -= quantity;
       await product.save({ session });
       await cart.save({ session });
 
@@ -98,9 +103,9 @@ export async function addToCart(
 
       await sendNotification({
         userId,
-        type: 'cart_updated',
-        title: t('cartUpdatedTitle'),
-        message: t('cartUpdatedMessage', { productName: product.name }),
+        type: 'cart.updated',
+        title: t('cart updated title'),
+        message: t('cart updated message', { productName: product.name }),
         channels: ['in_app', 'email'],
         data: { productId: product._id, quantity },
       });
@@ -116,7 +121,7 @@ export async function addToCart(
     console.error('Add to cart error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : t('addToCartFailed'),
+      message: error instanceof Error ? error.message : t('add to cart failed'),
     };
   }
 }
@@ -130,7 +135,7 @@ export async function removeFromCart(
 ): Promise<{ success: boolean; message?: string; cart?: ICart }> {
   let t;
   try {
-    t = await getTranslations({ locale, namespace: 'cart' });
+    t = await getTranslations({ locale, namespace: 'Cart' });
   } catch (error) {
     console.error('Failed to load translations:', error);
     t = (key: string) => key;
@@ -143,12 +148,12 @@ export async function removeFromCart(
 
     try {
       if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(productId)) {
-        throw new Error(t('invalidData'));
+        throw new Error(t('invalid data'));
       }
 
       const cart = await Cart.findOne({ userId }).session(session);
       if (!cart) {
-        throw new Error(t('cartNotFound'));
+        throw new Error(t('cart not found'));
       }
 
       const itemIndex = cart.items.findIndex(
@@ -159,7 +164,7 @@ export async function removeFromCart(
       );
 
       if (itemIndex === -1) {
-        throw new Error(t('itemNotFound'));
+        throw new Error(t('item not found'));
       }
 
       const item = cart.items[itemIndex];
@@ -177,9 +182,9 @@ export async function removeFromCart(
 
       await sendNotification({
         userId,
-        type: 'cart_updated',
-        title: t('cartUpdatedTitle'),
-        message: t('cartItemRemoved', { productName: item.name }),
+        type: 'cart.updated',
+        title: t('cart updated title'),
+        message: t('cart item removed', { productName: item.name }),
         channels: ['in_app'],
         data: { productId },
       });
@@ -195,7 +200,7 @@ export async function removeFromCart(
     console.error('Remove from cart error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : t('removeFromCartFailed'),
+      message: error instanceof Error ? error.message : t('remove from cart failed'),
     };
   }
 }
@@ -210,7 +215,7 @@ export async function updateCartItemQuantity(
 ): Promise<{ success: boolean; message?: string; cart?: ICart }> {
   let t;
   try {
-    t = await getTranslations({ locale, namespace: 'cart' });
+    t = await getTranslations({ locale, namespace: 'Cart' });
   } catch (error) {
     console.error('Failed to load translations:', error);
     t = (key: string) => key;
@@ -223,15 +228,15 @@ export async function updateCartItemQuantity(
 
     try {
       if (!mongoose.Types.ObjectId.isValid(userId) || !mongoose.Types.ObjectId.isValid(productId)) {
-        throw new Error(t('invalidData'));
+        throw new Error(t('invalid data'));
       }
       if (quantity < 1) {
-        throw new Error(t('invalidQuantity'));
+        throw new Error(t('invalid quantity'));
       }
 
       const cart = await Cart.findOne({ userId }).session(session);
       if (!cart) {
-        throw new Error(t('cartNotFound'));
+        throw new Error(t('cart not found'));
       }
 
       const itemIndex = cart.items.findIndex(
@@ -242,7 +247,7 @@ export async function updateCartItemQuantity(
       );
 
       if (itemIndex === -1) {
-        throw new Error(t('itemNotFound'));
+        throw new Error(t('item not found'));
       }
 
       const item = cart.items[itemIndex];
@@ -250,10 +255,10 @@ export async function updateCartItemQuantity(
 
       const product = await Product.findById(productId).session(session);
       if (!product) {
-        throw new Error(t('productNotFound'));
+        throw new Error(t('product not found'));
       }
       if (product.countInStock < quantityDifference) {
-        throw new Error(t('insufficientStock'));
+        throw new Error(t('insufficient stock'));
       }
 
       cart.items[itemIndex].quantity = quantity;
@@ -266,9 +271,9 @@ export async function updateCartItemQuantity(
 
       await sendNotification({
         userId,
-        type: 'cart_updated',
-        title: t('cartUpdatedTitle'),
-        message: t('cartQuantityUpdated', { productName: item.name, quantity }),
+        type: 'cart.updated',
+        title: t('cart updated title'),
+        message: t('cart quantity updated', { productName: item.name, quantity }),
         channels: ['in_app'],
         data: { productId, quantity },
       });
@@ -284,7 +289,7 @@ export async function updateCartItemQuantity(
     console.error('Update cart quantity error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : t('updateCartFailed'),
+      message: error instanceof Error ? error.message : t('update cart failed'),
     };
   }
 }
@@ -296,7 +301,7 @@ export async function getCart(userId: string, locale: string = 'en'): Promise<{
 }> {
   let t;
   try {
-    t = await getTranslations({ locale, namespace: 'cart' });
+    t = await getTranslations({ locale, namespace: 'Cart' });
   } catch (error) {
     console.error('Failed to load translations:', error);
     t = (key: string) => key;
@@ -306,7 +311,7 @@ export async function getCart(userId: string, locale: string = 'en'): Promise<{
     await connectToDatabase();
 
     if (!mongoose.Types.ObjectId.isValid(userId)) {
-      throw new Error(t('invalidData'));
+      throw new Error(t('invalid data'));
     }
 
     const cart = await Cart.findOne({ userId });
@@ -319,7 +324,7 @@ export async function getCart(userId: string, locale: string = 'en'): Promise<{
     console.error('Get cart error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : t('getCartFailed'),
+      message: error instanceof Error ? error.message : t('get cart failed'),
     };
   }
 }
@@ -330,7 +335,7 @@ export async function clearCart(userId: string, locale: string = 'en'): Promise<
 }> {
   let t;
   try {
-    t = await getTranslations({ locale, namespace: 'cart' });
+    t = await getTranslations({ locale, namespace: 'Cart' });
   } catch (error) {
     console.error('Failed to load translations:', error);
     t = (key: string) => key;
@@ -343,12 +348,12 @@ export async function clearCart(userId: string, locale: string = 'en'): Promise<
 
     try {
       if (!mongoose.Types.ObjectId.isValid(userId)) {
-        throw new Error(t('invalidData'));
+        throw new Error(t('invalid data'));
       }
 
       const cart = await Cart.findOne({ userId }).session(session);
       if (!cart || cart.items.length === 0) {
-        return { success: true, message: t('cartAlreadyEmpty') };
+        return { success: true, message: t('cart already empty') };
       }
 
       for (const item of cart.items) {
@@ -366,13 +371,13 @@ export async function clearCart(userId: string, locale: string = 'en'): Promise<
 
       await sendNotification({
         userId,
-        type: 'cart_cleared',
-        title: t('cartClearedTitle'),
-        message: t('cartClearedMessage'),
+        type: 'cart.cleared',
+        title: t('cart cleared title'),
+        message: t('cart cleared message'),
         channels: ['in_app'],
       });
 
-      return { success: true, message: t('cartCleared') };
+      return { success: true, message: t('cart cleared') };
     } catch (error) {
       await session.abortTransaction();
       throw error;
@@ -383,7 +388,7 @@ export async function clearCart(userId: string, locale: string = 'en'): Promise<
     console.error('Clear cart error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : t('clearCartFailed'),
+      message: error instanceof Error ? error.message : t('clear cart failed'),
     };
   }
 }

@@ -17,10 +17,10 @@ export interface SubscriptionPlan {
   export const subscriptionPlans: SubscriptionPlan[] = [
     {
       id: 'trial',
-      name: 'Trial',
+      name: 'trial',
       price: 1,
       pointsCost: 20,
-      description: 'Trial plan for new sellers, $1/month for first 3 months.',
+      description: 'free plan for new sellers, $1/month for first 3 months.',
       features: { productsLimit: 50, commission: 7, prioritySupport: false, instantPayouts: false },
       isTrial: true,
       trialDuration: 3,

@@ -49,7 +49,7 @@ export async function POST(request: NextRequest) {
     logger.info('Processing webhook', { requestId, provider, event });
 
     switch (event) {
-      case 'inventory_updated':
+      case 'inventory.updated':
         await Product.updateOne(
           { 'warehouseData.sku': data.sku, 'warehouseData.provider': provider },
           {

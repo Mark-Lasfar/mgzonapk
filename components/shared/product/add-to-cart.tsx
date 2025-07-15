@@ -9,13 +9,14 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { addToCart } from '@/lib/actions/cart.actions';
-import { useToast } from '@/hooks/use-toast';
+// import { useToast } from '@/hooks/use-toast';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { Input } from '@/components/ui/input';
 import { Loader2 } from 'lucide-react';
+import { useToast } from '@/components/ui/toast';
 
 interface AddToCartProps {
   item: {
@@ -23,14 +24,36 @@ interface AddToCartProps {
     name: string;
     pricing: { finalPrice: number };
     countInStock: number;
-    colors?: { name: string; hex: string; inStock: boolean; quantity: number }[];
-    sizes?: { name: string; inStock: boolean; quantity: number }[];
-    warehouseData?: { provider: string; quantity: number }[];
+    clientId?: string;
+    product?: string;
+    slug?: string;
+    category?: string;
+    price: number;
+    quantity: number;
+    image?: string;
+    brand?: string;
+    sellerName?: string;
+    colors: Array<{
+      name: string;
+      hex: string;
+      inStock: boolean;
+      quantity: number;
+    }>;
+    sizes: Array<{
+      name: string;
+      inStock: boolean;
+      quantity: number;
+    }>;
+    warehouseData?: Array<{
+      provider: string;
+      quantity: number;
+    }>;
   };
   minimal?: boolean;
+  clientId?: string;
 }
 
-export default function AddToCart({ item, minimal = false }: AddToCartProps) {
+export default function AddToCart({ item, minimal = false, clientId }: AddToCartProps) {
   const router = useRouter();
   const { toast } = useToast();
   const t = useTranslations('cart');
@@ -96,10 +119,11 @@ export default function AddToCart({ item, minimal = false }: AddToCartProps) {
     try {
       const result = await addToCart(
         session.user.id,
+        clientId || '',
         item._id,
         quantity,
-        selectedColor,
-        selectedSize,
+        selectedColor || undefined,
+        selectedSize || undefined,
         locale
       );
 

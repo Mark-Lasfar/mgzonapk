@@ -1,14 +1,15 @@
-'use client'
+// /home/hager/Trash/my-nextjs-project-master/app/[locale]/(root)/seller/dashboard/settings/settings-form.tsx
 
-import { useState, useEffect } from 'react'
-import { useForm } from 'react-hook-form'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { z } from 'zod'
-import { useTranslations } from 'next-intl'
-import { useRouter } from 'next/navigation'
-import { useToast } from '@/hooks/use-toast'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+'use client';
+
+import { useState, useEffect } from 'react';
+import { useForm, useFieldArray } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useTranslations } from 'next-intl';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
@@ -17,139 +18,61 @@ import {
   FormLabel,
   FormMessage,
   FormDescription,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Textarea } from '@/components/ui/textarea'
-import { Switch } from '@/components/ui/switch'
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Textarea } from '@/components/ui/textarea';
+import { Switch } from '@/components/ui/switch';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select'
-import { Loader2, Upload, Eye, EyeOff } from 'lucide-react'
-import { updateSellerSettings, getSellerByUserId, updateSellerSubscription } from '@/lib/actions/seller.actions'
-import { ISeller } from '@/lib/db/models/seller.model'
-
+} from '@/components/ui/select';
+import { Loader2, Upload, Eye, EyeOff, Trash2 } from 'lucide-react';
+import { updateSellerSettings, getSellerByUserId, updateSellerSubscription } from '@/lib/actions/seller.actions';
+import { SettingsFormData, SettingsFormDataSchema } from '@/lib/types/settings';
+import { ISeller } from '@/lib/db/models/seller.model';
+import { SellerIntegration } from '@/lib/db/models/seller-integration.model';
 // حدود حجم ونوع الملفات
-const MAX_FILE_SIZE = 2 * 1024 * 1024 // 2MB
-const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
+const MAX_FILE_SIZE = 2 * 1024 * 1024; // 2MB
+const ACCEPTED_IMAGE_TYPES = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'];
 
 // مخطط التحقق باستخدام الترجمات
 const settingsFormSchema = (t: any) =>
-  z.object({
-    businessName: z
-      .string()
-      .min(2, t('validation.businessName.min', { count: 2 }))
-      .max(100, t('validation.businessName.max', { count: 100 })),
-    description: z
-      .string()
-      .min(10, t('validation.description.min', { count: 10 }))
-      .max(500, t('validation.description.max', { count: 500 }))
-      .optional(),
-    phone: z
-      .string()
-      .min(10, t('validation.phone.min', { count: 10 }))
-      .max(20, t('validation.phone.max', { count: 20 }))
-      .regex(/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, t('validation.phone.format')),
-    address: z.object({
-      street: z.string().min(1, t('validation.address.street.required')),
-      city: z.string().min(1, t('validation.address.city.required')),
-      state: z.string().min(1, t('validation.address.state.required')),
-      country: z.string().min(1, t('validation.address.country.required')),
-      postalCode: z
-        .string()
-        .min(1, t('validation.address.postalCode.required'))
-        .regex(/^[0-9A-Z\s-]*$/, t('validation.address.postalCode.format')),
-    }),
-    bankInfo: z
-      .object({
-        accountName: z
-          .string()
-          .min(2, t('validation.bankInfo.accountName.min', { count: 2 }))
-          .max(100, t('validation.bankInfo.accountName.max', { count: 100 })),
-        accountNumber: z
-          .string()
-          .min(8, t('validation.bankInfo.accountNumber.min', { count: 8 }))
-          .max(34, t('validation.bankInfo.accountNumber.max', { count: 34 }))
-          .regex(/^[0-9]*$/, t('validation.bankInfo.accountNumber.format')),
-        bankName: z
-          .string()
-          .min(2, t('validation.bankInfo.bankName.min', { count: 2 }))
-          .max(100, t('validation.bankInfo.bankName.max', { count: 100 })),
-        swiftCode: z
-          .string()
-          .min(8, t('validation.bankInfo.swiftCode.min', { count: 8 }))
-          .max(11, t('validation.bankInfo.swiftCode.max', { count: 11 }))
-          .regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/, t('validation.bankInfo.swiftCode.format')),
-      })
-      .optional(),
-    subscription: z.object({
-      plan: z.enum(['Trial', 'Basic', 'Pro', 'VIP'], {
-        required_error: t('validation.subscription.plan.required'),
-      }),
-    }),
-    notifications: z.object({
-      email: z.boolean(),
-      sms: z.boolean(),
-      orderUpdates: z.boolean(),
-      marketingEmails: z.boolean(),
-      pointsNotifications: z.boolean(),
-    }),
-    display: z.object({
-      showRating: z.boolean(),
-      showContactInfo: z.boolean(),
-      showMetrics: z.boolean(),
-      showPointsBalance: z.boolean(),
-    }),
-    security: z.object({
-      twoFactorAuth: z.boolean(),
-      loginNotifications: z.boolean(),
-    }),
-    customSite: z.object({
-      theme: z.string().min(1, t('validation.customSite.theme.required')),
-      primaryColor: z
-        .string()
-        .regex(/^#[0-9A-F]{6}$/i, t('validation.customSite.primaryColor.invalid')),
-      logo: z
-        .any()
-        .refine(
-          (files) => !files?.[0] || files[0].size <= MAX_FILE_SIZE,
-          t('validation.customSite.logo.size', { size: '2MB' }),
-        )
-        .refine(
-          (files) => !files?.[0] || ACCEPTED_IMAGE_TYPES.includes(files[0].type),
-          t('validation.customSite.logo.format'),
-        )
-        .optional(),
-      bannerImage: z
-        .any()
-        .refine(
-          (files) => !files?.[0] || files[0].size <= MAX_FILE_SIZE,
-          t('validation.customSite.bannerImage.size', { size: '2MB' }),
-        )
-        .refine(
-          (files) => !files?.[0] || ACCEPTED_IMAGE_TYPES.includes(files[0].type),
-          t('validation.customSite.bannerImage.format'),
-        )
-        .optional(),
-    }),
-  })
+  SettingsFormDataSchema.refine(
+    (data) => {
+      if (data.discountOffers) {
+        return data.discountOffers.every((offer) => {
+          if (offer.validUntil && offer.validFrom) {
+            return new Date(offer.validUntil) > new Date(offer.validFrom);
+          }
+          return true;
+        });
+      }
+      return true;
+    },
+    {
+      message: t('validation.discountOffers.validDates'),
+      path: ['discountOffers'],
+    }
+  );
 
-type SettingsFormValues = z.infer<ReturnType<typeof settingsFormSchema>>
+type SettingsFormValues = SettingsFormData;
 
 export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
-  const t = useTranslations('SellerSettings')
-  const { toast } = useToast()
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [isFetching, setIsFetching] = useState(true)
-  const [showBankInfo, setShowBankInfo] = useState(false)
-  const [logoPreview, setLogoPreview] = useState<string | null>(seller.logo || null)
-  const [bannerPreview, setBannerPreview] = useState<string | null>(seller.settings?.customSite?.bannerImage || null)
-  const [pointsBalance, setPointsBalance] = useState(seller.pointsBalance || 0)
-  const [trialDaysRemaining, setTrialDaysRemaining] = useState(0)
+  const t = useTranslations('SellerSettings');
+  const { toast } = useToast();
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isFetching, setIsFetching] = useState(true);
+  const [showBankInfo, setShowBankInfo] = useState(false);
+  const [logoPreview, setLogoPreview] = useState<string | null>(seller.logo || null);
+  const [bannerPreview, setBannerPreview] = useState<string | null>(
+    seller.settings?.customSite?.bannerImage || null
+  );
+  const [pointsBalance, setPointsBalance] = useState(seller.pointsBalance || 0);
+  const [trialDaysRemaining, setTrialDaysRemaining] = useState(0);
 
   // تهيئة النموذج
   const form = useForm<SettingsFormValues>({
@@ -157,6 +80,7 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
     defaultValues: {
       businessName: seller.businessName || '',
       description: seller.description || '',
+      email: seller.email || '',
       phone: seller.phone || '',
       address: {
         street: seller.address?.street || '',
@@ -164,15 +88,14 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
         state: seller.address?.state || '',
         country: seller.address?.country || '',
         postalCode: seller.address?.postalCode || '',
+        countryCode: seller.address?.countryCode || '',
       },
       bankInfo: {
         accountName: seller.bankInfo?.accountName || '',
-        accountNumber: '', // لا يتم عرض رقم الحساب افتراضيًا
+        accountNumber: '',
         bankName: seller.bankInfo?.bankName || '',
         swiftCode: seller.bankInfo?.swiftCode || '',
-      },
-      subscription: {
-        plan: seller.subscription?.plan || 'Trial',
+        verified: seller.bankInfo?.verified || false,
       },
       notifications: {
         email: seller.settings?.notifications?.email ?? true,
@@ -194,95 +117,112 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
       customSite: {
         theme: seller.settings?.customSite?.theme ?? 'default',
         primaryColor: seller.settings?.customSite?.primaryColor ?? '#000000',
-        logo: null,
-        bannerImage: null,
+        bannerImage: undefined,
+        customSections: seller.settings?.customSite?.customSections ?? [],
       },
+      shippingOptions: seller.shippingOptions || [],
+      discountOffers: seller.discountOffers || [],
+      paymentGateways: seller.paymentGateways || [],
     },
-  })
+  });
+
+  const { fields: shippingFields, append: appendShipping, remove: removeShipping } = useFieldArray({
+    control: form.control,
+    name: 'shippingOptions',
+  });
+
+  const { fields: discountFields, append: appendDiscount, remove: removeDiscount } = useFieldArray({
+    control: form.control,
+    name: 'discountOffers',
+  });
 
   // جلب بيانات البائع وحساب أيام الفترة التجريبية
   useEffect(() => {
     async function fetchSettings() {
       try {
-        const session = await fetch('/api/auth/session').then((res) => res.json())
+        const session = await fetch('/api/auth/session').then((res) => res.json());
         if (!session?.user?.id) {
           toast({
             title: t('errors.unauthorizedTitle'),
             description: t('errors.unauthorizedDescription'),
             variant: 'destructive',
-          })
-          router.push('/login')
-          return
+          });
+          router.push('/login');
+          return;
         }
 
-        const response = await getSellerByUserId(session.user.id)
+        const response = await getSellerByUserId(session.user.id);
         if (response.success && response.data) {
-          const sellerData: ISeller = response.data
+          const sellerData: ISeller = response.data;
           form.reset({
             businessName: sellerData.businessName,
             description: sellerData.description || '',
+            email: sellerData.email,
             phone: sellerData.phone,
             address: sellerData.address,
             bankInfo: {
               accountName: sellerData.bankInfo?.accountName || '',
-              accountNumber: '', // لا يتم عرض رقم الحساب
+              accountNumber: '',
               bankName: sellerData.bankInfo?.bankName || '',
               swiftCode: sellerData.bankInfo?.swiftCode || '',
+              verified: sellerData.bankInfo?.verified || false,
             },
-            subscription: { plan: sellerData.subscription.plan },
             notifications: sellerData.settings.notifications,
             display: sellerData.settings.display,
             security: sellerData.settings.security,
             customSite: {
               theme: sellerData.settings.customSite?.theme ?? 'default',
               primaryColor: sellerData.settings.customSite?.primaryColor ?? '#000000',
-              logo: null,
-              bannerImage: null,
+              bannerImage: undefined,
+              customSections: sellerData.settings.customSite?.customSections ?? [],
             },
-          })
-          setPointsBalance(sellerData.pointsBalance)
-          setLogoPreview(sellerData.logo || null)
-          setBannerPreview(sellerData.settings.customSite?.bannerImage || null)
+            shippingOptions: sellerData.shippingOptions || [],
+            discountOffers: sellerData.discountOffers || [],
+            paymentGateways: sellerData.paymentGateways || [],
+          });
+          setPointsBalance(sellerData.pointsBalance);
+          setLogoPreview(sellerData.logo || null);
+          setBannerPreview(sellerData.settings.customSite?.bannerImage || null);
           if (sellerData.freeTrialActive && sellerData.freeTrialEndDate) {
-            const now = new Date()
-            const endDate = new Date(sellerData.freeTrialEndDate)
-            const daysRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 3600 * 24))
-            setTrialDaysRemaining(daysRemaining > 0 ? daysRemaining : 0)
+            const now = new Date();
+            const endDate = new Date(sellerData.freeTrialEndDate);
+            const daysRemaining = Math.ceil((endDate.getTime() - now.getTime()) / (1000 * 3600 * 24));
+            setTrialDaysRemaining(daysRemaining > 0 ? daysRemaining : 0);
           }
         } else {
-          throw new Error(response.message || t('errors.fetchDescription'))
+          throw new Error(response.message || t('errors.fetchDescription'));
         }
       } catch (error) {
         toast({
           title: t('errors.fetchTitle'),
           description: error instanceof Error ? error.message : t('errors.fetchDescription'),
           variant: 'destructive',
-        })
+        });
       } finally {
-        setIsFetching(false)
+        setIsFetching(false);
       }
     }
-    fetchSettings()
-  }, [form, toast, t, router])
+    fetchSettings();
+  }, [form, toast, t, router]);
 
   // استطلاع تحديثات النقاط في الوقت الفعلي
   useEffect(() => {
     const interval = setInterval(async () => {
-      const session = await fetch('/api/auth/session').then((res) => res.json())
+      const session = await fetch('/api/auth/session').then((res) => res.json());
       if (session?.user?.id) {
-        const response = await getSellerByUserId(session.user.id)
+        const response = await getSellerByUserId(session.user.id);
         if (response.success && response.data) {
-          setPointsBalance(response.data.pointsBalance)
+          setPointsBalance(response.data.pointsBalance);
         }
       }
-    }, 60000) // تحديث كل دقيقة
-    return () => clearInterval(interval)
-  }, [])
+    }, 60000);
+    return () => clearInterval(interval);
+  }, []);
 
-  // معالجة رفع الصور (شعار أو بانر)
+  // معالجة رفع الصور
   const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>, type: 'logo' | 'banner') => {
-    const file = e.target.files?.[0]
-    if (!file) return
+    const file = e.target.files?.[0];
+    if (!file) return;
 
     try {
       if (file.size > MAX_FILE_SIZE) {
@@ -290,60 +230,65 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
           title: t('errors.fileSizeTitle'),
           description: t('errors.fileSizeDescription', { size: '2MB' }),
           variant: 'destructive',
-        })
-        return
+        });
+        return;
       }
       if (!ACCEPTED_IMAGE_TYPES.includes(file.type)) {
         toast({
           title: t('errors.fileTypeTitle'),
           description: t('errors.fileTypeDescription'),
           variant: 'destructive',
-        })
-        return
+        });
+        return;
       }
 
-      const reader = new FileReader()
+      const reader = new FileReader();
       reader.onloadend = () => {
         if (type === 'logo') {
-          setLogoPreview(reader.result as string)
+          setLogoPreview(reader.result as string);
         } else {
-          setBannerPreview(reader.result as string)
+          setBannerPreview(reader.result as string);
         }
-      }
+      };
       reader.onerror = () => {
         toast({
           title: t('errors.fileReadTitle'),
           description: t('errors.fileReadDescription'),
           variant: 'destructive',
-        })
-      }
-      reader.readAsDataURL(file)
+        });
+      };
+      reader.readAsDataURL(file);
     } catch (error) {
       toast({
         title: t('errors.uploadTitle'),
         description: t('errors.uploadDescription'),
         variant: 'destructive',
-      })
+      });
     }
-  }
+  };
 
   // معالجة إرسال النموذج
   const handleSubmit = async (data: SettingsFormValues) => {
-    setIsLoading(true)
+    setIsLoading(true);
     try {
-      const session = await fetch('/api/auth/session').then((res) => res.json())
+      const session = await fetch('/api/auth/session').then((res) => res.json());
       if (!session?.user?.id) {
-        throw new Error(t('errors.unauthorizedDescription'))
+        throw new Error(t('errors.unauthorizedDescription'));
       }
 
-      const logoFile = data.customSite.logo?.[0]
-      const bannerFile = data.customSite.bannerImage?.[0]
-      const settings = {
+      const logoFile = data.customSite.logo?.[0];
+      const bannerFile = data.customSite.bannerImage?.[0];
+      const formData = new FormData();
+      if (logoFile) formData.append('logo', logoFile);
+      if (bannerFile) formData.append('bannerImage', bannerFile);
+
+      const settings: SettingsFormData = {
         businessName: data.businessName,
         description: data.description,
+        email: data.email,
         phone: data.phone,
         address: data.address,
-        bankInfo: showBankInfo ? data.bankInfo : undefined, // إرسال bankInfo فقط إذا كانت مرئية
+        bankInfo: showBankInfo ? data.bankInfo : undefined,
         notifications: data.notifications,
         display: data.display,
         security: data.security,
@@ -351,55 +296,55 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
           theme: data.customSite.theme,
           primaryColor: data.customSite.primaryColor,
           bannerImage: bannerFile ? undefined : data.customSite.bannerImage,
+          customSections: data.customSite.customSections,
         },
-      }
+        shippingOptions: data.shippingOptions,
+        discountOffers: data.discountOffers,
+        paymentGateways: data.paymentGateways,
+      };
 
-      const formData = new FormData()
-      if (logoFile) formData.append('logo', logoFile)
-      if (bannerFile) formData.append('bannerImage', bannerFile)
-
-      const result = await updateSellerSettings(settings, formData)
+      const result = await updateSellerSettings(settings, formData);
       if (!result.success) {
-        throw new Error(result.message || t('errors.submitDescription'))
+        throw new Error(result.error || t('errors.submitDescription'));
       }
 
       toast({
         title: t('success.title'),
         description: t('success.description'),
-      })
-      form.reset(data)
+      });
+      form.reset(data);
     } catch (error) {
       toast({
         title: t('errors.submitTitle'),
         description: error instanceof Error ? error.message : t('errors.submitDescription'),
         variant: 'destructive',
-      })
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   // معالجة ترقية الاشتراك
   const handleUpgradeSubscription = async (plan: 'Basic' | 'Pro' | 'VIP') => {
     try {
-      const response = await updateSellerSubscription(seller.userId, plan, 0, undefined, undefined)
+      const response = await updateSellerSubscription(seller.userId, { plan, pointsToRedeem: 0 });
       if (response.success) {
         toast({
           title: t('success.title'),
           description: t('success.subscriptionUpgraded', { plan }),
-        })
-        router.refresh() // تحديث الصفحة لعكس التغييرات
+        });
+        router.refresh();
       } else {
-        throw new Error(response.error || t('errors.submitDescription'))
+        throw new Error(response.error || t('errors.submitDescription'));
       }
     } catch (error) {
       toast({
         title: t('errors.submitTitle'),
         description: error instanceof Error ? error.message : t('errors.submitDescription'),
         variant: 'destructive',
-      })
+      });
     }
-  }
+  };
 
   // عرض حالة التحميل
   if (isFetching) {
@@ -407,19 +352,16 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
       <div className="flex justify-center items-center h-screen">
         <Loader2 className="h-8 w-8 animate-spin" />
       </div>
-    )
+    );
   }
 
   return (
     <Card className="max-w-4xl mx-auto my-8">
       <CardHeader>
         <CardTitle>{t('title')}</CardTitle>
-        {/* حالة الفترة التجريبية */}
         {seller.freeTrialActive && (
           <div className="mt-4 p-4 bg-blue-100 rounded-lg">
-            <p className="text-sm font-semibold">
-              {t('trialStatus', { days: trialDaysRemaining })}
-            </p>
+            <p className="text-sm font-semibold">{t('trialStatus', { days: trialDaysRemaining })}</p>
             <p className="text-sm">{t('trialDescription')}</p>
             <Button
               variant="link"
@@ -430,7 +372,6 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
             </Button>
           </div>
         )}
-        {/* رصيد النقاط */}
         <div className="mt-4 p-4 bg-green-100 rounded-lg">
           <p className="text-sm font-semibold">{t('pointsBalance', { points: pointsBalance })}</p>
           <p className="text-sm">{t('pointsDescription')}</p>
@@ -456,6 +397,20 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                           <Input placeholder={t('businessName.placeholder')} {...field} />
                         </FormControl>
                         <FormDescription>{t('businessName.description')}</FormDescription>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="email"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t('email.label')}</FormLabel>
+                        <FormControl>
+                          <Input placeholder={t('email.placeholder')} {...field} />
+                        </FormControl>
+                        <FormDescription>{t('email.description')}</FormDescription>
                         <FormMessage />
                       </FormItem>
                     )}
@@ -489,8 +444,8 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                             placeholder={t('phone.placeholder')}
                             {...field}
                             onChange={(e) => {
-                              const value = e.target.value.replace(/[^\d+()-\s]/g, '')
-                              field.onChange(value)
+                              const value = e.target.value.replace(/[^\d+()-\s]/g, '');
+                              field.onChange(value);
                             }}
                           />
                         </FormControl>
@@ -573,8 +528,28 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                             placeholder={t('address.postalCode.placeholder')}
                             {...field}
                             onChange={(e) => {
-                              const value = e.target.value.toUpperCase()
-                              field.onChange(value)
+                              const value = e.target.value.toUpperCase();
+                              field.onChange(value);
+                            }}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                  <FormField
+                    control={form.control}
+                    name="address.countryCode"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>{t('address.countryCode.label')}</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder={t('address.countryCode.placeholder')}
+                            {...field}
+                            onChange={(e) => {
+                              const value = e.target.value.toUpperCase();
+                              field.onChange(value);
                             }}
                           />
                         </FormControl>
@@ -662,8 +637,8 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                               placeholder={t('bankInfo.swiftCode.placeholder')}
                               {...field}
                               onChange={(e) => {
-                                const value = e.target.value.toUpperCase()
-                                field.onChange(value)
+                                const value = e.target.value.toUpperCase();
+                                field.onChange(value);
                               }}
                             />
                           </FormControl>
@@ -690,7 +665,7 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>{t('subscription.plan.label')}</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                        <Select onValueChange={field.onChange} defaultValue={seller.subscription.plan}>
                           <FormControl>
                             <SelectTrigger>
                               <SelectValue placeholder={t('subscription.plan.placeholder')} />
@@ -723,6 +698,372 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                         ))}
                     </div>
                   )}
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* قسم خيارات الشحن */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('sections.shippingOptions')}</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {shippingFields.map((field, index) => (
+                    <div key={field.id} className="border p-4 rounded-lg space-y-4">
+                      <FormField
+                        control={form.control}
+                        name={`shippingOptions.${index}.name`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('shippingOptions.name.label')}</FormLabel>
+                            <FormControl>
+                              <Input placeholder={t('shippingOptions.name.placeholder')} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`shippingOptions.${index}.daysToDeliver`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('shippingOptions.daysToDeliver.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('shippingOptions.daysToDeliver.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`shippingOptions.${index}.shippingPrice`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('shippingOptions.shippingPrice.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('shippingOptions.shippingPrice.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`shippingOptions.${index}.freeShippingMinPrice`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('shippingOptions.freeShippingMinPrice.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('shippingOptions.freeShippingMinPrice.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`shippingOptions.${index}.supportedCountries`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('shippingOptions.supportedCountries.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                placeholder={t('shippingOptions.supportedCountries.placeholder')}
+                                {...field}
+                                value={field.value?.join(',') || ''}
+                                onChange={(e) => field.onChange(e.target.value.split(',').map((v) => v.trim().toUpperCase()))}
+                              />
+                            </FormControl>
+                            <FormDescription>
+                              {t('shippingOptions.supportedCountries.description')}
+                            </FormDescription>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`shippingOptions.${index}.isActive`}
+                        render={({ field }) => (
+                          <FormItem className="flex items-center justify-between">
+                            <div>
+                              <FormLabel>{t('shippingOptions.isActive.label')}</FormLabel>
+                              <FormDescription>
+                                {t('shippingOptions.isActive.description')}
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch checked={field.value} onCheckedChange={field.onChange} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeShipping(index)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        {t('shippingOptions.remove')}
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      appendShipping({
+                        name: '',
+                        daysToDeliver: 0,
+                        shippingPrice: 0,
+                        freeShippingMinPrice: 0,
+                        supportedCountries: [],
+                        isActive: true,
+                      })
+                    }
+                  >
+                    {t('shippingOptions.add')}
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* قسم عروض الخصم */}
+            <Card>
+              <CardHeader>
+                <CardTitle>{t('sections.discountOffers')}</CardTitle>
+              </CardHeader>
+              <CardContent className="pt-6">
+                <div className="space-y-4">
+                  {discountFields.map((field, index) => (
+                    <div key={field.id} className="border p-4 rounded-lg space-y-4">
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.code`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.code.label')}</FormLabel>
+                            <FormControl>
+                              <Input placeholder={t('discountOffers.code.placeholder')} {...field} />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.description`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.description.label')}</FormLabel>
+                            <FormControl>
+                              <Textarea
+                                placeholder={t('discountOffers.description.placeholder')}
+                                {...field}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.discountType`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.discountType.label')}</FormLabel>
+                            <Select onValueChange={field.onChange} defaultValue={field.value}>
+                              <FormControl>
+                                <SelectTrigger>
+                                  <SelectValue placeholder={t('discountOffers.discountType.placeholder')} />
+                                </SelectTrigger>
+                              </FormControl>
+                              <SelectContent>
+                                <SelectItem value="percentage">{t('discountOffers.discountType.percentage')}</SelectItem>
+                                <SelectItem value="fixed">{t('discountOffers.discountType.fixed')}</SelectItem>
+                                <SelectItem value="free_shipping">{t('discountOffers.discountType.free_shipping')}</SelectItem>
+                              </SelectContent>
+                            </Select>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.discountValue`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.discountValue.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('discountOffers.discountValue.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.minPurchase`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.minPurchase.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('discountOffers.minPurchase.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.maxDiscount`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.maxDiscount.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('discountOffers.maxDiscount.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.validFrom`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.validFrom.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value ? field.value.toISOString().split('T')[0] : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.validUntil`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.validUntil.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="date"
+                                {...field}
+                                value={field.value ? field.value.toISOString().split('T')[0] : ''}
+                                onChange={(e) => field.onChange(new Date(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.maxUses`}
+                        render={({ field }) => (
+                          <FormItem>
+                            <FormLabel>{t('discountOffers.maxUses.label')}</FormLabel>
+                            <FormControl>
+                              <Input
+                                type="number"
+                                placeholder={t('discountOffers.maxUses.placeholder')}
+                                {...field}
+                                onChange={(e) => field.onChange(Number(e.target.value))}
+                              />
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        )}
+                      />
+                      <FormField
+                        control={form.control}
+                        name={`discountOffers.${index}.isActive`}
+                        render={({ field }) => (
+                          <FormItem className="flex items-center justify-between">
+                            <div>
+                              <FormLabel>{t('discountOffers.isActive.label')}</FormLabel>
+                              <FormDescription>
+                                {t('discountOffers.isActive.description')}
+                              </FormDescription>
+                            </div>
+                            <FormControl>
+                              <Switch checked={field.value} onCheckedChange={field.onChange} />
+                            </FormControl>
+                          </FormItem>
+                        )}
+                      />
+                      <Button
+                        variant="destructive"
+                        size="sm"
+                        onClick={() => removeDiscount(index)}
+                      >
+                        <Trash2 className="h-4 w-4 mr-2" />
+                        {t('discountOffers.remove')}
+                      </Button>
+                    </div>
+                  ))}
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() =>
+                      appendDiscount({
+                        code: '',
+                        description: '',
+                        discountType: 'percentage',
+                        discountValue: 0,
+                        minPurchase: 0,
+                        maxDiscount: 0,
+                        validFrom: undefined,
+                        validUntil: undefined,
+                        maxUses: 0,
+                        usedCount: 0,
+                        isActive: true,
+                        applicableProducts: [],
+                        applicableCategories: [],
+                      })
+                    }
+                  >
+                    {t('discountOffers.add')}
+                  </Button>
                 </div>
               </CardContent>
             </Card>
@@ -996,8 +1337,8 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                               type="file"
                               accept={ACCEPTED_IMAGE_TYPES.join(',')}
                               onChange={(e) => {
-                                onChange(e.target.files)
-                                handleImageUpload(e, 'logo')
+                                onChange(e.target.files);
+                                handleImageUpload(e, 'logo');
                               }}
                               {...field}
                             />
@@ -1029,8 +1370,8 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
                               type="file"
                               accept={ACCEPTED_IMAGE_TYPES.join(',')}
                               onChange={(e) => {
-                                onChange(e.target.files)
-                                handleImageUpload(e, 'banner')
+                                onChange(e.target.files);
+                                handleImageUpload(e, 'banner');
                               }}
                               {...field}
                             />
@@ -1069,5 +1410,5 @@ export default function SellerSettingsForm({ seller }: { seller: ISeller }) {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }

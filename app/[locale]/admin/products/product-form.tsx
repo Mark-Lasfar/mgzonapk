@@ -28,13 +28,13 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { useToast } from '@/hooks/use-toast'
-import { createProduct, updateProduct } from '@/lib/actions/product.actions'
-import { syncProductInventory } from '@/lib/actions/warehouse.actions'
+import { createProduct, syncProductInventory, updateProduct } from '@/lib/actions/product.actions'
+// import { syncProductInventory } from '@/lib/actions/warehouse.actions'
 import { UploadButton } from '@/lib/uploadthing'
 import { toSlug } from '@/lib/utils'
 import { z } from 'zod'
 import { useTranslations } from 'next-intl'
+import { Toast, useToast } from '@/components/ui/toast'
 
 // Utility Functions
 const logOperation = (operation: string, details?: any) => {
@@ -78,7 +78,7 @@ const ColorSchema = z.object({
 
 const WarehouseSchema = z.object({
   warehouseId: z.string().min(1, 'Warehouse ID is required'),
-  provider: z.enum(['ShipBob', '4PX']),
+  provider: z.enum(['ShipBob', '4PX', 'ShipHero']),
   sku: z.string().min(1, 'SKU is required'),
   quantity: z.number().min(0),
   location: z.string().min(1, 'Location is required'),
@@ -100,7 +100,7 @@ const ProductInputSchema = z.object({
   listPrice: z.number().min(0, 'List price must be non-negative'),
   countInStock: z.number().min(0, 'Stock must be non-negative'),
   isPublished: z.boolean(),
-  tags: z.array(z.string()).optional(),
+  tags: z.array(z.enum(['featured', 'standard', 'local', 'premium', 'new-arrival', 'best-seller', 'flash-sale', 'todays-deal'])).optional(),
   sizes: z.array(z.string()).optional(),
   colors: z
     .array(
@@ -112,16 +112,6 @@ const ProductInputSchema = z.object({
     )
     .optional(),
   warehouseData: z.array(WarehouseSchema).min(1, 'At least one warehouse is required'),
-  warehouse: z
-    .object({
-      provider: z.enum(['ShipBob', '4PX']),
-      sku: z.string().min(1),
-      quantity: z.number().min(0),
-      location: z.string().min(1),
-      minimumStock: z.number().min(0),
-      reorderPoint: z.number().min(0),
-    })
-    .optional(),
   pricing: PricingSchema,
   status: z.enum(['draft', 'pending', 'published']),
   createdBy: z.string().optional(),
@@ -143,29 +133,40 @@ const PREDEFINED_COLORS = [
   { name: 'Green', hex: '#00FF00' },
   { name: 'Yellow', hex: '#FFFF00' },
 ]
+const PREDEFINED_TAGS = [
+  { value: 'featured', label: 'Featured' },
+  { value: 'standard', label: 'Standard' },
+  { value: 'local', label: 'Local' },
+  { value: 'premium', label: 'Premium' },
+  { value: 'new-arrival', label: 'New Arrival' },
+  { value: 'best-seller', label: 'Best Seller' },
+  { value: 'flash-sale', label: 'Flash Sale' },
+  { value: 'todays-deal', label: 'Today\'s Deal' },
+]
 
 // Fetch Warehouses
 const fetchWarehouses = async () => {
   try {
-    const [shipBobRes, fourPXRes] = await Promise.all([
-      fetch('/api/warehouses?provider=ShipBob', {
-        headers: { 'x-api-key': process.env.NEXT_PUBLIC_API_KEY || '' },
-      }),
-      fetch('/api/warehouses?provider=4PX', {
-        headers: { 'x-api-key': process.env.NEXT_PUBLIC_API_KEY || '' },
-      }),
-    ])
-    const shipBobData = await shipBobRes.json()
-    const fourPxData = await fourPXRes.json()
+    const response = await fetch('/api/warehouses', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    })
 
-    const shipBobWarehouses = shipBobData.success
-      ? shipBobData.data.map((w: any) => ({ ...w, provider: 'ShipBob' as const }))
-      : []
-    const fourPxWarehouses = fourPxData.success
-      ? fourPxData.data.map((w: any) => ({ ...w, provider: '4PX' as const }))
-      : []
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`)
+    }
 
-    return [...shipBobWarehouses, ...fourPxWarehouses]
+    const data = await response.json()
+    if (!data.success) {
+      throw new Error(data.message || 'Failed to fetch warehouses')
+    }
+
+    return data.data.map((w: any) => ({
+      ...w,
+      provider: w.provider as 'ShipBob' | '4PX' | 'ShipHero',
+    }))
   } catch (error) {
     logOperation('Warehouse fetch error', { error })
     return []
@@ -178,13 +179,13 @@ const fetchProductOptions = async () => {
     const res = await fetch('/api/product-options')
     const data = await res.json()
     return {
-      tags: data.tags || [],
+      tags: PREDEFINED_TAGS,
       sizes: data.sizes || PREDEFINED_SIZES,
       colors: data.colors || PREDEFINED_COLORS,
     }
   } catch (error) {
     logOperation('Product options fetch error', { error })
-    return { tags: [], sizes: PREDEFINED_SIZES, colors: PREDEFINED_COLORS }
+    return { tags: PREDEFINED_TAGS, sizes: PREDEFINED_SIZES, colors: PREDEFINED_COLORS }
   }
 }
 
@@ -524,6 +525,621 @@ const WarehouseForm = ({ index, onRemove }: { index: number; onRemove: () => voi
   )
 }
 
+// Basic Info Component
+const BasicInfo = () => {
+  const { control, setValue, getValues } = useFormContext()
+  const t = useTranslations('Admin.ProductForm')
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('basicInfo')}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={control}
+            name="name"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('productName')}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t('enterProductName')}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+                      setValue('slug', toSlug(e.target.value))
+                      logOperation('Product name changed', { value: e.target.value })
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="slug"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('slug')}</FormLabel>
+                <div className="flex gap-2">
+                  <FormControl>
+                    <Input
+                      placeholder={t('enterSlug')}
+                      {...field}
+                      onChange={(e) => {
+                        field.onChange(e.target.value)
+                        logOperation('Slug changed', { value: e.target.value })
+                      }}
+                    />
+                  </FormControl>
+                  <Button
+                    type="button"
+                    variant="outline"
+                    onClick={() => {
+                      const newSlug = toSlug(getValues('name'))
+                      setValue('slug', newSlug)
+                      logOperation('Slug generated', { value: newSlug })
+                    }}
+                  >
+                    {t('generate')}
+                  </Button>
+                </div>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={control}
+            name="category"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('category')}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t('enterCategory')}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+                      logOperation('Category changed', { value: e.target.value })
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="brand"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('brand')}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t('enterBrand')}
+                    {...field}
+                    onChange={(e) => {
+                      field.onChange(e.target.value)
+                      logOperation('Brand changed', { value: e.target.value })
+                    }}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Pricing Component
+const Pricing = () => {
+  const { control, watch, setValue } = useFormContext()
+  const t = useTranslations('Admin.ProductForm')
+  const basePrice = Number(watch('price') || 0)
+  const listPrice = Number(watch('listPrice') || 0)
+  const markup = Number(watch('pricing.markup') || 30)
+  const discount = watch('pricing.discount')
+
+  const pricing = useMemo(() => {
+    return calculatePricing(basePrice, listPrice, markup, discount)
+  }, [basePrice, listPrice, markup, discount])
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('pricing')}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-3">
+          <FormField
+            control={control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('basePrice')}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    {...field}
+                    value={field.value || 0}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 0
+                      field.onChange(value)
+                      logOperation('Base price changed', { value })
+                      const currentListPrice = watch('listPrice')
+                      if (!currentListPrice || currentListPrice < value) {
+                        setValue('listPrice', value)
+                        logOperation('List price auto-updated', { value })
+                      }
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  {t('yourCost')}: ${Number(field.value || 0).toFixed(2)}
+                  <br />
+                  <small className="text-muted-foreground">
+                    {t('commission')}: ${pricing.commission}
+                  </small>
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="listPrice"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('listPrice')}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.01"
+                    min="0"
+                    placeholder="0.00"
+                    {...field}
+                    value={field.value || 0}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 0
+                      field.onChange(value)
+                      logOperation('List price changed', { value })
+                      const basePrice = watch('price')
+                      if (basePrice && value > basePrice) {
+                        const suggestedMarkup = ((value - basePrice) / basePrice) * 100
+                        setValue('pricing.markup', suggestedMarkup)
+                        logOperation('Markup auto-updated', { suggestedMarkup })
+                      }
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  {t('msrp')}: ${Number(field.value || 0).toFixed(2)}
+                  <br />
+                  <small className="text-muted-foreground">
+                    {t('suggestedMarkup')}: {pricing.suggestedMarkup}%
+                  </small>
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="pricing.markup"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('markup')}</FormLabel>
+                <FormControl>
+                  <Input
+                    type="number"
+                    step="0.1"
+                    min="0"
+                    max="100"
+                    placeholder="30"
+                    {...field}
+                    value={Number(field.value || pricing.suggestedMarkup).toFixed(1)}
+                    onChange={(e) => {
+                      const value = parseFloat(e.target.value) || 30
+                      field.onChange(value)
+                      logOperation('Markup changed', { value })
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>
+                  {t('finalPrice')}: ${pricing.finalPrice}
+                  <br />
+                  <small className="text-muted-foreground">
+                    {t('estimatedProfit')}: ${pricing.profit}
+                  </small>
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+        <FormField
+          control={control}
+          name="pricing.discount.type"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('discountType')}</FormLabel>
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  logOperation('Discount type changed', { value })
+                }}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('selectDiscountType')} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  {['none', 'percentage', 'fixed'].map((type) => (
+                    <SelectItem key={type} value={type}>
+                      {t(`discount_${type}`)}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        {watch('pricing.discount.type') !== 'none' && (
+          <div className="space-y-4">
+            <FormField
+              control={control}
+              name="pricing.discount.value"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t('discountValue')}</FormLabel>
+                  <FormControl>
+                    <Input
+                      type="number"
+                      min="0"
+                      step={watch('pricing.discount.type') === 'percentage' ? '1' : '0.01'}
+                      max={watch('pricing.discount.type') === 'percentage' ? '100' : undefined}
+                      {...field}
+                      value={field.value || 0}
+                      onChange={(e) => {
+                        const value = parseFloat(e.target.value) || 0
+                        field.onChange(value)
+                        logOperation('Discount value changed', { value })
+                      }}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    {watch('pricing.discount.type') === 'percentage'
+                      ? t('enterPercentage')
+                      : t('enterFixedAmount')}
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="grid gap-4 md:grid-cols-2">
+              <FormField
+                control={control}
+                name="pricing.discount.startDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('startDate')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        {...field}
+                        value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ''}
+                        onChange={(e) => {
+                          field.onChange(e.target.value ? new Date(e.target.value) : undefined)
+                          logOperation('Discount start date changed', { value: e.target.value })
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={control}
+                name="pricing.discount.endDate"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{t('endDate')}</FormLabel>
+                    <FormControl>
+                      <Input
+                        type="datetime-local"
+                        {...field}
+                        value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ''}
+                        onChange={(e) => {
+                          field.onChange(e.target.value ? new Date(e.target.value) : undefined)
+                          logOperation('Discount end date changed', { value: e.target.value })
+                        }}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+          </div>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+// Description Component
+const Description = () => {
+  const { control } = useFormContext()
+  const t = useTranslations('Admin.ProductForm')
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('description')}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={control}
+          name="description"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('description')}</FormLabel>
+              <FormControl>
+                <Textarea
+                  placeholder={t('enterDescription')}
+                  className="min-h-[100px]"
+                  {...field}
+                  value={field.value || ''}
+                  onChange={(e) => {
+                    field.onChange(e.target.value)
+                    logOperation('Description changed', { length: e.target.value.length })
+                  }}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
+// Images Component
+const Images = () => {
+  const { setValue, watch } = useFormContext()
+  const t = useTranslations('Admin.ProductForm')
+  const formValues = watch()
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('productImages')}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <div className="flex flex-wrap gap-4">
+          {formValues.images?.map((image: string, index: number) => (
+            <Card key={index} className="relative w-[150px] h-[150px]">
+              <CardContent className="p-0">
+                <Image
+                  src={image}
+                  alt={`${t('productImage')} ${index + 1}`}
+                  width={150}
+                  height={150}
+                  className="object-cover rounded-lg"
+                />
+                <Button
+                  variant="destructive"
+                  size="icon"
+                  className="absolute top-2 right-2"
+                  onClick={() => {
+                    if (confirm(t('confirmDeleteImage'))) {
+                      const newImages = formValues.images.filter((_: string, i: number) => i !== index)
+                      setValue('images', newImages)
+                      logOperation('Image deleted', { index, image })
+                    }
+                  }}
+                >
+                  ×
+                </Button>
+              </CardContent>
+            </Card>
+          ))}
+          {formValues.images?.length < MAX_IMAGES && (
+            <Card className="w-[150px] h-[150px] flex items-center justify-center">
+              <CardContent className="p-0">
+                <UploadButton
+                  endpoint="imageUploader"
+                  onClientUploadComplete={(res) => {
+                    if (res && res.length) {
+                      const newImages = res.map((file) => file.url || '')
+                      const currentImages = formValues.images || []
+                      if (currentImages.length + newImages.length > MAX_IMAGES) {
+                        toast({
+                          variant: 'destructive',
+                          title: t('tooManyImages'),
+                          description: t('maxImages', { maxImages: MAX_IMAGES }),
+                        })
+                        return
+                      }
+                      setValue('images', [...currentImages, ...newImages])
+                      logOperation('Images uploaded', { urls: newImages })
+                      toast({
+                        title: t('success'),
+                        description: t('imagesUploaded', { count: newImages.length }),
+                      })
+                    }
+                  }}
+                  onUploadError={(error: Error) => {
+                    logOperation('Image upload error', { error: error.message })
+                    Toast({
+                      variant: 'destructive',
+                      title: t('uploadFailed'),
+                      description: error.message,
+                    })
+                  }}
+                />
+              </CardContent>
+            </Card>
+          )}
+        </div>
+        <FormDescription>{t('imageRequirements', { maxImages: MAX_IMAGES })}</FormDescription>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Tags and Sizes Component
+const TagsAndSizes = () => {
+  const { control } = useFormContext()
+  const t = useTranslations('Admin.ProductForm')
+  const { data: productOptions } = useQuery({
+    queryKey: ['product-options'],
+    queryFn: fetchProductOptions,
+  })
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('tagsAndSizes')}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        <div className="grid gap-4 md:grid-cols-2">
+          <FormField
+            control={control}
+            name="tags"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('tags')}</FormLabel>
+                <div className="grid grid-cols-2 gap-2">
+                  {(productOptions?.tags || []).map((tag: { value: string; label: string }) => (
+                    <div key={tag.value} className="flex items-center space-x-2">
+                      <Checkbox
+                        checked={field.value?.includes(tag.value)}
+                        onCheckedChange={(checked: boolean) => {
+                          const newTags = checked
+                            ? [...(field.value || []), tag.value]
+                            : field.value?.filter((t: string) => t !== tag.value)
+                          field.onChange(newTags)
+                          logOperation('Tags changed', { newTags })
+                        }}
+                      />
+                      <label>{tag.label}</label>
+                    </div>
+                  ))}
+                </div>
+                <FormDescription>{t('tagsDescription')}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={control}
+            name="sizes"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>{t('availableSizes')}</FormLabel>
+                <FormControl>
+                  <Input
+                    placeholder={t('sizesPlaceholder')}
+                    value={field.value?.join(', ') || ''}
+                    onChange={(e) => {
+                      const sizes = e.target.value.split(',').map((s: string) => s.trim()).filter(Boolean)
+                      field.onChange(sizes)
+                      logOperation('Sizes changed', { sizes })
+                    }}
+                  />
+                </FormControl>
+                <FormDescription>{t('sizesDescription')}</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
+// Status Component
+const Status = () => {
+  const { control } = useFormContext()
+  const t = useTranslations('Admin.ProductForm')
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('status')}</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <FormField
+          control={control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>{t('status')}</FormLabel>
+              <Select
+                value={field.value}
+                onValueChange={(value) => {
+                  field.onChange(value)
+                  logOperation('Status changed', { value })
+                }}
+              >
+                <FormControl>
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('selectStatus')} />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="draft">{t('draft')}</SelectItem>
+                  <SelectItem value="pending">{t('pending')}</SelectItem>
+                  <SelectItem value="published">{t('published')}</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormDescription>{t('statusDescription')}</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={control}
+          name="isPublished"
+          render={({ field }) => (
+            <FormItem className="flex items-center space-x-2">
+              <FormControl>
+                <Checkbox
+                  checked={field.value}
+                  onCheckedChange={(checked: boolean) => {
+                    field.onChange(checked)
+                    logOperation('Publish status changed', { checked })
+                  }}
+                />
+              </FormControl>
+              <FormLabel>{t('publish')}</FormLabel>
+              <FormDescription>{t('publishDescription')}</FormDescription>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+      </CardContent>
+    </Card>
+  )
+}
+
 // Product Preview Component
 const ProductPreview = ({ formValues }: { formValues: any }) => {
   const t = useTranslations('Admin.ProductForm')
@@ -541,7 +1157,7 @@ const ProductPreview = ({ formValues }: { formValues: any }) => {
           height={150}
           className="object-cover rounded-lg"
         />
-        <p>{t('price')}: ${formValues.pricing?.finalPrice || 0}</p>
+        <p>{t('price')}: ${formValues.pricing?.finalPrice || ''}</p>
         <p>{t('stock')}: {formValues.countInStock || 0}</p>
         <p>{t('status')}: {formValues.status || 'draft'}</p>
       </CardContent>
@@ -570,59 +1186,54 @@ export default function ProductForm({ type, product, productId }: ProductFormPro
 
   const form = useForm<z.infer<typeof ProductInputSchema>>({
     resolver: zodResolver(type === 'Update' ? ProductUpdateSchema : ProductInputSchema),
-    defaultValues: product && type === 'Update'
-      ? product
-      : {
-          name: '',
-          slug: '',
-          category: '',
-          images: [],
-          brand: '',
-          description: '',
-          price: 0,
-          listPrice: 0,
-          countInStock: 0,
-          isPublished: false,
-          tags: ['new-arrival'],
-          sizes: [],
+    defaultValues: product || {
+      name: '',
+      slug: '',
+      category: '',
+      images: [],
+      brand: '',
+      description: '',
+      price: 0,
+      listPrice: 0,
+      countInStock: 0,
+      isPublished: false,
+      tags: ['new-arrival'],
+      sizes: [],
+      colors: [],
+      warehouseData: [
+        {
+          warehouseId: '',
+          provider: 'ShipBob' as 'ShipBob' | '4PX' | 'ShipHero',
+          sku: `SKU-${Date.now()}`,
+          quantity: 0,
+          location: '',
+          minimumStock: 5,
+          reorderPoint: 10,
           colors: [],
-          warehouseData: Array.from({ length: warehouseCount }, (_, i) => ({
-            warehouseId: '',
-            provider: 'ShipBob' as 'ShipBob',
-            sku: `SKU-${Date.now() + i}`,
-            quantity: 0,
-            location: '',
-            minimumStock: 5,
-            reorderPoint: 10,
-            colors: [],
-          })),
-          warehouse: {
-            provider: 'ShipBob',
-            sku: `SKU-${Date.now()}`,
-            quantity: 0,
-            location: '',
-            minimumStock: 0,
-            reorderPoint: 0,
-          },
-          pricing: {
-            basePrice: 0,
-            markup: 30,
-            profit: 0,
-            commission: 0,
-            finalPrice: 0,
-            discount: { type: 'none', value: 0 },
-          },
-          status: 'draft',
-          createdBy: session?.user?.id,
-          updatedBy: session?.user?.id,
         },
+      ],
+      pricing: {
+        basePrice: 0,
+        markup: 30,
+        profit: 0,
+        commission: 0,
+        finalPrice: 0,
+        discount: { type: 'none', value: 0 },
+      },
+      status: 'draft',
+      createdBy: session?.user?.id || '',
+      updatedBy: session?.user?.id || '',
+    },
   })
 
   const formValues = form.watch()
   const basePrice = Number(formValues.price) || 0
   const listPrice = Number(formValues.listPrice) || 0
   const markup = Number(formValues.pricing?.markup) || 30
-  const discount = formValues.pricing?.discount
+  const discount = {
+    type: formValues.pricing?.discount?.type || 'none',
+    value: Number(formValues.pricing?.discount?.value) || 0,
+  }
 
   const pricing = useMemo(() => {
     return calculatePricing(basePrice, listPrice, markup, discount)
@@ -630,150 +1241,91 @@ export default function ProductForm({ type, product, productId }: ProductFormPro
 
   const addWarehouse = useCallback(() => {
     const currentWarehouses = form.getValues('warehouseData') || []
-    form.setValue('warehouseData', [
-      ...currentWarehouses,
-      {
-        warehouseId: '',
-        provider: 'ShipBob' as 'ShipBob',
-        sku: `SKU-${Date.now() + currentWarehouses.length}`,
-        quantity: 0,
-        location: '',
-        minimumStock: 5,
-        reorderPoint: 10,
-        colors: [],
-      },
-    ])
+    const newWarehouse = {
+      warehouseId: '',
+      provider: 'ShipBob' as 'ShipBob' | '4PX' | 'ShipHero',
+      sku: `SKU-${Date.now()}`,
+      quantity: 0,
+      location: '',
+      minimumStock: 5,
+      reorderPoint: 10,
+      colors: [],
+      lastUpdated: new Date(),
+      updatedBy: session?.user?.id || '',
+    }
+    form.setValue('warehouseData', [...currentWarehouses, newWarehouse])
     setWarehouseCount((prev) => prev + 1)
-    logOperation('Warehouse added', { count: warehouseCount + 1 })
-  }, [form, warehouseCount])
+    logOperation('Warehouse added', { index: currentWarehouses.length })
+  }, [form, session?.user?.id])
 
   const removeWarehouse = useCallback(
     (index: number) => {
+      if (warehouseCount <= 1) {
+        toast({
+          variant: 'destructive',
+          title: t('cannotRemoveWarehouse'),
+          description: t('atLeastOneWarehouse'),
+        })
+        return
+      }
       const currentWarehouses = form.getValues('warehouseData') || []
-      const newWarehouses = currentWarehouses.filter((_, i: number) => i !== index)
+      const newWarehouses = currentWarehouses.filter((_, i) => i !== index)
       form.setValue('warehouseData', newWarehouses)
       setWarehouseCount((prev) => prev - 1)
       logOperation('Warehouse removed', { index })
     },
-    [form]
+    [form, warehouseCount, toast, t]
   )
 
-  async function onSubmit(values: z.infer<typeof ProductInputSchema>) {
+  const onSubmit = async (values: z.infer<typeof ProductInputSchema>) => {
     setIsSubmitting(true)
-    const currentUser = session?.user?.id || 'unknown'
-
-    logOperation('Form submission started', {
-      user: currentUser,
-      type,
-      productId,
-    })
-
     try {
-      if (!values.images?.length) {
-        toast({
-          variant: 'destructive',
-          title: t('submissionError'),
-          description: t('addAtLeastOneImage'),
-        })
-        return
-      }
-
-      if (!values.warehouseData?.length) {
-        toast({
-          variant: 'destructive',
-          title: t('submissionError'),
-          description: t('addAtLeastOneWarehouse'),
-        })
-        return
-      }
-
-      const submissionData = {
+      const updatedValues = {
         ...values,
-        name: values.name.trim(),
-        slug: values.slug.trim(),
-        category: values.category.trim(),
-        brand: values.brand.trim(),
-        description: values.description.trim(),
-        price: Number(values.price),
-        listPrice: Number(values.listPrice) || Number(values.price),
-        countInStock: Number(values.countInStock),
-        isPublished: values.isPublished || false,
-        tags: values.tags || [],
-        sizes: values.sizes || [],
-        colors: values.colors || [],
-        warehouseData: values.warehouseData.map((wh) => ({
-          ...wh,
-          lastUpdated: new Date(),
-          updatedBy: currentUser,
-        })),
-        warehouse: {
-          provider: values.warehouseData[0].provider,
-          sku: values.warehouseData[0].sku,
-          quantity: values.warehouseData[0].quantity,
-          location: values.warehouseData[0].location,
-          minimumStock: values.warehouseData[0].minimumStock || 5,
-          reorderPoint: values.warehouseData[0].reorderPoint || 10,
-        },
         pricing: {
-          basePrice: Number(values.price),
-          markup: Number(pricing.suggestedMarkup || values.pricing?.markup || 30),
+          ...values.pricing,
+          basePrice: values.price,
           finalPrice: pricing.finalPrice,
           profit: pricing.profit,
           commission: pricing.commission,
-          discount: {
-            type: values.pricing?.discount?.type || 'none',
-            value: Number(values.pricing?.discount?.value || 0),
-            startDate: values.pricing?.discount?.startDate,
-            endDate: values.pricing?.discount?.endDate,
-          },
         },
-        status: values.status || 'draft',
-        createdBy: currentUser,
-        updatedBy: currentUser,
-        createdAt: new Date(),
+        updatedBy: session?.user?.id || '',
         updatedAt: new Date(),
+        warehouseData: values.warehouseData.map((wh) => ({
+          ...wh,
+          lastUpdated: new Date(),
+          updatedBy: session?.user?.id || '',
+        })),
       }
 
-      let res
+      let result
       if (type === 'Create') {
-        res = await createProduct(submissionData)
+        result = await createProduct(updatedValues)
+        logOperation('Product created', { productId: result?.product?._id })
       } else {
-        res = await updateProduct(productId!, submissionData)
+        result = await updateProduct(productId!, updatedValues)
+        logOperation('Product updated', { productId })
       }
 
-      if (!res.success) {
+      if (result.success && result.product?._id) {
+        // Sync inventory with warehouse providers
+        await syncProductInventory(result.product._id, updatedValues.warehouseData)
+        logOperation('Inventory synced', { productId: result.product._id })
+
         toast({
-          variant: 'destructive',
-          title: t('creationFailed'),
-          description: res.message || t('unexpectedError'),
+          title: t('success'),
+          description: t(type === 'Create' ? 'productCreated' : 'productUpdated'),
         })
-        return
+        router.push('/admin/products')
+      } else {
+        throw new Error(result.message || t('operationFailed'))
       }
-
-      // Sync with warehouse
-      const syncResult = await syncProductInventory(res.data._id)
-      if (!syncResult.success) {
-        toast({
-          variant: 'destructive',
-          title: t('warehouseSyncFailed'),
-          description: syncResult.message || t('unexpectedError'),
-        })
-        return
-      }
-
-      toast({
-        title: t('success'),
-        description: type === 'Create' ? t('productCreated') : t('productUpdated'),
-      })
-
-      router.push('/admin/products')
-      router.refresh()
-    } catch (error) {
-      logOperation('Form submission error', { error })
+    } catch (error: any) {
+      logOperation('Form submission error', { error: error.message })
       toast({
         variant: 'destructive',
         title: t('error'),
-        description: error instanceof Error ? error.message : t('unexpectedError'),
+        description: error.message || t('operationFailed'),
       })
     } finally {
       setIsSubmitting(false)
@@ -781,585 +1333,37 @@ export default function ProductForm({ type, product, productId }: ProductFormPro
   }
 
   return (
-    <div className="grid gap-6 md:grid-cols-[2fr_1fr]">
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('basicInfo')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="name"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('productName')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t('enterProductName')}
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e.target.value)
-                            form.setValue('slug', toSlug(e.target.value))
-                            logOperation('Product name changed', { value: e.target.value })
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="slug"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('slug')}</FormLabel>
-                      <div className="flex gap-2">
-                        <FormControl>
-                          <Input
-                            placeholder={t('enterSlug')}
-                            {...field}
-                            onChange={(e) => {
-                              field.onChange(e.target.value)
-                              logOperation('Slug changed', { value: e.target.value })
-                            }}
-                          />
-                        </FormControl>
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => {
-                            const newSlug = toSlug(form.getValues('name'))
-                            form.setValue('slug', newSlug)
-                            logOperation('Slug generated', { value: newSlug })
-                          }}
-                        >
-                          {t('generate')}
-                        </Button>
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="category"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('category')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t('enterCategory')}
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e.target.value)
-                            logOperation('Category changed', { value: e.target.value })
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="brand"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('brand')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t('enterBrand')}
-                          {...field}
-                          onChange={(e) => {
-                            field.onChange(e.target.value)
-                            logOperation('Brand changed', { value: e.target.value })
-                          }}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('pricing')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-3">
-                <FormField
-                  control={form.control}
-                  name="price"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('basePrice')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          placeholder="0.00"
-                          {...field}
-                          value={field.value || 0}
-                          onChange={(e) => {
-                            const value = parseFloat(e.target.value) || 0
-                            field.onChange(value)
-                            logOperation('Base price changed', { value })
-                            const currentListPrice = form.getValues('listPrice')
-                            if (!currentListPrice || currentListPrice < value) {
-                              form.setValue('listPrice', value)
-                              logOperation('List price auto-updated', { value })
-                            }
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        {t('yourCost')}: ${Number(field.value || 0).toFixed(2)}
-                        <br />
-                        <small className="text-muted-foreground">
-                          {t('commission')}: ${pricing.commission}
-                        </small>
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="listPrice"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('listPrice')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          step="0.01"
-                          min="0"
-                          placeholder="0.00"
-                          {...field}
-                          value={field.value || 0}
-                          onChange={(e) => {
-                            const value = parseFloat(e.target.value) || 0
-                            field.onChange(value)
-                            logOperation('List price changed', { value })
-                            const basePrice = form.getValues('price')
-                            if (basePrice && value > basePrice) {
-                              const suggestedMarkup = ((value - basePrice) / basePrice) * 100
-                              form.setValue('pricing.markup', suggestedMarkup)
-                              logOperation('Markup auto-updated', { suggestedMarkup })
-                            }
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        {t('msrp')}: ${Number(field.value || 0).toFixed(2)}
-                        <br />
-                        <small className="text-muted-foreground">
-                          {t('suggestedMarkup')}: {pricing.suggestedMarkup}%
-                        </small>
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="pricing.markup"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('markup')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          type="number"
-                          step="0.1"
-                          min="0"
-                          max="100"
-                          placeholder="30"
-                          {...field}
-                          value={Number(field.value || pricing.suggestedMarkup).toFixed(1)}
-                          onChange={(e) => {
-                            const value = parseFloat(e.target.value) || 30
-                            field.onChange(value)
-                            logOperation('Markup changed', { value })
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription>
-                        {t('finalPrice')}: ${pricing.finalPrice}
-                        <br />
-                        <small className="text-muted-foreground">
-                          {t('estimatedProfit')}: ${pricing.profit}
-                        </small>
-                      </FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-              <FormField
-                control={form.control}
-                name="pricing.discount.type"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('discountType')}</FormLabel>
-                    <Select
-                      value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value)
-                        logOperation('Discount type changed', { value })
-                      }}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t('selectDiscountType')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        {['none', 'percentage', 'fixed'].map((type) => (
-                          <SelectItem key={type} value={type}>
-                            {t(`discount_${type}`)}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FormMessage />
-                  </FormItem>
-                )}
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <div className="grid gap-8 md:grid-cols-3">
+          <div className="space-y-8 md:col-span-2">
+            <BasicInfo />
+            <Pricing />
+            <Description />
+            <Images />
+            <TagsAndSizes />
+            {Array.from({ length: warehouseCount }).map((_, index) => (
+              <WarehouseForm
+                key={index}
+                index={index}
+                onRemove={() => removeWarehouse(index)}
               />
-              {form.watch('pricing.discount.type') !== 'none' && (
-                <div className="space-y-4">
-                  <FormField
-                    control={form.control}
-                    name="pricing.discount.value"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>{t('discountValue')}</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            min="0"
-                            step={form.watch('pricing.discount.type') === 'percentage' ? '1' : '0.01'}
-                            max={form.watch('pricing.discount.type') === 'percentage' ? '100' : undefined}
-                            {...field}
-                            value={field.value || 0}
-                            onChange={(e) => {
-                              const value = parseFloat(e.target.value) || 0
-                              field.onChange(value)
-                              logOperation('Discount value changed', { value })
-                            }}
-                          />
-                        </FormControl>
-                        <FormDescription>
-                          {form.watch('pricing.discount.type') === 'percentage'
-                            ? t('enterPercentage')
-                            : t('enterFixedAmount')}
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <div className="grid gap-4 md:grid-cols-2">
-                    <FormField
-                      control={form.control}
-                      name="pricing.discount.startDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('startDate')}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="datetime-local"
-                              {...field}
-                              value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ''}
-                              onChange={(e) => {
-                                field.onChange(e.target.value ? new Date(e.target.value) : undefined)
-                                logOperation('Discount start date changed', { value: e.target.value })
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="pricing.discount.endDate"
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('endDate')}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="datetime-local"
-                              {...field}
-                              value={field.value ? new Date(field.value).toISOString().slice(0, 16) : ''}
-                              onChange={(e) => {
-                                field.onChange(e.target.value ? new Date(e.target.value) : undefined)
-                                logOperation('Discount end date changed', { value: e.target.value })
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('description')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <FormField
-                control={form.control}
-                name="description"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('description')}</FormLabel>
-                    <FormControl>
-                      <Textarea
-                        placeholder={t('enterDescription')}
-                        className="min-h-[100px]"
-                        {...field}
-                        value={field.value || ''}
-                        onChange={(e) => {
-                          field.onChange(e.target.value)
-                          logOperation('Description changed', { length: e.target.value.length })
-                        }}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('productImages')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-wrap gap-4">
-                {formValues.images?.map((image: string, index: number) => (
-                  <Card key={index} className="relative w-[150px] h-[150px]">
-                    <CardContent className="p-0">
-                      <Image
-                        src={image}
-                        alt={`${t('productImage')} ${index + 1}`}
-                        width={150}
-                        height={150}
-                        className="object-cover rounded-lg"
-                      />
-                      <Button
-                        variant="destructive"
-                        size="icon"
-                        className="absolute top-2 right-2"
-                        onClick={() => {
-                          if (confirm(t('confirmDeleteImage'))) {
-                            const newImages = formValues.images.filter((_: string, i: number) => i !== index)
-                            form.setValue('images', newImages)
-                            logOperation('Image deleted', { index, image })
-                          }
-                        }}
-                      >
-                        ×
-                      </Button>
-                    </CardContent>
-                  </Card>
-                ))}
-                {formValues.images?.length < MAX_IMAGES && (
-                  <Card className="w-[150px] h-[150px] flex items-center justify-center">
-                    <CardContent className="p-0">
-                      <UploadButton
-                        endpoint="imageUploader"
-                        onClientUploadComplete={(res) => {
-                          if (res && res.length) {
-                            const newImages = res.map((file) => file.url || '')
-                            const currentImages = form.getValues('images') || []
-                            if (currentImages.length + newImages.length > MAX_IMAGES) {
-                              toast({
-                                variant: 'destructive',
-                                title: t('tooManyImages'),
-                                description: t('maxImages', { maxImages: MAX_IMAGES }),
-                              })
-                              return
-                            }
-                            form.setValue('images', [...currentImages, ...newImages])
-                            logOperation('Images uploaded', { urls: newImages })
-                            toast({
-                              title: t('success'),
-                              description: t('imagesUploaded', { count: newImages.length }),
-                            })
-                          }
-                        }}
-                        onUploadError={(error: Error) => {
-                          logOperation('Image upload error', { error: error.message })
-                          toast({
-                            variant: 'destructive',
-                            title: t('uploadFailed'),
-                            description: error.message,
-                          })
-                        }}
-                      />
-                    </CardContent>
-                  </Card>
-                )}
-              </div>
-              <FormDescription>{t('imageRequirements', { maxImages: MAX_IMAGES })}</FormDescription>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('warehouses')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <Button type="button" variant="outline" onClick={addWarehouse}>
-                {t('addWarehouse')}
+            ))}
+            <Button type="button" variant="outline" onClick={addWarehouse}>
+              {t('addWarehouse')}
+            </Button>
+            <Status />
+          </div>
+          <div className="md:col-span-1">
+            <div className="sticky top-4 space-y-8">
+              <ProductPreview formValues={formValues} />
+              <Button type="submit" disabled={isSubmitting} className="w-full">
+                {isSubmitting ? t('submitting') : t(type === 'Create' ? 'createProduct' : 'updateProduct')}
               </Button>
-              {formValues.warehouseData?.map((_: any, index: number) => (
-                <WarehouseForm key={index} index={index} onRemove={() => removeWarehouse(index)} />
-              ))}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('tagsAndSizes')}</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2">
-                <FormField
-                  control={form.control}
-                  name="tags"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('tags')}</FormLabel>
-                      <div className="grid grid-cols-2 gap-2">
-                        {(productOptions?.tags || []).map((tag: { value: string; label: string }) => (
-                          <div key={tag.value} className="flex items-center space-x-2">
-                            <Checkbox
-                              checked={field.value?.includes(tag.value)}
-                              onCheckedChange={(checked: boolean) => {
-                                const newTags = checked
-                                  ? [...(field.value || []), tag.value]
-                                  : field.value?.filter((t: string) => t !== tag.value)
-                                field.onChange(newTags)
-                                logOperation('Tags changed', { newTags })
-                              }}
-                            />
-                            <label>{tag.label}</label>
-                          </div>
-                        ))}
-                      </div>
-                      <FormDescription>{t('tagsDescription')}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-                <FormField
-                  control={form.control}
-                  name="sizes"
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{t('availableSizes')}</FormLabel>
-                      <FormControl>
-                        <Input
-                          placeholder={t('sizesPlaceholder')}
-                          {...field}
-                          value={field.value?.join(', ') || ''}
-                          onChange={(e) => {
-                            const sizes = e.target.value.split(',').map((s: string) => s.trim()).filter(Boolean)
-                            field.onChange(sizes)
-                            logOperation('Sizes changed', { sizes })
-                          }}
-                        />
-                      </FormControl>
-                      <FormDescription>{t('sizesDescription')}</FormDescription>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              </div>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('status')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <FormField
-                control={form.control}
-                name="status"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>{t('status')}</FormLabel>
-                    <Select
-                      value={field.value}
-                      onValueChange={(value) => {
-                        field.onChange(value)
-                        logOperation('Status changed', { value })
-                      }}
-                    >
-                      <FormControl>
-                        <SelectTrigger>
-                          <SelectValue placeholder={t('selectStatus')} />
-                        </SelectTrigger>
-                      </FormControl>
-                      <SelectContent>
-                        <SelectItem value="draft">{t('draft')}</SelectItem>
-                        <SelectItem value="pending">{t('pending')}</SelectItem>
-                        <SelectItem value="published">{t('published')}</SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FormDescription>{t('statusDescription')}</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={form.control}
-                name="isPublished"
-                render={({ field }) => (
-                  <FormItem className="flex items-center space-x-2">
-                    <FormControl>
-                      <Checkbox
-                        checked={field.value}
-                        onCheckedChange={(checked: boolean) => {
-                          field.onChange(checked)
-                          logOperation('Publish status changed', { checked })
-                        }}
-                      />
-                    </FormControl>
-                    <FormLabel>{t('publish')}</FormLabel>
-                    <FormDescription>{t('publishDescription')}</FormDescription>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </CardContent>
-          </Card>
-          <Button
-            type="submit"
-            disabled={isSubmitting}
-            className="w-full"
-          >
-            {isSubmitting
-              ? t('processing')
-              : type === 'Create'
-                ? t('createProduct')
-                : t('updateProduct')}
-          </Button>
-        </form>
-      </Form>
-      <ProductPreview formValues={formValues} />
-    </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </Form>
   )
 }

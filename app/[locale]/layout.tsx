@@ -36,8 +36,9 @@ function validateLocale(locale: string): string {
 export async function generateMetadata({
   params,
 }: {
-  params: Promise<Locale>
+  params: Locale
 }): Promise<Metadata> {
+
   try {
     const { locale } = await params
     const validLocale = validateLocale(locale)
@@ -285,8 +286,9 @@ export default async function AppLayout({
   params,
 }: {
   children: React.ReactNode
-  params: Promise<Locale>
+  params: Locale
 }) {
+
   try {
     const { locale } = await params
     const validLocale = validateLocale(locale)

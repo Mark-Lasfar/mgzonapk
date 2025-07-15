@@ -63,28 +63,11 @@ export async function POST(req: Request) {
       userId: user._id,
     });
 
-    // Send professional email with HTML template
-    await emailService.send({
+    // Send professional email with the recovery code
+    await emailService.sendVerificationCode({
       to: identifier,
-      subject: 'MGZon - Reset Your Password',
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
-          <h2>Password Reset Request</h2>
-          <p>Dear ${user.name || 'User'},</p>
-          <p>We received a request to reset your password for your MGZon account. Use the following code to reset your password:</p>
-          <p style="font-size: 24px; font-weight: bold; color: #2563eb; text-align: center; margin: 20px 0;">
-            ${recoveryCode}
-          </p>
-          <p>This code will expire in 15 minutes. If you did not request a password reset, please ignore this email or contact our support team.</p>
-          <p>
-            <a href="${process.env.NEXT_PUBLIC_APP_URL}/help" style="color: #2563eb; text-decoration: none;">
-              Contact Support
-            </a>
-          </p>
-          <p>Best regards,<br />The MGZon Team</p>
-        </div>
-      `,
-      text: `Your MGZon password reset code is: ${recoveryCode}. This code will expire in 15 minutes. If you did not request this, please ignore or contact support at ${process.env.NEXT_PUBLIC_APP_URL}/help.`,
+      code: recoveryCode,
+      name: user.name || 'User',
     });
 
     return NextResponse.json({

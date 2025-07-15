@@ -4,11 +4,11 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import { useForm } from 'react-hook-form'
 import { Button } from '@/components/ui/button'
 import { Form } from '@/components/ui/form'
-import { useToast } from '@/hooks/use-toast'
+// import { useToast } from '@/hooks/use-toast'
 import { SettingInputSchema } from '@/lib/validator'
 import { ClientSetting, ISettingInput } from '@/types'
 import { updateSetting } from '@/lib/actions/setting.actions'
-import useSetting from '@/hooks/use-setting-store'
+// import useSetting from '@/hooks/use-setting-store'
 import LanguageForm from './language-form'
 import CurrencyForm from './currency-form'
 import PaymentMethodForm from './payment-method-form'
@@ -16,7 +16,11 @@ import DeliveryDateForm from './delivery-date-form'
 import SiteInfoForm from './site-info-form'
 import CommonForm from './common-form'
 import CarouselForm from './carousel-form'
+// import PointsForm from './points-form'
+import useSetting from '../../../../hooks/use-setting'
+import { useToast } from '../../../../hooks/use-toast'
 import PointsForm from './points-form'
+// import { useToast } from '@/components/ui/toast'
 
 const SettingForm = ({ setting }: { setting: ISettingInput }) => {
   const { setSetting } = useSetting()
@@ -66,7 +70,9 @@ const SettingForm = ({ setting }: { setting: ISettingInput }) => {
         <DeliveryDateForm id="setting-delivery-dates" form={form} />
 
         {/* التأكد من أن setting.points موجود قبل تمريرها */}
-        <PointsForm id="setting-points" form={form} setting={setting?.points || {}} />
+        <PointsForm id="setting-points" form={form} points={setting?.points || {}} />
+
+        {/* <PointsForm id="setting-points" form={form} setting={setting?.points || {}} /> */}
 
         <div>
           <Button

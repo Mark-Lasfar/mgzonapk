@@ -30,15 +30,15 @@ export async function processQueue() {
       try {
         // Simulate task processing based on taskType
         switch (task.taskType) {
-          case 'order_processing':
+          case 'order processing':
             // Logic for processing orders
             await processOrderTask(task.payload);
             break;
-          case 'inventory_update':
+          case 'inventory update':
             // Logic for updating inventory
             await processInventoryTask(task.payload);
             break;
-          case 'recommendation_training':
+          case 'recommendation training':
             // Logic for training recommendation model
             await processRecommendationTask(task.payload);
             break;

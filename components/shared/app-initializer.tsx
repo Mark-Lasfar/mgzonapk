@@ -1,7 +1,8 @@
 'use client'
 import React, { useEffect, useRef } from 'react'
-import useSettingStore from '@/hooks/use-setting-store'
+// import useSettingStore from '@/hooks/use-setting-store'
 import { ClientSetting } from '@/types'
+import useSettingStore from '../../hooks/use-setting-store'
 
 export default function AppInitializer({
   setting,

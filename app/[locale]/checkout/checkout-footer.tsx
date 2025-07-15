@@ -1,6 +1,7 @@
-import useSettingStore from '@/hooks/use-setting-store'
+// import useSettingStore from '@/hooks/use-setting-store'
 import Link from 'next/link'
 import React from 'react'
+import useSettingStore from '../../../hooks/use-setting-store'
 
 export default function CheckoutFooter() {
   const {
@@ -9,7 +10,7 @@ export default function CheckoutFooter() {
   return (
     <div className="border-t-2 space-y-2 my-4 py-4">
       <p>
-        Need help? Check our <Link href="/page/help">Help Center</Link> or{' '}
+        Need help? Check our <Link href="/docs/support">Help Center</Link> or{' '}
         <Link href="/page/contact-us">Contact Us</Link>{' '}
       </p>
       <p>

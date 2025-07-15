@@ -7,16 +7,19 @@ interface VerificationResult {
   error?: string;
 }
 
-interface DocumentFields {
+interface DocumentField {
+  pattern: RegExp;
+  required: boolean;
+  validator?: (value: string) => boolean;
+}
+
+interface DocumentPatterns {
   [key: string]: {
-    pattern: RegExp;
-    required: boolean;
-    validator?: (value: string) => boolean;
+    [fieldName: string]: DocumentField;
   };
 }
 
-// Define document field patterns for different document types.
-const DOCUMENT_PATTERNS = {
+const DOCUMENT_PATTERNS: DocumentPatterns = {
   businessLicense: {
     businessName: {
       pattern: /(?:business|company|enterprise)\s*(?:name)?[:]\s*([A-Za-z0-9\s.,&-]+)/i,
@@ -29,18 +32,12 @@ const DOCUMENT_PATTERNS = {
     issueDate: {
       pattern: /(?:issue|issued)\s*(?:date|on)[:]\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})/i,
       required: true,
-      validator: (date: string) => {
-        const parsed = new Date(date);
-        return !isNaN(parsed.getTime());
-      },
+      validator: (date: string) => validateDate(date),
     },
     expiryDate: {
       pattern: /(?:expiry|expiration|valid until)[:]\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})/i,
       required: true,
-      validator: (date: string) => {
-        const parsed = new Date(date);
-        return !isNaN(parsed.getTime());
-      },
+      validator: (date: string) => validateDate(date),
     },
   },
   taxDocument: {
@@ -69,10 +66,7 @@ const DOCUMENT_PATTERNS = {
     dateOfBirth: {
       pattern: /(?:date\s*of\s*birth|dob|born)[:]\s*(\d{1,2}[-/]\d{1,2}[-/]\d{2,4})/i,
       required: true,
-      validator: (date: string) => {
-        const parsed = new Date(date);
-        return !isNaN(parsed.getTime());
-      },
+      validator: (date: string) => validateDate(date),
     },
     documentNumber: {
       pattern: /(?:document|id|passport)\s*(?:number|#|no)[:.\s]*([A-Z0-9-]+)/i,
@@ -83,22 +77,17 @@ const DOCUMENT_PATTERNS = {
       required: false,
     },
   },
-} as const;
+};
 
-// Main function to download a document from a URL, perform OCR, and verify its text.
 export async function verifyDocument(
   documentUrl: string,
-  type: 'businessLicense' | 'taxDocument' | 'identityProof'
+  type: keyof typeof DOCUMENT_PATTERNS
 ): Promise<VerificationResult> {
   try {
-    // Download document from the provided URL.
     const response = await fetch(documentUrl);
+    if (!response.ok) throw new Error('Failed to fetch document');
     const buffer = await response.arrayBuffer();
-
-    // Perform OCR on the downloaded document.
     const extractedText = await performOCR(buffer);
-
-    // Verify the extracted text against the field patterns.
     return await verifyDocumentText(extractedText, type);
   } catch (error) {
     console.error('Document verification error:', error);
@@ -111,24 +100,18 @@ export async function verifyDocument(
   }
 }
 
-// Helper to perform OCR using Tesseract.js.
 async function performOCR(buffer: ArrayBuffer): Promise<string> {
-  const worker = await createWorker();
-
+  const worker = await createWorker('eng');
   try {
-    await worker.reinitialize('eng');
     const {
       data: { text },
     } = await worker.recognize(Buffer.from(buffer));
-    await worker.terminate();
     return text;
-  } catch (error) {
+  } finally {
     await worker.terminate();
-    throw new Error('OCR failed');
   }
 }
 
-// Matches and validates document fields in extracted text.
 async function verifyDocumentText(
   text: string,
   type: keyof typeof DOCUMENT_PATTERNS
@@ -138,27 +121,21 @@ async function verifyDocumentText(
   let matchedFields = 0;
   let requiredFields = 0;
 
-  // Process each field defined in the pattern.
   for (const [fieldName, field] of Object.entries(fields)) {
     if (field.required) requiredFields++;
-
     const match = text.match(field.pattern);
     if (match && match[1]) {
       const value = match[1].trim();
-
-      // If a validator is provided, use it.
-      if (field.validator && !field.validator(value)) {
+      if (typeof field.validator === 'function' && !field.validator(value)) {
         continue;
       }
-
       extractedData[fieldName] = value;
       if (field.required) matchedFields++;
     }
   }
 
-  // Calculate a confidence score based on required fields.
   const confidence = requiredFields > 0 ? matchedFields / requiredFields : 0;
-  const verified = confidence >= 0.7; // 70% threshold for verification.
+  const verified = confidence >= 0.7;
 
   return {
     verified,
@@ -173,7 +150,6 @@ async function verifyDocumentText(
   };
 }
 
-// Additional helper validators.
 export function validateDate(dateStr: string): boolean {
   const date = new Date(dateStr);
   return !isNaN(date.getTime());
@@ -187,7 +163,7 @@ export function validateName(name: string): boolean {
   return /^[A-Za-z\s.-]{2,}$/i.test(name);
 }
 
-export function generateRecoveryCode() {
+export function generateRecoveryCode(): string {
   return Math.random().toString(36).substring(2, 8).toUpperCase();
 }
 
@@ -195,7 +171,6 @@ export function validateTaxId(taxId: string): boolean {
   return /^[A-Z0-9-]{9,}$/i.test(taxId);
 }
 
-// New function to generate a verification code
 export function generateVerificationCode(length: number = 8): string {
   const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
   let code = '';

@@ -38,4 +38,18 @@ export class FourPXService extends BaseIntegrationService {
       data: { ...product, platformId: 'MGZON_001' },
     });
   }
+
+  async receiveGoodsFromFactory(data: { supplierId: string; items: { sku: string; quantity: number }[] }): Promise<any> {
+    return this.request('/goods/receive', {
+      method: 'POST',
+      data: { ...data, platformId: 'MGZON_001' },
+    });
+  }
+
+  async shipToGlobalWarehouse(data: { warehouseId: string; items: { sku: string; quantity: number }[] }): Promise<any> {
+    return this.request('/shipments/create', {
+      method: 'POST',
+      data: { ...data, platformId: 'MGZON_001' },
+    });
+  }
 }

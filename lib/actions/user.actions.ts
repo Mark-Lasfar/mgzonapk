@@ -2,59 +2,94 @@
 
 import bcrypt from 'bcryptjs';
 import { auth, signIn, signOut } from '@/auth';
-import { IUserName, IUserSignIn, IUserSignUp } from '@/types';
+import { IUserSignIn, IUserSignUp } from '@/types';
 import { UserSignUpSchema, UserUpdateSchema } from '../validator';
-import { connectToDatabase } from '../db';
 import User, { IUser } from '../db/models/user.model';
-import { formatError, generateVerificationCode } from '../utils';
-import { redirect } from 'next/navigation';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import { getSetting } from './setting.actions';
 import VerificationCode from '../db/models/verification-code.model';
 import { emailService } from '../services/email/mailer';
+import { connectToDatabase } from '../db';
+// import { formatError, generateVerificationCode } from '../utils';
+import { getTranslations } from 'next-intl/server';
+import { getSetting } from './setting.actions';
+import { generateVerificationCode } from '../utils/verification';
+import { formatError } from '../utils';
+import Seller from '../db/models/seller.model';
+
+interface ActionResponse {
+  success: boolean;
+  message?: string;
+  error?: string;
+  redirect?: string;
+  requiresVerification?: boolean;
+  data?: any;
+}
+
+// دالة مساعدة للتحقق من المستخدم وإرسال رمز التحقق
+async function checkUserAndSendVerification(email: string, name: string): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
+  await connectToDatabase();
+  const user = await User.findOne({ email });
+
+  if (user && (!user.emailVerified || !user.isActive)) {
+    const code = generateVerificationCode();
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
+
+    await VerificationCode.findOneAndUpdate(
+      { email, type: 'EMAIL_VERIFICATION' },
+      { code, expiresAt, verified: false },
+      { upsert: true }
+    );
+
+    await emailService.sendVerificationCode({ to: email, code, name });
+
+    return {
+      success: true,
+      message: t('checkEmailForCode'),
+      requiresVerification: true,
+      redirect: `/verify-code?email=${encodeURIComponent(email)}`,
+    };
+  }
+  return { success: false, error: t('userNotFound') };
+}
 
 // CREATE
-export async function registerUser(userSignUp: IUserSignUp) {
+export async function registerUser(userSignUp: IUserSignUp): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     const user = await UserSignUpSchema.parseAsync({
       name: userSignUp.name,
       email: userSignUp.email,
       password: userSignUp.password,
+      phone: userSignUp.phone, // تصحيح من Phone إلى phone
       confirmPassword: userSignUp.confirmPassword,
     });
 
     await connectToDatabase();
 
-    // Check if user already exists
     const existingUser = await User.findOne({ email: user.email });
     if (existingUser) {
       if (!existingUser.emailVerified) {
-        await sendVerificationEmail(user.email, user.name);
-        return {
-          success: true,
-          message: 'Please check your email for new verification code',
-          requiresVerification: true,
-        };
+        return await checkUserAndSendVerification(user.email, user.name);
       }
-      throw new Error('User already exists');
+      throw new Error(t('userAlreadyExists'));
     }
 
-    // Generate verification code and create user
     const code = generateVerificationCode();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Create unverified user
     const newUser = await User.create({
-      ...user,
+      name: user.name,
+      email: user.email,
+      phone: user.phone,
       password: await bcrypt.hash(user.password, 10),
       role: 'user',
       emailVerified: false,
       isActive: false,
-      points: 50, // Assign 50 welcome points
+      points: 50,
     });
 
-    // Create verification code
     await VerificationCode.create({
       email: user.email,
       code,
@@ -63,7 +98,6 @@ export async function registerUser(userSignUp: IUserSignUp) {
       userId: newUser._id,
     });
 
-    // Send verification email
     await emailService.sendVerificationCode({
       to: user.email,
       code,
@@ -72,19 +106,21 @@ export async function registerUser(userSignUp: IUserSignUp) {
 
     return {
       success: true,
-      message: 'Please check your email for verification code',
+      message: t('checkEmailForCode'),
       requiresVerification: true,
+      redirect: `/verify-code?email=${encodeURIComponent(user.email)}`,
     };
   } catch (error) {
     return { success: false, error: formatError(error) };
   }
 }
 
-export async function verifyEmail(email: string, code: string) {
+// VERIFY EMAIL
+export async function verifyEmail(email: string, code: string): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
 
-    // Find verification code
     const verification = await VerificationCode.findOne({
       email,
       code,
@@ -96,25 +132,22 @@ export async function verifyEmail(email: string, code: string) {
     if (!verification) {
       return {
         success: false,
-        error: 'Invalid or expired verification code',
+        error: t('invalidOrExpiredCode'),
       };
     }
 
-    // Update both verification and user status
     await Promise.all([
       VerificationCode.findByIdAndUpdate(verification._id, { verified: true }),
       User.findOneAndUpdate(
         { email },
-        {
-          emailVerified: true,
-          isActive: true,
-        }
+        { emailVerified: true, isActive: true }
       ),
     ]);
 
     return {
       success: true,
-      message: 'Email verified successfully',
+      message: t('emailVerified'),
+      redirect: '/sign-in', // التوجيه إلى تسجيل الدخول بعد التحقق
     };
   } catch (error) {
     return {
@@ -124,33 +157,28 @@ export async function verifyEmail(email: string, code: string) {
   }
 }
 
-export async function sendVerificationEmail(email: string, name: string) {
+// SEND VERIFICATION EMAIL
+export async function sendVerificationEmail(email: string, name: string): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
 
-    // Generate verification code
     const code = generateVerificationCode();
-    const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+    const expiresAt = new Date(Date.now() + 10 * 60 * 1000);
 
-    // Create or update verification code
     await VerificationCode.findOneAndUpdate(
       { email, type: 'EMAIL_VERIFICATION' },
-      {
-        code,
-        expiresAt,
-        verified: false,
-      },
+      { code, expiresAt, verified: false },
       { upsert: true }
     );
 
-    // Send email
     await emailService.sendVerificationCode({
       to: email,
       code,
       name,
     });
 
-    return { success: true };
+    return { success: true, message: t('checkEmailForCode') };
   } catch (error) {
     console.error('Error sending verification email:', error);
     return {
@@ -160,23 +188,19 @@ export async function sendVerificationEmail(email: string, name: string) {
   }
 }
 
-// Authentication functions
-export async function signInWithCredentials(credentials: IUserSignIn) {
+// AUTHENTICATION
+export async function signInWithCredentials(credentials: IUserSignIn): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
     const user = await User.findOne({ email: credentials.email });
 
     if (!user) {
-      throw new Error('Invalid email or password');
+      throw new Error(t('invalidCredentials'));
     }
 
     if (!user.emailVerified || !user.isActive) {
-      await sendVerificationEmail(user.email, user.name);
-      return {
-        success: false,
-        error: 'Please verify your email before signing in',
-        requiresVerification: true,
-      };
+      return await checkUserAndSendVerification(user.email, user.name);
     }
 
     const result = await signIn('credentials', {
@@ -186,133 +210,119 @@ export async function signInWithCredentials(credentials: IUserSignIn) {
     });
 
     if (!result?.ok) {
-      throw new Error('Invalid email or password');
-
+      throw new Error(t('invalidCredentials'));
     }
 
     return { success: true, redirect: '/' };
   } catch (error) {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Authentication failed',
+      error: error instanceof Error ? error.message : t('authenticationFailed'),
+      redirect: '/sign-in',
     };
   }
 }
 
-export async function SignInWithGoogle() {
+export async function SignInWithGoogle(): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
 
-    // Perform Google sign-in
     const result = await signIn('google', {
       redirect: false,
-      callbackUrl: '/',
+      callbackUrl: '/verify-code',
     });
 
     if (!result?.ok || result?.error) {
-      throw new Error(result?.error || 'Google authentication failed');
+      throw new Error(result?.error || t('googleSignInFailed'));
     }
 
-    // Check if user exists and needs verification
     const session = await auth();
     if (!session?.user?.email) {
-      throw new Error('No user email found in session');
+      throw new Error(t('noEmailInSession'));
     }
 
     const user = await User.findOne({ email: session.user.email });
     if (!user) {
-      // Create new user if they don't exist
       const newUser = await User.create({
         email: session.user.email,
         name: session.user.name || session.user.email.split('@')[0],
         role: 'user',
         emailVerified: false,
         isActive: false,
-        points: 50,
+        pointsBalance: 50,
       });
 
-      // Generate and send verification code
-      const code = generateVerificationCode();
-      const expiresAt = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
-
-      await VerificationCode.create({
-        email: session.user.email,
-        code,
-        type: 'EMAIL_VERIFICATION',
-        expiresAt,
-        userId: newUser._id,
-      });
-
-      await emailService.sendVerificationCode({
-        to: session.user.email,
-        code,
-        name: session.user.name || session.user.email.split('@')[0],
-      });
-
-      return {
-        success: true,
-        message: 'Please check your email for verification code',
-        requiresVerification: true,
-        redirect: `/verify-code?email=${encodeURIComponent(session.user.email)}`,
-      };
+      return await checkUserAndSendVerification(session.user.email, newUser.name);
     }
 
     if (!user.emailVerified || !user.isActive) {
-      // Send verification code if email is not verified
-      await sendVerificationEmail(user.email, user.name);
-      return {
-        success: true,
-        message: 'Please check your email for verification code',
-        requiresVerification: true,
-        redirect: `/verify-code?email=${encodeURIComponent(user.email)}`,
-      };
+      return await checkUserAndSendVerification(user.email, user.name);
+    }
+
+    // إذا كان المستخدم بائعًا، تحقق من حالة البائع
+    if (user.role === 'SELLER' && user.businessProfile) {
+      const seller = await Seller.findById(user.businessProfile);
+      if (seller) {
+        return {
+          success: true,
+          redirect: seller.verification.status === 'verified' && seller.subscription.status === 'active'
+            ? '/seller/dashboard'
+            : '/seller/subscriptions',
+        };
+      }
     }
 
     return { success: true, redirect: '/' };
   } catch (error) {
-    console.error('Google sign-in error:', error);
+    console.error('خطأ في تسجيل الدخول بجوجل:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Google authentication failed',
+      error: error instanceof Error ? error.message : t('googleSignInFailed'),
+      redirect: '/sign-in',
     };
   }
 }
 
-export async function SignOut() {
+export async function SignOut(): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await signOut({ redirect: false });
-    return { success: true, redirect: '/' };
+    return { success: true, redirect: '/', message: t('signedOut') };
   } catch (error) {
     console.error('Sign out error:', error);
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Failed to sign out',
+      error: error instanceof Error ? error.message : t('signOutFailed'),
+      redirect: '/sign-in',
     };
   }
 }
 
 // DELETE
-export async function deleteUser(id: string) {
+export async function deleteUser(id: string): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
     const res = await User.findByIdAndDelete(id);
-    if (!res) throw new Error('User not found');
+    if (!res) throw new Error(t('userNotFound'));
     revalidatePath('/[locale]/admin/users');
     return {
       success: true,
-      message: 'User deleted successfully',
+      message: t('userDeleted'),
     };
   } catch (error) {
-    return { success: false, message: formatError(error) };
+    return { success: false, error: formatError(error) };
   }
 }
 
 // UPDATE
-export async function updateUser(user: z.infer<typeof UserUpdateSchema>) {
+export async function updateUser(user: z.infer<typeof UserUpdateSchema>): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
     const dbUser = await User.findById(user._id);
-    if (!dbUser) throw new Error('User not found');
+    if (!dbUser) throw new Error(t('userNotFound'));
     dbUser.name = user.name;
     dbUser.email = user.email;
     dbUser.role = user.role;
@@ -320,80 +330,106 @@ export async function updateUser(user: z.infer<typeof UserUpdateSchema>) {
     revalidatePath('/[locale]/admin/users');
     return {
       success: true,
-      message: 'User updated successfully',
+      message: t('userUpdated'),
       data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {
-    return { success: false, message: formatError(error) };
+    return { success: false, error: formatError(error) };
   }
 }
 
-export async function updateUserName(user: IUserName) {
+export async function updateUserName(user: { name: string }): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
     const session = await auth();
-    if (!session?.user?.id) throw new Error('Unauthorized');
-
+    if (!session?.user?.id) throw new Error(t('unauthorized'));
     const currentUser = await User.findById(session.user.id);
-    if (!currentUser) throw new Error('User not found');
-
+    if (!currentUser) throw new Error(t('userNotFound'));
     currentUser.name = user.name;
     const updatedUser = await currentUser.save();
-
     return {
       success: true,
-      message: 'User updated successfully',
+      message: t('userUpdated'),
       data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {
-    return { success: false, message: formatError(error) };
+    return { success: false, error: formatError(error) };
   }
 }
 
-// GET functions
-export async function getAllUsers({
-  limit,
-  page,
-}: {
-  limit?: number;
-  page: number;
-}) {
+export async function updateUserEmail({ userId, email }: { email: string; userId: string }): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
-    const {
-      common: { pageSize },
-    } = await getSetting();
-
-    limit = limit || pageSize;
     await connectToDatabase();
-
-    const skipAmount = (Number(page) - 1) * limit;
-
-    const [users, usersCount] = await Promise.all([
-      User.find()
-        .sort({ createdAt: 'desc' })
-        .skip(skipAmount)
-        .limit(limit),
-      User.countDocuments(),
-    ]);
-
+    const currentUser = await User.findById(userId);
+    if (!currentUser) throw new Error(t('userNotFound'));
+    const emailExists = await User.findOne({ email });
+    if (emailExists && emailExists._id.toString() !== userId) {
+      throw new Error(t('emailAlreadyInUse'));
+    }
+    currentUser.email = email;
+    const updatedUser = await currentUser.save();
     return {
-      data: JSON.parse(JSON.stringify(users)) as IUser[],
-      totalPages: Math.ceil(usersCount / limit),
+      success: true,
+      message: t('emailUpdated'),
+      data: JSON.parse(JSON.stringify(updatedUser)),
     };
   } catch (error) {
-    console.error('Error getting users:', error);
-    throw error;
+    return { success: false, error: formatError(error) };
   }
 }
 
-export async function getUserById(userId: string) {
+export async function updateUserPassword(userId: string, currentPassword: string, newPassword: string): Promise<ActionResponse> {
+  const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
     const user = await User.findById(userId);
-    if (!user) throw new Error('User not found');
+    if (!user) throw new Error(t('userNotFound'));
+    if (!user.password) throw new Error(t('noPasswordSet'));
+    const isMatch = await bcrypt.compare(currentPassword, user.password);
+    if (!isMatch) throw new Error(t('incorrectCurrentPassword'));
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
+    user.password = hashedPassword;
+    await user.save();
+    return {
+      success: true,
+      message: t('passwordUpdated'),
+    };
+  } catch (error) {
+    return { success: false, error: formatError(error) };
+  }
+}
+
+// GET
+export async function getAllUsers({ limit, page }: { limit?: number; page: number }): Promise<{ data: IUser[]; totalPages: number }> {
+  const t = await getTranslations('Auth');
+  try {
+    const { common: { pageSize } } = await getSetting();
+    limit = limit || pageSize;
+    await connectToDatabase();
+    const skipAmount = (Number(page) - 1) * limit;
+    const [users, usersCount] = await Promise.all([
+      User.find().sort({ createdAt: 'desc' }).skip(skipAmount).limit(limit).lean(),
+      User.countDocuments(),
+    ]);
+    return {
+      data: users as IUser[],
+      totalPages: Math.ceil(usersCount / limit),
+    };
+  } catch (error) {
+    throw new Error(t('errorFetchingUsers'));
+  }
+}
+
+export async function getUserById(userId: string): Promise<IUser> {
+  const t = await getTranslations('Auth');
+  try {
+    await connectToDatabase();
+    const user = await User.findById(userId);
+    if (!user) throw new Error(t('userNotFound'));
     return JSON.parse(JSON.stringify(user)) as IUser;
   } catch (error) {
-    console.error('Error getting user by id:', error);
-    throw error;
+    throw new Error(t('errorFetchingUser'));
   }
 }

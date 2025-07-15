@@ -1,26 +1,53 @@
-import { getNoCachedSetting } from '@/lib/actions/setting.actions'
-import SettingForm from './setting-form'
-import SettingNav from './setting-nav'
-import PointsForm from './points-form'
-import { Metadata } from 'next'
+// import { getAllSettings } from '@/lib/actions/settings.actions';
+import SettingForm from './setting-form';
+import PointsForm from './points-form';
+import IntegrationSettingsForm from './integration-settings-form';
+import { Metadata } from 'next';
+import { useTranslations } from 'next-intl';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import SettingNav from './setting-nav';
+import { getSetting } from '@/lib/actions/setting.actions';
 
 export const metadata: Metadata = {
-  title: 'Setting',
-}
+  title: 'Admin Settings',
+};
 
-const SettingPage = async () => {
-  const setting = await getNoCachedSetting()
+export default async function SettingPage() {
+  const t = useTranslations('admin.settings');
+  const settings = await getSetting();
+
   return (
-    <div className="grid md:grid-cols-5 max-w-6xl mx-auto gap-4">
-      <SettingNav />
-      <main className="col-span-4 ">
-        <div className="my-8">
-          <SettingForm setting={setting} />
-          <PointsForm setting={setting} />
-        </div>
+    <div className="container mx-auto p-6 flex gap-6">
+      <aside className="w-64 bg-gray-100 p-4 rounded-lg">
+        <SettingNav />
+      </aside>
+      <main className="flex-1 space-y-6">
+        <h1 className="text-3xl font-bold">{t('title')}</h1>
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('generalSettings')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <SettingForm settings={settings} />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('pointsSettings')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <PointsForm points={settings.points} />
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('integrationSettings')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <IntegrationSettingsForm settings={settings.integrations} />
+          </CardContent>
+        </Card>
       </main>
     </div>
-  )
+  );
 }
-
-export default SettingPage

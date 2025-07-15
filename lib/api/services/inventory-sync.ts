@@ -1,29 +1,25 @@
-import { RedisClient } from './redis';
+import { Redis } from '@upstash/redis';
 import { logger } from './logging';
 import { ObservabilityService } from './observability';
 import { InventoryItem, InventorySync, InventoryAdjustment } from '../types/inventory';
-import { UnifiedFulfillmentService } from './unified-fulfillment';
 import { WebhookDispatcher } from '../webhook-dispatcher';
 import InventoryModel from '@/lib/db/models/inventory.model';
-import ProductModel from '@/lib/db/models/product.model';
-import crypto from 'crypto';
-import { FulfillmentProvider, FulfillmentConfig } from '../types';
+import Product from '@/lib/db/models/product.model';
+import { FulfillmentConfig, FulfillmentProvider } from '../types/fulfillment';
 import { ShipBobService } from '../integrations/shipbob/service';
-import { AmazonFulfillmentService } from '../integrations/amazon/service';
-import { AliExpressFulfillmentService } from '../integrations/aliexpress/service';
-import { FourPXFulfillmentService } from '../integrations/4px/service';
+import { AmazonFBAService } from '../integrations/amazon/service';
 import { connectToDatabase } from '@/lib/db';
 import { auth } from '@/auth';
 
 export class AdvancedInventorySyncService {
-  private redis: RedisClient;
+  private redis: Redis;
   private fulfillmentProviders: Map<FulfillmentProvider, any> = new Map();
   private observabilityService: ObservabilityService;
 
-  constructor() {
-    this.redis = RedisClient.getInstance();
+  constructor(configs: FulfillmentConfig[]) {
+    this.redis = Redis.fromEnv();
     this.observabilityService = ObservabilityService.getInstance();
-    this.initializeFulfillmentProviders();
+    this.initializeFulfillmentProviders(configs);
   }
 
   private async getCurrentUser(): Promise<string> {
@@ -31,9 +27,7 @@ export class AdvancedInventorySyncService {
     return session?.user?.id || 'system';
   }
 
-  private initializeFulfillmentProviders() {
-    const configs: FulfillmentConfig[] = this.loadProviderConfigs();
-
+  private initializeFulfillmentProviders(configs: FulfillmentConfig[]) {
     configs.forEach((config) => {
       switch (config.provider) {
         case 'shipbob':
@@ -46,13 +40,7 @@ export class AdvancedInventorySyncService {
           );
           break;
         case 'amazon':
-          this.fulfillmentProviders.set(config.provider, new AmazonFulfillmentService(config));
-          break;
-        case 'aliexpress':
-          this.fulfillmentProviders.set(config.provider, new AliExpressFulfillmentService(config));
-          break;
-        case '4px':
-          this.fulfillmentProviders.set(config.provider, new FourPXFulfillmentService(config));
+          this.fulfillmentProviders.set(config.provider, new AmazonFBAService(config));
           break;
         default:
           logger.warn('Unknown provider', {
@@ -63,9 +51,9 @@ export class AdvancedInventorySyncService {
     });
   }
 
-  private loadProviderConfigs(): FulfillmentConfig[] {
+  private async loadProviderConfigs(): Promise<FulfillmentConfig[]> {
     const configs: FulfillmentConfig[] = [];
-    const currentUser = 'system'; // Fallback user for initialization
+    const currentUser = await this.getCurrentUser();
     const timestamp = new Date().toISOString();
 
     if (process.env.SHIPBOB_API_KEY) {
@@ -80,36 +68,18 @@ export class AdvancedInventorySyncService {
       });
     }
 
-    if (process.env.AMAZON_API_KEY) {
+    if (process.env.AMAZON_REFRESH_TOKEN) {
       configs.push({
         provider: 'amazon',
-        apiKey: process.env.AMAZON_API_KEY,
-        apiSecret: process.env.AMAZON_API_SECRET,
-        region: process.env.AMAZON_REGION,
-        createdAt: timestamp,
-        createdBy: currentUser,
-        updatedAt: timestamp,
-        updatedBy: currentUser,
-      });
-    }
-
-    if (process.env.ALIEXPRESS_API_KEY) {
-      configs.push({
-        provider: 'aliexpress',
-        apiKey: process.env.ALIEXPRESS_API_KEY,
-        apiSecret: process.env.ALIEXPRESS_API_SECRET,
-        createdAt: timestamp,
-        createdBy: currentUser,
-        updatedAt: timestamp,
-        updatedBy: currentUser,
-      });
-    }
-
-    if (process.env.FOURPX_API_KEY) {
-      configs.push({
-        provider: '4px',
-        apiKey: process.env.FOURPX_API_KEY,
-        apiSecret: process.env.FOURPX_API_SECRET,
+        region: process.env.AMAZON_REGION || 'na',
+        credentials: {
+          refreshToken: process.env.AMAZON_REFRESH_TOKEN,
+          clientId: process.env.AMAZON_CLIENT_ID,
+          clientSecret: process.env.AMAZON_CLIENT_SECRET,
+          awsAccessKey: process.env.AMAZON_AWS_ACCESS_KEY,
+          awsSecretKey: process.env.AMAZON_AWS_SECRET_KEY,
+          roleArn: process.env.AMAZON_ROLE_ARN,
+        },
         createdAt: timestamp,
         createdBy: currentUser,
         updatedAt: timestamp,
@@ -135,13 +105,9 @@ export class AdvancedInventorySyncService {
 
     try {
       await connectToDatabase();
-      const inventoryLevels = await service.getInventoryLevels();
+      const inventoryLevels = await service.getInventory();
 
-      await RedisClient.set(
-        `inventory:${provider}`,
-        inventoryLevels,
-        { ex: 3600 } // 1 hour expiry
-      );
+      await this.redis.set(`inventory:${provider}`, JSON.stringify(inventoryLevels), { EX: 3600 });
 
       await this.syncWithDatabase(inventoryLevels);
 
@@ -181,18 +147,19 @@ export class AdvancedInventorySyncService {
     }
   }
 
-  private async syncWithDatabase(inventoryLevels: any) {
+  private async syncWithDatabase(inventoryLevels: any[]) {
     try {
       await connectToDatabase();
       for (const level of inventoryLevels) {
-        await ProductModel.updateOne(
+        await Product.updateOne(
           { 'warehouseData.sku': level.sku },
           {
             $set: {
               'warehouseData.$.quantity': level.quantity,
               'warehouseData.$.lastUpdated': new Date(),
             },
-          }
+          },
+          { upsert: true }
         );
       }
       logger.info('Inventory synced with database', {
@@ -218,24 +185,20 @@ export class AdvancedInventorySyncService {
     const timestamp = new Date().toISOString();
 
     try {
-      const cachedInventory = await RedisClient.get(`inventory:${provider}`);
+      const cachedInventory = await this.redis.get(`inventory:${provider}`);
       if (cachedInventory) {
         return {
           success: true,
-          data: cachedInventory,
+          data: JSON.parse(cachedInventory),
           cached: true,
           timestamp,
           requestedBy: currentUser,
         };
       }
 
-      const inventoryLevels = await service.getInventoryLevels();
+      const inventoryLevels = await service.getInventory();
 
-      await RedisClient.set(
-        `inventory:${provider}`,
-        inventoryLevels,
-        { ex: 3600 } // 1 hour expiry
-      );
+      await this.redis.set(`inventory:${provider}`, JSON.stringify(inventoryLevels), { EX: 3600 });
 
       await this.observabilityService.recordMetric({
         name: 'inventory.get',
@@ -277,7 +240,7 @@ export class AdvancedInventorySyncService {
       sync.completedAt = new Date();
     }
 
-    await RedisClient.set(`inventory-sync:${syncId}`, sync);
+    await this.redis.set(`inventory-sync:${syncId}`, JSON.stringify(sync));
   }
 
   private async updateSyncProgress(syncId: string, itemsProcessed: number, totalItems?: number) {
@@ -289,7 +252,7 @@ export class AdvancedInventorySyncService {
       sync.totalItems = totalItems;
     }
 
-    await RedisClient.set(`inventory-sync:${syncId}`, sync);
+    await this.redis.set(`inventory-sync:${syncId}`, JSON.stringify(sync));
   }
 
   private async recordSyncError(syncId: string, sku: string, error: string) {
@@ -302,11 +265,12 @@ export class AdvancedInventorySyncService {
       timestamp: new Date(),
     });
 
-    await RedisClient.set(`inventory-sync:${syncId}`, sync);
+    await this.redis.set(`inventory-sync:${syncId}`, JSON.stringify(sync));
   }
 
   private async getSyncState(syncId: string): Promise<InventorySync | null> {
-    return await RedisClient.get<InventorySync>(`inventory-sync:${syncId}`);
+    const data = await this.redis.get(`inventory-sync:${syncId}`);
+    return data ? JSON.parse(data) : null;
   }
 
   private async sendLowStockAlert(item: InventoryItem) {

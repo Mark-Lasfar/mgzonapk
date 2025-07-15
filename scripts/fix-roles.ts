@@ -4,6 +4,7 @@ import User from '@/lib/db/models/user.model';
 async function fixUserRoles() {
   try {
     await connectToDatabase();
+
     const result = await User.updateMany(
       { role: 'user' },
       { $set: { role: 'user' } }

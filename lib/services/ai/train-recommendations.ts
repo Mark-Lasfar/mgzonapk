@@ -1,7 +1,8 @@
 import { connectToDatabase } from '@/lib/db';
+import { Order } from '@/lib/db/models/order.model';
 import Product from '@/lib/db/models/product.model';
 import User from '@/lib/db/models/user.model';
-import Order from '@/lib/db/models/order.model';
+// import Order from '@/lib/db/models/order.model';
 
 // Mock AI training function (replace with actual ML model integration)
 async function trainRecommendationModel(userInteractions: any[], products: any[]) {

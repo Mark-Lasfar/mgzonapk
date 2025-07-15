@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import { auth } from '@/auth';
 import { getOrderById } from '@/lib/actions/order.actions';
 import PaymentForm from './payment-form';
@@ -16,7 +16,6 @@ export default async function CheckoutPaymentPage({
 }) {
   const { id, locale } = await params;
 
-  // فحص إن الـ id صالح كـ ObjectId
   if (!mongoose.isValidObjectId(id)) {
     notFound();
   }
@@ -33,11 +32,13 @@ export default async function CheckoutPaymentPage({
 
   let client_secret = null;
   if (order.paymentMethod === 'Stripe' && !order.isPaid) {
-    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string);
+    const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+      apiVersion: '2024-09-30.acacia',
+    });
     const paymentIntent = await stripe.paymentIntents.create({
       amount: Math.round(order.totalPrice * 100),
       currency: 'USD',
-      metadata: { orderId: order._id },
+      metadata: { orderId: order._id.toString() },
     });
     client_secret = paymentIntent.client_secret;
   }
@@ -47,7 +48,7 @@ export default async function CheckoutPaymentPage({
       order={order}
       paypalClientId={process.env.PAYPAL_CLIENT_ID || 'sb'}
       clientSecret={client_secret}
-      isAdmin={session.user.role === 'Admin' || false}
+      isAdmin={session.user.role === 'Admin'}
     />
   );
 }

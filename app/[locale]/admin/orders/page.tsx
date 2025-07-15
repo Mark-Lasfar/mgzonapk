@@ -1,5 +1,6 @@
 import { Metadata } from 'next'
 import Link from 'next/link'
+import type { IOrderList } from '@/types';
 
 import { auth } from '@/auth'
 import DeleteDialog from '@/components/shared/delete-dialog'
@@ -15,7 +16,7 @@ import {
 } from '@/components/ui/table'
 import { deleteOrder, getAllOrders } from '@/lib/actions/order.actions'
 import { formatDateTime, formatId } from '@/lib/utils'
-import { IOrderList } from '@/types'
+// import { IOrderList } from '@/types'
 import ProductPrice from '@/components/shared/product/product-price'
 
 export const metadata: Metadata = {
@@ -59,7 +60,10 @@ export default async function OrdersPage(props: {
                   {formatDateTime(order.createdAt!).dateTime}
                 </TableCell>
                 <TableCell>
-                  {order.user ? order.user.name : 'Deleted User'}
+{order.user && typeof order.user === 'object' && 'name' in order.user
+  ? order.user.name
+  : 'Deleted User'}
+
                 </TableCell>
                 <TableCell>
                   {' '}

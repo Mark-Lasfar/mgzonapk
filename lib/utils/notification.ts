@@ -1,19 +1,10 @@
 import { Resend } from 'resend';
 import admin from 'firebase-admin';
-import Notification, {
-  INotification,
-  NotificationType,
-  NotificationChannel,
-  NotificationPriority,
-} from '../models/notification.model';
+import Notification, { INotification, NotificationType, NotificationChannel, NotificationPriority } from '@/lib/db/models/notification.model';
 import User from '@/lib/db/models/user.model';
 import { connectToDatabase } from '@/lib/db';
-import RateLimit from '@/lib/db/models/rate-limit.model'; // نموذج جديد لتتبع معدل الإرسال
+import RateLimit from '@/lib/db/models/rate-limit.model';
 
-// Initialize Resend
-const resend = new Resend(process.env.RESEND_API_KEY);
-
-// Initialize Firebase Admin if not already initialized
 if (!admin.apps.length) {
   try {
     admin.initializeApp({
@@ -28,6 +19,8 @@ if (!admin.apps.length) {
   }
 }
 
+const resend = new Resend(process.env.RESEND_API_KEY);
+
 export interface NotificationOptions {
   userId: string;
   type: NotificationType;
@@ -35,6 +28,7 @@ export interface NotificationOptions {
   message: string;
   data?: Record<string, any>;
   channels?: NotificationChannel[];
+  websocket?: boolean;
   priority?: NotificationPriority;
   expiresAt?: Date;
   metadata?: {
@@ -42,6 +36,7 @@ export interface NotificationOptions {
     device?: string;
     ip?: string;
   };
+  locale?: string;
 }
 
 export async function sendNotification(options: NotificationOptions) {
@@ -58,9 +53,9 @@ export async function sendNotification(options: NotificationOptions) {
       priority = 'medium',
       expiresAt,
       metadata,
+      locale = 'en',
     } = options;
 
-    // Create notification record
     const notification = await Notification.create({
       userId,
       type,
@@ -74,7 +69,6 @@ export async function sendNotification(options: NotificationOptions) {
       status: 'pending',
     });
 
-    // Send notifications through selected channels
     const promises = channels.map(async (channel) => {
       try {
         switch (channel) {
@@ -84,7 +78,7 @@ export async function sendNotification(options: NotificationOptions) {
               await sendEmail({
                 to: userEmail,
                 subject: title,
-                html: getEmailTemplate(type, title, message, data, 'en'),
+                html: getEmailTemplate(type, title, message, data, locale),
                 data,
               });
             }
@@ -113,7 +107,6 @@ export async function sendNotification(options: NotificationOptions) {
             break;
 
           case 'in_app':
-            // In-app notifications are handled by the notification record
             break;
         }
       } catch (error) {
@@ -122,8 +115,6 @@ export async function sendNotification(options: NotificationOptions) {
     });
 
     await Promise.allSettled(promises);
-
-    // Update notification status
     await notification.markAsSent();
 
     return { success: true, notificationId: notification._id };
@@ -179,12 +170,7 @@ export interface PushNotificationOptions {
   data?: Record<string, any>;
 }
 
-export async function sendPushNotification({
-  token,
-  title,
-  body,
-  data,
-}: PushNotificationOptions) {
+export async function sendPushNotification({ token, title, body, data }: PushNotificationOptions) {
   if (!token) return;
 
   try {
@@ -223,7 +209,7 @@ export async function sendPushNotification({
         },
         notification: {
           icon: '/icons/icon-192x192.png',
-          badge: '/icons/icon-72x72.png',
+          badge: '/icons/icon-512x512.png',
         },
       },
     });
@@ -240,7 +226,6 @@ export interface SMSOptions {
 
 export async function sendSMS({ to, message }: SMSOptions) {
   try {
-    // Textlocal API configuration
     const apiKey = process.env.TEXTLOCAL_API_KEY;
     if (!apiKey) {
       throw new Error('Textlocal API key not configured');
@@ -273,7 +258,6 @@ export async function sendSMS({ to, message }: SMSOptions) {
 
 export async function sendWhatsApp({ to, message }: SMSOptions) {
   try {
-    // Textlocal WhatsApp API configuration
     const apiKey = process.env.TEXTLOCAL_API_KEY;
     if (!apiKey) {
       throw new Error('Textlocal API key not configured');
@@ -318,7 +302,7 @@ export async function checkEmailRateLimit(): Promise<boolean> {
       rateLimit = await RateLimit.create({
         key,
         count: 1,
-        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000), // Expire after 24 hours
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
       return true;
     }
@@ -343,6 +327,17 @@ export function getEmailTemplate(
   data: Record<string, any>,
   locale: string
 ): string {
+  const translations: Record<string, Record<string, string>> = {
+    en: {
+      automatedMessage: 'This is an automated message from Mgzon. Please do not reply directly.',
+    },
+    ar: {
+      automatedMessage: 'هذه رسالة تلقائية من Mgzon. من فضلك، لا ترد مباشرة.',
+    },
+  };
+
+  const t = translations[locale] || translations.en;
+
   return `
     <!DOCTYPE html>
     <html>
@@ -350,15 +345,21 @@ export function getEmailTemplate(
       <meta charset="UTF-8">
       <title>${title}</title>
     </head>
-    <body style="font-family: Arial, sans-serif; line-height: 1.6;">
-      <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-        <img src="/icons/logo.svg" alt="Mgzon Logo" style="height: 40px; margin-bottom: 20px;">
-        <h2 style="color: #333;">${title}</h2>
-        <p>${message}</p>
+<body style="font-family: Arial, sans-serif; line-height: 1.6;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px; text-align: center;">
+    <img 
+      src="/icons/logo.svg" 
+      alt="Mgzon Logo" 
+      class="animate-slow-spin rounded-full"
+      style="max-width: 100%; height: 40px; margin-bottom: 20px;"
+    >
+    <h2 style="color: #333;">${title}</h2>
+    <p>${message}</p>
+
         ${data.productId ? `<p>Product ID: ${data.productId}</p>` : ''}
         ${data.quantity ? `<p>Quantity: ${data.quantity}</p>` : ''}
         <p style="color: #666; font-size: 12px;">
-          This is an automated message from Mgzon. Please do not reply directly.
+          ${t.automatedMessage}
         </p>
       </div>
     </body>
@@ -366,7 +367,6 @@ export function getEmailTemplate(
   `;
 }
 
-// Helper functions to get user contact information
 async function getUserEmail(userId: string): Promise<string | null> {
   const user = await User.findById(userId).select('email');
   return user?.email || null;
@@ -382,7 +382,6 @@ async function getUserPushToken(userId: string): Promise<string | null> {
   return user?.pushToken || null;
 }
 
-// Export utility functions for notification management
 export const NotificationUtils = {
   markAsRead: async (notificationId: string) => {
     await connectToDatabase();

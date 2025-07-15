@@ -1,0 +1,87 @@
+// import { MongoClient } from 'mongodb';
+
+// const MONGODB_URI = process.env.MONGODB_URI!;
+// const options = {};
+
+// if (!MONGODB_URI) {
+//   throw new Error('Please define the MONGODB_URI environment variable in your .env file');
+// }
+
+// let clientPromise: Promise<MongoClient>;
+// let cachedClient: MongoClient | null = null;
+
+// if (process.env.NODE_ENV === 'development') {
+//   let globalWithMongo = global as typeof globalThis & {
+//     _mongoClientPromise?: Promise<MongoClient>;
+//     _mongoClient?: MongoClient;
+//   };
+
+//   if (!globalWithMongo._mongoClientPromise) {
+//     const client = new MongoClient(MONGODB_URI, options);
+//     globalWithMongo._mongoClientPromise = client.connect()
+//       .then((client) => {
+//         globalWithMongo._mongoClient = client;
+//         return client;
+//       });
+//   }
+//   clientPromise = globalWithMongo._mongoClientPromise;
+//   cachedClient = globalWithMongo._mongoClient || null;
+// } else {
+//   const client = new MongoClient(MONGODB_URI, options);
+//   clientPromise = client.connect();
+// }
+
+// export async function getMongoClient() {
+//   if (cachedClient) {
+//     return cachedClient;
+//   }
+
+//   try {
+//     const client = await clientPromise;
+//     if (process.env.NODE_ENV === 'development') {
+//       cachedClient = client;
+//     }
+//     return client;
+//   } catch (error) {
+//     console.error('Error connecting to MongoDB:', error);
+//     throw error;
+//   }
+// }
+
+// export async function getCollection(collectionName: string) {
+//   const client = await getMongoClient();
+//   const db = client.db(process.env.MONGODB_DB_NAME);
+//   return db.collection(collectionName);
+// }
+
+// export async function checkDatabaseConnection() {
+//   try {
+//     const client = await getMongoClient();
+//     await client.db().command({ ping: 1 });
+//     return true;
+//   } catch (error) {
+//     console.error('Database connection error:', error);
+//     return false;
+//   }
+// }
+
+// export function getCurrentContext() {
+//   return {
+//     timestamp: new Date().toISOString(),
+//     user: process.env.CURRENT_USER || 'system',
+//   };
+// }
+
+// export async function closeConnection() {
+//   if (cachedClient) {
+//     await cachedClient.close();
+//     cachedClient = null;
+//   }
+// }
+
+// export type { MongoClient };
+
+// declare global {
+//   var _mongoClientPromise: Promise<MongoClient>;
+//   var _mongoClient: MongoClient;
+// }

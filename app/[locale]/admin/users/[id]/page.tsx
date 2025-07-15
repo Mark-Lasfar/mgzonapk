@@ -1,47 +1,45 @@
-import { notFound } from 'next/navigation'
-import { getUserById } from '@/lib/actions/user.actions'
-import { getPointsBalance, getPointsHistory, awardPoints, redeemPoints } from '@/lib/actions/points.actions'
-import UserEditForm from './user-edit-form'
-import Link from 'next/link'
-import { Metadata } from 'next'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Label } from '@/components/ui/label' // Added import for Label
-import { formatDateTime } from '@/lib/utils'
+import { notFound } from 'next/navigation';
+import { getUserById } from '@/lib/actions/user.actions';
+import { getPointsBalance, getPointsHistory, awardPoints, redeemPoints } from '@/lib/actions/points.actions';
+import UserEditForm from './user-edit-form';
+import Link from 'next/link';
+import { Metadata } from 'next';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { formatDateTime, formatError } from '@/lib/utils';
 
 export const metadata: Metadata = {
   title: 'Edit User',
-}
+};
 
 export default async function UserEditPage(props: {
-  params: Promise<{
-    id: string
-  }>
+  params: Promise<{ id: string }>;
 }) {
-  const params = await props.params
-  const { id } = params
-  const user = await getUserById(id)
-  if (!user) notFound()
-  const pointsBalance = await getPointsBalance(id)
-  const pointsHistory = await getPointsHistory(id)
+  const params = await props.params;
+  const { id } = params;
+  const user = await getUserById(id);
+  if (!user) notFound();
+  const pointsBalance = await getPointsBalance(id);
+  const pointsHistory = await getPointsHistory(id);
 
   const handleAdjustPoints = async (formData: FormData) => {
-    'use server'
-    const action = formData.get('action') as 'award' | 'deduct'
-    const amount = Number(formData.get('amount'))
-    const description = formData.get('description') as string
+    'use server';
+    const action = formData.get('action') as 'award' | 'deduct';
+    const amount = Number(formData.get('amount'));
+    const description = formData.get('description') as string;
     try {
       if (action === 'award') {
-        await awardPoints(id, amount, description)
+        await awardPoints(id, amount, description);
       } else {
-        await redeemPoints(id, amount, 'USD', description)
+        await redeemPoints(id, amount, 'USD', description);
       }
-      return { success: true, message: 'Points adjusted successfully' }
+      return { success: true, message: 'Points adjusted successfully' };
     } catch (error) {
-      return { success: false, message: formatError(error) }
+      return { success: false, message: formatError(error) };
     }
-  }
+  };
 
   return (
     <main className="max-w-6xl mx-auto p-4">
@@ -96,5 +94,5 @@ export default async function UserEditPage(props: {
         </CardContent>
       </Card>
     </main>
-  )
+  );
 }

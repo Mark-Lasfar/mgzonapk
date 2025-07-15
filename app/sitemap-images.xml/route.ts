@@ -1,3 +1,5 @@
+'use server';
+
 import { NextResponse } from 'next/server'
 import { getSetting } from '@/lib/actions/setting.actions'
 import fs from 'fs'

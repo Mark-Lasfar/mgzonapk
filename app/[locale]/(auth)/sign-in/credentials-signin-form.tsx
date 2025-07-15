@@ -3,7 +3,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import useSettingStore from '@/hooks/use-setting-store';
+// import useSettingStore from '@/hooks/use-setting-store';
 import {
   Form,
   FormControl,
@@ -15,16 +15,18 @@ import {
 import { useForm } from 'react-hook-form';
 import { IUserSignIn } from '@/types';
 import { signInWithCredentials } from '@/lib/actions/user.actions';
-import { toast } from '@/hooks/use-toast';
+// import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignInSchema } from '@/lib/validator';
 import { Loader2 } from 'lucide-react';
+import useSettingStore from '../../../../hooks/use-setting-store';
+import { toast } from '../../../../hooks/use-toast';
 
 const signInDefaultValues =
   process.env.NODE_ENV === 'development'
     ? {
-        email: 'admin@example.com',
-        password: '123456',
+        email: 'admin@mgzon.com',
+        password: 'elasfar691458',
       }
     : {
         email: '',

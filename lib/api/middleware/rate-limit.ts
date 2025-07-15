@@ -10,7 +10,7 @@ const redis = new Redis({
 });
 
 const RATE_LIMIT_CONFIGS = {
-  Trial: { requests: 100, window: 3600 }, // 100 requests per hour
+  free: { requests: 100, window: 3600 }, // 100 requests per hour
   Basic: { requests: 1000, window: 3600 }, // 1000 requests per hour
   Pro: { requests: 10000, window: 3600 }, // 10000 requests per hour
   VIP: { requests: 100000, window: 3600 }, // 100000 requests per hour
@@ -33,19 +33,20 @@ export async function rateLimit(request: NextRequest) {
 
   try {
     await connectToDatabase();
-    const apiKeyDoc = await ApiKeyModel.findOne({ key: apiKey });
+    const apiKeyDoc = await ApiKeyModel.findOne({ 
+      key: apiKey,
+      isActive: true,
+      $or: [{ expiresAt: { $exists: false } }, { expiresAt: { $gt: new Date() } }],
+    });
     if (!apiKeyDoc) {
       return new NextResponse(
-        JSON.stringify({
-          success: false,
-          error: 'Invalid API key',
-        }),
+        JSON.stringify({ success: false, error: 'Invalid or expired API key' }),
         { status: 401 }
       );
     }
 
     const seller = await SellerModel.findOne({ apiKeys: apiKeyDoc._id });
-    const plan = seller?.subscription.plan || 'Basic';
+    const plan = (seller?.subscription.plan || 'Basic') as keyof typeof RATE_LIMIT_CONFIGS;
     const config = RATE_LIMIT_CONFIGS[plan];
 
     const requests = await redis.zcount(key, now - (config.window * 1000), now);

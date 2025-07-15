@@ -5,19 +5,11 @@ import { ShipBobService } from '@/lib/services/warehouse/shipbob';
 import { FourPXService } from '@/lib/services/warehouse/fourpx';
 import { logger } from '@/lib/services/logging';
 import Product from '@/lib/db/models/product.model';
+import Seller from '@/lib/db/models/seller.model';
 import { z } from 'zod';
+import { getTranslations } from 'next-intl/server';
 
-const warehouseProviders: Record<string, ShipBobService | FourPXService> = {
-  ShipBob: new ShipBobService({
-    apiKey: process.env.SHIPBOB_API_KEY!,
-    apiUrl: process.env.SHIPBOB_API_URL!,
-  }),
-  '4PX': new FourPXService({
-    apiKey: process.env.FOURPX_API_KEY!,
-    apiUrl: process.env.FOURPX_API_URL!,
-  }),
-};
-
+// تعريف مخطط التحقق من البيانات لتحديث المخزون
 const InventoryUpdateSchema = z.object({
   provider: z.enum(['ShipBob', '4PX']),
   productId: z.string().min(1, 'Product ID is required'),
@@ -25,22 +17,57 @@ const InventoryUpdateSchema = z.object({
   sku: z.string().min(1, 'SKU is required'),
 });
 
-export async function GET(req: NextRequest) {
+// تهيئة خدمات المستودعات
+const warehouseProviders: Record<string, ShipBobService | FourPXService> = {
+  ShipBob: new ShipBobService({
+    apiKey: process.env.SHIPBOB_API_KEY || '',
+    apiUrl: process.env.SHIPBOB_API_URL || '',
+  }),
+  '4PX': new FourPXService({
+    apiKey: process.env.FOURPX_API_KEY || '',
+    apiUrl: process.env.FOURPX_API_URL || '',
+  }),
+};
+
+// دالة GET لجلب بيانات المستودعات
+export async function GET(req: NextRequest, { params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: 'api' });
   try {
     const session = await auth();
     if (!session?.user?.id || !['Admin', 'Seller'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: t('errors.unauthorized') },
+        { status: 401 }
+      );
     }
 
     await connectToDatabase();
+
+    // التحقق من حالة التحقق للسيلر
+    const seller = await Seller.findOne({ userId: session.user.id });
+    if (!seller || seller.verification.status !== 'verified') {
+      return NextResponse.json(
+        { success: false, message: t('errors.sellerVerificationPending') },
+        { status: 403 }
+      );
+    }
 
     const { searchParams } = new URL(req.url);
     const provider = searchParams.get('provider');
 
     if (!provider || !(provider in warehouseProviders)) {
       return NextResponse.json(
-        { success: false, message: `Invalid provider: ${provider}` },
+        { success: false, message: t('errors.invalidProvider', { provider }) },
         { status: 400 }
+      );
+    }
+
+    // التحقق من وجود API key
+    if (!process.env[`${provider.toUpperCase()}_API_KEY`]) {
+      logger.error('Missing API key for provider', { provider });
+      return NextResponse.json(
+        { success: false, message: t('errors.missingApiKey') },
+        { status: 500 }
       );
     }
 
@@ -55,20 +82,39 @@ export async function GET(req: NextRequest) {
   } catch (error) {
     logger.error('Failed to retrieve warehouses', {
       error: error instanceof Error ? error.message : 'Unknown error',
-      provider: req.url,
+      url: req.url,
     });
     return NextResponse.json(
-      { success: false, message: error instanceof Error ? error.message : 'Internal server error' },
+      {
+        success: false,
+        message: error instanceof Error ? error.message : t('errors.internalServerError'),
+      },
       { status: 500 }
     );
   }
 }
 
-export async function POST(req: NextRequest) {
+// دالة POST لتحديث المخزون
+export async function POST(req: NextRequest, { params }: { params: { locale: string } }) {
+  const t = await getTranslations({ locale: params.locale, namespace: 'api' });
   try {
     const session = await auth();
     if (!session?.user?.id || !['Admin', 'Seller'].includes(session.user.role)) {
-      return NextResponse.json({ success: false, message: 'Unauthorized' }, { status: 401 });
+      return NextResponse.json(
+        { success: false, message: t('errors.unauthorized') },
+        { status: 401 }
+      );
+    }
+
+    await connectToDatabase();
+
+    // التحقق من حالة التحقق للسيلر
+    const seller = await Seller.findOne({ userId: session.user.id });
+    if (!seller || seller.verification.status !== 'verified') {
+      return NextResponse.json(
+        { success: false, message: t('errors.sellerVerificationPending') },
+        { status: 403 }
+      );
     }
 
     const body = await req.json();
@@ -83,12 +129,19 @@ export async function POST(req: NextRequest) {
 
     const { provider, productId, quantity, sku } = parsed.data;
 
-    await connectToDatabase();
+    // التحقق من وجود API key
+    if (!process.env[`${provider.toUpperCase()}_API_KEY`]) {
+      logger.error('Missing API key for provider', { provider });
+      return NextResponse.json(
+        { success: false, message: t('errors.missingApiKey') },
+        { status: 500 }
+      );
+    }
 
-    // Update warehouse inventory
+    // تحديث مخزون المستودع
     await warehouseProviders[provider].updateInventory(sku, quantity);
 
-    // Update product in database
+    // تحديث المنتج في قاعدة البيانات
     const product = await Product.findByIdAndUpdate(
       productId,
       {
@@ -108,7 +161,7 @@ export async function POST(req: NextRequest) {
 
     if (!product) {
       return NextResponse.json(
-        { success: false, message: 'Product not found' },
+        { success: false, message: t('errors.productNotFound') },
         { status: 404 }
       );
     }
@@ -123,7 +176,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: 'Inventory updated successfully',
+      message: t('messages.inventoryUpdated'),
       data: product,
     });
   } catch (error) {
@@ -132,7 +185,10 @@ export async function POST(req: NextRequest) {
       url: req.url,
     });
     return NextResponse.json(
-      { success: false, message: error instanceof Error ? error.message : 'Internal server error' },
+      {
+        success: false,
+        message: error instanceof Error ? error.message : t('errors.internalServerError'),
+      },
       { status: 500 }
     );
   }

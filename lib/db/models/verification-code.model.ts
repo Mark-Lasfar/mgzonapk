@@ -23,7 +23,7 @@ const verificationCodeSchema = new mongoose.Schema<IVerificationCode>(
     code: { 
       type: String, 
       required: true,
-      length: 6
+      length: 8
     },
     type: {
       type: String,

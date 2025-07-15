@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { validateApiKey } from '@/lib/api/middleware/auth';
 import { rateLimit } from '@/lib/api/middleware/rate-limit';
+import { shipbobAuthMiddleware } from '@/lib/api/middleware/auth/shipbob';
 import { connectToDatabase } from '@/lib/db';
-import { ShipBobService } from '@/lib/api/integrations/warehouses/shipbob/service';
-import { FourPXService } from '@/lib/api/integrations/warehouses/4px/service';
-import { AmazonService } from '@/lib/api/integrations/marketplaces/amazon/service';
-import { AliExpressService } from '@/lib/api/integrations/marketplaces/aliexpress/service';
+import { ShipBobService } from '@/lib/api/integrations/shipbob/service';
+import { AmazonFBAService } from '@/lib/api/integrations/amazon/service';
 import { logger } from '@/lib/api/services/logging';
 import crypto from 'crypto';
 
@@ -13,9 +12,15 @@ export async function POST(request: NextRequest) {
   const requestId = crypto.randomBytes(16).toString('hex');
 
   try {
+    // Apply API key validation
     const authError = await validateApiKey(request);
     if (authError) return authError;
 
+    // Apply ShipBob auth middleware
+    const shipbobAuthResult = await shipbobAuthMiddleware(request);
+    if (shipbobAuthResult) return shipbobAuthResult;
+
+    // Apply rate limiting
     const rateLimitResult = await rateLimit(request);
     if (rateLimitResult instanceof NextResponse) return rateLimitResult;
 
@@ -31,6 +36,8 @@ export async function POST(request: NextRequest) {
       }, { status: 400 });
     }
 
+    const accessToken = (request as any).shipbobAccessToken;
+
     const syncs = await Promise.allSettled(
       providers.map(async (provider: string) => {
         try {
@@ -40,46 +47,44 @@ export async function POST(request: NextRequest) {
           switch (provider) {
             case 'shipbob':
               service = new ShipBobService({
-                apiKey: process.env.SHIPBOB_API_KEY!,
-                apiUrl: process.env.SHIPBOB_API_URL!,
-              });
-              break;
-            case '4px':
-              service = new FourPXService({
-                apiKey: process.env.FOURPX_API_KEY!,
-                apiSecret: process.env.FOURPX_API_SECRET!,
-                apiUrl: process.env.FOURPX_API_URL!,
+                accessToken,
+                apiUrl: process.env.SHIPBOB_API_URL || 'https://api.shipbob.com',
+                channelId: process.env.SHIPBOB_CHANNEL_ID!,
               });
               break;
             case 'amazon':
-              service = new AmazonService({
-                accessToken: process.env.AMAZON_ACCESS_TOKEN!,
-                refreshToken: process.env.AMAZON_REFRESH_TOKEN!,
-                merchantId: process.env.AMAZON_MERCHANT_ID!,
-                apiUrl: process.env.AMAZON_API_URL!,
-              });
-              break;
-            case 'aliexpress':
-              service = new AliExpressService({
-                apiKey: process.env.ALIEXPRESS_API_KEY!,
-                apiSecret: process.env.ALIEXPRESS_API_SECRET!,
-                accessToken: process.env.ALIEXPRESS_ACCESS_TOKEN!,
-                apiUrl: process.env.ALIEXPRESS_API_URL!,
+              service = new AmazonFBAService({
+                region: process.env.AMAZON_REGION || 'na',
+                credentials: {
+                  refreshToken: process.env.AMAZON_REFRESH_TOKEN!,
+                  clientId: process.env.AMAZON_CLIENT_ID!,
+                  clientSecret: process.env.AMAZON_CLIENT_SECRET!,
+                  awsAccessKey: process.env.AMAZON_AWS_ACCESS_KEY!,
+                  awsSecretKey: process.env.AMAZON_AWS_SECRET_KEY!,
+                  roleArn: process.env.AMAZON_ROLE_ARN!,
+                },
               });
               break;
             default:
               throw new Error(`Unsupported provider: ${provider}`);
           }
 
-          const result = await service.getInventoryLevels(options.productIds);
-          return { provider, syncId, status: 'started', result };
-        } catch (error) {
-          logger.error('Provider sync failed', {
+          const result = await service.getInventory(options.productIds);
+          return {
             provider,
-            requestId,
-            error: error.message,
-          });
-          return { provider, status: 'failed', error: error.message };
+            syncId,
+            status: 'completed',
+            result: result.map((item: any) => ({
+              sku: item.sku,
+              quantity: item.quantity || item.availableQuantity || item.available || 0,
+              available_quantity: item.available_quantity || item.availableQuantity || item.available || 0,
+              reference_id: item.reference_id || item.asin,
+            })),
+          };
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : String(error);
+          logger.error('Provider sync failed', { provider, requestId, error: errorMessage });
+          return { provider, syncId: crypto.randomBytes(8).toString('hex'), status: 'failed', error: errorMessage };
         }
       })
     );
@@ -92,7 +97,8 @@ export async function POST(request: NextRequest) {
       .filter((result): result is PromiseRejectedResult => result.status === 'rejected')
       .map(result => ({
         provider: result.reason.provider,
-        error: result.reason.message,
+        syncId: result.reason.syncId,
+        error: result.reason.error,
       }));
 
     return NextResponse.json({
@@ -107,18 +113,16 @@ export async function POST(request: NextRequest) {
       },
     }, {
       headers: {
-        ...rateLimitResult?.headers,
+        ...(rateLimitResult?.headers || {}),
         'X-Request-ID': requestId,
       },
     });
   } catch (error) {
-    logger.error('Inventory sync failed', {
-      requestId,
-      error: error.message,
-    });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logger.error('Inventory sync failed', { requestId, error: errorMessage });
     return NextResponse.json({
       success: false,
-      error: error.message,
+      error: errorMessage,
       requestId,
       timestamp: new Date().toISOString(),
     }, {
@@ -151,30 +155,29 @@ export async function GET(request: NextRequest) {
       }, { status: 400 });
     }
 
-    // Placeholder for sync status checking
+    // Placeholder: No sync tracking DB implemented
     return NextResponse.json({
       success: true,
       data: {
         syncId,
         provider,
-        status: 'pending',
+        status: 'unknown',
+        message: 'Sync status tracking not implemented',
         requestId,
         timestamp: new Date().toISOString(),
       },
     }, {
       headers: {
-        ...rateLimitResult?.headers,
+        ...(rateLimitResult?.headers || {}),
         'X-Request-ID': requestId,
       },
     });
   } catch (error) {
-    logger.error('Get sync status failed', {
-      requestId,
-      error: error.message,
-    });
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    logger.error('Get sync status failed', { requestId, error: errorMessage });
     return NextResponse.json({
       success: false,
-      error: error.message,
+      error: errorMessage,
       requestId,
       timestamp: new Date().toISOString(),
     }, {

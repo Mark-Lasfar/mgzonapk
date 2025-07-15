@@ -1,16 +1,16 @@
+// app/[locale]/(auth)/reset-password/page.tsx
 'use client';
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useToast } from '@/hooks/use-toast';
+import { toast } from 'react-hot-toast'; // Direct import
 
 export default function ResetPasswordPage() {
   const [identifier, setIdentifier] = useState('');
   const [message, setMessage] = useState('');
   const router = useRouter();
-  const { toast } = useToast();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,26 +26,15 @@ export default function ResetPasswordPage() {
 
       if (res.ok && data.success) {
         localStorage.setItem('recoveryEmail', identifier);
-        toast({
-          title: 'Success',
-          description: 'Recovery code sent to your email.',
-        });
+        toast.success('Recovery code sent to your email.');
         router.push('/verify-code');
       } else {
         setMessage(data.error || 'Failed to send code');
-        toast({
-          title: 'Error',
-          description: data.error || 'Failed to send code',
-          variant: 'destructive',
-        });
+        toast.error(data.error || 'Failed to send code');
       }
     } catch (error) {
       setMessage('An error occurred. Please try again.');
-      toast({
-        title: 'Error',
-        description: 'An error occurred. Please try again.',
-        variant: 'destructive',
-      });
+      toast.error('An error occurred. Please try again.');
     }
   };
 

@@ -1,13 +1,16 @@
 import { Redis } from '@upstash/redis';
-import mongoose from 'mongoose';
+import mongoose, { Types } from 'mongoose';
 import ApiKey, { IApiKey } from '@/lib/db/models/api-key.model';
-import { logger } from './logging';
+import { customLogger } from '@/lib/api/services/logging';
 import crypto from 'crypto';
+import { auth } from '@/auth';
+import { connectToDatabase } from '@/lib/db';
+import Seller from '@/lib/db/models/seller.model';
 
 export class ApiKeyService {
   private static redis: Redis | null = null;
   private static readonly CACHE_PREFIX = 'api-key:';
-  private static readonly CACHE_TTL = 3600; // 1 hour
+  private static readonly CACHE_TTL = 3600;
 
   private static async getRedisClient(): Promise<Redis> {
     if (!this.redis) {
@@ -22,54 +25,78 @@ export class ApiKeyService {
     return this.redis;
   }
 
-  static async createApiKey(
-    params: {
-      name: string;
-      permissions: string[];
-      expiresAt?: Date;
-      sellerId: mongoose.Types.ObjectId;
-    },
-    options: { createdBy: string; updatedBy: string }
-  ): Promise<IApiKey> {
+  static async createApiKey(params: {
+    name: string;
+    permissions: string[];
+    sellerId?: string;
+    expiresAt?: Date;
+  }): Promise<IApiKey> {
+    const sessionAuth = await auth();
+    if (!sessionAuth?.user?.id) {
+      throw new Error('Unauthenticated user cannot create API key');
+    }
+    if (!['Admin', 'SELLER'].includes(sessionAuth.user.role)) {
+      throw new Error('User does not have permission to create API key');
+    }
+
+    let sellerId: Types.ObjectId;
+    if (params.sellerId && sessionAuth.user.role === 'Admin') {
+      const seller = await Seller.findById(params.sellerId);
+      if (!seller) throw new Error('Seller not found');
+      sellerId = new Types.ObjectId(params.sellerId);
+    } else {
+      const seller = await Seller.findOne({ userId: sessionAuth.user.id });
+      if (!seller) throw new Error('Seller not found for user');
+      sellerId = seller._id;
+    }
+
+    const createdBy = new Types.ObjectId(sessionAuth.user.id);
+
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
-      const apiKey = await ApiKey.create(
-        [
-          {
-            ...params,
-            key: crypto.randomBytes(32).toString('hex'),
-            secret: crypto.randomBytes(64).toString('hex'),
-            createdBy: options.createdBy,
-            updatedBy: options.updatedBy,
-            isActive: true,
-          },
-        ],
+      await connectToDatabase();
+
+      const apiKeyDocs = await ApiKey.create(
+        [{
+          userId: createdBy,
+          name: params.name,
+          permissions: params.permissions,
+          expiresAt: params.expiresAt,
+          createdBy,
+          updatedBy: createdBy,
+          isActive: true,
+          sellerId,
+        }],
         { session }
       );
 
+      const apiKeyDoc = apiKeyDocs[0];
+
       const redis = await this.getRedisClient();
       await redis.set(
-        `${this.CACHE_PREFIX}${apiKey[0].key}`,
-        JSON.stringify(apiKey[0]),
+        `${this.CACHE_PREFIX}${apiKeyDoc.key}`,
+        JSON.stringify(apiKeyDoc),
         { ex: this.CACHE_TTL }
       );
 
-      logger.info('API key created', {
-        keyId: apiKey[0]._id,
-        name: apiKey[0].name,
+      await customLogger.info('API key created', {
+        keyId: apiKeyDoc._id,
+        name: apiKeyDoc.name,
+        userId: apiKeyDoc.userId,
+        sellerId: apiKeyDoc.sellerId,
         timestamp: new Date(),
-        user: options.createdBy,
+        service: 'api-key',
       });
 
       await session.commitTransaction();
-      return apiKey[0];
+      return apiKeyDoc;
     } catch (error) {
       await session.abortTransaction();
-      logger.error('Failed to create API key', {
+      await customLogger.error('Failed to create API key', {
         error: error instanceof Error ? error.message : String(error),
         timestamp: new Date(),
-        user: options.createdBy,
+        service: 'api-key',
       });
       throw error;
     } finally {
@@ -82,81 +109,78 @@ export class ApiKeyService {
       const redis = await this.getRedisClient();
       const cacheKey = `${this.CACHE_PREFIX}${key}`;
 
-      // Check cache
       const cached = await redis.get<string>(cacheKey);
       if (cached) {
-        const apiKey = JSON.parse(cached) as IApiKey;
-        await this.logApiKeyUsage(apiKey, 'cache');
-        return apiKey;
+        const apiKeyDoc = JSON.parse(cached) as IApiKey;
+        await this.logApiKeyUsage(apiKeyDoc, 'cache');
+        return apiKeyDoc;
       }
 
-      // Check database
-      const apiKey = await ApiKey.findOne({
+      const apiKeyDoc = await ApiKey.findOne({
         key,
         isActive: true,
         $or: [{ expiresAt: { $exists: false } }, { expiresAt: { $gt: new Date() } }],
       });
 
-      if (!apiKey) {
+      if (!apiKeyDoc) {
         return null;
       }
 
-      // Update last used
-      await ApiKey.findByIdAndUpdate(apiKey._id, {
+      await ApiKey.findByIdAndUpdate(apiKeyDoc._id, {
         lastUsed: new Date(),
-        updatedBy: 'system',
+        updatedBy: apiKeyDoc.userId || apiKeyDoc.sellerId,
       });
 
-      // Cache the result
-      await redis.set(cacheKey, JSON.stringify(apiKey), { ex: this.CACHE_TTL });
+      await redis.set(cacheKey, JSON.stringify(apiKeyDoc), { ex: this.CACHE_TTL });
+      await this.logApiKeyUsage(apiKeyDoc, 'database');
 
-      await this.logApiKeyUsage(apiKey, 'database');
-
-      return apiKey;
+      return apiKeyDoc;
     } catch (error) {
-      logger.error('API key validation failed', {
+      await customLogger.error('API key validation failed', {
         error: error instanceof Error ? error.message : String(error),
         timestamp: new Date(),
         key,
+        service: 'api-key',
       });
       throw error;
     }
   }
 
-  static async rotateApiKey(
-    id: string,
-    options: { updatedBy: string }
-  ): Promise<IApiKey> {
+  static async rotateApiKey(id: string, options: { updatedBy: string }): Promise<IApiKey> {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
-      const apiKey = await ApiKey.findById(id).session(session);
-      if (!apiKey) {
+
+      const apiKeyDoc = await ApiKey.findById(id).session(session);
+      if (!apiKeyDoc) {
         throw new Error('API key not found');
       }
 
-      apiKey.key = crypto.randomBytes(32).toString('hex');
-      apiKey.secret = crypto.randomBytes(64).toString('hex');
-      apiKey.updatedBy = options.updatedBy;
-      await apiKey.save({ session });
+      apiKeyDoc.key = `mgz_${crypto.randomBytes(16).toString('hex')}`;
+      apiKeyDoc.secret = crypto.randomBytes(32).toString('hex');
+      apiKeyDoc.updatedBy = new Types.ObjectId(options.updatedBy);
+
+      await apiKeyDoc.save({ session });
 
       const redis = await this.getRedisClient();
-      await redis.del(`${this.CACHE_PREFIX}${apiKey.key}`);
+      await redis.del(`${this.CACHE_PREFIX}${apiKeyDoc.key}`);
 
-      logger.info('API key rotated', {
-        keyId: apiKey._id,
+      await customLogger.info('API key rotated', {
+        keyId: apiKeyDoc._id,
         timestamp: new Date(),
         user: options.updatedBy,
+        service: 'api-key',
       });
 
       await session.commitTransaction();
-      return apiKey;
+      return apiKeyDoc;
     } catch (error) {
       await session.abortTransaction();
-      logger.error('Failed to rotate API key', {
+      await customLogger.error('Failed to rotate API key', {
         error: error instanceof Error ? error.message : String(error),
         timestamp: new Date(),
         user: options.updatedBy,
+        service: 'api-key',
       });
       throw error;
     } finally {
@@ -164,38 +188,38 @@ export class ApiKeyService {
     }
   }
 
-  static async deactivateApiKey(
-    id: string,
-    options: { updatedBy: string }
-  ): Promise<void> {
+  static async deactivateApiKey(id: string, options: { updatedBy: string }): Promise<void> {
     const session = await mongoose.startSession();
     try {
       session.startTransaction();
-      const apiKey = await ApiKey.findById(id).session(session);
-      if (!apiKey) {
+
+      const apiKeyDoc = await ApiKey.findById(id).session(session);
+      if (!apiKeyDoc) {
         throw new Error('API key not found');
       }
 
-      apiKey.isActive = false;
-      apiKey.updatedBy = options.updatedBy;
-      await apiKey.save({ session });
+      apiKeyDoc.isActive = false;
+      apiKeyDoc.updatedBy = new Types.ObjectId(options.updatedBy);
+      await apiKeyDoc.save({ session });
 
       const redis = await this.getRedisClient();
-      await redis.del(`${this.CACHE_PREFIX}${apiKey.key}`);
+      await redis.del(`${this.CACHE_PREFIX}${apiKeyDoc.key}`);
 
-      logger.info('API key deactivated', {
-        keyId: apiKey._id,
+      await customLogger.info('API key deactivated', {
+        keyId: apiKeyDoc._id,
         timestamp: new Date(),
         user: options.updatedBy,
+        service: 'api-key',
       });
 
       await session.commitTransaction();
     } catch (error) {
       await session.abortTransaction();
-      logger.error('Failed to deactivate API key', {
+      await customLogger.error('Failed to deactivate API key', {
         error: error instanceof Error ? error.message : String(error),
         timestamp: new Date(),
         user: options.updatedBy,
+        service: 'api-key',
       });
       throw error;
     } finally {
@@ -203,13 +227,14 @@ export class ApiKeyService {
     }
   }
 
-  private static async logApiKeyUsage(apiKey: IApiKey, source: 'cache' | 'database'): Promise<void> {
-    logger.info('API key used', {
-      keyId: apiKey._id,
-      name: apiKey.name,
+  private static async logApiKeyUsage(apiKeyDoc: IApiKey, source: 'cache' | 'database'): Promise<void> {
+    await customLogger.info('API key used', {
+      keyId: apiKeyDoc._id,
+      name: apiKeyDoc.name,
       source,
       timestamp: new Date(),
-      user: apiKey.sellerId || 'unknown',
+      user: apiKeyDoc.userId?.toString() || apiKeyDoc.sellerId.toString(),
+      service: 'api-key',
     });
   }
 }

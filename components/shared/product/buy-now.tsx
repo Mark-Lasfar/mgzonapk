@@ -1,12 +1,14 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+// import { useToast } from '@/hooks/use-toast';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { addToCart } from '@/lib/actions/cart.actions';
 import { Loader2 } from 'lucide-react';
+import { useToast } from '@/components/ui/toast';
+import { useState } from 'react';
 
 interface BuyNowProps {
   item: {

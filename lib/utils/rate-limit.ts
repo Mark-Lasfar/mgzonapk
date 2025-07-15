@@ -1,5 +1,5 @@
 import { connectToDatabase } from '@/lib/db';
-import VerificationCode from '@/lib/db/models/verification-code.model';
+import RateLimit from '@/lib/db/models/rate-limit.model'; // Create a new model
 
 export async function rateLimit(
   req: Request,
@@ -14,14 +14,16 @@ export async function rateLimit(
   const now = new Date();
   const windowStart = new Date(now.getTime() - windowMs);
 
-  const requestCount = await VerificationCode.countDocuments({
-    email: identifier,
+  const requestCount = await RateLimit.countDocuments({
+    identifier,
     createdAt: { $gte: windowStart },
   });
 
   if (requestCount >= max) {
     return { success: false, reset: windowStart.getTime() + windowMs };
   }
+
+  await RateLimit.create({ identifier, createdAt: now });
 
   return { success: true, reset: null };
 }

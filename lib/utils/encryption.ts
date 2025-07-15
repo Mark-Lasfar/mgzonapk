@@ -1,59 +1,95 @@
 import crypto from 'crypto';
 
-const ENCRYPTION_KEY = process.env.ENCRYPTION_KEY || '73794b6a0f8c949bb3e0e40b8d4c8c7fc1060f5c01427b021485effbdb962492';
-
-if (!ENCRYPTION_KEY) {
-  console.error('Error: ENCRYPTION_KEY is not set. Using default key for development.');
-  throw new Error('ENCRYPTION_KEY is required');
-}
-
+/**
+ * Encryption configuration
+ */
 const ALGORITHM = 'aes-256-cbc';
 const IV_LENGTH = 16;
-const KEY_LENGTH = 32; // 256 bits
+const KEY_LENGTH = 32; // 256 bits (32 bytes)
 
-function validateKey(key: string): Buffer {
-  const keyBuffer = Buffer.from(key, 'hex');
-  if (keyBuffer.length !== KEY_LENGTH) {
-    throw new Error(`Encryption key must be ${KEY_LENGTH} bytes`);
+/**
+ * Get and validate encryption key
+ */
+function getEncryptionKey(): Buffer {
+  const keyHex = process.env.ENCRYPTION_KEY;
+  if (!keyHex) {
+    if (process.env.NODE_ENV === 'production') {
+      throw new Error('ENCRYPTION_KEY is required in production');
+    }
+    console.warn('ENCRYPTION_KEY not set. Using default key for development only.');
+    return Buffer.from('default-32-char-key-1234567890abcdef'); // Development-only fallback
   }
-  return keyBuffer;
+  if (keyHex.length !== 64) {
+    throw new Error('ENCRYPTION_KEY must be a 64-character hex string (32 bytes)');
+  }
+  try {
+    const key = Buffer.from(keyHex, 'hex');
+    if (key.length !== KEY_LENGTH) {
+      throw new Error('Invalid ENCRYPTION_KEY length after decoding');
+    }
+    return key;
+  } catch (error) {
+    throw new Error('Invalid ENCRYPTION_KEY format: must be a valid hex string');
+  }
 }
 
-export function encrypt(text: string | object): string {
+const ENCRYPTION_KEY = getEncryptionKey();
+
+/**
+ * Encrypts a string using AES-256-CBC
+ * @param text - The string to encrypt
+ * @returns A string in the format `iv:encrypted` (hex-encoded)
+ * @throws Error if encryption fails
+ */
+export function encrypt(text: string): string {
   try {
-    const input = typeof text === 'object' ? JSON.stringify(text) : text;
+    if (!text || typeof text !== 'string') {
+      throw new Error('Input must be a non-empty string');
+    }
     const iv = crypto.randomBytes(IV_LENGTH);
-    const key = validateKey(ENCRYPTION_KEY);
-    const cipher = crypto.createCipheriv(ALGORITHM, key, iv);
-    let encrypted = cipher.update(input, 'utf8');
-    encrypted = Buffer.concat([encrypted, cipher.final()]);
-    return iv.toString('hex') + ':' + encrypted.toString('hex');
+    const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
+    let encrypted = cipher.update(text, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return `${iv.toString('hex')}:${encrypted}`;
   } catch (error) {
-    console.error('Encryption error:', error);
-    throw new Error('Failed to encrypt data');
+    console.error('Encryption error:', {
+      message: error instanceof Error ? error.message : String(error),
+      inputLength: text?.length || 0,
+    });
+    throw new Error(`Failed to encrypt data: ${error instanceof Error ? error.message : String(error)}`);
   }
 }
 
-export function decrypt(text: string): string {
+/**
+ * Decrypts a string encrypted with AES-256-CBC
+ * @param text - The encrypted string in the format `iv:encrypted` (hex-encoded)
+ * @param parseJson - Whether to attempt JSON parsing of the decrypted string
+ * @returns The decrypted string or parsed JSON object
+ * @throws Error if decryption fails
+ */
+export function decrypt<T = string>(text: string, parseJson: boolean = false): T {
   try {
-    const textParts = text.split(':');
-    if (textParts.length !== 2) {
-      throw new Error('Invalid encrypted text format');
+    if (!text || typeof text !== 'string') {
+      throw new Error('Input must be a non-empty string');
     }
-    const iv = Buffer.from(textParts[0], 'hex');
-    const encryptedText = Buffer.from(textParts[1], 'hex');
-    const key = validateKey(ENCRYPTION_KEY);
-    const decipher = crypto.createDecipheriv(ALGORITHM, key, iv);
-    let decrypted = decipher.update(encryptedText);
-    decrypted = Buffer.concat([decrypted, decipher.final()]);
-    const result = decrypted.toString('utf8');
-    try {
-      return JSON.parse(result); // Attempt to parse as JSON
-    } catch {
-      return result; // Return as string if not JSON
+    const [ivHex, encryptedHex] = text.split(':');
+    if (!ivHex || !encryptedHex || ivHex.length !== IV_LENGTH * 2) {
+      throw new Error('Invalid encrypted text format or IV length');
     }
+    const iv = Buffer.from(ivHex, 'hex');
+    const encrypted = Buffer.from(encryptedHex, 'hex');
+    const decipher = crypto.createDecipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
+    let decrypted = decipher.update(encrypted, undefined, 'utf8');
+    decrypted += decipher.final('utf8');
+    if (parseJson) {
+      return JSON.parse(decrypted) as T;
+    }
+    return decrypted as T;
   } catch (error) {
-    console.error('Decryption error:', error);
-    throw new Error('Failed to decrypt data');
+    console.error('Decryption error:', {
+      message: error instanceof Error ? error.message : String(error),
+      inputLength: text?.length || 0,
+    });
+    throw new Error(`Failed to decrypt data: ${error instanceof Error ? error.message : String(error)}`);
   }
 }

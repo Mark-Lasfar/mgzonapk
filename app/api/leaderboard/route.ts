@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-// import dbConnect from '@/lib/db/client';
 import Score from '@/lib/db/models/score.model';
 import User from '@/lib/db/models/user.model';
 import { connectToDatabase } from '@/lib/db';

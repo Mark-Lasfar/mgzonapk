@@ -8,9 +8,11 @@ import { CheckCircle2Icon } from 'lucide-react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
-import useCartStore from '@/hooks/use-cart-store'
-import useSettingStore from '@/hooks/use-setting-store'
+// import useCartStore from '@/hooks/use-cart-store'
+// import useSettingStore from '@/hooks/use-setting-store'
 import { useTranslations } from 'next-intl'
+import useCartStore from '../../../../../hooks/use-cart-store'
+import useSettingStore from '../../../../../hooks/use-setting-store'
 
 export default function CartAddItem({ itemId }: { itemId: string }) {
   const {

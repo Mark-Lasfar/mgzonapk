@@ -22,11 +22,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { useToast } from '@/hooks/use-toast'
+// import { useToast } from '@/hooks/use-toast'
 import { updateUser } from '@/lib/actions/user.actions'
 import { USER_ROLES } from '@/lib/constants'
 import { IUser } from '@/lib/db/models/user.model'
 import { UserUpdateSchema } from '@/lib/validator'
+import { useToast } from '@/components/ui/toast'
 
 const UserEditForm = ({ user }: { user: IUser }) => {
   const router = useRouter()

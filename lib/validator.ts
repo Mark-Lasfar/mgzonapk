@@ -62,11 +62,12 @@ export const UserSignInSchema = z.object({
 
 export const UserSignUpSchema = UserSignInSchema.extend({
   name: UserName,
+  phone: z.string().min(1, 'Phone number is required').regex(/^\+?\d{10,15}$/, 'Phone number must be valid'),
   confirmPassword: Password,
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
   path: ['confirmPassword'],
-})
+});
 
 export const UserNameSchema = z.object({
   name: UserName,
@@ -147,6 +148,7 @@ export const OrderItemSchema = z.object({
   price: Price('Price'),
   size: z.string().optional(),
   color: z.string().optional(),
+  
 })
 
 export const ShippingAddressSchema = z.object({
@@ -258,6 +260,13 @@ export const DeliveryDateSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   daysToDeliver: z.number().min(0, 'Days to deliver must be at least 0'),
   shippingPrice: z.coerce.number().min(0, 'Shipping price must be at least 0'),
+  validator: z
+    .string()
+    .optional()
+    .refine(
+      (val) => !val || /^(\d{4}-\d{2}-\d{2})$/.test(val),
+      'Validator must be a valid date format (YYYY-MM-DD)'
+    ),
   freeShippingMinPrice: z.coerce
     .number()
     .min(0, 'Free shipping min amount must be at least 0'),

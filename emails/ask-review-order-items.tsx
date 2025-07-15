@@ -13,15 +13,14 @@ import {
   Section,
   Tailwind,
   Text,
-} from '@react-email/components'
-
-import { formatCurrency } from '@/lib/utils'
-import { IOrder } from '@/lib/db/models/order.model'
-import { getSetting } from '@/lib/actions/setting.actions'
+} from '@react-email/components';
+import { formatCurrency } from '@/lib/utils';
+import { IOrder } from '@/lib/db/models/order.model';
 
 type OrderInformationProps = {
-  order: IOrder
-}
+  order: IOrder;
+  siteUrl: string;
+};
 
 AskReviewOrderItemsEmail.PreviewProps = {
   order: {
@@ -62,13 +61,12 @@ AskReviewOrderItemsEmail.PreviewProps = {
     expectedDeliveryDate: new Date(),
     isDelivered: true,
   } as IOrder,
-} satisfies OrderInformationProps
-const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' })
+  siteUrl: 'https://hager-zon.vercel.app',
+} satisfies OrderInformationProps;
 
-export default async function AskReviewOrderItemsEmail({
-  order,
-}: OrderInformationProps) {
-  const { site } = await getSetting()
+const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
+
+export default function AskReviewOrderItemsEmail({ order, siteUrl }: OrderInformationProps) {
   return (
     <Html>
       <Preview>Review Order Items</Preview>
@@ -107,30 +105,26 @@ export default async function AskReviewOrderItemsEmail({
               {order.items.map((item) => (
                 <Row key={item.product} className="mt-8">
                   <Column className="w-20">
-                    <Link href={`${site.url}/product/${item.slug}`}>
+                    <Link href={`${siteUrl}/product/${item.slug}`}>
                       <Img
                         width="80"
                         alt={item.name}
                         className="rounded"
-                        src={
-                          item.image.startsWith('/')
-                            ? `${site.url}${item.image}`
-                            : item.image
-                        }
+                        src={item.image.startsWith('/') ? `${siteUrl}${item.image}` : item.image}
                       />
                     </Link>
                   </Column>
                   <Column className="align-top">
-                    <Link href={`${site.url}/product/${item.slug}`}>
+                    <Link href={`${siteUrl}/product/${item.slug}`}>
                       <Text className="mx-2 my-0">
                         {item.name} x {item.quantity}
                       </Text>
                     </Link>
                   </Column>
-                  <Column align="right" className="align-top ">
+                  <Column align="right" className="align-top">
                     <Button
-                      href={`${site.url}/product/${item.slug}#reviews`}
-                      className="text-center bg-blue-500 hover:bg-blue-700 text-white   py-2 px-4 rounded"
+                      href={`${siteUrl}/product/${item.slug}#reviews`}
+                      className="text-center bg-blue-500 hover:bg-blue-700 text-white py-2 px-4 rounded"
                     >
                       Review this product
                     </Button>
@@ -155,5 +149,5 @@ export default async function AskReviewOrderItemsEmail({
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }

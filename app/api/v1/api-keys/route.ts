@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { ApiKeyService } from '@/lib/api/services/api-key.service';
 import { validatePermissions } from '@/lib/api/middleware/auth';
 import ApiKey from '@/lib/db/models/api-key.model';
+import { getToken } from 'next-auth/jwt';
+import mongoose from 'mongoose';
 
 export async function GET(request: NextRequest) {
   try {

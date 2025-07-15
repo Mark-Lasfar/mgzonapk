@@ -1,7 +1,6 @@
 'use client'
 import { BadgeDollarSign, Barcode, CreditCard, Users } from 'lucide-react'
 import { useTranslations } from 'next-intl'
-
 import Link from 'next/link'
 import {
   Card,
@@ -19,12 +18,9 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { calculatePastDate, formatDateTime, formatNumber } from '@/lib/utils'
-
 import SalesCategoryPieChart from './sales-category-pie-chart'
-
 import React, { useEffect, useState, useTransition } from 'react'
 import { DateRange } from 'react-day-picker'
-import { getOrderSummary } from '@/lib/actions/order.actions'
 import SalesAreaChart from './sales-area-chart'
 import { CalendarDateRangePicker } from './date-range-picker'
 import { IOrderList } from '@/types'
@@ -38,46 +34,51 @@ export default function OverviewReport() {
     from: calculatePastDate(30),
     to: new Date(),
   })
-
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [data, setData] = useState<{ [key: string]: any }>()
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const [data, setData] = useState<any>(null)
   const [isPending, startTransition] = useTransition()
+
   useEffect(() => {
-    if (date) {
+    if (date?.from && date?.to) {
       startTransition(async () => {
-        setData(await getOrderSummary(date))
+        try {
+          const res = await fetch('/api/admin/summary', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ date: { from: date.from, to: date.to } }),
+          })
+          if (!res.ok) throw new Error('Failed to fetch summary')
+          const result = await res.json()
+          if (result.success) {
+            setData(result.data)
+          } else {
+            console.error('Error fetching summary:', result.message)
+          }
+        } catch (error) {
+          console.error('Error fetching summary:', error)
+        }
       })
     }
   }, [date])
 
-  if (!data)
+  if (!data) {
     return (
       <div className="space-y-4">
         <div>
           <h1 className="h1-bold">Dashboard</h1>
         </div>
-        {/* First Row */}
         <div className="flex gap-4">
           {[...Array(4)].map((_, index) => (
             <Skeleton key={index} className="h-36 w-full" />
           ))}
         </div>
-
-        {/* Second Row */}
         <div>
           <Skeleton className="h-[30rem] w-full" />
         </div>
-
-        {/* Third Row */}
         <div className="flex gap-4">
           {[...Array(2)].map((_, index) => (
             <Skeleton key={index} className="h-60 w-full" />
           ))}
         </div>
-
-        {/* Fourth Row */}
         <div className="flex gap-4">
           {[...Array(2)].map((_, index) => (
             <Skeleton key={index} className="h-60 w-full" />
@@ -85,6 +86,8 @@ export default function OverviewReport() {
         </div>
       </div>
     )
+  }
+
   return (
     <div>
       <div className="flex items-center justify-between mb-2">
@@ -92,7 +95,7 @@ export default function OverviewReport() {
         <CalendarDateRangePicker defaultDate={date} setDate={setDate} />
       </div>
       <div className="space-y-4">
-        <div className="grid gap-4  grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-4 grid-cols-2 lg:grid-cols-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
@@ -172,7 +175,6 @@ export default function OverviewReport() {
             </CardContent>
           </Card>
         </div>
-
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
@@ -198,7 +200,6 @@ export default function OverviewReport() {
             </CardContent>
           </Card>
         </div>
-
         <div className="grid gap-4 md:grid-cols-2">
           <Card>
             <CardHeader>
@@ -226,16 +227,15 @@ export default function OverviewReport() {
                   {data.latestOrders.map((order: IOrderList) => (
                     <TableRow key={order._id}>
                       <TableCell>
-                        {order.user ? order.user.name : t('Deleted User')}
-                      </TableCell>
+{typeof order.user === 'object' && order.user !== null ? order.user.name : t('Deleted User')}
 
+                      </TableCell>
                       <TableCell>
                         {formatDateTime(order.createdAt).dateOnly}
                       </TableCell>
                       <TableCell>
                         <ProductPrice price={order.totalPrice} plain />
                       </TableCell>
-
                       <TableCell>
                         <Link href={`/admin/orders/${order._id}`}>
                           <span className="px-2">{t('Details')}</span>

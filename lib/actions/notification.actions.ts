@@ -1,13 +1,14 @@
 "use server";
 
 import { connectToDatabase } from "@/lib/db";
-import Notification, { NotificationType, NotificationChannel, NotificationPriority } from "@/lib/models/notification.model";
+import Notification, { NotificationType, NotificationChannel, NotificationPriority } from "../db/models/notification.model";
 import User from "@/lib/db/models/user.model";
 import Seller from "@/lib/db/models/seller.model";
 import { NOTIFICATION_CONFIG } from "@/lib/config/storage.config";
 import { TFunction } from "i18next";
 import { IProduct } from "@/types";
 import { checkEmailRateLimit, sendEmail, sendPushNotification, sendSMS, getEmailTemplate } from "@/lib/utils/notification";
+import Product from "../db/models/product.model";
 
 export interface NotificationOptions {
   userId: string;
@@ -171,7 +172,7 @@ export async function addToCart(
 
     await sendNotification({
       userId,
-      type: "cart_updated",
+      type: "cart updated",
       title: t("cartUpdatedTitle"),
       message: t("cartUpdatedMessage", { productName: product.name }),
       channels: ["in_app", "email"],

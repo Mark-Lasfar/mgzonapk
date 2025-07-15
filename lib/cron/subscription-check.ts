@@ -22,7 +22,7 @@ export async function checkSubscriptions() {
     for (const seller of expiringSoon) {
       await WebhookDispatcher.dispatch(
         seller.userId.toString(),
-        'subscription_expiring',
+        'subscription expiring',
         {
           title: 'Your Subscription is Expiring Soon',
           message: `Your ${seller.subscription.plan} subscription will expire on ${seller.subscription.endDate.toLocaleDateString()}. Renew now to avoid suspension.`,
@@ -42,7 +42,7 @@ export async function checkSubscriptions() {
 
       await WebhookDispatcher.dispatch(
         seller.userId.toString(),
-        'subscription_expired',
+        'subscription expired',
         {
           title: 'Your Subscription Has Expired',
           message: `Your ${seller.subscription.plan} subscription has expired. Your seller account is now suspended. Renew your subscription to reactivate.`,

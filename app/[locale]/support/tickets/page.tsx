@@ -3,9 +3,10 @@
 import { Metadata } from 'next'
 import { auth } from '@/auth'
 import { getTickets } from '@/lib/actions/support.actions'
-import TicketList from './ticket-list'
+// import TicketList from './ticket-list'
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
+import { TicketList } from './ticket-list'
 
 export const metadata: Metadata = {
   title: 'Support Tickets',

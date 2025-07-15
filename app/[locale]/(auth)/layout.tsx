@@ -19,10 +19,9 @@ export default async function AuthLayout({
             width={64}
             height={64}
             priority
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
+                    className="animate-slow-spin rounded-full"
+        style={{ maxWidth: '100%', height: 'auto' }}
+
           />
         </Link>
       </header>
@@ -31,7 +30,7 @@ export default async function AuthLayout({
         <div className="flex justify-center space-x-4">
           <Link href="/page/conditions-of-use">Conditions of Use</Link>
           <Link href="/page/privacy-policy"> Privacy Notice</Link>
-          <Link href="/page/help"> Help </Link>
+          <Link href="/docs/support"> Help </Link>
         </div>
         <div>
           <p className="text-gray-400">{site.copyright}</p>

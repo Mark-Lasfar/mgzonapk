@@ -2,15 +2,20 @@ import { IReviewInput } from '@/types'
 import { Document, Model, model, models, Schema } from 'mongoose'
 
 export interface IReview extends Document, IReviewInput {
-  _id: string
-  createdAt: Date
-  updatedAt: Date
+  userId: string;
+  productId: string;
+  rating: number;
+  title: string;
+  comment: string;
+  isVerifiedPurchase: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 const reviewSchema = new Schema<IReview>(
   {
     user: {
       type: Schema.Types.ObjectId as unknown as typeof String,
-      ref: 'user',
+      ref: 'User',
     },
     isVerifiedPurchase: {
       type: Boolean,

@@ -1,26 +1,46 @@
 import { NextResponse } from 'next/server';
-import { isValidIBAN } from 'iban';
+// import { isValidIBAN } from 'iban';
+import { getTranslations, getLocale } from 'next-intl/server';
+import { isValidIBAN } from '@/lib/utils/iban';
+import { t } from 'i18next';
 
 const SWIFT_REGEX = /^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/;
+const STRIPE_COUNTRIES = ['DE', 'FR', 'GB', 'US', 'CA', 'ES', 'IT', 'NL', 'BE', 'AT'];
+const PAYPAL_COUNTRIES = ['EG', 'SA', 'AE', 'JO', 'QA', 'KW', 'IN', 'CN', 'PK'];
 
 export async function POST(req: Request) {
   try {
-    const { iban, swift } = await req.json();
+    const locale = await getLocale();
+    const t = await getTranslations({ locale, namespace: 'api' });
 
-    // Local validation
+    const { iban, swift, countryCode, bankDocumentUrl } = await req.json();
+
     if (!isValidIBAN(iban)) {
       return NextResponse.json(
-        { valid: false, message: 'Invalid IBAN' },
+        { valid: false, message: t('errors.invalidIBAN') },
         { status: 400 }
       );
     }
 
     if (!SWIFT_REGEX.test(swift)) {
       return NextResponse.json(
-        { valid: false, message: 'Invalid SWIFT code' },
+        { valid: false, message: t('errors.invalidSwift') },
         { status: 400 }
       );
     }
+
+    if (!bankDocumentUrl) {
+      return NextResponse.json(
+        { valid: false, message: t('errors.missingBankDocument') },
+        { status: 400 }
+      );
+    }
+
+    const provider = STRIPE_COUNTRIES.includes(countryCode.toUpperCase())
+      ? 'stripe'
+      : PAYPAL_COUNTRIES.includes(countryCode.toUpperCase())
+      ? 'paypal'
+      : 'stripe';
 
     // External API verification (iban.com)
     const response = await fetch(
@@ -30,20 +50,30 @@ export async function POST(req: Request) {
 
     if (!result.valid) {
       return NextResponse.json(
-        { valid: false, message: result.error || 'Invalid bank details' },
+        { valid: false, message: result.error || t('errors.invalidBankDetails') },
+        { status: 400 }
+      );
+    }
+
+    // Placeholder for document verification (if needed)
+    // Example: Verify bankDocumentUrl format or content
+    if (!bankDocumentUrl.startsWith('https://')) {
+      return NextResponse.json(
+        { valid: false, message: t('errors.invalidDocumentUrl') },
         { status: 400 }
       );
     }
 
     return NextResponse.json({
       valid: true,
-      message: 'Verification successful',
+      message: t('messages.verificationSuccessful'),
       bankName: result.bank_name || '',
+      provider,
     });
   } catch (err) {
     console.error('Verification error:', err);
     return NextResponse.json(
-      { valid: false, message: 'Failed to verify bank details with external service' },
+      { valid: false, message: t('errors.verifyBankFailed') },
       { status: 500 }
     );
   }

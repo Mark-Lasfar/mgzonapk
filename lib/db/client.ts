@@ -29,4 +29,24 @@ if (process.env.NODE_ENV === 'development') {
   client = new MongoClient(uri, options);
 }
 
+export async function connectToDatabase() {
+  try {
+    await client.connect();
+    console.log('Connected to MongoDB');
+    return client;
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    throw new Error('Failed to connect to MongoDB');
+  }
+}
+
+export async function closeDatabaseConnection() {
+  try {
+    await client.close();
+    console.log('MongoDB connection closed');
+  } catch (error) {
+    console.error('Error closing MongoDB connection:', error);
+  }
+}
+
 export default client;

@@ -1,34 +1,27 @@
-'use client';
+'use client'
 
-import { Button } from '@/components/ui/button';
+import { Button } from '@/components/ui/button'
 import {
   Card,
   CardContent,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { formatDateTime } from '@/lib/utils';
-import Image from 'next/image';
-import Link from 'next/link';
-import Pagination from '@/components/shared/pagination';
+} from '@/components/ui/card'
+import { formatDateTime } from '@/lib/utils'
+import Image from 'next/image'
+import Link from 'next/link'
+import Pagination from '@/components/shared/pagination'
 
-interface Design {
-  _id: string;
-  name: string;
-  images?: string[];
-  createdAt: string;
-  products: any[];
-  isPublished: boolean;
-}
-
-interface DesignListProps {
-  designs: Design[];
-  totalPages: number;
-  page: number;
-}
-
-export default function DesignList({ designs, totalPages, page }: DesignListProps) {
+export default function DesignList({
+  designs,
+  totalPages,
+  page,
+}: {
+  designs: any[]
+  totalPages: number
+  page: number
+}) {
   return (
     <div>
       <div className="flex justify-end mb-4">
@@ -45,18 +38,12 @@ export default function DesignList({ designs, totalPages, page }: DesignListProp
             </CardHeader>
             <CardContent>
               <div className="aspect-square relative rounded-md overflow-hidden">
-                {design.images && design.images.length > 0 ? (
-                  <Image
-                    src={design.images[0]}
-                    alt={design.name}
-                    fill
-                    className="object-cover"
-                  />
-                ) : (
-                  <div className="w-full h-full bg-gray-200 flex items-center justify-center">
-                    <span className="text-gray-500">No Image</span>
-                  </div>
-                )}
+                <Image
+                  src={design.images[0]}
+                  alt={design.name}
+                  fill
+                  className="object-cover"
+                />
               </div>
               <div className="mt-2 text-sm text-gray-500">
                 <p>Created: {formatDateTime(design.createdAt).dateTime}</p>
@@ -82,5 +69,5 @@ export default function DesignList({ designs, totalPages, page }: DesignListProp
 
       {totalPages > 1 && <Pagination totalPages={totalPages} page={page} />}
     </div>
-  );
+  )
 }

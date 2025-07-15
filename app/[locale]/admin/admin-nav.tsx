@@ -19,9 +19,13 @@ const links = [
   { title: 'Platform Reports', href: '/admin/reports' },
   { title: 'Withdrawals', href: '/admin/withdrawals' },
   { title: 'Earnings and Commissions Report', href: '/admin/reports/earnings' },
+  { title: 'Tickets', href: '/admin/tickets' },
   { title: 'Settings', href: '/admin/settings' },
+  // { title: 'Notifications', href: '/admin/notifications' },
+  // { title: 'Logs', href: '/admin/logs' },
+  // { title: 'Support', href: '/admin/support' },
+  // { title: 'Support Tickets', href: '/admin/support/tickets' },
 ];
-
 export function AdminNav({
   className,
   ...props

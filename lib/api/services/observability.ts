@@ -1,4 +1,4 @@
-import { RedisClient } from './redis';
+// /home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/lib/api/services/observability.ts
 import { logger } from './logging';
 
 export interface Metric {
@@ -32,11 +32,6 @@ export class ObservabilityService {
 
   async recordMetric(metric: Metric): Promise<void> {
     try {
-      const metricKey = `metric:${metric.name}:${Date.now()}`;
-      await RedisClient.set(metricKey, {
-        ...metric,
-        timestamp: metric.timestamp.toISOString(),
-      }, { ex: 86400 }); // 24 hours TTL
       logger.info('Metric recorded', {
         name: metric.name,
         value: metric.value,
@@ -53,12 +48,6 @@ export class ObservabilityService {
 
   async recordError(event: ErrorEvent): Promise<void> {
     try {
-      const errorKey = `error:${Date.now()}`;
-      await RedisClient.set(errorKey, {
-        error: event.error.toString(),
-        context: event.context,
-        timestamp: event.timestamp.toISOString(),
-      }, { ex: 604800 }); // 7 days TTL
       logger.error('Error recorded', {
         error: event.error,
         context: event.context,
@@ -75,18 +64,13 @@ export class ObservabilityService {
 
   async getMetrics(name: string, start: Date, end: Date): Promise<Metric[]> {
     try {
-      // Upstash Redis doesn't support SCAN, so we use a simplified approach
-      const metrics: Metric[] = [];
-      // In production, implement a proper key retrieval strategy
       logger.info('Metrics retrieved', {
         name,
         start: start.toISOString(),
         end: end.toISOString(),
         timestamp: new Date().toISOString(),
       });
-      return metrics.filter(
-        (m) => new Date(m.timestamp) >= start && new Date(m.timestamp) <= end
-      );
+      return [];
     } catch (error) {
       logger.error('Failed to retrieve metrics', {
         name,
@@ -95,5 +79,13 @@ export class ObservabilityService {
       });
       return [];
     }
+  }
+
+  async recordSimpleMetric(metric: any) {
+    console.log('Metric:', metric);
+  }
+
+  async recordSimpleError(error: any) {
+    console.error('Error:', error);
   }
 }

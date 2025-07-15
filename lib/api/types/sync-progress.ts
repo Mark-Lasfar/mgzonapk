@@ -1,10 +1,4 @@
-export type SyncStatus = 
-  | 'queued'
-  | 'running'
-  | 'paused'
-  | 'completed'
-  | 'failed'
-  | 'cancelled';
+export type SyncStatus = 'queued' | 'running' | 'paused' | 'completed' | 'failed' | 'cancelled';
 
 export interface SyncError {
   code: string;
@@ -13,6 +7,7 @@ export interface SyncError {
   source?: string;
   timestamp: string;
   reportedBy: string;
+  requestId?: string;
 }
 
 export interface SyncWarning {
@@ -22,6 +17,7 @@ export interface SyncWarning {
   source?: string;
   timestamp: string;
   reportedBy: string;
+  requestId?: string;
 }
 
 export interface SyncProgress {
@@ -35,8 +31,6 @@ export interface SyncProgress {
     succeeded: number;
     failed: number;
     percentage: number;
-    currentBatch?: number;
-    totalBatches?: number;
   };
   timestamps: {
     started: string;
@@ -58,11 +52,12 @@ export interface SyncUpdate {
   succeeded?: number;
   failed?: number;
   status?: SyncStatus;
-  error?: Omit<SyncError, 'timestamp' | 'reportedBy'>;
-  warning?: Omit<SyncWarning, 'timestamp' | 'reportedBy'>;
+  error?: Omit<SyncError, 'timestamp' | 'reportedBy' | 'requestId'>;
+  warning?: Omit<SyncWarning, 'timestamp' | 'reportedBy' | 'requestId'>;
   metadata?: Record<string, any>;
   timestamp: string;
   updatedBy: string;
+  requestId?: string;
 }
 
 export interface SyncResult {
@@ -74,7 +69,7 @@ export interface SyncResult {
     processed: number;
     succeeded: number;
     failed: number;
-    duration: number;
+    duration: number; // in milliseconds
   };
   errors: SyncError[];
   warnings: SyncWarning[];
@@ -83,4 +78,5 @@ export interface SyncResult {
   completedAt: string;
   initiatedBy: string;
   completedBy: string;
+  requestId: string;
 }

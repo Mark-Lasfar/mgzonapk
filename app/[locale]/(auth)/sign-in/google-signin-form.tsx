@@ -1,21 +1,24 @@
-'use client'
-import { useFormStatus } from 'react-dom'
+'use client';
 
-import { Button } from '@/components/ui/button'
-import { SignInWithGoogle } from '@/lib/actions/user.actions'
+import { signIn } from 'next-auth/react';
+import { Button } from '@/components/ui/button';
 
 export function GoogleSignInForm() {
-  const SignInButton = () => {
-    const { pending } = useFormStatus()
-    return (
-      <Button disabled={pending} className='w-full' variant='outline'>
-        {pending ? 'Redirecting to Google...' : 'Sign In with Google'}
-      </Button>
-    )
-  }
+  const handleGoogleSignIn = async () => {
+    try {
+      await signIn('google', { callbackUrl: '/' });
+    } catch (error) {
+      console.error('خطأ في تسجيل الدخول بجوجل:', error);
+    }
+  };
+
   return (
-    <form action={SignInWithGoogle}>
-      <SignInButton />
-    </form>
-  )
+    <Button
+      className="w-full"
+      variant="outline"
+      onClick={handleGoogleSignIn}
+    >
+      Sign In with Google
+    </Button>
+  );
 }

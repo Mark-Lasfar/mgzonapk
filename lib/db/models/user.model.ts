@@ -18,6 +18,9 @@ export interface IUser extends Document, IUserInput {
   pointsBalance: number;
   createdAt: Date;
   updatedAt: Date;
+  email: string;
+  pushToken?: string;
+  whatsapp?: string;
 }
 
 const userSchema = new Schema<IUser>(
@@ -30,11 +33,14 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Please enter a valid email address'],
     },
+
     name: {
       type: String,
       required: [true, 'Name is required'],
       trim: true,
       minlength: [2, 'Name must be at least 2 characters'],
+
+      phone: { type: String, required: false },
     },
     role: {
       type: String,
@@ -57,6 +63,8 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
+  pushToken: { type: String },
+  whatsapp: { type: String },
     isActive: {
       type: Boolean,
       default: true,
@@ -151,6 +159,7 @@ const userSchema = new Schema<IUser>(
       type: String,
       trim: true,
       match: [/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, 'Please enter a valid phone number'],
+      required: true,
     },
     locale: {
       type: String,

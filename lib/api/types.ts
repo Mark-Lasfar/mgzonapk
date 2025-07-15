@@ -30,11 +30,19 @@ export interface IProductInput {
   listPrice: number;
   countInStock: number;
   tags: string[];
-  sizes: Array<{
-    name: string;
+  sizes: string[];
+  numReviews: number;
+  avgRating: number;
+  numSales: number;
+  weight: number;
+  volume: number;
+  warehouse: {
+    lat: number;
+    lon: number;
     quantity: number;
     inStock: boolean;
-  }>;
+    sku: string;
+  };
   colors: Array<{
     name: string;
     hex: string;
@@ -47,7 +55,7 @@ export interface IProductInput {
   }>;
   warehouseData: Array<{
     warehouseId: string;
-    provider: 'ShipBob' | '4PX';
+    provider: string;
     sku: string;
     quantity: number;
     location: string;
@@ -75,6 +83,7 @@ export interface IProductInput {
     profit: number;
     commission: number;
     finalPrice: number;
+    currency: string; // دعم أي عملة (ISO 4217 code)
     discount?: {
       type: 'none' | 'percentage' | 'fixed';
       value: number;
@@ -154,25 +163,55 @@ export interface WebhookConfig {
   lastTriggered?: Date;
   lastError?: string;
   retryCount: number;
+
+  headers?: Record<string, string>;
+  updatedAt?: Date;
+
+
 }
 
-export type WebhookEvent =
-  | 'order.created'
-  | 'order.updated'
-  | 'order.fulfilled'
-  | 'order.cancelled'
-  | 'product.created'
-  | 'product.updated'
-  | 'product.deleted'
-  | 'inventory.updated'
-  | 'customer.created'
-  | 'customer.updated'
-  | 'withdrawal.created'
-  | 'withdrawal.updated'
-  | 'seller.registered'
-  | 'seller.updated';
+export interface FulfillmentOrder {
+  orderId: string;
+  trackingNumber: string;
+  carrier: string;
+}
 
-export type FulfillmentProvider = 'shipbob' | 'amazon' | 'aliexpress' | '4px';
+
+export type WebhookEvent =
+  | 'order created'
+  | 'order fulfilled'
+  | 'order cancelled'
+  | 'order payment completed'
+  | 'order shipment updated'
+  | 'order updated'
+  | 'payment succeeded'
+  | 'shipment updated'
+  | 'tax transaction created'
+  | 'tax report created'
+  | 'product created'
+  | 'product updated'
+  | 'product deleted'
+  | 'product imported'
+  | 'product synced'
+  | 'inventory updated'
+  | 'customer created'
+  | 'customer updated'
+  | 'withdrawal created'
+  | 'withdrawal updated'
+  | 'seller registered'
+  | 'seller updated'
+  | 'campaign updated'
+  | 'ad performance updated'
+  | 'transaction recorded'
+  | 'analytics updated'
+  | 'automation triggered'
+  | 'message sent'
+  | 'course updated'
+  | 'security alert'
+
+  
+  export type FulfillmentProvider = string;
+
 
 export interface FulfillmentConfig {
   provider: FulfillmentProvider;
@@ -236,7 +275,7 @@ export type FulfillmentStatus =
   | 'cancelled'
   | 'failed';
 
-export type PaymentMethod = 'stripe' | 'paypal' | 'bank_transfer';
+  export type PaymentMethod = string;
 
 export interface Notification {
   type: string;
@@ -280,10 +319,64 @@ export interface WarehouseProduct {
   name: string;
   quantity: number;
   location: string;
+  totalCount: number;
+  outOfStockCount: number;
+
+}
+
+export interface CreateProductRequest {
+  name: string;
+  description: string;
+  price: number;
+  currency: string;
+  images?: string[];
+  sku?: string;
+}
+
+
+export interface UpdateProductRequest {
+  name?: string;
+  description?: string;
+  price?: number;
+  images?: string[];
+  sku?: string;
+}
+
+
+export interface CreateShipmentRequest {
+  orderId: string;
+  destination: {
+    countryCode: string;
+    postalCode: string;
+    state?: string;
+    city: string;
+    street: string;
+  };
 }
 
 export interface ShipmentStatus {
   status: string;
   trackingNumber: string;
   estimatedDelivery?: string;
+  trackingId: string;
+  statusDetails?: string;
+
+}
+export interface ApiKeyRequest {
+  name: string;
+  permissions?: ApiPermission[];
+  expiresAt?: Date;
+}
+export interface ApiKeyResponse {
+  key: string;
+  secret: string;
+  name: string;
+  permissions: ApiPermission[];
+  expiresAt?: Date;
+  createdAt: Date;
+  updatedAt: Date;
+  isActive: boolean;
+  lastUsed?: Date;
+  userId: string;
+  id: string; // Assuming this is the MongoDB ObjectId
 }

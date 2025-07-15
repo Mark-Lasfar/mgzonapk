@@ -85,7 +85,12 @@ const CartSchema: Schema<ICart> = new Schema(
 );
 
 CartSchema.pre('save', function (next) {
-  this.total = this.items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  this.total = this.items.reduce((sum, item) => {
+    if (!item.price || !item.quantity) {
+      throw new Error('Invalid cart item: price or quantity missing');
+    }
+    return sum + item.price * item.quantity;
+  }, 0);
   next();
 });
 

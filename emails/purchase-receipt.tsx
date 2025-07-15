@@ -12,15 +12,14 @@ import {
   Section,
   Tailwind,
   Text,
-} from '@react-email/components'
-
-import { formatCurrency } from '@/lib/utils'
-import { IOrder } from '@/lib/db/models/order.model'
-import { getSetting } from '@/lib/actions/setting.actions'
+} from '@react-email/components';
+import { formatCurrency } from '@/lib/utils';
+import { IOrder } from '@/lib/db/models/order.model';
 
 type OrderInformationProps = {
-  order: IOrder
-}
+  order: IOrder;
+  siteUrl: string;
+};
 
 PurchaseReceiptEmail.PreviewProps = {
   order: {
@@ -61,13 +60,12 @@ PurchaseReceiptEmail.PreviewProps = {
     expectedDeliveryDate: new Date(),
     isDelivered: true,
   } as IOrder,
-} satisfies OrderInformationProps
-const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' })
+  siteUrl: 'https://hager-zon.vercel.app',
+} satisfies OrderInformationProps;
 
-export default async function PurchaseReceiptEmail({
-  order,
-}: OrderInformationProps) {
-  const { site } = await getSetting()
+const dateFormatter = new Intl.DateTimeFormat('en', { dateStyle: 'medium' });
+
+export default function PurchaseReceiptEmail({ order, siteUrl }: OrderInformationProps) {
   return (
     <Html>
       <Preview>View order receipt</Preview>
@@ -106,28 +104,24 @@ export default async function PurchaseReceiptEmail({
               {order.items.map((item) => (
                 <Row key={item.product} className="mt-8">
                   <Column className="w-20">
-                    <Link href={`${site.url}/product/${item.slug}`}>
+                    <Link href={`${siteUrl}/product/${item.slug}`}>
                       <Img
                         width="80"
                         alt={item.name}
                         className="rounded"
-                        src={
-                          item.image.startsWith('/')
-                            ? `${site.url}${item.image}`
-                            : item.image
-                        }
+                        src={item.image.startsWith('/') ? `${siteUrl}${item.image}` : item.image}
                       />
                     </Link>
                   </Column>
                   <Column className="align-top">
-                    <Link href={`${site.url}/product/${item.slug}`}>
+                    <Link href={`${siteUrl}/product/${item.slug}`}>
                       <Text className="mx-2 my-0">
                         {item.name} x {item.quantity}
                       </Text>
                     </Link>
                   </Column>
                   <Column align="right" className="align-top">
-                    <Text className="m-0 ">{formatCurrency(item.price)}</Text>
+                    <Text className="m-0">{formatCurrency(item.price)}</Text>
                   </Column>
                 </Row>
               ))}
@@ -149,5 +143,5 @@ export default async function PurchaseReceiptEmail({
         </Body>
       </Tailwind>
     </Html>
-  )
+  );
 }

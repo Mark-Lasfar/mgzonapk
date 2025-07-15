@@ -1,36 +1,88 @@
 'use server'
 
-import { connectToDatabase } from '@/lib/db'
+// import { ShipBobService } from "../api/integrations/shipbob/service"
+// import { WarehouseProvider } from "../api/types"
+// import { ShipBobService } from "../services/warehouse/shipbob"
+import { ProductInputSchema, ProductUpdateSchema } from '@/lib/validator/product.validator';
+// import { connectToDatabase } from '@/lib/db'
 import Product, { IProduct } from '@/lib/db/models/product.model'
 import Seller from '@/lib/db/models/seller.model'
 import { revalidatePath } from 'next/cache'
-import { formatError } from '../utils'
+// import { formatError } from '../utils'
 import { auth } from '@/auth'
+// import { ProductImportService } from '@/lib/api/services/product-import';
 import { getSetting } from './setting.actions'
-import mongoose from 'mongoose'
-import { updateSellerMetrics, getSellerByUserId } from './seller.actions'
-import { updateWarehouseStock } from './warehouse.actions'
-import { z } from 'zod'
-import { ProductInputSchema, ProductUpdateSchema } from '../validator/product.validator'
-import { WarehouseProvider } from '../services/warehouse/types'
-import { ShipBobService } from '../services/warehouse/shipbob'
-import { FourPXService } from '../services/warehouse/fourpx'
+// import mongoose from 'mongoose'
+// import { updateSellerMetrics, getSellerByUserId } from './seller.actions'
+// import { updateWarehouseStock } from './warehouse.actions'
+// import { z } from 'zod'
+// import { ProductInputSchema, ProductUpdateSchema } from '../validator/product.validator'
+// import { WarehouseProvider } from '../services/warehouse/types'
+// import { ShipBobService } from '../services/warehouse/shipbob'
+// import { FourPXService } from '../services/warehouse/fourpx'
 import { triggerWebhook } from './webhook.actions'
 import { sendNotification } from '../utils/notification'
 import { checkSubscription } from '../cron/subscription-check'
-import { Parser } from 'json2csv'
+// import { Parser } from 'json2csv'
+// import { ShipHeroService } from '../api/integrations/shiphero/service'
+
+import { DynamicIntegrationService } from '@/lib/services/integrations';
 
 // إعدادات مزودي المستودعات
-const warehouseProviders: { [key: string]: WarehouseProvider } = {
-  ShipBob: new ShipBobService({
-    apiKey: process.env.SHIPBOB_API_KEY!,
-    apiUrl: process.env.SHIPBOB_API_URL!,
-  }),
-  '4PX': new FourPXService({
-    apiKey: process.env.FOURPX_API_KEY!,
-    apiUrl: process.env.FOURPX_API_URL!,
-  }),
-}
+// import { ShipBobService } from '@/lib/api/integrations/shipbob/service';
+// import { WarehouseProvider } from '../api/types';
+import { ShipHeroService } from '../api/integrations/shiphero/service';
+// import { FourPXService } from '../services/warehouse/fourpx';
+import { ShipBobService } from '../services/warehouse/shipbob';
+// import { WarehouseProvider } from '../services/warehouse/types';
+// import { WarehouseProvider } from '/types';
+// import { connectToDatabase, getCurrentUserInfo, validateSeller, updateWarehouseStock, updateSellerMetrics, triggerWebhook, sendNotification, logOperation, revalidatePath } from '../utils';
+
+
+
+import { z } from 'zod';
+import { connectToDatabase } from '@/lib/db';
+// import { ProductInputSchema, ProductUpdateSchema } from '@/lib/validator/product.validator';
+// import { Product } from '@/lib/db/models';
+// import { getSellerByUserId, updateSellerMetrics } from '@/lib/seller.actions';
+// import { checkSubscription } from '@/lib/cron/subscription';
+// import { sendNotification } from '@/lib/notification';
+// import { triggerWebhook } from '@/lib/webhook';
+// import { auth } from '@/lib/auth';
+// import { revalidatePath } from 'pathify';
+// import { ShipBobService } from '@/lib/services/shipbob';
+// import { FourPXService } from '@/lib/services/fourpx';
+// import { ShipHeroService } from '@/lib/services/shiphero';
+// import { updateWarehouseStock } from '@/lib/warehouse.actions';
+import mongoose from 'mongoose';
+import { formatError } from '@/lib/utils';
+import { ProductImportService } from '../api/services/product-import'
+import { getSellerByUserId, updateSellerMetrics } from './seller.actions'
+import { updateWarehouseStock } from './warehouse.actions';
+import SellerIntegration from '../db/models/seller-integration.model';
+// import { warehouseProviders } from '@/lib/warehouse';
+// // import { IProduct } from '@/lib/models/product';
+
+// const warehouseProviders: { [key: string]: WarehouseProvider } = {
+//   ShipBob: new ShipBobService({
+//     clientId: process.env.SHIPBOB_CLIENT_ID!,
+//     clientSecret: process.env.SHIPBOB_CLIENT_SECRET!,
+//     redirectUri: process.env.SHIPBOB_REDIRECT_URI!,
+//     channelId: process.env.SHIPBOB_CHANNEL_ID!,
+//     apiUrl: process.env.SHIPBOB_API_URL!,
+//   }),
+//   '4PX': new FourPXService({
+//     clientId: process.env.FOURPX_CLIENT_ID!,
+//     clientSecret: process.env.FOURPX_CLIENT_SECRET!,
+//     redirectUri: process.env.FOURPX_REDIRECT_URI!,
+//     apiUrl: process.env.FOURPX_API_URL!,
+//   }),
+//   ShipHero: new ShipHeroService({
+//     clientId: process.env.SHIPHERO_CLIENT_ID!,
+//     clientSecret: process.env.SHIPHERO_CLIENT_SECRET!,
+//     apiUrl: process.env.SHIPHERO_API_URL!,
+//   }),
+// };
 
 // أنواع البيانات
 type ProductSortOption =
@@ -41,14 +93,14 @@ type ProductSortOption =
   | 'avg-customer-review'
 
 interface ProductQueryFilters {
-  search?: string
-  category?: string
-  tag?: string
-  minPrice?: number
-  maxPrice?: number
-  rating?: number
-  status?: 'active' | 'draft' | 'pending' | 'rejected'
-  stock?: number
+  search?: string;
+  category?: string;
+  tag?: string;
+  minPrice?: number;
+  maxPrice?: number;
+  rating?: number;
+  status?: 'active' | 'draft' | 'pending' | 'rejected';
+  stock?: number;
 }
 
 interface ProductListResponse {
@@ -69,16 +121,15 @@ interface ProductResponse {
 
 // دوال مساعدة
 async function getCurrentUserInfo() {
-  const session = await auth()
-  if (!session?.user?.id) {
-    throw new Error('Unauthorized')
-  }
+  const session = await auth();
+  if (!session?.user?.id) throw new Error('Unauthorized');
   return {
     userId: session.user.id,
     userName: session.user.name || session.user.email || session.user.id,
-    userRole: session.user.role || 'user',
-  }
+    userRole: session.user.role || '`User`',
+  };
 }
+
 
 async function logOperation(operation: string, details: any) {
   const { userName } = await getCurrentUserInfo()
@@ -191,207 +242,215 @@ export async function getAllProductsForAdmin({
       to: 0,
     }
   }
-}
 
+}
 // إنشاء منتج جديد
-export async function createProduct(data: z.infer<typeof ProductInputSchema>): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+export async function createProduct(data: z.infer<typeof ProductInputSchema>, providerId?: string, productId?: string): Promise<ProductResponse> {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName, userRole } = await getCurrentUserInfo()
-    const creationTime = new Date()
+    const { userId, userName, userRole } = await getCurrentUserInfo();
+    const creationTime = new Date();
 
     if (userRole !== 'SELLER' && userRole !== 'Admin') {
-      throw new Error('Only sellers and admins can create products')
+      throw new Error('Only sellers and admins can create products');
     }
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    // التحقق من البائع (للبائعين فقط)
-    let seller = null
+    let seller = null;
     if (userRole === 'SELLER') {
-      seller = await validateSeller(userId)
+      seller = await validateSeller(userId);
       await logOperation('Creating Product', {
         name: data.name,
         seller: seller.businessName,
-      })
+      });
     } else {
       await logOperation('Creating Product (Admin)', {
         name: data.name,
         admin: userName,
-      })
+      });
     }
 
-    // التحقق من البيانات
-    const validatedData = ProductInputSchema.parse({
-      ...data,
-      sellerId: seller ? seller._id : undefined,
-    })
-
-    const existingProduct = await Product.findOne({ slug: validatedData.slug }).session(session)
-    if (existingProduct) {
-      throw new Error('This slug already exists')
-    }
-
-    // التحقق من مزود المستودع
-    const provider = warehouseProviders[validatedData.warehouse.provider]
-    if (!provider) {
-      throw new Error('Invalid warehouse provider')
-    }
-
-    const warehouseResponse = await provider.createProduct({
-      sku: validatedData.warehouse.sku,
-      name: validatedData.name,
-      description: validatedData.description,
-      quantity: validatedData.warehouseData[0]?.quantity || 0,
-      dimensions: validatedData.warehouse.dimensions,
-      weight: validatedData.warehouse.weight,
-    })
-
-    // معالجة بيانات المستودع
-    const processedWarehouseData = validatedData.warehouseData.map((warehouse) => {
-      const totalQuantity = warehouse.colors?.reduce((total, color) => {
-        const colorTotal = color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0
-        color.quantity = colorTotal
-        color.inStock = colorTotal > 0
-        return total + colorTotal
-      }, 0) || warehouse.quantity
-
-      return {
-        ...warehouse,
-        quantity: totalQuantity,
-        lastUpdated: creationTime,
+    let productData: any;
+    if (providerId && productId) {
+      // استيراد منتج عبر الدروب شيبنج
+      const importService = new ProductImportService();
+      const importedProduct = await importService.importProduct(providerId, productId, seller ? seller._id.toString() : userId, data.region);
+      productData = {
+        ...importedProduct,
+        sellerId: seller ? seller._id : null,
+        createdBy: userName,
         updatedBy: userName,
+        createdAt: creationTime,
+        updatedAt: creationTime,
+      };
+    } else {
+      // إنشاء منتج يدوياً
+      const validatedData = (await ProductInputSchema()).parse({
+        ...data,
+        sellerId: seller ? seller._id : undefined,
+      });
+
+      const existingProduct = await Product.findOne({ slug: validatedData.slug }).session(session);
+      if (existingProduct) {
+        throw new Error('This slug already exists');
       }
-    })
 
-    const totalStock = processedWarehouseData.reduce((sum, warehouse) => sum + warehouse.quantity, 0)
+      const provider = warehouseProviders[validatedData.warehouse.provider];
+      if (!provider) {
+        throw new Error('Invalid warehouse provider');
+      }
 
-    // دمج الألوان
-    const combinedColors = processedWarehouseData.reduce((allColors: any[], warehouse) => {
-      if (warehouse.colors) {
-        warehouse.colors.forEach((warehouseColor) => {
-          const existingColor = allColors.find((c) => c.name === warehouseColor.name)
-          if (existingColor) {
-            existingColor.quantity += warehouseColor.quantity
-            existingColor.inStock = existingColor.quantity > 0
-            if (warehouseColor.sizes) {
-              warehouseColor.sizes.forEach((warehouseSize) => {
-                const existingSize = existingColor.sizes.find((s) => s.name === warehouseSize.name)
-                if (existingSize) {
-                  existingSize.quantity += warehouseSize.quantity
-                  existingSize.inStock = existingSize.quantity > 0
-                } else {
-                  existingColor.sizes.push({ ...warehouseSize })
-                }
-              })
+      const warehouseResponse = await provider.createProduct({
+        sku: validatedData.warehouse.sku,
+        name: validatedData.name,
+        description: validatedData.description,
+        quantity: validatedData.warehouseData[0]?.quantity || 0,
+        dimensions: validatedData.warehouse.dimensions,
+        weight: validatedData.warehouse.weight,
+      });
+
+      const processedWarehouseData = validatedData.warehouseData.map((warehouse) => {
+        const totalQuantity = warehouse.colors?.reduce((total, color) => {
+          const colorTotal = color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0;
+          color.quantity = colorTotal;
+          color.inStock = colorTotal > 0;
+          return total + colorTotal;
+        }, 0) || warehouse.quantity;
+
+        return {
+          ...warehouse,
+          quantity: totalQuantity,
+          lastUpdated: creationTime,
+          updatedBy: userName,
+        };
+      });
+
+      const totalStock = processedWarehouseData.reduce((sum, warehouse) => sum + warehouse.quantity, 0);
+
+      const combinedColors = processedWarehouseData.reduce((allColors: any[], warehouse) => {
+        if (warehouse.colors) {
+          warehouse.colors.forEach((warehouseColor) => {
+            const existingColor = allColors.find((c) => c.name === warehouseColor.name);
+            if (existingColor) {
+              existingColor.quantity += warehouseColor.quantity;
+              existingColor.inStock = existingColor.quantity > 0;
+              if (warehouseColor.sizes) {
+                warehouseColor.sizes.forEach((warehouseSize) => {
+                  const existingSize = existingColor.sizes.find((s) => s.name === warehouseSize.name);
+                  if (existingSize) {
+                    existingSize.quantity += warehouseSize.quantity;
+                    existingSize.inStock = existingSize.quantity > 0;
+                  } else {
+                    existingColor.sizes.push({ ...warehouseSize });
+                  }
+                });
+              }
+            } else {
+              allColors.push({
+                ...warehouseColor,
+                sizes: warehouseColor.sizes ? [...warehouseColor.sizes] : [],
+              });
             }
-          } else {
-            allColors.push({
-              ...warehouseColor,
-              sizes: warehouseColor.sizes ? [...warehouseColor.sizes] : [],
-            })
-          }
-        })
-      }
-      return allColors
-    }, [])
+          });
+        }
+        return allColors;
+      }, []);
 
-    // حساب التسعير
-    const basePrice = Number(validatedData.price)
-    const markup = Number(validatedData.pricing?.markup || 30)
-    const commission = seller ? (seller.subscription.features?.commission || 3) : 0
-    const markupAmount = basePrice * (markup / 100)
-    const commissionAmount = basePrice * (commission / 100)
+      const basePrice = Number(validatedData.price);
+      const markup = Number(validatedData.pricing?.markup || 30);
+      const commission = seller ? (seller.subscription.features?.commission || 3) : 0;
+      const markupAmount = basePrice * (markup / 100);
+      const commissionAmount = basePrice * (commission / 100);
 
-    // إعداد بيانات المنتج
-    const productData = {
-      ...validatedData,
-      name: validatedData.name.trim(),
-      slug: validatedData.slug.trim(),
-      category: validatedData.category.trim(),
-      brand: validatedData.brand.trim(),
-      description: validatedData.description.trim(),
-      price: basePrice,
-      listPrice: Number(validatedData.listPrice) || basePrice,
-      countInStock: totalStock,
-      warehouseData: processedWarehouseData,
-      warehouse: {
-        ...validatedData.warehouse,
-        externalId: warehouseResponse.id,
-      },
-      colors: combinedColors,
-      sizes: validatedData.sizes || ['S', 'M', 'L', 'XL', 'XXL'],
-      isPublished: validatedData.isPublished || false,
-      sellerId: seller ? seller._id : null,
-      seller: seller
-        ? {
-            name: seller.businessName,
-            email: seller.email,
-            subscription: seller.subscription.plan,
-          }
-        : undefined,
-      pricing: {
-        basePrice,
-        markup,
-        profit: markupAmount - commissionAmount,
-        commission: commissionAmount,
-        finalPrice: basePrice + markupAmount,
-        discount: validatedData.pricing?.discount,
-      },
-      metrics: {
-        views: 0,
-        sales: 0,
-        revenue: 0,
-        returns: 0,
-        rating: 0,
-      },
-      status: validatedData.isPublished ? 'pending' : 'draft',
-      inventoryStatus:
-        totalStock === 0
-          ? 'OUT_OF_STOCK'
-          : totalStock <= Math.min(...processedWarehouseData.map((wh) => wh.minimumStock || 0))
-          ? 'LOW_STOCK'
-          : 'IN_STOCK',
-      createdBy: userName,
-      updatedBy: userName,
-      createdAt: creationTime,
-      updatedAt: creationTime,
+      productData = {
+        ...validatedData,
+        name: validatedData.name.trim(),
+        slug: validatedData.slug.trim(),
+        category: validatedData.category.trim(),
+        brand: validatedData.brand.trim(),
+        description: validatedData.description.trim(),
+        price: basePrice,
+        listPrice: Number(validatedData.listPrice) || basePrice,
+        countInStock: totalStock,
+        warehouseData: processedWarehouseData,
+        warehouse: {
+          ...validatedData.warehouse,
+          externalId: warehouseResponse.id,
+        },
+        colors: combinedColors,
+        sizes: validatedData.sizes || ['S', 'M', 'L', 'XL', 'XXL'],
+        isPublished: validatedData.isPublished || false,
+        sellerId: seller ? seller._id : null,
+        seller: seller
+          ? {
+              name: seller.businessName,
+              email: seller.email,
+              subscription: seller.subscription.plan,
+            }
+          : undefined,
+        pricing: {
+          basePrice,
+          markup,
+          profit: markupAmount - commissionAmount,
+          commission: commissionAmount,
+          finalPrice: basePrice + markupAmount,
+          discount: validatedData.pricing?.discount,
+        },
+        metrics: {
+          views: 0,
+          sales: 0,
+          revenue: 0,
+          returns: 0,
+          rating: 0,
+        },
+        status: validatedData.isPublished ? 'pending' : 'draft',
+        inventoryStatus:
+          totalStock === 0
+            ? 'OUT_OF_STOCK'
+            : totalStock <= Math.min(...processedWarehouseData.map((wh) => wh.minimumStock || 0))
+            ? 'LOW_STOCK'
+            : 'IN_STOCK',
+        createdBy: userName,
+        updatedBy: userName,
+        createdAt: creationTime,
+        updatedAt: creationTime,
+      };
     }
 
-    const product = await Product.create([productData], { session })
-    const createdProduct = product[0]
+    const product = await Product.create([productData], { session });
+    const createdProduct = product[0];
 
-    // تحديث المستودع
-    await Promise.all(
-      processedWarehouseData.map((warehouse) =>
-        updateWarehouseStock({
-          productId: createdProduct._id,
-          warehouseId: warehouse.warehouseId,
-          quantity: warehouse.quantity,
-          sku: warehouse.sku,
-          location: warehouse.location,
-          minimumStock: warehouse.minimumStock,
-          reorderPoint: warehouse.reorderPoint,
-          colors: warehouse.colors,
-          updatedBy: userName,
-        })
-      )
-    )
+    if (!providerId) {
+      await Promise.all(
+        productData.warehouseData.map((warehouse: any) =>
+          updateWarehouseStock({
+            productId: createdProduct._id,
+            warehouseId: warehouse.warehouseId,
+            quantity: warehouse.quantity,
+            sku: warehouse.sku,
+            location: warehouse.location,
+            minimumStock: warehouse.minimumStock,
+            reorderPoint: warehouse.reorderPoint,
+            colors: warehouse.colors,
+            updatedBy: userName,
+          })
+        )
+      );
+    }
 
-    // تحديث مقاييس البائع (للبائعين فقط)
     if (seller) {
       await updateSellerMetrics({
         sellerId: seller._id,
         updates: {
           productsCount: 1,
           lastProductCreated: creationTime,
-        }
-      })
+        },
+      });
     }
 
-    // إطلاق webhook
     await triggerWebhook({
       event: 'product.created',
       payload: {
@@ -400,9 +459,8 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>): P
         sellerId: seller ? seller._id : null,
         createdAt: creationTime,
       },
-    })
+    });
 
-    // إرسال إشعار
     await sendNotification({
       userId: seller ? seller._id.toString() : userId,
       type: 'product_created',
@@ -410,298 +468,330 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>): P
       message: `Product "${createdProduct.name}" has been created successfully${seller ? ' and is awaiting review' : ''}.`,
       channels: ['email', 'in_app'],
       data: { productId: createdProduct._id },
-    })
+    });
 
-    await session.commitTransaction()
+    await session.commitTransaction();
 
-    revalidatePath('/seller/dashboard/products')
-    revalidatePath('/admin/products')
-    revalidatePath(`/product/${createdProduct.slug}`)
+    revalidatePath('/seller/dashboard/products');
+    revalidatePath('/admin/products');
+    revalidatePath(`/product/${createdProduct.slug}`);
 
     await logOperation('Product Created Successfully', {
       productId: createdProduct._id,
       name: createdProduct.name,
-      totalStock,
+      totalStock: createdProduct.countInStock,
       colorsCount: createdProduct.colors.length,
       createdBy: userName,
-    })
+    });
 
     return {
       success: true,
       message: 'Product created successfully',
       data: createdProduct,
-    }
+    };
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Product creation error:', error)
+    await session.abortTransaction();
+    console.error('Product creation error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('slug') ? 'DUPLICATE_SLUG' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
 
 // تحديث منتج
-export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, providerId?: string): Promise<ProductResponse> {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName, userRole } = await getCurrentUserInfo()
-    const updateTime = new Date()
+    const { userId, userName, userRole } = await getCurrentUserInfo();
+    const updateTime = new Date();
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const validatedData = ProductUpdateSchema.parse(data)
+    const validatedData = (await ProductUpdateSchema()).parse(data);
 
-    const existingProduct = await Product.findById(validatedData._id).session(session)
+    const existingProduct = await Product.findById(validatedData._id).session(session);
     if (!existingProduct) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     if (userRole !== 'Admin' && existingProduct.sellerId.toString() !== userId) {
-      throw new Error('Unauthorized')
+      throw new Error('Unauthorized');
     }
 
     if (validatedData.slug !== existingProduct.slug) {
-      const slugExists = await Product.findOne({ slug: validatedData.slug }).session(session)
+      const slugExists = await Product.findOne({ slug: validatedData.slug }).session(session);
       if (slugExists) {
-        throw new Error('This slug already exists')
+        throw new Error('This slug already exists');
       }
     }
 
     const seller = await validateSeller(
       userRole === 'Admin' ? existingProduct.sellerId.toString() : userId
-    )
+    );
 
-    const provider = warehouseProviders[validatedData.warehouse.provider]
-    if (!provider) {
-      throw new Error('Invalid warehouse provider')
-    }
-
-    await provider.updateProduct({
-      externalId: existingProduct.warehouse.externalId,
-      sku: validatedData.warehouse.sku,
-      name: validatedData.name,
-      description: validatedData.description,
-      quantity: validatedData.warehouseData[0]?.quantity || 0,
-      dimensions: validatedData.warehouse.dimensions,
-      weight: validatedData.warehouse.weight,
-    })
-
-    const processedWarehouseData = validatedData.warehouseData.map((warehouse) => {
-      const totalQuantity = warehouse.colors?.reduce((total, color) => {
-        const colorTotal = color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0
-        color.quantity = colorTotal
-        color.inStock = colorTotal > 0
-        return total + colorTotal
-      }, 0) || warehouse.quantity
-
-      return {
-        ...warehouse,
-        quantity: totalQuantity,
-        lastUpdated: updateTime,
-        updatedBy: userName,
+    if (providerId) {
+      // تحديث منتج دروب شيبنج
+      const integration = await SellerIntegration.findOne({ sellerId: seller._id, integrationId: providerId, isActive: true });
+      if (!integration) {
+        throw new Error('Integration not connected');
       }
-    })
-
-    const totalStock = processedWarehouseData.reduce((sum, warehouse) => sum + warehouse.quantity, 0)
-
-    const combinedColors = processedWarehouseData.reduce((allColors: any[], warehouse) => {
-      if (warehouse.colors) {
-        warehouse.colors.forEach((warehouseColor) => {
-          const existingColor = allColors.find((c) => c.name === warehouseColor.name)
-          if (existingColor) {
-            existingColor.quantity += warehouseColor.quantity
-            existingColor.inStock = existingColor.quantity > 0
-            if (warehouseColor.sizes) {
-              warehouseColor.sizes.forEach((warehouseSize) => {
-                const existingSize = existingColor.sizes.find((s) => s.name === warehouseSize.name)
-                if (existingSize) {
-                  existingSize.quantity += warehouseSize.quantity
-                  existingSize.inStock = existingSize.quantity > 0
-                } else {
-                  existingColor.sizes.push({ ...warehouseSize })
-                }
-              })
-            }
-          } else {
-            allColors.push({
-              ...warehouseColor,
-              sizes: warehouseColor.sizes ? [...warehouseColor.sizes] : [],
-            })
-          }
-        })
+      const dynamicService = new DynamicIntegrationService(
+        { _id: providerId, type: 'dropshipping', status: 'connected', providerName: integration.integrationId.providerName, settings: integration.integrationId.settings },
+        integration
+      );
+      await dynamicService.updateProduct(existingProduct.sourceId, {
+        name: validatedData.name,
+        price: validatedData.price,
+        quantity: validatedData.countInStock,
+        sku: validatedData.sku,
+        description: validatedData.description,
+      });
+    } else {
+      // تحديث منتج يدوياً
+      const provider = warehouseProviders[validatedData.warehouse.provider];
+      if (!provider) {
+        throw new Error('Invalid warehouse provider');
       }
-      return allColors
-    }, [])
 
-    let pricing = existingProduct.pricing
-    if (
-      validatedData.price !== existingProduct.price ||
-      validatedData.pricing?.markup !== existingProduct.pricing.markup
-    ) {
-      const basePrice = Number(validatedData.price)
-      const markup = Number(validatedData.pricing?.markup || existingProduct.pricing.markup)
-      const commission = seller.subscription.features?.commission || 3
-      const markupAmount = basePrice * (markup / 100)
-      const commissionAmount = basePrice * (commission / 100)
+      await provider.updateProduct({
+        externalId: existingProduct.warehouse.externalId,
+        sku: validatedData.warehouse.sku,
+        name: validatedData.name,
+        description: validatedData.description,
+        quantity: validatedData.warehouseData[0]?.quantity || 0,
+        dimensions: validatedData.warehouse.dimensions,
+        weight: validatedData.warehouse.weight,
+      });
 
-      pricing = {
-        basePrice,
-        markup,
-        profit: markupAmount - commissionAmount,
-        commission: commissionAmount,
-        finalPrice: basePrice + markupAmount,
-        discount: validatedData.pricing?.discount,
-      }
-    }
+      const processedWarehouseData = validatedData.warehouseData.map((warehouse) => {
+        const totalQuantity = warehouse.colors?.reduce((total, color) => {
+          const colorTotal = color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0;
+          color.quantity = colorTotal;
+          color.inStock = colorTotal > 0;
+          return total + colorTotal;
+        }, 0) || warehouse.quantity;
 
-    const isStockStatusChanged =
-      (existingProduct.countInStock > 0 && totalStock === 0) ||
-      (existingProduct.countInStock === 0 && totalStock > 0)
-
-    const updateData = {
-      ...validatedData,
-      name: validatedData.name.trim(),
-      slug: validatedData.slug.trim(),
-      category: validatedData.category.trim(),
-      brand: validatedData.brand.trim(),
-      description: validatedData.description.trim(),
-      price: Number(validatedData.price),
-      listPrice: Number(validatedData.listPrice) || Number(validatedData.price),
-      countInStock: totalStock,
-      warehouseData: processedWarehouseData,
-      colors: combinedColors,
-      sizes: validatedData.sizes || existingProduct.sizes,
-      pricing,
-      status: validatedData.isPublished
-        ? existingProduct.status === 'active'
-          ? 'active'
-          : 'pending'
-        : 'draft',
-      inventoryStatus:
-        totalStock === 0
-          ? 'OUT_OF_STOCK'
-          : totalStock <= Math.min(...processedWarehouseData.map((wh) => wh.minimumStock || 0))
-          ? 'LOW_STOCK'
-          : 'IN_STOCK',
-      updatedAt: updateTime,
-      updatedBy: userName,
-    }
-
-    const updatedProduct = await Product.findByIdAndUpdate(validatedData._id, updateData, {
-      new: true,
-      session,
-    })
-
-    await Promise.all(
-      processedWarehouseData.map((warehouse) =>
-        updateWarehouseStock({
-          productId: updatedProduct._id,
-          warehouseId: warehouse.warehouseId,
-          quantity: warehouse.quantity,
-          sku: warehouse.sku,
-          location: warehouse.location,
-          minimumStock: warehouse.minimumStock,
-          reorderPoint: warehouse.reorderPoint,
-          colors: warehouse.colors,
+        return {
+          ...warehouse,
+          quantity: totalQuantity,
+          lastUpdated: updateTime,
           updatedBy: userName,
-        })
-      )
-    )
+        };
+      });
 
-    if (isStockStatusChanged) {
-      await updateSellerMetrics({
-        sellerId: seller._id,
-        updates: {
-          action: totalStock === 0 ? 'product_out_of_stock' : 'product_back_in_stock',
+      const totalStock = processedWarehouseData.reduce((sum, warehouse) => sum + warehouse.quantity, 0);
+
+      const combinedColors = processedWarehouseData.reduce((allColors: any[], warehouse) => {
+        if (warehouse.colors) {
+          warehouse.colors.forEach((warehouseColor) => {
+            const existingColor = allColors.find((c) => c.name === warehouseColor.name);
+            if (existingColor) {
+              existingColor.quantity += warehouseColor.quantity;
+              existingColor.inStock = existingColor.quantity > 0;
+              if (warehouseColor.sizes) {
+                warehouseColor.sizes.forEach((warehouseSize) => {
+                  const existingSize = existingColor.sizes.find((s) => s.name === warehouseSize.name);
+                  if (existingSize) {
+                    existingSize.quantity += warehouseSize.quantity;
+                    existingSize.inStock = existingSize.quantity > 0;
+                  } else {
+                    existingColor.sizes.push({ ...warehouseSize });
+                  }
+                });
+              }
+            } else {
+              allColors.push({
+                ...warehouseColor,
+                sizes: warehouseColor.sizes ? [...warehouseColor.sizes] : [],
+              });
+            }
+          });
+        }
+        return allColors;
+      }, []);
+
+      let pricing = existingProduct.pricing;
+      if (
+        validatedData.price !== existingProduct.price ||
+        validatedData.pricing?.markup !== existingProduct.pricing.markup
+      ) {
+        const basePrice = Number(validatedData.price);
+        const markup = Number(validatedData.pricing?.markup || existingProduct.pricing.markup);
+        const commission = seller.subscription.features?.commission || 3;
+        const markupAmount = basePrice * (markup / 100);
+        const commissionAmount = basePrice * (commission / 100);
+
+        pricing = {
+          basePrice,
+          markup,
+          profit: markupAmount - commissionAmount,
+          commission: commissionAmount,
+          finalPrice: basePrice + markupAmount,
+          discount: validatedData.pricing?.discount,
+        };
+      }
+
+      const isStockStatusChanged =
+        (existingProduct.countInStock > 0 && totalStock === 0) ||
+        (existingProduct.countInStock === 0 && totalStock > 0);
+
+      const updateData = {
+        ...validatedData,
+        name: validatedData.name.trim(),
+        slug: validatedData.slug.trim(),
+        category: validatedData.category.trim(),
+        brand: validatedData.brand.trim(),
+        description: validatedData.description.trim(),
+        price: Number(validatedData.price),
+        listPrice: Number(validatedData.listPrice) || Number(validatedData.price),
+        countInStock: totalStock,
+        warehouseData: processedWarehouseData,
+        colors: combinedColors,
+        sizes: validatedData.sizes || existingProduct.sizes,
+        pricing,
+        status: validatedData.isPublished
+          ? existingProduct.status === 'active'
+            ? 'active'
+            : 'pending'
+          : 'draft',
+        inventoryStatus:
+          totalStock === 0
+            ? 'OUT_OF_STOCK'
+            : totalStock <= Math.min(...processedWarehouseData.map((wh) => wh.minimumStock || 0))
+            ? 'LOW_STOCK'
+            : 'IN_STOCK',
+        updatedAt: updateTime,
+        updatedBy: userName,
+      };
+
+      const updatedProduct = await Product.findByIdAndUpdate(validatedData._id, updateData, {
+        new: true,
+        session,
+      });
+
+      await Promise.all(
+        processedWarehouseData.map((warehouse) =>
+          updateWarehouseStock({
+            productId: updatedProduct._id,
+            warehouseId: warehouse.warehouseId,
+            quantity: warehouse.quantity,
+            sku: warehouse.sku,
+            location: warehouse.location,
+            minimumStock: warehouse.minimumStock,
+            reorderPoint: warehouse.reorderPoint,
+            colors: warehouse.colors,
+            updatedBy: userName,
+          })
+        )
+      );
+
+      if (isStockStatusChanged) {
+        await updateSellerMetrics({
+          sellerId: seller._id,
+          updates: {
+            action: totalStock === 0 ? 'product_out_of_stock' : 'product_back_in_stock',
+          },
+        });
+      }
+
+      await triggerWebhook({
+        event: 'product.updated',
+        payload: {
+          productId: updatedProduct._id,
+          name: updatedProduct.name,
+          sellerId: seller._id,
+          updatedAt: updateTime,
         },
-      })
-    }
+      });
 
-    await triggerWebhook({
-      event: 'product.updated',
-      payload: {
+      await sendNotification({
+        userId: seller._id.toString(),
+        type: 'product_updated',
+        title: 'Product Updated',
+        message: `Your product "${updatedProduct.name}" has been updated successfully`,
+        channels: ['email', 'in_app'],
+        priority: 'medium',
+        data: { productId: updatedProduct._id },
+      });
+
+      await session.commitTransaction();
+
+      revalidatePath('/seller/dashboard/products');
+      revalidatePath('/admin/products');
+      revalidatePath(`/product/${updatedProduct.slug}`);
+
+      await logOperation('Product Updated', {
         productId: updatedProduct._id,
         name: updatedProduct.name,
-        sellerId: seller._id,
-        updatedAt: updateTime,
-      },
-    })
+        updatedBy: userName,
+      });
 
-    await sendNotification({
-      userId: seller._id.toString(),
-      type: 'product_updated',
-      title: 'Product Updated',
-      message: `Your product "${updatedProduct.name}" has been updated successfully`,
-      channels: ['email', 'in_app'],
-      priority: 'medium',
-      data: { productId: updatedProduct._id },
-    })
-
-    await session.commitTransaction()
-
-    revalidatePath('/seller/dashboard/products')
-    revalidatePath('/admin/products')
-    revalidatePath(`/product/${updatedProduct.slug}`)
-
-    await logOperation('Product Updated', {
-      productId: updatedProduct._id,
-      name: updatedProduct.name,
-      updatedBy: userName,
-    })
-
-    return {
-      success: true,
-      message: 'Product updated successfully',
-      data: updatedProduct,
+      return {
+        success: true,
+        message: 'Product updated successfully',
+        data: updatedProduct,
+      };
     }
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Product update error:', error)
+    await session.abortTransaction();
+    console.error('Product update error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('slug') ? 'DUPLICATE_SLUG' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
 
 // حذف منتج
 export async function deleteProduct(id: string): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName, userRole } = await getCurrentUserInfo()
+    const { userId, userName, userRole } = await getCurrentUserInfo();
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const product = await Product.findById(id).session(session)
+    const product = await Product.findById(id).session(session);
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     if (userRole !== 'Admin' && product.sellerId.toString() !== userId) {
-      throw new Error('Unauthorized')
+      throw new Error('Unauthorized');
     }
 
-    const provider = warehouseProviders[product.warehouse.provider]
-    if (!provider) {
-      throw new Error('Invalid warehouse provider')
+    if (product.source) {
+      // حذف منتج دروب شيبنج
+      const integration = await SellerIntegration.findOne({ sellerId: product.sellerId, isActive: true });
+      if (integration) {
+        const dynamicService = new DynamicIntegrationService(
+          { _id: integration.integrationId.toString(), type: 'dropshipping', status: 'connected', providerName: integration.integrationId.providerName, settings: integration.integrationId.settings },
+          integration
+        );
+        await dynamicService.deleteProduct(product.sourceId);
+      }
+    } else {
+      const provider = warehouseProviders[product.warehouse.provider];
+      if (!provider) {
+        throw new Error('Invalid warehouse provider');
+      }
+
+      await provider.deleteProduct({
+        externalId: product.warehouse.externalId,
+      });
     }
 
-    await provider.deleteProduct({
-      externalId: product.warehouse.externalId,
-    })
-
-    await Product.findByIdAndDelete(id).session(session)
+    await Product.findByIdAndDelete(id).session(session);
 
     await updateSellerMetrics({
       sellerId: product.sellerId,
@@ -709,7 +799,7 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
         productsCount: -1,
         lastUpdated: new Date(),
       },
-    })
+    });
 
     await triggerWebhook({
       event: 'product.deleted',
@@ -719,7 +809,7 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
         sellerId: product.sellerId,
         deletedAt: new Date(),
       },
-    })
+    });
 
     await sendNotification({
       userId: product.sellerId.toString(),
@@ -731,38 +821,37 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
       },
       channels: ['email', 'in_app'],
       priority: 'high',
-    })
+    });
 
-    await session.commitTransaction()
+    await session.commitTransaction();
 
-    revalidatePath('/seller/dashboard/products')
-    revalidatePath('/admin/products')
-    revalidatePath(`/product/${product.slug}`)
+    revalidatePath('/seller/dashboard/products');
+    revalidatePath('/admin/products');
+    revalidatePath(`/product/${product.slug}`);
 
     await logOperation('Product Deleted', {
       productId: id,
       name: product.name,
       deletedBy: userName,
-    })
+    });
 
     return {
       success: true,
       message: 'Product deleted successfully',
       data: { id },
-    }
+    };
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Product deletion error:', error)
+    await session.abortTransaction();
+    console.error('Product deletion error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
-
 // مراجعة منتج (للمدير فقط)
 export async function reviewProduct(
   productId: string,
@@ -849,33 +938,43 @@ export async function reviewProduct(
   }
 }
 
+
+
 // مزامنة مخزون المنتج
-export async function syncProductInventory(productId: string): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+export async function syncProductInventory(productId: string, providerId?: string): Promise<ProductResponse> {
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName } = await getCurrentUserInfo()
+    const { userId, userName } = await getCurrentUserInfo();
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const product = await Product.findById(productId).session(session)
+    const product = await Product.findById(productId).session(session);
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     if (product.sellerId.toString() !== userId) {
-      throw new Error('Unauthorized to sync this product')
+      throw new Error('Unauthorized to sync this product');
     }
 
-    const provider = warehouseProviders[product.warehouse.provider]
-    if (!provider) {
-      throw new Error('Invalid warehouse provider')
-    }
+    let inventory: any;
+    if (providerId && product.source) {
+      // مزامنة مخزون دروب شيبنج
+      const importService = new ProductImportService();
+      inventory = await importService.syncInventory(product.sourceId, userId, providerId);
+    } else {
+      // مزامنة مخزون المستودع
+      const provider = warehouseProviders[product.warehouse.provider];
+      if (!provider) {
+        throw new Error('Invalid warehouse provider');
+      }
 
-    const inventory = await provider.getInventory({
-      sku: product.warehouse.sku,
-    })
+      inventory = await provider.getInventory({
+        sku: product.warehouse.sku,
+      });
+    }
 
     const processedWarehouseData = product.warehouseData.map((warehouse: any) => {
       if (warehouse.sku === product.warehouse.sku) {
@@ -886,12 +985,12 @@ export async function syncProductInventory(productId: string): Promise<ProductRe
           lastSync: new Date(),
           lastUpdated: new Date(),
           updatedBy: userName,
-        }
+        };
       }
-      return warehouse
-    })
+      return warehouse;
+    });
 
-    const totalStock = processedWarehouseData.reduce((sum: number, warehouse: any) => sum + warehouse.quantity, 0)
+    const totalStock = processedWarehouseData.reduce((sum: number, warehouse: any) => sum + warehouse.quantity, 0);
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
@@ -914,7 +1013,7 @@ export async function syncProductInventory(productId: string): Promise<ProductRe
         updatedBy: userName,
       },
       { new: true, session }
-    )
+    );
 
     await triggerWebhook({
       event: 'product.inventory_synced',
@@ -923,34 +1022,34 @@ export async function syncProductInventory(productId: string): Promise<ProductRe
         totalStock,
         syncedAt: new Date(),
       },
-    })
+    });
 
-    await session.commitTransaction()
+    await session.commitTransaction();
 
-    revalidatePath('/seller/dashboard/products')
-    revalidatePath(`/product/${product.slug}`)
+    revalidatePath('/seller/dashboard/products');
+    revalidatePath(`/product/${product.slug}`);
 
     await logOperation('Product Inventory Synced', {
       productId,
       totalStock,
       updatedBy: userName,
-    })
+    });
 
     return {
       success: true,
       message: 'Inventory synced successfully',
       data: { inventory, totalStock },
-    }
+    };
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Inventory sync error:', error)
+    await session.abortTransaction();
+    console.error('Inventory sync error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
 
@@ -962,30 +1061,30 @@ export async function submitProductReview({
   comment,
   isVerifiedPurchase = false,
 }: {
-  productId: string
-  rating: number
-  title?: string
-  comment?: string
-  isVerifiedPurchase?: boolean
+  productId: string;
+  rating: number;
+  title?: string;
+  comment?: string;
+  isVerifiedPurchase?: boolean;
 }): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName } = await getCurrentUserInfo()
+    const { userId, userName } = await getCurrentUserInfo();
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const product = await Product.findById(productId).session(session)
+    const product = await Product.findById(productId).session(session);
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     const existingReview = product.reviews.find(
       (review: any) => review.user.toString() === userId
-    )
+    );
     if (existingReview) {
-      throw new Error('You have already reviewed this product')
+      throw new Error('You have already reviewed this product');
     }
 
     const review = {
@@ -997,23 +1096,23 @@ export async function submitProductReview({
       isVerifiedPurchase,
       createdAt: new Date(),
       updatedAt: new Date(),
-    }
+    };
 
-    product.reviews.push(review)
+    product.reviews.push(review);
 
-    const totalRatings = product.reviews.reduce((sum: number, r: any) => sum + r.rating, 0)
-    const avgRating = totalRatings / product.reviews.length
+    const totalRatings = product.reviews.reduce((sum: number, r: any) => sum + r.rating, 0);
+    const avgRating = totalRatings / product.reviews.length;
     const ratingDistribution = [1, 2, 3, 4, 5].map((star) => ({
       rating: star,
       count: product.reviews.filter((r: any) => r.rating === star).length,
-    }))
+    }));
 
-    product.avgRating = avgRating
-    product.numReviews = product.reviews.length
-    product.ratingDistribution = ratingDistribution
-    product.metrics.rating = avgRating
+    product.avgRating = avgRating;
+    product.numReviews = product.reviews.length;
+    product.ratingDistribution = ratingDistribution;
+    product.metrics.rating = avgRating;
 
-    await product.save({ session })
+    await product.save({ session });
 
     await sendNotification({
       userId: product.sellerId.toString(),
@@ -1023,7 +1122,7 @@ export async function submitProductReview({
       channels: ['email', 'in_app'],
       priority: 'medium',
       data: { productId },
-    })
+    });
 
     await triggerWebhook({
       event: 'product.review_added',
@@ -1033,49 +1132,49 @@ export async function submitProductReview({
         reviewCount: product.reviews.length,
         createdAt: review.createdAt,
       },
-    })
+    });
 
-    await session.commitTransaction()
+    await session.commitTransaction();
 
-    revalidatePath(`/product/${product.slug}`)
+    revalidatePath(`/product/${product.slug}`);
 
     await logOperation('Product Review Submitted', {
       productId,
       userId,
       rating,
       title,
-    })
+    });
 
     return {
       success: true,
       message: 'Review submitted successfully',
       data: review,
-    }
+    };
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Review submission error:', error)
+    await session.abortTransaction();
+    console.error('Review submission error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
 
 // استرجاع منتج مع تقييماته
 export async function getProductByIdWithReviews(productId: string): Promise<ProductResponse> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const product = await Product.findById(productId)
       .select('-__v')
       .populate('reviews.user', 'name email')
-      .lean()
+      .lean();
 
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     const formattedProduct = {
@@ -1087,33 +1186,33 @@ export async function getProductByIdWithReviews(productId: string): Promise<Prod
         createdAt: review.createdAt ? new Date(review.createdAt).toISOString() : undefined,
         updatedAt: review.updatedAt ? new Date(review.updatedAt).toISOString() : undefined,
       })),
-    }
+    };
 
-    const { userId } = await getCurrentUserInfo()
+    const { userId } = await getCurrentUserInfo();
     await logOperation('Product with Reviews Accessed', {
       productId,
       userId,
-    })
+    });
 
     return {
       success: true,
       message: 'Product retrieved successfully',
       data: formattedProduct,
-    }
+    };
   } catch (error) {
-    console.error('Product retrieval error:', error)
+    console.error('Product retrieval error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   }
 }
 
 // استرجاع فئات المنتجات
 export async function getProductCategories(limit = 4): Promise<any[]> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const categories = await Product.aggregate([
       {
@@ -1156,12 +1255,12 @@ export async function getProductCategories(limit = 4): Promise<any[]> {
           _id: 0,
         },
       },
-    ])
+    ]);
 
-    return categories
+    return categories;
   } catch (error) {
-    console.error('Category retrieval error:', error)
-    return []
+    console.error('Category retrieval error:', error);
+    return [];
   }
 }
 

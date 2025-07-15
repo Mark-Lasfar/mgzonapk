@@ -1,0 +1,25 @@
++--------------+       +------------------+       +-----------------+
+|    Seller    |       | SellerIntegration|       |   Integration   |
++--------------+       +------------------+       +-----------------+
+| _id          |<----->| sellerId        |<----->| _id            |
+| name         |       | integrationId   |       | providerName   |
+| email        |       | isActive        |       | type           |
+| isActive     |       | sandbox         |       | credentials    |
+| storeId      |       | accessToken     |       | oauth          |
+| metrics      |       | refreshToken    |       | webhook        |
+| createdBy    |       | expiresAt       |       | apiEndpoints   |
+| updatedBy    |       | status          |       | settings       |
++--------------+       | connectedBy     |       | logoUrl        |
+                      | connectedByRole |       | description    |
+                      | connectionType  |       | videos         |
+                      | webhook         |       | images         |
+                      | history         |       | articles       |
+                      +------------------+       | buttons        |
+                                               | pricing        |
+                                               | isActive       |
+                                               | sandbox        |
+                                               | autoRegister   |
+                                               | createdBy      |
+                                               | updatedBy      |
+                                               | history        |
+                                               +-----------------+

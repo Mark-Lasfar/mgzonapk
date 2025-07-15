@@ -4,13 +4,16 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 import { Button } from '@/components/ui/button'
-import useSettingStore from '@/hooks/use-setting-store'
+// import useSettingStore from '@/hooks/use-setting-store'
 import { Select, SelectContent, SelectItem, SelectTrigger } from '../ui/select'
 
 import { SelectValue } from '@radix-ui/react-select'
 import { useLocale, useTranslations } from 'next-intl'
-import { usePathname, useRouter } from '@/i18n/routing'
-import { i18n } from '@/i18n-config'
+// import { usePathname, useRouter } from '@/i18n/routing'
+// import { i18n } from '@/i18n-config'
+import useSettingStore from '../../hooks/use-setting-store'
+import i18n from '../../i18n-config'
+import { usePathname, useRouter } from '../../i18n/routing'
 
 export default function Footer() {
   const router = useRouter()
@@ -85,7 +88,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/page/help">{t('Footer.Help')}</Link>
+                <Link href="/docs/support">{t('Footer.Help')}</Link>
               </li>
             </ul>
           </div>
@@ -157,7 +160,7 @@ export default function Footer() {
             {t('Footer.Conditions of Use')}
           </Link>
           <Link href="/page/privacy-policy">{t('Footer.Privacy Notice')}</Link>
-          <Link href="/page/help">{t('Footer.Help')}</Link>
+          <Link href="/docs/support">{t('Footer.Help')}</Link>
         </div>
         <div className="flex justify-center text-sm">
           <p> © {site.copyright}</p>

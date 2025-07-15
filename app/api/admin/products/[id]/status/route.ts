@@ -5,7 +5,8 @@ import Product from '@/lib/db/models/product.model';
 import Seller from '@/lib/db/models/seller.model';
 import { z } from 'zod';
 import { sendNotification } from '@/lib/actions/notification.actions';
-import { ShipBobService } from '@/lib/api/integrations/warehouses/shipbob/service';
+import { ShipBobService } from '@/lib/api/integrations/shipbob/service';
+// import { ShipBobService } from '@/lib/api/integrations/warehouses/shipbob/service';
 
 // Validation schema
 const statusSchema = z.object({
@@ -28,7 +29,7 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     const body = await request.json();
     const { status, reason } = statusSchema.parse(body);
 
-    await connectToDatabase();
+await connectToDatabase();
 
     // Find the product
     const product = await Product.findById(id);

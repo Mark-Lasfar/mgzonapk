@@ -1,4 +1,4 @@
-'use client'
+  'use client'
 
 import { zodResolver } from '@hookform/resolvers/zod'
 import { Calendar, Check, StarIcon, User } from 'lucide-react'
@@ -43,7 +43,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
-import { useToast } from '@/hooks/use-toast'
+// import { useToast } from '@/hooks/use-toast'
 import {
   createUpdateReview,
   getReviewByProductId,
@@ -54,8 +54,9 @@ import RatingSummary from '@/components/shared/product/rating-summary'
 import { IProduct } from '@/types'
 import { Separator } from '@/components/ui/separator'
 import { IReviewDetails } from '@/types'
-import { sendNotification } from '@/lib/utils/notification'
+// import { sendNotification } from '@/lib/utils/notification'
 import Product from '@/lib/db/models/product.model'
+import { useToast } from '@/components/ui/toast'
 
 const reviewFormDefaultValues = {
   title: '',
@@ -64,6 +65,7 @@ const reviewFormDefaultValues = {
 }
 
 export default function ReviewList({
+  
   userId,
   product,
 }: {
@@ -138,19 +140,39 @@ export default function ReviewList({
     }
 
     if (product.sellerId) {
-      await sendNotification({
-        userId: product.sellerId.toString(),
-        type: 'product_reviewed',
-        title: t('NewProductReview'),
-        message: t('ProductReviewMessage', {
-          productName: product.name,
-          rating: values.rating,
-          comment: values.comment,
-        }),
-        channels: ['email', 'in_app', 'whatsapp'],
-        data: { productId: product._id, rating: values.rating, comment: values.comment },
-      })
+      try {
+        const res = await fetch('/api/notifications/send', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: product.sellerId.toString(),
+            type: 'product_reviewed',
+            title: t('NewProductReview'),
+            message: t('ProductReviewMessage', {
+              productName: product.name,
+              rating: values.rating,
+              comment: values.comment,
+            }),
+            channels: ['email', 'in_app', 'whatsapp'],
+            data: {
+              productId: product._id,
+              rating: values.rating,
+              comment: values.comment,
+            },
+          }),
+        });
+    
+        const result = await res.json();
+        if (!result.success) {
+          console.error('Failed to send notification:', result.error);
+        }
+      } catch (error) {
+        console.error('Error sending notification:', error);
+      }
     }
+    
 
     setOpen(false)
     reload()

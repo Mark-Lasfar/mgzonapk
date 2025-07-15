@@ -9,11 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { useToast } from '@/hooks/use-toast'
+// import { useToast } from '@/hooks/use-toast'
 import { formatCurrency } from '@/lib/utils'
-import { syncProductInventory } from '@/lib/actions/warehouse.actions'
+// import { syncProductInventory } from '@/lib/actions/warehouse.actions'
 import Link from 'next/link'
 import { useState } from 'react'
+import { useToast } from '@/components/ui/toast'
+import { syncProductInventory } from '@/lib/actions/product.actions'
 
 interface Warehouse {
   provider: string

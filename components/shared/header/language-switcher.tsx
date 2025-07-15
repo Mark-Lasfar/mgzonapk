@@ -12,11 +12,14 @@ import {
 } from '@/components/ui/dropdown-menu'
 
 import { useLocale } from 'next-intl'
-import { Link, usePathname } from '@/i18n/routing'
-import useSettingStore from '@/hooks/use-setting-store'
-import { i18n } from '@/i18n-config'
+import { Link, usePathname } from '../../../i18n/routing'
+// import useSettingStore from '@/hooks/use-setting-store'
+// import { i18n } from '@/i18n-config'
 import { setCurrencyOnServer } from '@/lib/actions/setting.actions'
 import { ChevronDownIcon } from 'lucide-react'
+import useSettingStore from '../../../hooks/use-setting-store'
+import i18n from '../../../i18n-config'
+// import { Link } from '../../../i18n/routing'
 
 export default function LanguageSwitcher() {
   const { locales } = i18n

@@ -14,9 +14,12 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useToast } from '@/hooks/use-toast'
-import { updateSetting } from '@/lib/actions/setting.actions'
+import { getSetting, updateSetting } from '@/lib/actions/setting.actions'
+import { useToast } from '@/components/ui/toast'
 
+
+
+// تعريف schema الخاص بـ Zod
 const pointsFormSchema = z.object({
   points: z.object({
     earnRate: z.number().min(0, 'Earn rate must be non-negative'),
@@ -31,27 +34,34 @@ const pointsFormSchema = z.object({
 
 type PointsFormValues = z.infer<typeof pointsFormSchema>
 
-export default function PointsForm({ setting }: { setting: any }) {
+// تعريف props المتوقعة
+export default function PointsForm({ points }: { points: any }) {
   const { toast } = useToast()
 
   const form = useForm<PointsFormValues>({
     resolver: zodResolver(pointsFormSchema),
     defaultValues: {
       points: {
-        earnRate: setting.points?.earnRate || 1, // 1 point per $1
-        redeemValue: setting.points?.redeemValue || 0.05, // 1 point = $0.05
+        earnRate: points?.earnRate || 1,
+        redeemValue: points?.redeemValue || 0.05,
         registrationBonus: {
-          buyer: setting.points?.registrationBonus?.buyer || 50,
-          seller: setting.points?.registrationBonus?.seller || 100,
+          buyer: points?.registrationBonus?.buyer || 50,
+          seller: points?.registrationBonus?.seller || 100,
         },
-        sellerPointsPerSale: setting.points?.sellerPointsPerSale || 10,
+        sellerPointsPerSale: points?.sellerPointsPerSale || 10,
       },
     },
   })
 
   const onSubmit = async (data: PointsFormValues) => {
     try {
-      const response = await updateSetting({ points: data.points })
+      // Get current settings and merge with points data
+      const currentSettings = await getSetting();
+      const response = await updateSetting({ 
+        ...currentSettings,
+        ...data.points
+      })
+  
       if (response.success) {
         toast({
           title: 'Success',
@@ -72,6 +82,7 @@ export default function PointsForm({ setting }: { setting: any }) {
       })
     }
   }
+  
 
   return (
     <Card className="mt-8">

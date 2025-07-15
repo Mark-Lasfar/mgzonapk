@@ -1,4 +1,6 @@
-import axios, { AxiosRequestConfig } from 'axios';
+// /lib/api/integrations/common/base-integration.ts
+import axios from 'axios';
+import { AxiosRequestConfig } from 'axios'; // Fixed: Correct import
 import { RateLimiter } from 'limiter';
 import { CacheManager } from './cache-manager';
 
@@ -39,11 +41,11 @@ export abstract class BaseIntegrationService {
     await this.rateLimiter.removeTokens(1);
 
     try {
-      const cacheKey = `${endpoint}:${JSON.stringify(options.data)}`;
+      const cacheKey = `${endpoint}:${JSON.stringify(options.data ?? {})}`;
       const cached = await this.cache.get<T>(cacheKey);
       if (cached) return cached;
 
-      const response = await axios({
+      const response = await axios<T>({
         url: `${this.baseUrl}${endpoint}`,
         method: options.method || 'GET',
         headers: { ...this.headers, ...options.headers },
@@ -51,11 +53,11 @@ export abstract class BaseIntegrationService {
         ...options,
       });
 
-      await this.cache.set(cacheKey, response.data, 300); // Cache for 5 minutes
+      await this.cache.set<T>(cacheKey, response.data, 300); // Cache for 5 minutes
       return response.data;
     } catch (error) {
       console.error(`[${this.constructor.name}] API Error:`, error);
-      throw new Error(`API request failed: ${error.message}`);
+      throw new Error(`API request failed: ${(error as Error).message}`);
     }
   }
 

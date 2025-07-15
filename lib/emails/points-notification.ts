@@ -13,11 +13,11 @@ export async function sendPointsNotification({
   userId: string
   email: string
   points: number
-  type: 'points_earned' | 'points_redeemed'
+  type: 'points.earned' | 'points.redeemed'
   description: string
 }) {
   try {
-    const subject = type === 'points_earned' 
+    const subject = type === 'points.earned' 
       ? `You Earned ${points} Points!` 
       : `You Redeemed ${points} Points`
     
@@ -26,7 +26,7 @@ export async function sendPointsNotification({
         <h2>${subject}</h2>
         <p>Hello,</p>
         <p>${
-          type === 'points_earned'
+          type === 'points.earned'
             ? `You have earned ${points} points for: ${description}`
             : `You have redeemed ${points} points for: ${description}`
         }</p>

@@ -8,9 +8,9 @@ const publicPages = [
   '/search',
   '/sign-in',
   '/sign-up',
-  '/reset-password', // Added for unauthenticated access
-  '/verify-code', // Added for unauthenticated access
-  '/auth/error', // Added for authentication error page
+  '/reset-password',
+  '/verify-code',
+  '/auth/error',
   '/cart',
   '/cart/(.*)',
   '/product/(.*)',
@@ -29,28 +29,47 @@ const intlMiddleware = createMiddleware(routing);
 const { auth } = NextAuth(authConfig);
 
 export default auth((req) => {
+  const { pathname } = req.nextUrl;
+
+  // تخطي الـ API routes والملفات الثابتة
+  if (
+    pathname.startsWith('/api') ||
+    pathname.startsWith('/_next') ||
+    pathname.startsWith('/favicon.ico') ||
+    pathname.match(/\.(png|jpg|jpeg|svg|ico|css|js)$/)
+  ) {
+    return intlMiddleware(req);
+  }
+
   const publicPathnameRegex = RegExp(
     `^(/(${routing.locales.join('|')}))?(${publicPages
       .flatMap((p) => (p === '/' ? ['', '/'] : p))
       .join('|')})/?$`,
     'i'
   );
-  const isPublicPage = publicPathnameRegex.test(req.nextUrl.pathname);
+  const isPublicPage = publicPathnameRegex.test(pathname);
 
-  // Redirect authenticated users from /reset-password and /verify-code
-  if (req.auth && ['/reset-password', '/verify-code'].some((path) => req.nextUrl.pathname.startsWith(`/${routing.locales.join('|')}${path}`) || req.nextUrl.pathname === path)) {
-    console.log(`[Middleware] Authenticated user accessing ${req.nextUrl.pathname}, redirecting to /account`);
+  // إعادة توجيه المستخدمين المسجلين من صفحات معينة
+  if (
+    req.auth &&
+    ['/reset-password', '/verify-code'].some(
+      (path) => pathname.startsWith(`/${routing.locales.join('|')}${path}`) || pathname === path
+    )
+  ) {
+    console.log(`[Middleware] Authenticated user accessing ${pathname}, redirecting to /account`);
     return Response.redirect(new URL(`/${req.nextUrl.locale}/account`, req.nextUrl.origin));
   }
 
+  // السماح بالصفحات العامة
   if (isPublicPage) {
     return intlMiddleware(req);
   }
 
+  // إعادة توجيه لو المستخدم مش مسجل
   if (!req.auth) {
-    console.log(`[Middleware] Unauthenticated access to ${req.nextUrl.pathname}, redirecting to sign-in`);
+    console.log(`[Middleware] Unauthenticated access to ${pathname}, redirecting to sign-in`);
     const newUrl = new URL(
-      `/${req.nextUrl.locale}/sign-in?callbackUrl=${encodeURIComponent(req.nextUrl.pathname)}`,
+      `/${req.nextUrl.locale}/sign-in?callbackUrl=${encodeURIComponent(pathname)}`,
       req.nextUrl.origin
     );
     return Response.redirect(newUrl);

@@ -1,114 +1,92 @@
-// Current Date and Time (UTC - YYYY-MM-DD HH:MM:SS formatted): 2025-04-28 22:56:00
-// Current User's Login: Mark-Lasfar
+import { v2 as cloudinary } from 'cloudinary';
+import { STORAGE_CONFIG } from '@/lib/config/storage.config';
 
-import { v2 as cloudinary } from 'cloudinary'
-import { UploadApiResponse } from 'cloudinary'
-import { createUploadthing, type FileRouter } from 'uploadthing/next'
-
-// Configure Cloudinary
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
-})
+  secure: true,
+});
 
-// Create UploadThing instance
-const f = createUploadthing()
-
-export interface StorageConfig {
-  maxFileSize?: number
-  allowedFileTypes?: string[]
-  folder?: string
-  maxFiles?: number
+interface UploadOptions {
+  folder?: string;
+  public_id?: string;
+  overwrite?: boolean;
+  resource_type?: 'image' | 'video' | 'raw' | 'auto';
+  maxSize?: number;
+  allowedFormats?: string[];
 }
 
-export const uploadRouter = {
-  imageUploader: f({ image: { maxFileSize: '4MB', maxFileCount: 1 } })
-    .middleware(async () => {
-      return { uploadthingToken: process.env.UPLOADTHING_TOKEN }
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      return { uploadedBy: metadata.uploadthingToken, url: file.url }
-    }),
-
-  multiImageUploader: f({ image: { maxFileSize: '16MB', maxFileCount: 4 } })
-    .middleware(async () => {
-      return { uploadthingToken: process.env.UPLOADTHING_TOKEN }
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      return { uploadedBy: metadata.uploadthingToken, url: file.url }
-    }),
-
-  documentUploader: f({ pdf: { maxFileSize: '8MB', maxFileCount: 1 } })
-    .middleware(async () => {
-      return { uploadthingToken: process.env.UPLOADTHING_TOKEN }
-    })
-    .onUploadComplete(async ({ metadata, file }) => {
-      return { uploadedBy: metadata.uploadthingToken, url: file.url }
-    }),
-} satisfies FileRouter
-
-export type OurFileRouter = typeof uploadRouter
-
-export async function uploadToCloudinary(
-  file: File,
-  config: StorageConfig = {}
-): Promise<UploadApiResponse> {
-  const {
-    maxFileSize = 4 * 1024 * 1024, // 4MB default
-    allowedFileTypes = ['image/jpeg', 'image/png', 'image/webp'],
-    folder = 'uploads',
-  } = config
-
-  if (!file) {
-    throw new Error('No file provided')
-  }
-
-  // Validate file size
-  if (file.size > maxFileSize) {
-    throw new Error(`File size exceeds ${maxFileSize / (1024 * 1024)}MB limit`)
-  }
-
-  // Validate file type
-  if (!allowedFileTypes.includes(file.type)) {
-    throw new Error(`File type ${file.type} is not allowed`)
-  }
-
-  // Convert file to base64
-  const base64Data = await fileToBase64(file)
-
+export async function uploadToStorage(
+  file: File | Buffer,
+  path: string,
+  options: UploadOptions = {}
+): Promise<{ secureUrl: string; publicId: string }> {
   try {
-    return await cloudinary.uploader.upload(base64Data, {
-      folder,
-      resource_type: 'auto',
-    })
+    const buffer = file instanceof File ? Buffer.from(await file.arrayBuffer()) : file;
+
+    const maxSize = options.maxSize || STORAGE_CONFIG.image.maxFileSize;
+    if (buffer.length > maxSize) {
+      throw new Error(`File size exceeds ${maxSize / (1024 * 1024)}MB limit`);
+    }
+
+    const allowedFormats = options.allowedFormats || STORAGE_CONFIG.image.allowedTypes;
+    if (file instanceof File && !allowedFormats.includes(file.type)) {
+      throw new Error(`Invalid file type. Allowed types: ${allowedFormats.join(', ')}`);
+    }
+
+    const uploadOptions = {
+      folder: options.folder || STORAGE_CONFIG.products.path,
+      public_id: options.public_id || `${Date.now()}-${path}`,
+      resource_type: options.resource_type || 'auto',
+      overwrite: options.overwrite ?? true,
+      allowed_formats: allowedFormats,
+      transformation: [
+        { quality: STORAGE_CONFIG.image.compressionQuality },
+        { fetch_format: 'auto' },
+        { width: 1200, height: 1200, crop: 'limit' },
+      ],
+    };
+
+    const uploadResult = await new Promise((resolve, reject) => {
+      const uploadStream = cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
+        if (error) reject(error);
+        else resolve(result);
+      });
+      uploadStream.end(buffer);
+    });
+
+    const { secure_url: secureUrl, public_id: publicId } = uploadResult as {
+      secure_url: string;
+      public_id: string;
+    };
+    console.log(`Uploaded file to Cloudinary: ${secureUrl}`);
+    return { secureUrl, publicId };
   } catch (error) {
-    console.error('Cloudinary upload error:', error)
-    throw new Error('Failed to upload file')
+    console.error('Upload error:', error);
+    throw new Error(error instanceof Error ? error.message : 'Failed to upload file');
   }
 }
 
-export async function deleteFromCloudinary(publicId: string): Promise<void> {
+export async function deleteFromStorage(publicId: string): Promise<void> {
   try {
-    await cloudinary.uploader.destroy(publicId)
+    await cloudinary.uploader.destroy(publicId, { invalidate: true });
+    console.log(`Deleted file from Cloudinary: ${publicId}`);
   } catch (error) {
-    console.error('Cloudinary delete error:', error)
-    throw new Error('Failed to delete file')
+    console.error('Delete error:', error);
+    throw new Error(error instanceof Error ? error.message : 'Failed to delete file');
   }
-}
-
-// Helper functions
-async function fileToBase64(file: File): Promise<string> {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader()
-    reader.readAsDataURL(file)
-    reader.onload = () => resolve(reader.result as string)
-    reader.onerror = (error) => reject(error)
-  })
 }
 
 export function getPublicIdFromUrl(url: string): string {
-  const urlParts = url.split('/')
-  const filename = urlParts[urlParts.length - 1]
-  return filename.split('.')[0]
+  const urlParts = url.split('/');
+  const filename = urlParts[urlParts.length - 1].split('.')[0];
+  const folderPath = urlParts.slice(urlParts.indexOf('upload') + 1, -1).join('/');
+  return `${folderPath}/${filename}`;
 }
+
+export const StorageUtils = {
+  uploadToStorage,
+  deleteFromStorage,
+  getPublicIdFromUrl,
+};

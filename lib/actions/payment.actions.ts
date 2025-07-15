@@ -1,117 +1,109 @@
-import { loadStripe } from '@stripe/stripe-js'
-import paypal from '@paypal/rest-sdk'
-import { connectToDatabase } from '@/lib/db'
-import Seller from '@/lib/db/models/seller.model'
-import User from '@/lib/db/models/user.model'
-import { sendNotification } from '@/lib/utils/notification'
-
-paypal.configure({
-  mode: process.env.PAYPAL_MODE || 'sandbox',
-  client_id: process.env.PAYPAL_CLIENT_ID || '',
-  client_secret: process.env.PAYPAL_CLIENT_SECRET || '',
-})
-
-const stripe = await loadStripe(process.env.STRIPE_SECRET_KEY || '')
+import { connectToDatabase } from '@/lib/db';
+import Seller from '@/lib/db/models/seller.model';
+import User from '@/lib/db/models/user.model';
+import Integration from '@/lib/db/models/integration.model';
+import SellerIntegration from '@/lib/db/models/seller-integration.model';
+import { PaymentService, PaymentRequest } from '../api/services/payment';
+import { sendNotification } from '@/lib/utils/notification';
+import { customLogger } from '@/lib/services/logging';
+import { randomUUID } from 'crypto';
 
 interface PaymentOptions {
-  userId: string
-  amount: number
-  currency: string
-  paymentMethod: 'stripe' | 'paypal'
-  description: string
+  userId: string;
+  amount: number;
+  currency: string;
+  paymentMethod: string;
+  paymentGatewayId: string;
+  description: string;
 }
 
 export async function initiatePayment(options: PaymentOptions) {
-  const { userId, amount, currency, paymentMethod, description } = options
+  const { userId, amount, currency, paymentMethod, paymentGatewayId, description } = options;
 
   try {
-    await connectToDatabase()
-    const seller = await Seller.findOne({ userId }).lean()
+    await connectToDatabase();
+    const seller = await Seller.findOne({ userId });
     if (!seller) {
-      throw new Error('Seller not found')
+      throw new Error('Seller not found');
     }
 
-    const user = await User.findById(userId).select('whatsapp').lean()
-    const channels = user?.whatsapp ? ['email', 'in_app', 'whatsapp'] : ['email', 'in_app']
-
-    let redirectUrl: string
-
-    if (paymentMethod === 'stripe') {
-      if (!stripe) {
-        throw new Error('Stripe not initialized')
-      }
-      const session = await stripe.checkout.sessions.create({
-        payment_method_types: ['card'],
-        line_items: [
-          {
-            price_data: {
-              currency,
-              product_data: { name: description },
-              unit_amount: Math.round(amount * 100),
-            },
-            quantity: 1,
-          },
-        ],
-        mode: 'payment',
-        success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/account/subscriptions?success=true`,
-        cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/account/subscriptions?cancelled=true`,
-        metadata: { userId, description },
-      })
-      redirectUrl = session.url || ''
-
-      await sendNotification({
-        userId,
-        type: 'payment_success',
-        title: 'Payment Initiated',
-        message: `Your payment of $${amount} for ${description} has been initiated.`,
-        channels,
-        data: { amount, description },
-      })
-    } else if (paymentMethod === 'paypal') {
-      const createPaymentJson = {
-        intent: 'sale',
-        payer: { payment_method: 'paypal' },
-        redirect_urls: {
-          return_url: `${process.env.NEXT_PUBLIC_BASE_URL}/account/subscriptions?success=true`,
-          cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/account/subscriptions?cancelled=true`,
-        },
-        transactions: [
-          {
-            amount: { total: amount.toFixed(2), currency },
-            description,
-          },
-        ],
-      }
-
-      redirectUrl = await new Promise((resolve, reject) => {
-        paypal.payment.create(createPaymentJson, (error, payment) => {
-          if (error) {
-            reject(error)
-          } else {
-            const approvalUrl = payment.links?.find(link => link.rel === 'approval_url')?.href
-            resolve(approvalUrl || '')
-          }
-        })
-      })
-
-      await sendNotification({
-        userId,
-        type: 'payment_success',
-        title: 'Payment Initiated',
-        message: `Your payment of $${amount} for ${description} has been initiated.`,
-        channels,
-        data: { amount, description },
-      })
-    } else {
-      throw new Error('Unsupported payment method')
+    // التحقق من تفعيل الحساب البنكي لبوابة mgpay
+    if (paymentGatewayId === 'mgpay' && !seller.bankInfo?.verified) {
+      throw new Error('Bank account not verified. Please complete your financial profile.');
     }
 
-    return { success: true, data: { redirectUrl } }
+    const user = await User.findById(userId).select('whatsapp').lean();
+    const channels = user?.whatsapp ? ['email', 'in_app', 'whatsapp'] : ['email', 'in_app'];
+
+    const integration = await Integration.findOne({
+      _id: paymentGatewayId,
+      enabledBySellers: userId,
+      type: 'payment',
+      isActive: true,
+      status: 'connected',
+    });
+
+    const sellerIntegration = await SellerIntegration.findOne({
+      sellerId: seller._id,
+      integrationId: paymentGatewayId,
+      status: 'connected',
+      isActive: true,
+    });
+
+    const providerName = integration ? integration.providerName : paymentGatewayId === 'mgpay' ? 'mgpay' : null;
+    if (!providerName) {
+      throw new Error('Invalid or inactive payment integration');
+    }
+
+    const paymentService = await PaymentService.createFromSellerId(seller._id.toString(), providerName);
+    const paymentRequest: PaymentRequest = {
+      amount,
+      currency,
+      orderId: randomUUID(),
+      customer: {
+        email: seller.email,
+        name: seller.businessName,
+        phone: seller.phone,
+      },
+      metadata: {
+        userId,
+        description,
+      },
+    };
+
+    const paymentResponse = await paymentService.initiatePayment(paymentRequest);
+    if (!paymentResponse.paymentUrl) {
+      throw new Error('No payment URL returned');
+    }
+
+    await sendNotification({
+      userId,
+      type: 'payment.success',
+      title: 'Payment Initiated',
+      message: `Your payment of ${amount} ${currency} for ${description} has been initiated.`,
+      channels,
+      data: { amount, description },
+    });
+
+    await customLogger.info('Payment initiated', {
+      userId,
+      paymentMethod,
+      paymentGatewayId,
+      transactionId: paymentResponse.transactionId,
+    });
+
+    return { success: true, data: { redirectUrl: paymentResponse.paymentUrl } };
   } catch (error) {
-    console.error('Payment initiation error:', error)
+    const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+    await customLogger.error('Payment initiation error', {
+      userId,
+      paymentMethod,
+      paymentGatewayId,
+      error: errorMessage,
+    });
     return {
       success: false,
-      message: error instanceof Error ? error.message : 'Failed to initiate payment',
-    }
+      message: errorMessage,
+    };
   }
 }

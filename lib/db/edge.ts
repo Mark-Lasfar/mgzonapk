@@ -1,87 +1,57 @@
-import { MongoClient } from 'mongodb';
+import mongoose from 'mongoose';
 
-const MONGODB_URI = process.env.MONGODB_URI!;
-const options = {};
+const MONGODB_URI = process.env.MONGODB_URI || '';
 
 if (!MONGODB_URI) {
   throw new Error('Please define the MONGODB_URI environment variable in your .env file');
 }
 
-let clientPromise: Promise<MongoClient>;
-let cachedClient: MongoClient | null = null;
+// Create a global cache for the MongoDB connection
+let cached = global.mongoose as {
+  conn: typeof mongoose | null;
+  promise: Promise<typeof mongoose> | null;
+};
 
-if (process.env.NODE_ENV === 'development') {
-  let globalWithMongo = global as typeof globalThis & {
-    _mongoClientPromise?: Promise<MongoClient>;
-    _mongoClient?: MongoClient;
-  };
-
-  if (!globalWithMongo._mongoClientPromise) {
-    const client = new MongoClient(MONGODB_URI, options);
-    globalWithMongo._mongoClientPromise = client.connect()
-      .then((client) => {
-        globalWithMongo._mongoClient = client;
-        return client;
-      });
-  }
-  clientPromise = globalWithMongo._mongoClientPromise;
-  cachedClient = globalWithMongo._mongoClient || null;
-} else {
-  const client = new MongoClient(MONGODB_URI, options);
-  clientPromise = client.connect();
+if (!cached) {
+  cached = global.mongoose = { conn: null, promise: null };
 }
 
-export async function getMongoClient() {
-  if (cachedClient) {
-    return cachedClient;
+export async function connectToDatabase() {
+  // Return the existing connection if already established
+  if (cached.conn) {
+    console.log('Using existing database connection');
+    return cached.conn;
+  }
+
+  if (!cached.promise) {
+    console.log('Creating a new database connection');
+
+    const opts = {
+      bufferCommands: false, // Disable mongoose buffering
+    };
+
+    // Attempt to connect to MongoDB
+    cached.promise = mongoose.connect(MONGODB_URI, opts).then((connection) => {
+      return connection;
+    });
   }
 
   try {
-    const client = await clientPromise;
-    if (process.env.NODE_ENV === 'development') {
-      cachedClient = client;
-    }
-    return client;
+    cached.conn = await cached.promise;
+    console.log('Successfully connected to the database');
   } catch (error) {
-    console.error('Error connecting to MongoDB:', error);
+    cached.promise = null;
+    console.error('Error connecting to the database:', error);
     throw error;
   }
-}
 
-export async function getCollection(collectionName: string) {
-  const client = await getMongoClient();
-  const db = client.db(process.env.MONGODB_DB_NAME);
-  return db.collection(collectionName);
+  return cached.conn;
 }
-
-export async function checkDatabaseConnection() {
-  try {
-    const client = await getMongoClient();
-    await client.db().command({ ping: 1 });
-    return true;
-  } catch (error) {
-    console.error('Database connection error:', error);
-    return false;
-  }
-}
-
-export function getCurrentContext() {
-  return {
-    timestamp: new Date().toISOString(),
-    user: process.env.CURRENT_USER || 'system',
-  };
-}
-
-export async function closeConnection() {
-  if (cachedClient) {
-    await cachedClient.close();
-    cachedClient = null;
-  }
-}
-
-export type { MongoClient };
 
 declare global {
-  var _mongoClientPromise: Promise<MongoClient>;
-  var _mongoClient: MongoClient;
+  // Allow global `mongoose` object to avoid multiple connections in development
+  var mongoose: {
+    conn: typeof mongoose | null;
+    promise: Promise<typeof mongoose> | null;
+  };
 }

@@ -44,6 +44,7 @@ export const WarehouseStockSchema = z.object({
   warehouseId: z.string().min(1, 'Warehouse ID is required'),
   sku: z.string().min(1, 'SKU is required'),
   quantity: z.number().min(0),
+  price: z.number().min(0),
   location: z.string().optional(),
   minimumStock: z.number().min(0).default(5),
   reorderPoint: z.number().min(0).default(10),

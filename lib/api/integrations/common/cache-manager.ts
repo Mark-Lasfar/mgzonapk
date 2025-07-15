@@ -1,5 +1,5 @@
 export class CacheManager {
-    private cache: Map<string, { data: any; expiry: number }>;
+  private cache: Map<string, { data: unknown; expiry: number }>; // Changed from 'any' to 'unknown'
   
     constructor() {
       this.cache = new Map();
@@ -15,7 +15,7 @@ export class CacheManager {
       return item.data as T;
     }
   
-    async set(key: string, data: any, ttlSeconds: number): Promise<void> {
+    async set<T>(key: string, data: T, ttlSeconds: number): Promise<void> {
       this.cache.set(key, {
         data,
         expiry: Date.now() + ttlSeconds * 1000,

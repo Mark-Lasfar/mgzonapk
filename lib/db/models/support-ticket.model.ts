@@ -2,7 +2,7 @@ import { Document, Model, model, models, Schema } from 'mongoose'
 
 export interface ISupportTicket extends Document {
   _id: string
-  userId: string
+  userId?: string
   orderId?: string
   subject: string
   description: string
@@ -24,7 +24,7 @@ export interface ISupportTicket extends Document {
 const supportTicketSchema = new Schema<ISupportTicket>(
   {
     userId: {
-      type: Schema.Types.ObjectId,
+      type: String,
       ref: 'user',
       required: true,
     },
@@ -61,7 +61,7 @@ const supportTicketSchema = new Schema<ISupportTicket>(
     messages: [
       {
         sender: {
-          type: Schema.Types.ObjectId,
+          type: String,
           ref: 'user',
           required: true,
         },
@@ -84,7 +84,7 @@ const supportTicketSchema = new Schema<ISupportTicket>(
 )
 
 const SupportTicket =
-  (models.SupportTicket as Model<ISupportTicket>) ||
-  model<ISupportTicket>('SupportTicket', supportTicketSchema)
+  models.SupportTicket ?? model<ISupportTicket>('SupportTicket', supportTicketSchema)
+
 
 export default SupportTicket

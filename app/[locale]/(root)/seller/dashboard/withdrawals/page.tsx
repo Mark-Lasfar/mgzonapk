@@ -5,24 +5,40 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import { useTranslations } from 'next-intl';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+
+interface Transaction {
+  amount: number;
+  type: 'credit' | 'debit';
+  reason: string;
+  createdAt: string;
+}
 
 export default function Withdrawals() {
   const t = useTranslations('seller.withdrawals');
+  const { data: session, status } = useSession();
+  const router = useRouter();
   const [balance, setBalance] = useState(0);
   const [amount, setAmount] = useState('');
-  const [transactions, setTransactions] = useState([]);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
   useEffect(() => {
+    if (status === 'unauthenticated') {
+      router.push('/sign-in');
+      return;
+    }
+
     const fetchData = async () => {
       setLoading(true);
       try {
         const response = await fetch('/api/seller/balance');
         const result = await response.json();
         if (result.success) {
-          setBalance(result.balance || 0);
-          setTransactions(result.transactions || []);
+          setBalance(result.data.pointsBalance || 0);
+          setTransactions(result.data.pointsHistory || []);
         } else {
           setError(result.message || t('errors.fetchFailed'));
         }
@@ -33,11 +49,13 @@ export default function Withdrawals() {
       }
     };
 
-    fetchData();
-  }, [t]);
+    if (session?.user?.id) {
+      fetchData();
+    }
+  }, [t, session, status, router]);
 
   const handleWithdraw = async () => {
-    if (!amount || Number(amount) <= 0) {
+    if (!amount || Number(amount) < 10) {
       setError(t('errors.invalidAmount'));
       return;
     }
@@ -59,12 +77,11 @@ export default function Withdrawals() {
       if (result.success) {
         alert(t('success.withdrawalSubmitted'));
         setAmount('');
-        // Refresh balance and transactions
         const balanceResponse = await fetch('/api/seller/balance');
         const balanceResult = await balanceResponse.json();
         if (balanceResult.success) {
-          setBalance(balanceResult.balance || 0);
-          setTransactions(balanceResult.transactions || []);
+          setBalance(balanceResult.data.pointsBalance || 0);
+          setTransactions(balanceResult.data.pointsHistory || []);
         }
       } else {
         setError(result.message || t('errors.withdrawalFailed'));
@@ -76,6 +93,10 @@ export default function Withdrawals() {
     }
   };
 
+  if (status === 'loading') {
+    return <div className="flex items-center justify-center min-h-screen">{t('loading')}</div>;
+  }
+
   return (
     <Card className="max-w-4xl mx-auto mt-8">
       <CardHeader>
@@ -86,10 +107,10 @@ export default function Withdrawals() {
           <p>{t('loading')}</p>
         ) : (
           <>
-            <p>
-              {t('balance')}: ${balance.toFixed(2)}
+            <p className="text-lg font-semibold">
+              {t('balance')}: {balance} {t('points')}
             </p>
-            {error && <p className="text-red-500">{error}</p>}
+            {error && <p className="text-red-500 mt-2">{error}</p>}
             <div className="flex space-x-4 my-4">
               <Input
                 type="number"
@@ -97,19 +118,20 @@ export default function Withdrawals() {
                 value={amount}
                 onChange={(e) => setAmount(e.target.value)}
                 disabled={loading}
+                min="10"
               />
               <Button onClick={handleWithdraw} disabled={loading}>
                 {t('requestWithdrawal')}
               </Button>
             </div>
-            <h2>{t('transactionHistory')}</h2>
+            <h2 className="text-xl font-semibold mt-6">{t('transactionHistory')}</h2>
             {transactions.length === 0 ? (
-              <p>{t('noTransactions')}</p>
+              <p className="text-muted-foreground">{t('noTransactions')}</p>
             ) : (
-              <ul className="space-y-2">
+              <ul className="space-y-2 mt-4">
                 {transactions.map((txn, index) => (
                   <li key={index} className="border p-2 rounded">
-                    {txn.description}: ${txn.amount.toFixed(2)} (
+                    {txn.reason}: {txn.type === 'credit' ? '+' : '-'}{txn.amount} {t('points')} (
                     {new Date(txn.createdAt).toLocaleDateString()})
                   </li>
                 ))}

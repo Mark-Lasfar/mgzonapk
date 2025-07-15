@@ -1,3 +1,4 @@
+
 'use client';
 
 import React, { useEffect, useState } from 'react';
@@ -90,9 +91,11 @@ export default function ApiKeysPage() {
       <h1 className="text-2xl font-bold mb-4">{t('API Keys')}</h1>
 
       {error && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
+        <div className="mb-4">
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        </div>
       )}
 
       <div className="mb-4">

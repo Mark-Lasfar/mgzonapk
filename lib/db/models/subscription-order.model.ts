@@ -1,24 +1,26 @@
-import { Schema, model, models, Document } from 'mongoose'
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
-export interface ISubscriptionOrder extends Document {
-  userId: string
-  planId: string
-  amount: number
-  currency: string
-  paymentMethod: 'stripe' | 'paypal'
-  isPaid: boolean
-  paidAt?: Date
+interface ISubscriptionOrder extends Document {
+  userId: string;
+  planId: string;
+  amount: number;
+  currency: string;
+  paymentMethod: string;
+  paymentGatewayId?: mongoose.Types.ObjectId;
+  pointsRedeemed?: number;
+  isPaid: boolean;
+  paidAt?: Date;
   paymentResult?: {
-    id: string
-    status: string
-    update_time?: string
-    email_address?: string
-  }
-  createdAt: Date
-  updatedAt: Date
+    id: string;
+    status?: string;
+    update_time?: string;
+    email_address?: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
 }
 
-const subscriptionOrderSchema = new Schema<ISubscriptionOrder>(
+const SubscriptionOrderSchema: Schema<ISubscriptionOrder> = new Schema(
   {
     userId: {
       type: String,
@@ -39,14 +41,20 @@ const subscriptionOrderSchema = new Schema<ISubscriptionOrder>(
       type: String,
       required: [true, 'Currency is required'],
       trim: true,
+      uppercase: true,
     },
     paymentMethod: {
       type: String,
-      enum: {
-        values: ['stripe', 'paypal'],
-        message: '{VALUE} is not a valid payment method',
-      },
       required: [true, 'Payment method is required'],
+    },
+    paymentGatewayId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Integration',
+    },
+    pointsRedeemed: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
     isPaid: {
       type: Boolean,
@@ -56,29 +64,24 @@ const subscriptionOrderSchema = new Schema<ISubscriptionOrder>(
       type: Date,
     },
     paymentResult: {
-      id: { type: String },
-      status: { type: String },
-      update_time: { type: String },
-      email_address: { type: String },
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
+      id: { type: String, trim: true },
+      status: { type: String, trim: true },
+      update_time: { type: String, trim: true },
+      email_address: { type: String, trim: true },
     },
   },
   {
     timestamps: true,
   }
-)
+);
 
-subscriptionOrderSchema.index({ userId: 1, createdAt: -1 });
-subscriptionOrderSchema.index({ planId: 1 });
-subscriptionOrderSchema.index({ isPaid: 1 });
+SubscriptionOrderSchema.index({ userId: 1, createdAt: -1 });
+SubscriptionOrderSchema.index({ planId: 1 });
+SubscriptionOrderSchema.index({ isPaid: 1 });
+SubscriptionOrderSchema.index({ paymentGatewayId: 1 });
 
-const SubscriptionOrder = models.SubscriptionOrder || model<ISubscriptionOrder>('SubscriptionOrder', subscriptionOrderSchema)
+const SubscriptionOrder: Model<ISubscriptionOrder> =
+  mongoose.models.SubscriptionOrder ||
+  mongoose.model<ISubscriptionOrder>('SubscriptionOrder', SubscriptionOrderSchema);
 
-export default SubscriptionOrder
+export default SubscriptionOrder;

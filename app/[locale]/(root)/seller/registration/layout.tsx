@@ -5,6 +5,7 @@ import { getSellerByUserId } from '@/lib/actions/seller.actions';
 import { getSetting } from '@/lib/actions/setting.actions';
 import { getLocale } from 'next-intl/server';
 import type { ReactNode } from 'react';
+import User from '@/lib/db/models/user.model';
 
 export const metadata: Metadata = {
   title: 'Seller Registration',
@@ -25,39 +26,40 @@ export default async function SellerRegistrationLayout({
       getSetting(),
     ]);
 
-    if (!session?.user) {
+    // التحقق من وجود جلسة المستخدم
+    if (!session?.user?.id) {
       return redirect(`/${locale}/sign-in?callbackUrl=/${locale}/seller/registration`);
     }
 
-    // تحقق من حالة البائع
-    let seller = null;
-    try {
-      const sellerResponse = await getSellerByUserId(session.user.id!);
+    // التحقق من حالة التحقق من البريد
+    const user = await User.findById(session.user.id);
+    if (!user) {
+      return redirect(`/${locale}/sign-in?callbackUrl=/${locale}/seller/registration`);
+    }
+    if (!user.emailVerified) {
+      return redirect(`/${locale}/verify-code?email=${encodeURIComponent(user.email)}`);
+    }
+
+    // التحقق من دور المستخدم
+    if (session.user.role === 'SELLER') {
+      const sellerResponse = await getSellerByUserId(session.user.id);
       if (sellerResponse.success && sellerResponse.data) {
-        seller = sellerResponse.data;
+        const seller = sellerResponse.data;
+        if (seller.verification.status === 'verified') {
+          if (seller.subscription.status === 'active') {
+            return redirect(`/${locale}/seller/dashboard`);
+          } else {
+            return redirect(`/${locale}/seller/subscriptions`);
+          }
+        }
       }
-    } catch (error) {
-      // لو البائع مش موجود، خلي الصفحة تستمر بدون إعادة توجيه
-      console.error('Error checking seller:', error);
     }
 
-    // لو البائع موجود وتم التحقق منه، وجهه للـ dashboard
-    if (seller && seller.verification.status === 'verified') {
-      return redirect(`/${locale}/seller/dashboard`);
-    }
-
-    // اعرض صفحة التسجيل لو ما فيش بائع أو البائع لسه في انتظار التحقق
-    return (
-      <div className="min-h-screen bg-background">
-        {children}
-      </div>
-    );
+    // عرض صفحة التسجيل
+    return <div className="min-h-screen bg-background">{children}</div>;
   } catch (error) {
     console.error('Error in SellerRegistrationLayout:', error);
-    if (error instanceof Error && !error.message.includes('NEXT_REDIRECT')) {
-      const locale = await getLocale();
-      return redirect(`/${locale}/error`);
-    }
-    throw error;
+    const locale = await getLocale();
+    return <div className="min-h-screen bg-background">{children}</div>;
   }
 }

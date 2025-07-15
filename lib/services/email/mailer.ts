@@ -56,16 +56,14 @@ class EmailService {
   }
 
   private formatDate(date: Date): string {
-    return date.toISOString()
-      .replace(/T/, ' ')
-      .replace(/\..+/, '');
+    return date.toISOString().replace(/T/, ' ').replace(/\..+/, '');
   }
 
   private getMetadata(): EmailMetadata {
     return {
       timestamp: this.formatDate(new Date()),
       user: process.env.CURRENT_USER || 'system',
-      requestId: crypto.randomUUID()
+      requestId: crypto.randomUUID(),
     };
   }
 
@@ -80,20 +78,20 @@ class EmailService {
         host: EMAIL_CONFIG.SMTP.HOST,
         metadata: {
           service: 'api',
-          ...metadata
-        }
+          ...metadata,
+        },
       });
     } catch (error) {
       const metadata = this.getMetadata();
-      
+
       logger.error('SMTP Connection Error', {
         error: error instanceof Error ? error.message : String(error),
         email: EMAIL_CONFIG.SMTP.USER,
         host: EMAIL_CONFIG.SMTP.HOST,
         metadata: {
           service: 'api',
-          ...metadata
-        }
+          ...metadata,
+        },
       });
     }
   }
@@ -115,24 +113,26 @@ class EmailService {
         duration: Date.now() - startTime,
         metadata: {
           service: 'api',
-          ...metadata
-        }
+          ...metadata,
+        },
       });
 
       return result;
     } catch (error) {
       logger.error('Failed to send email', {
-        error: error instanceof Error ? {
-          message: error.message,
-          name: error.name,
-          stack: error.stack,
-        } : String(error),
+        error: error instanceof Error
+          ? {
+              message: error.message,
+              name: error.name,
+              stack: error.stack,
+            }
+          : String(error),
         to: options.to,
         subject: options.subject,
         duration: Date.now() - startTime,
         metadata: {
           service: 'api',
-          ...metadata
+          ...metadata,
         },
         smtp: {
           user: EMAIL_CONFIG.SMTP.USER,
@@ -149,7 +149,7 @@ class EmailService {
     name: string;
   }) {
     const metadata = this.getMetadata();
-    
+
     return this.send({
       to: options.to,
       subject: EMAIL_CONFIG.TEMPLATES.VERIFICATION.SUBJECT,
@@ -192,7 +192,7 @@ class EmailService {
     user: User;
   }) {
     const metadata = this.getMetadata();
-    
+
     return this.send({
       to: options.to,
       subject: EMAIL_CONFIG.TEMPLATES.ORDER_CONFIRMATION.SUBJECT,
@@ -202,11 +202,15 @@ class EmailService {
           <p>Thank you for your order, ${options.user.name}!</p>
           <p>Order #${options.order._id}</p>
           <div style="margin: 20px 0;">
-            ${options.order.items.map(item => `
+            ${options.order.items
+              .map(
+                (item) => `
               <div style="padding: 10px; border-bottom: 1px solid #eee;">
                 <p>${item.name} x ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}</p>
               </div>
-            `).join('')}
+            `
+              )
+              .join('')}
           </div>
           <p><strong>Total:</strong> $${options.order.totalPrice.toFixed(2)}</p>
           <p>Sent at: ${metadata.timestamp}</p>
@@ -218,9 +222,12 @@ class EmailService {
         Thank you for your order, ${options.user.name}!
         Order #${options.order._id}
 
-        ${options.order.items.map(item => 
-          `${item.name} x ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`
-        ).join('\n')}
+        ${options.order.items
+          .map(
+            (item) =>
+              `${item.name} x ${item.quantity} - $${(item.price * item.quantity).toFixed(2)}`
+          )
+          .join('\n')}
 
         Total: $${options.order.totalPrice.toFixed(2)}
         
@@ -266,6 +273,47 @@ class EmailService {
 
         If you didn't request this, please ignore this email.
         
+        Sent at: ${metadata.timestamp}
+      `,
+    });
+  }
+
+  public async sendSubscriptionConfirmation(options: {
+    to: string;
+    name: string;
+    plan: string;
+    amount: number;
+    currency: string;
+  }) {
+    const metadata = this.getMetadata();
+
+    return this.send({
+      to: options.to,
+      subject: 'Subscription Confirmation - MGZon',
+      html: `
+        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+          <h1 style="color: #333; text-align: center;">Subscription Confirmed</h1>
+          <p>Hello ${options.name},</p>
+          <p>Thank you for subscribing to the ${options.plan} plan!</p>
+          <p><strong>Amount:</strong> ${options.amount} ${options.currency}</p>
+          <p>Your account is now active. Start selling today!</p>
+          <div style="margin-top: 20px; padding-top: 20px; border-top: 1px solid #eee; text-align: center; color: #666;">
+            <p>This is an automated message from MGZon</p>
+            <p>Sent at: ${metadata.timestamp}</p>
+          </div>
+        </div>
+      `,
+      text: `
+        Subscription Confirmed
+
+        Hello ${options.name},
+
+        Thank you for subscribing to the ${options.plan} plan!
+        Amount: ${options.amount} ${options.currency}
+
+        Your account is now active. Start selling today!
+
+        MGZon
         Sent at: ${metadata.timestamp}
       `,
     });

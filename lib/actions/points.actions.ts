@@ -13,7 +13,6 @@ export async function awardPoints(userId: string, amount: number, description: s
     const session = await User.startSession();
     session.startTransaction();
     try {
-      // تحويل userId لـ ObjectId
       const objectId = new Types.ObjectId(userId);
       const user = await User.findById(objectId).session(session);
       if (!user) {
@@ -65,8 +64,8 @@ export async function redeemPoints(userId: string, amount: number, currency: str
       }
       const settings = await getSetting();
       const exchangeRates = settings.availableCurrencies.reduce(
-        (acc: { [key: string]: number }, curr: { currency: string; rate: number }) => {
-          acc[curr.currency] = curr.rate;
+        (acc: { [key: string]: number }, curr) => {
+          acc[curr.code] = curr.convertRate;
           return acc;
         },
         {}

@@ -3,7 +3,7 @@
 
 import ProductPrice from '@/components/shared/product/product-price'
 import { Card, CardContent } from '@/components/ui/card'
-import useColorStore from '@/hooks/use-color-store'
+// import useColorStore from '@/hooks/use-color-store'
 import { formatDateTime } from '@/lib/utils'
 import { useTheme } from 'next-themes'
 import React from 'react'
@@ -17,6 +17,7 @@ import {
   XAxis,
   YAxis,
 } from 'recharts'
+import useColorStore from '../../../../hooks/use-color-store'
 
 interface CustomTooltipProps extends TooltipProps<number, string> {
   active?: boolean

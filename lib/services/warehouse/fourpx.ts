@@ -1,12 +1,18 @@
-import { WarehouseProvider, CreateShipmentRequest, ShipmentResponse, ShipmentStatus, WarehouseProduct } from './types';
+import { WarehouseProvider, CreateShipmentRequest, ShipmentResponse, ShipmentStatus, WarehouseProduct, CreateProductRequest, UpdateProductRequest } from './types';
 
 export class FourPXService implements WarehouseProvider {
   private apiKey: string;
   private apiUrl: string;
+  private clientId: string;
+  private clientSecret: string;
+  private redirectUri: string;
 
-  constructor(config: { apiKey: string; apiUrl: string }) {
+  constructor(config: { apiKey: string; apiUrl: string; clientId: string; clientSecret: string; redirectUri: string }) {
     this.apiKey = config.apiKey;
     this.apiUrl = config.apiUrl;
+    this.clientId = config.clientId;
+    this.clientSecret = config.clientSecret;
+    this.redirectUri = config.redirectUri;
   }
 
   name = '4PX';
@@ -26,6 +32,37 @@ export class FourPXService implements WarehouseProvider {
     }
 
     return response.json();
+  }
+
+  async createProduct(request: CreateProductRequest): Promise<{ id: string }> {
+    const response = await this.fetchApi('/api/product/create', {
+      method: 'POST',
+      body: JSON.stringify({
+        sku: request.sku,
+        name: request.name,
+        description: request.description,
+        dimensions: request.dimensions,
+        weight: request.weight,
+      }),
+    });
+
+    return { id: response.product_id };
+  }
+
+  async updateProduct(data: UpdateProductRequest): Promise<void> {
+    await this.fetchApi(`/api/product/update/${data.externalId}`, {
+      method: 'PATCH',
+      body: JSON.stringify({
+        sku: data.sku,
+        name: data.name,
+        description: data.description,
+        quantity: data.quantity,
+        dimensions: data.dimensions,
+        weight: data.weight,
+        price: data.price,
+        images: data.images,
+      }),
+    });
   }
 
   async createShipment(request: CreateShipmentRequest): Promise<ShipmentResponse> {
@@ -49,9 +86,7 @@ export class FourPXService implements WarehouseProvider {
       }),
     });
 
-    return { 
-      trackingId: response.tracking_number,
-    };
+    return { trackingId: response.tracking_number };
   }
 
   async getShipmentStatus(trackingId: string): Promise<ShipmentStatus> {
@@ -61,12 +96,15 @@ export class FourPXService implements WarehouseProvider {
       trackingId,
       status: this.mapShipmentStatus(response.status),
       estimatedDeliveryDate: response.estimated_delivery_date ? new Date(response.estimated_delivery_date) : undefined,
-      location: response.current_location,
+      location: response.current_location, // Fixed the typo
       events: response.tracking_details.map((event: any) => ({
         date: new Date(event.datetime),
         status: event.status,
         location: event.location,
       })),
+      orderId: response.order_id,
+      service: response.service || '4PX',
+      fulfillmentId: response.fulfillment_id || trackingId,
     };
   }
 

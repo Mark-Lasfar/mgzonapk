@@ -4,7 +4,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import useSettingStore from '@/hooks/use-setting-store';
+// import useSettingStore from '@/hooks/use-setting-store';
 import {
   Form,
   FormControl,
@@ -17,12 +17,14 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 import { IUserSignIn } from '@/types';
 import { signInWithCredentials } from '@/lib/actions/user.actions';
-import { toast } from '@/hooks/use-toast';
+// import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignInSchema } from '@/lib/validator';
 import { useState } from 'react';
 import { Loader2 } from 'lucide-react';
 import { GoogleSignInForm } from './google-signin-form';
+import useSettingStore from '../../../../hooks/use-setting-store';
+import { toast } from '../../../../hooks/use-toast';
 
 const SeparatorWithOr = () => (
   <div className="relative my-4">
@@ -36,8 +38,8 @@ const SeparatorWithOr = () => (
 );
 
 const signInDefaultValues = {
-  email: process.env.NODE_ENV === 'development' ? 'admin@example.com' : '',
-  password: process.env.NODE_ENV === 'development' ? '123456' : '',
+  email: process.env.NODE_ENV === 'development' ? 'admin@mgzon.com' : '',
+  password: process.env.NODE_ENV === 'development' ? 'elasfar691458' : '',
 };
 
 const allowedPaths = [
@@ -55,6 +57,19 @@ export default function CredentialsSignInForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  // Handle error from searchParams
+  const error = searchParams?.get('error');
+  if (error) {
+    toast({
+      title: 'Error',
+      description:
+        error === 'CredentialsSignin'
+          ? 'Invalid authentication method. Try signing in with Google.'
+          : 'An error occurred during sign-in. Please try again.',
+      variant: 'destructive',
+    });
+  }
 
   const rawCallbackUrl = searchParams?.get('callbackUrl') || '/';
   const callbackUrl = allowedPaths.some((path) =>

@@ -3,11 +3,12 @@ type LogLevel = 'debug' | 'info' | 'warn' | 'error';
 interface LogOptions {
   timestamp?: boolean;
   prefix?: string;
+  requestId?: string;
 }
 
 class Logger {
   private static instance: Logger;
-  private level: LogLevel = 'info';
+  private level: LogLevel = process.env.LOG_LEVEL as LogLevel || 'info';
 
   private constructor() {}
 
@@ -24,6 +25,7 @@ class Logger {
     const parts: string[] = [];
 
     if (options.timestamp) parts.push(new Date().toISOString());
+    if (options.requestId) parts.push(`[ID:${options.requestId}]`);
     parts.push(`[${level.toUpperCase()}]`);
     if (options.prefix) parts.push(`[${options.prefix}]`);
     parts.push(typeof message === 'object' ? JSON.stringify(message, null, 2) : String(message));

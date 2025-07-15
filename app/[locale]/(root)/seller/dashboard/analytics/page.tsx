@@ -1,44 +1,105 @@
-import { Metadata } from 'next'
-import { auth } from '@/auth'
+'use client';
 
-export const metadata: Metadata = {
-  title: 'Analytics - Seller Dashboard',
-  description: 'View your sales analytics and performance metrics'
+import { useState, useEffect } from 'react';
+import { useTranslations } from 'next-intl';
+import { useToast } from '@/hooks/use-toast';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Button } from '@/components/ui/button';
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend } from 'recharts';
+
+interface AnalyticsData {
+  metric: string;
+  value: number;
+  date: string;
 }
 
-export default async function AnalyticsPage() {
-  const session = await auth()
-  
-  if (!session?.user?.id) {
-    return null // Handle in layout
-  }
+export default function AnalyticsPage() {
+  const t = useTranslations('seller.dashboard.analytics');
+  const { toast } = useToast();
+  const [metrics, setMetrics] = useState<AnalyticsData[]>([]);
+  const [metricType, setMetricType] = useState('sales');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    const fetchMetrics = async () => {
+      try {
+        setIsLoading(true);
+        const response = await fetch(`/api/seller/analytics?metric=${metricType}&startDate=${startDate}&endDate=${endDate}`);
+        if (!response.ok) throw new Error(t('Fetch Error'));
+        const { data } = await response.json();
+        setMetrics(data);
+      } catch (error) {
+        toast({ variant: 'destructive', title: t('Error Title'), description: String(error) });
+      } finally {
+        setIsLoading(false);
+      }
+    };
+    if (startDate && endDate) {
+      fetchMetrics();
+    }
+  }, [metricType, startDate, endDate, t]);
+
+  const handleFetchMetrics = () => {
+    if (!startDate || !endDate) {
+      toast({ variant: 'destructive', title: t('Error Title'), description: t('Date Required') });
+      return;
+    }
+    // Trigger useEffect by updating state
+    setMetricType(metricType);
+  };
 
   return (
-    <div className="container py-6 space-y-6">
-      <h1 className="text-2xl font-bold">Analytics</h1>
-      
-      <div className="grid gap-4 md:grid-cols-3">
-        {/* Example Analytics Cards */}
-        <div className="p-4 border rounded-lg">
-          <h3 className="text-sm font-medium text-muted-foreground">Total Sales</h3>
-          <p className="text-2xl font-bold">$0.00</p>
-        </div>
-        
-        <div className="p-4 border rounded-lg">
-          <h3 className="text-sm font-medium text-muted-foreground">Orders</h3>
-          <p className="text-2xl font-bold">0</p>
-        </div>
-        
-        <div className="p-4 border rounded-lg">
-          <h3 className="text-sm font-medium text-muted-foreground">Products</h3>
-          <p className="text-2xl font-bold">0</p>
-        </div>
+    <div className="container mx-auto p-6">
+      <h1 className="text-3xl font-bold mb-6">{t('Analytics Title')}</h1>
+      <div className="flex gap-4 mb-6">
+        <Select onValueChange={setMetricType} defaultValue="sales">
+          <SelectTrigger>
+            <SelectValue placeholder={t('Metric Type')} />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="sales">{t('Sales')}</SelectItem>
+            <SelectItem value="views">{t('Views')}</SelectItem>
+            <SelectItem value="conversions">{t('Conversions')}</SelectItem>
+            <SelectItem value="returns">{t('Returns')}</SelectItem>
+          </SelectContent>
+        </Select>
+        <Input
+          type="date"
+          placeholder={t('Start Date')}
+          value={startDate}
+          onChange={(e) => setStartDate(e.target.value)}
+        />
+        <Input
+          type="date"
+          placeholder={t('End Date')}
+          value={endDate}
+          onChange={(e) => setEndDate(e.target.value)}
+        />
+        <Button onClick={handleFetchMetrics}>{t('Fetch Metrics')}</Button>
       </div>
-
-      <div className="border rounded-lg p-4">
-        <h2 className="text-lg font-semibold mb-4">Sales Overview</h2>
-        <p className="text-muted-foreground">No data available yet.</p>
-      </div>
+      {isLoading ? (
+        <p>{t('Loading')}</p>
+      ) : (
+        <Card>
+          <CardHeader>
+            <CardTitle>{t(`${metricType} Chart`)}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <LineChart width={800} height={400} data={metrics}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Legend />
+              <Line type="monotone" dataKey="value" stroke="#8884d8" />
+            </LineChart>
+          </CardContent>
+        </Card>
+      )}
     </div>
-  )
+  );
 }

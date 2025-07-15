@@ -1,10 +1,11 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
 
-import useColorStore from '@/hooks/use-color-store'
+// import useColorStore from '@/hooks/use-color-store'
 import { useTheme } from 'next-themes'
 import React from 'react'
 import { PieChart, Pie, ResponsiveContainer, Cell } from 'recharts'
+import useColorStore from '../../../../hooks/use-color-store'
 
 export default function SalesCategoryPieChart({ data }: { data: any[] }) {
   const { theme } = useTheme()

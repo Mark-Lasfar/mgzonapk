@@ -1,3 +1,4 @@
+// /home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/auth.ts
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import Google from 'next-auth/providers/google';
 import bcrypt from 'bcryptjs';
@@ -7,14 +8,54 @@ import client from './lib/db/client';
 import User from './lib/db/models/user.model';
 import NextAuth, { type DefaultSession } from 'next-auth';
 import authConfig from './auth.config';
+import Seller from '@/lib/db/models/seller.model';
+
 
 declare module 'next-auth' {
   interface Session {
     user: {
       role: string;
+      storeId: string;
+
     } & DefaultSession['user'];
   }
 }
+
+
+
+export async function authenticateUser(credentials: { email: string; password: string }) {
+  try {
+    await connectToDatabase();
+    const user = await User.findOne({ email: credentials.email }).select('+password');
+    if (!user) {
+      throw new Error('No user found');
+    }
+
+    if (!user.password) {
+      throw new Error('This account uses Google sign-in. Please use the Google login option.');
+    }
+
+    const isMatch = await bcrypt.compare(credentials.password, user.password);
+    if (!isMatch) {
+      throw new Error('Invalid password');
+    }
+
+    if (!user.emailVerified || !user.isActive) {
+      throw new Error('Please verify your email before signing in');
+    }
+
+    return {
+      id: user._id.toString(),
+      name: user.name,
+      email: user.email,
+      role: user.role,
+    };
+  } catch (error) {
+    console.error('Authentication error:', error);
+    throw error;
+  }
+}
+
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
@@ -25,11 +66,13 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   },
   session: {
     strategy: 'jwt',
-    maxAge: 30 * 24 * 60 * 60, // 30 يوم
+    maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   adapter: MongoDBAdapter(client),
   providers: [
     Google({
+      clientId: process.env.AUTH_GOOGLE_ID!,
+      clientSecret: process.env.AUTH_GOOGLE_SECRET!,
       allowDangerousEmailAccountLinking: true,
     }),
     CredentialsProvider({

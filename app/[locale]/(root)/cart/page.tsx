@@ -10,13 +10,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import useCartStore from '@/hooks/use-cart-store'
-import useSettingStore from '@/hooks/use-setting-store'
+// import useCartStore from '@/hooks/use-cart-store'
+// import useSettingStore from '@/hooks/use-setting-store'
 import { useTranslations } from 'next-intl'
 import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import React from 'react'
+import useCartStore from '../../../../hooks/use-cart-store'
+import useSetting from '../../../../hooks/use-setting'
+// import useSettingStore from '../../../../hooks/use-setting-store'
 
 export default function CartPage() {
   const {
@@ -30,7 +33,7 @@ export default function CartPage() {
       site,
       common: { freeShippingMinPrice },
     },
-  } = useSettingStore()
+  } = useSetting()
 
   const t = useTranslations()
 

@@ -1,5 +1,21 @@
-import mongoose, { Schema, Types, Document, Model } from 'mongoose';
-import crypto from 'crypto';
+import mongoose, { Schema, Document, Model } from 'mongoose';
+import validator from 'validator';
+import { encrypt, decrypt } from '@/lib/utils/encryption';
+
+export interface SellerIntegration {
+  providerName: string;
+  type: 'payment' | 'warehouse' | 'dropshipping' | 'marketplace' | 'shipping' | 'marketing' | 'accounting' | 'crm' | 'analytics' | 'automation' | 'communication' | 'education' | 'security' | 'advertising' | 'tax' | 'other';
+
+  accessToken?: string;
+  refreshToken?: string;
+  expiresAt?: Date;
+  metadata: Record<string, any>;
+  isActive: boolean;
+  
+  connectedAt: Date;
+  lastUpdatedAt: Date;
+  sandbox?: boolean;
+}
 
 export interface ISeller extends Document {
   userId: string;
@@ -14,53 +30,90 @@ export interface ISeller extends Document {
     street: string;
     city: string;
     state: string;
-    country: string;
     postalCode: string;
+    countryCode: string;
   };
-  taxId: string;
-  bankInfo: {
-    accountName: string;
-    accountNumber: string;
-    bankName: string;
-    swiftCode: string;
+  taxId?: string;
+  paymentGateways: Array<{
+    providerName: string;
+    accountDetails: Record<string, any>;
     verified: boolean;
-  };
+    isDefault: boolean;
+    isInternal: boolean; // أضفت هذا للإشارة إلى بوابة mgzon
+    sandbox?: boolean;
+  }>;
   subscription: {
-    plan: 'Trial' | 'Basic' | 'Pro' | 'VIP';
+    plan: string;
+    planId: string;
+    price: number;
+    trialMonthsUsed: number;
+    pointsCost: number;
     startDate: Date;
-    endDate: Date;
-    status: 'active' | 'expired' | 'cancelled' | 'pending' | 'suspended';
+    endDate?: Date;
+    lastPaymentDate?: Date;
+    status: 'active' | 'inactive' | 'expired' | 'cancelled' | 'pending' | 'suspended';
+    isTrial?: boolean;
+    trialDuration?: number;
     features: {
       productsLimit: number;
       commission: number;
       prioritySupport: boolean;
       instantPayouts: boolean;
-      customSectionsLimit?: number;
+      customSectionsLimit: number;
+      domainSupport: boolean;
+      domainRenewal: boolean;
+      analyticsAccess: boolean;
+      abTesting: boolean;
+      pointsRedeemable: boolean;
+      dynamicPaymentGateways: boolean;
+      maxApiKeys: number; // أضفت هذا
     };
     pointsRedeemed?: number;
-    paymentMethod?: 'stripe' | 'paypal';
+    paymentMethod?: string;
+    paymentGatewayId?: string;
     paymentId?: string;
+    activeGatewayConfig?: Record<string, any>;
+    metadata?: Record<string, any>;
+  };
+  bankInfo?: {
+    verified: boolean;
+    accountName: string; 
+    accountNumber: string;
+    bankName: string;
+    swiftCode: string; 
+    routingNumber?: string;
   };
   verification: {
     status: 'pending' | 'verified' | 'rejected';
-    documents: Record<
-      string,
-      {
-        url: string;
-        status: 'pending' | 'verified' | 'rejected';
-        uploadedAt: Date;
-        metadata?: Record<string, any>;
-      }
-    >;
+    documents: Array<{
+      url: string;
+      type: 'id' | 'business_license' | 'tax_document' | 'other';
+      status: 'pending' | 'verified' | 'rejected';
+      uploadedAt: Date;
+      metadata?: Record<string, any>;
+    }>;
     submittedAt: Date;
     lastUpdatedAt?: Date;
   };
-  stripeAccountId?: string;
-  preferredWarehouse?: {
-    provider: 'ShipBob' | '4PX';
-    warehouseId: string;
-    selectedAt: Date;
-    reason?: string;
+
+
+
+  status: 'active' | 'inactive' | 'expired' | 'cancelled' | 'pending' | 'suspended';
+
+
+  
+  integrationIds: mongoose.Types.ObjectId[];
+  integrations: Record<string, SellerIntegration>;
+  taxSettings: Record<string, {
+    countryCode: string;
+    taxType: string;
+    taxRate: number;
+    taxService:string;
+  }>;
+  defaultCurrency: string;
+  checkoutSettings: {
+    customCheckoutEnabled: boolean;
+    checkoutPageUrl?: string;
   };
   metrics: {
     rating: number;
@@ -72,19 +125,28 @@ export interface ISeller extends Document {
     views: number;
     followers: number;
     ratingsCount?: number;
-    totalSalesHistory?: { amount: number; date: Date }[];
-    viewsHistory?: { date: Date }[];
+    totalSalesHistory: Array<{ amount: number; date: Date }>;
+    viewsHistory: Array<{ date: Date }>;
     lastProductCreated?: Date;
     products: {
       total: number;
       active: number;
       outOfStock: number;
     };
+    integrationErrors?: Array<{
+      providerName: string;
+      errorCode: string;
+      message: string;
+      timestamp: Date;
+    }>;
   };
   settings: {
+    language: 'en' | 'ar' | 'fr' | 'es' | 'de' | 'other';
     notifications: {
       email: boolean;
       sms: boolean;
+      push: boolean;
+      
       orderUpdates: boolean;
       marketingEmails: boolean;
       pointsNotifications: boolean;
@@ -94,10 +156,12 @@ export interface ISeller extends Document {
       showContactInfo: boolean;
       showMetrics: boolean;
       showPointsBalance: boolean;
+      welcomeSeen: boolean;
     };
     security: {
       twoFactorAuth: boolean;
       loginNotifications: boolean;
+      ipWhitelist?: string[];
     };
     customSite: {
       theme: string;
@@ -106,25 +170,50 @@ export interface ISeller extends Document {
       customSections?: Array<{
         title: string;
         content: string;
+        order: number;
+      }>;
+      domainStatus?: 'active' | 'expired' | 'pending';
+      domainRenewalDate?: Date;
+      seo: {
+        metaTitle?: string;
+        metaDescription?: string;
+        keywords?: string[];
+      };
+    };
+    abTesting: {
+      enabled: boolean;
+      experiments: Array<{
+        name: string;
+        variant: string;
+        startDate: Date;
+        endDate?: Date;
+        metrics: Record<string, number>;
       }>;
     };
   };
   pointsBalance: number;
-  pointsTransactions: Array<{
+  pointsHistory: Array<{
     amount: number;
-    type: 'earn' | 'spend' | 'redeem';
-    description: string;
+    type: 'credit' | 'debit';
+    reason: string;
     orderId?: string;
     createdAt: Date;
   }>;
-  freeTrialActive: boolean;
+  freeTrial: boolean;
   freeTrialEndDate?: Date;
   trialMonthsUsed: number;
-  customSiteUrl: string;
-  apiKeys?: Types.ObjectId[];
+  customSiteUrl?: string;
+  storeName?: string;
+  domain?: string;
+  apiKeys: mongoose.Types.ObjectId[];
+  isActive: boolean;
+  metadata: Record<string, any>;
   createdAt: Date;
+  freeTrialActive?: boolean;
   updatedAt: Date;
-  addPoints(amount: number, description: string, orderId?: string): Promise<void>;
+  addPoints(amount: number, reason: string, orderId?: string): Promise<void>;
+  toggleIntegration(providerName: string, isActive: boolean): Promise<void>;
+  logIntegrationError(providerName: string, errorCode: string, message: string): Promise<void>;
 }
 
 const SellerSchema: Schema<ISeller> = new Schema(
@@ -135,6 +224,10 @@ const SellerSchema: Schema<ISeller> = new Schema(
       unique: true,
       trim: true,
       index: true,
+      validate: {
+        validator: (v: string) => validator.isUUID(v) || mongoose.Types.ObjectId.isValid(v),
+        message: 'User ID must be a valid UUID or MongoDB ObjectId',
+      },
     },
     businessName: {
       type: String,
@@ -143,6 +236,10 @@ const SellerSchema: Schema<ISeller> = new Schema(
       minlength: [2, 'Business name must be at least 2 characters'],
       maxlength: [100, 'Business name cannot exceed 100 characters'],
       index: true,
+      validate: {
+        validator: (v: string) => /^[\p{L}\p{N}\s.,!?&()-]+$/u.test(v),
+        message: 'Business name contains invalid characters',
+      },
     },
     email: {
       type: String,
@@ -150,196 +247,295 @@ const SellerSchema: Schema<ISeller> = new Schema(
       unique: true,
       trim: true,
       lowercase: true,
-      match: [
-        /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/,
-        'Please enter a valid email address',
-      ],
+      validate: {
+        validator: (v: string) => validator.isEmail(v),
+        message: 'Please enter a valid email address',
+      },
     },
     phone: {
       type: String,
       required: [true, 'Phone number is required'],
       trim: true,
-      match: [
-        /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/,
-        'Please enter a valid phone number',
-      ],
+      validate: {
+        validator: (v: string) => /^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/.test(v),
+        message: 'Please enter a valid phone number',
+      },
     },
-    description: {
-      type: String,
-      trim: true,
-      minlength: [10, 'Description must be at least 10 characters if provided'],
-      maxlength: [500, 'Description cannot exceed 500 characters'],
-    },
+description: {
+  type: String,
+  trim: true,
+  minlength: [10, 'Description must be at least 10 characters if provided'],
+  maxlength: [500, 'Description cannot exceed 500 characters'],
+  validate: {
+    validator: (v: string) => !v || /^[\p{L}\p{N}\s.,!?&()\n-]+$/u.test(v),
+    message: 'Description contains invalid characters',
+  },
+},
     businessType: {
       type: String,
-      enum: {
-        values: ['individual', 'company'],
-        message: '{VALUE} is not a valid business type',
-      },
+      enum: ['individual', 'company'],
       required: [true, 'Business type is required'],
     },
     vatRegistered: {
       type: Boolean,
       default: false,
     },
-    logo: {
-      type: String,
-      trim: true,
-      match: [/^https?:\/\/.*\.(?:png|jpg|jpeg|webp|svg)$/, 'Please provide a valid image URL'],
+logo: {
+  type: String,
+  trim: true,
+  validate: {
+    validator: (v: string) =>
+      !v ||
+      (validator.isURL(v, { protocols: ['http', 'https'], require_protocol: true }) &&
+        /\.(png|jpg|jpeg|webp|svg)$/i.test(v)),
+    message: 'Please provide a valid image URL (png, jpg, jpeg, webp, svg)',
+  },
+  default: null,
+},
+address: {
+  street: { type: String, required: [true, 'Street is required'], trim: true },
+  city: { type: String, required: [true, 'City is required'], trim: true },
+  state: { type: String, required: [true, 'State is required'], trim: true },
+  countryCode: { type: String, required: [true, 'Country code is required'], match: /^[A-Z]{2}$/ },
+  postalCode: {
+    type: String,
+    required: [true, 'Postal code is required'],
+    trim: true,
+    validate: {
+      validator: (v: string) => /^[0-9A-Z\s-]*$/.test(v),
+      message: 'Please enter a valid postal code',
     },
-    address: {
-      street: { type: String, required: [true, 'Street is required'], trim: true },
-      city: { type: String, required: [true, 'City is required'], trim: true },
-      state: { type: String, required: [true, 'State is required'], trim: true },
-      country: { type: String, required: [true, 'Country is required'], trim: true },
-      postalCode: {
-        type: String,
-        required: [true, 'Postal code is required'],
-        trim: true,
-        match: [/^[0-9A-Z\s-]*$/, 'Please enter a valid postal code'],
-      },
-    },
+  },
+  _id: false,
+},
     taxId: {
       type: String,
-      required: [true, 'Tax ID is required'],
       trim: true,
-      minlength: [5, 'Tax ID must be at least 5 characters'],
-    },
-    bankInfo: {
-      accountName: {
-        type: String,
-        required: [true, 'Account name is required'],
-        trim: true,
-        minlength: [2, 'Account name must be at least 2 characters'],
-        maxlength: [100, 'Account name cannot exceed 100 characters'],
-      },
-      accountNumber: {
-        type: String,
-        required: [true, 'Account number is required'],
-        trim: true,
-        minlength: [8, 'Account number must be at least 8 characters'],
-        maxlength: [34, 'Account number cannot exceed 34 characters'],
-        match: [/^[0-9A-Za-z]*$/, 'Please enter a valid account number'],
-      },
-      bankName: {
-        type: String,
-        required: [true, 'Bank name is required'],
-        trim: true,
-        minlength: [2, 'Bank name must be at least 2 characters'],
-        maxlength: [100, 'Bank name cannot exceed 100 characters'],
-      },
-      swiftCode: {
-        type: String,
-        required: [true, 'SWIFT code is required'],
-        trim: true,
-        match: [
-          /^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/,
-          'Please enter a valid SWIFT code',
-        ],
-      },
-      verified: {
-        type: Boolean,
-        default: false,
+      minlength: [5, 'Tax ID must be at least 5 characters if provided'],
+      validate: {
+        validator: (v: string) => !v || validator.isAlphanumeric(v.replace(/[-]/g, '')),
+        message: 'Tax ID contains invalid characters',
       },
     },
+    paymentGateways: [
+      {
+        providerName: { type: String, required: true },
+        accountDetails: {
+          type: Map,
+          of: {
+            type: String,
+            set: (val: string) => (val ? encrypt(val) : undefined),
+            get: (val: string) => (val ? decrypt(val) : undefined),
+          },
+          default: {},
+        },
+        verified: { type: Boolean, default: false },
+        isDefault: { type: Boolean, default: false },
+        isInternal: { type: Boolean, default: false },
+        sandbox: { type: Boolean, default: false },
+        config: {
+          // إعدادات إضافية للبوابة
+          apiType: { type: String, enum: ['rest', 'sdk', 'other'], default: 'rest' },
+          endpoints: {
+            createOrder: { type: String, trim: true }, // نقطة طرفية لإنشاء الطلب
+            capturePayment: { type: String, trim: true }, // نقطة طرفية لتأكيد الدفع
+            auth: { type: String, trim: true }, // نقطة طرفية للمصادقة
+          },
+          sdkUrl: { type: String, trim: true }, // لدعم بوابات تستخدم SDK (مثل Stripe)
+          _id: false,
+        },
+        _id: false,
+      },
+    ],
     subscription: {
       plan: {
         type: String,
-        enum: {
-          values: ['Trial', 'Basic', 'Pro', 'VIP'],
-          message: '{VALUE} is not a valid subscription plan',
-        },
         required: [true, 'Subscription plan is required'],
+        default: 'trial',
+      },
+      planId: {
+        type: String,
+        required: [true, 'Plan ID is required'],
+      },
+      price: {
+        type: Number,
+        required: [true, 'Subscription price is required'],
+        default: 1,
+        min: 0,
+      },
+      pointsCost: {
+        type: Number,
+        required: [true, 'Points cost is required'],
+        default: 20,
+        min: 0,
       },
       startDate: {
         type: Date,
         required: [true, 'Subscription start date is required'],
+        default: Date.now,
       },
-      endDate: {
-        type: Date,
-        required: [true, 'Subscription end date is required'],
-      },
+      endDate: { type: Date },
+      lastPaymentDate: { type: Date },
       status: {
         type: String,
-        enum: {
-          values: ['active', 'expired', 'cancelled', 'pending', 'suspended'],
-          message: '{VALUE} is not a valid subscription status',
-        },
+        enum: ['active', 'inactive', 'expired', 'cancelled', 'pending', 'suspended'],
         default: 'pending',
       },
+      isTrial: { type: Boolean, default: false },
+      trialDuration: { type: Number, min: 0 },
       features: {
-        productsLimit: {
-          type: Number,
-          required: true,
-          min: [0, 'Products limit cannot be negative'],
-        },
-        commission: {
-          type: Number,
-          required: true,
-          min: [0, 'Commission cannot be negative'],
-        },
+        productsLimit: { type: Number, default: 10, min: 0 },
+        commission: { type: Number, default: 10, min: 0 },
         prioritySupport: { type: Boolean, default: false },
         instantPayouts: { type: Boolean, default: false },
-        customSectionsLimit: { type: Number, default: 0 },
+        customSectionsLimit: { type: Number, default: 0, min: 0 },
+        domainSupport: { type: Boolean, default: false },
+        domainRenewal: { type: Boolean, default: false },
+        analyticsAccess: { type: Boolean, default: false },
+        abTesting: { type: Boolean, default: false },
+        pointsRedeemable: { type: Boolean, default: false },
+        dynamicPaymentGateways: { type: Boolean, default: false },
+        maxApiKeys: { type: Number, default: 1, min: 0 }, 
+        _id: false,
       },
-      pointsRedeemed: {
-        type: Number,
-        default: 0,
-        min: [0, 'Points redeemed cannot be negative'],
-      },
-      paymentMethod: {
-        type: String,
-        enum: {
-          values: ['stripe', 'paypal'],
-          message: '{VALUE} is not a valid payment method',
-        },
-      },
+      pointsRedeemed: { type: Number, default: 0, min: 0 },
+      paymentMethod: { type: String },
+      paymentGatewayId: { type: String, trim: true },
       paymentId: { type: String, trim: true },
+      activeGatewayConfig: { type: Map, of: Schema.Types.Mixed },
+      metadata: { type: Map, of: Schema.Types.Mixed },
+      _id: false,
+    },
+    bankInfo: {
+      verified: { type: Boolean, default: false },
+      accountName: { type: String }, 
+      accountNumber: {
+        type: String,
+        set: (value: string) => (value ? encrypt(value) : undefined),
+        get: (value: string) => (value ? decrypt(value) : undefined),
+      },
+      bankName: { type: String },
+      swiftCode: { type: String }, 
+      routingNumber: {
+        type: String,
+        set: (value: string) => (value ? encrypt(value) : undefined),
+        get: (value: string) => (value ? decrypt(value) : undefined),
+      },
+      _id: false,
     },
     verification: {
       status: {
         type: String,
-        enum: {
-          values: ['pending', 'verified', 'rejected'],
-          message: '{VALUE} is not a valid verification status',
-        },
+        enum: ['pending', 'verified', 'rejected'],
         default: 'pending',
       },
-      documents: {
-        type: Schema.Types.Mixed,
-        default: {},
-      },
+      documents: [
+        {
+          url: {
+            type: String,
+            trim: true,
+            validate: {
+              validator: (v: string) => validator.isURL(v, { protocols: ['http', 'https'] }),
+              message: 'Document URL must be valid',
+            },
+          },
+          type: {
+            type: String,
+            enum: ['id', 'business_license', 'tax_document', 'other'],
+            required: true,
+          },
+          status: {
+            type: String,
+            enum: ['pending', 'verified', 'rejected'],
+            default: 'pending',
+          },
+          uploadedAt: { type: Date, default: Date.now },
+          metadata: { type: Schema.Types.Mixed },
+          _id: false,
+        },
+      ],
       submittedAt: {
         type: Date,
         required: [true, 'Verification submission date is required'],
+        default: Date.now,
       },
       lastUpdatedAt: { type: Date },
+      _id: false,
     },
-    stripeAccountId: {
+    integrationIds: [{ type: Schema.Types.ObjectId, ref: 'Integration', default: [] }],
+integrations: {
+  type: Map,
+  of: {
+    providerName: { type: String, required: true },
+    type: {
       type: String,
-      trim: true,
+      enum: [
+        'payment', 'warehouse', 'dropshipping', 'marketplace', 'shipping', 'marketing', 'accounting',
+        'crm', 'analytics', 'automation', 'communication', 'education', 'security', 'advertising', 'tax', 'other',
+      ],
+      required: true,
     },
-    preferredWarehouse: {
-      provider: {
-        type: String,
-        enum: {
-          values: ['ShipBob', '4PX'],
-          message: '{VALUE} is not a valid warehouse provider',
+    accessToken: {
+      type: String,
+      set: (val: string) => (val ? encrypt(val) : undefined),
+      get: (val: string) => (val ? decrypt(val) : undefined),
+    },
+    refreshToken: {
+      type: String,
+      set: (val: string) => (val ? encrypt(val) : undefined),
+      get: (val: string) => (val ? decrypt(val) : undefined),
+    },
+    expiresAt: { type: Date },
+    metadata: { type: Schema.Types.Mixed, default: {} },
+    isActive: { type: Boolean, default: true },
+    connectedAt: { type: Date, default: Date.now },
+    lastUpdatedAt: { type: Date, default: Date.now },
+    sandbox: { type: Boolean, default: false },
+    apiEndpoints: {
+      type: Map,
+      of: String,
+      default: {},
+    },
+    _id: false,
+  },
+  default: {},
+},
+    taxSettings: {
+      type: Map,
+      of: {
+        countryCode: { type: String, required: true, match: /^[A-Z]{2}$/ },
+        taxType: {
+          type: String,
+          default: 'none',
         },
-        required: [true, 'Warehouse provider is required'],
+        taxRate: { type: Number, default: 0, min: 0 },
+        taxService: {
+          type: String,  
+          default: 'none',
+        },
+        _id: false,
       },
-      warehouseId: {
-        type: String,
-        required: [true, 'Warehouse ID is required'],
+      default: {},
+    },
+    defaultCurrency: {
+      type: String,
+      default: 'USD',
+      validate: {
+        validator: (v: string) => /^[A-Z]{3}$/.test(v),
+        message: 'Invalid currency code',
       },
-      selectedAt: {
-        type: Date,
-        required: [true, 'Selection date is required'],
-      },
-      reason: {
+    },
+    checkoutSettings: {
+      customCheckoutEnabled: { type: Boolean, default: false },
+      checkoutPageUrl: {
         type: String,
         trim: true,
+        validate: {
+          validator: (v: string) => !v || validator.isURL(v, { protocols: ['https'] }),
+          message: 'Invalid checkout page URL',
+        },
       },
+      _id: false,
     },
     metrics: {
       rating: { type: Number, default: 0, min: 0, max: 5 },
@@ -350,205 +546,318 @@ const SellerSchema: Schema<ISeller> = new Schema(
       customersCount: { type: Number, default: 0, min: 0 },
       views: { type: Number, default: 0, min: 0 },
       followers: { type: Number, default: 0, min: 0 },
+      ratingsCount: { type: Number, default: 0, min: 0 },
+      totalSalesHistory: [
+        {
+          amount: { type: Number, required: true, min: 0 },
+          date: { type: Date, required: true },
+          _id: false,
+        },
+        { default: [] },
+      ],
+      viewsHistory: [
+        { date: { type: Date, required: true }, _id: false },
+        { default: [] },
+      ],
       lastProductCreated: { type: Date },
       products: {
         total: { type: Number, default: 0, min: 0 },
         active: { type: Number, default: 0, min: 0 },
         outOfStock: { type: Number, default: 0, min: 0 },
+        _id: false,
       },
+      integrationErrors: [
+        {
+          providerName: { type: String, required: true },
+          errorCode: { type: String, required: true },
+          message: { type: String, required: true },
+          timestamp: { type: Date, default: Date.now },
+          _id: false,
+        },
+        { default: [] },
+      ],
+      _id: false,
     },
     settings: {
+      language: { type: String, enum: ['en', 'ar', 'fr', 'es', 'de', 'other'], default: 'en' },
       notifications: {
         email: { type: Boolean, default: true },
         sms: { type: Boolean, default: false },
+        push: { type: Boolean, default: false },
         orderUpdates: { type: Boolean, default: true },
         marketingEmails: { type: Boolean, default: false },
         pointsNotifications: { type: Boolean, default: true },
+        _id: false,
       },
       display: {
         showRating: { type: Boolean, default: true },
         showContactInfo: { type: Boolean, default: true },
         showMetrics: { type: Boolean, default: true },
         showPointsBalance: { type: Boolean, default: true },
+        welcomeSeen: { type: Boolean, default: false },
+        _id: false,
       },
       security: {
         twoFactorAuth: { type: Boolean, default: false },
         loginNotifications: { type: Boolean, default: true },
+        ipWhitelist: [{ type: String, validate: validator.isIP }],
+        _id: false,
       },
       customSite: {
         theme: { type: String, default: 'default', trim: true },
         primaryColor: {
           type: String,
           default: '#000000',
-          match: [/^#[0-9A-F]{6}$/i, 'Please enter a valid hex color code'],
+          validate: {
+            validator: (v: string) => /^#[0-9A-F]{6}$/i.test(v),
+            message: 'Please enter a valid hex color code',
+          },
           trim: true,
         },
-        bannerImage: { type: String, trim: true },
+        bannerImage: {
+          type: String,
+          trim: true,
+          validate: {
+            validator: (v: string) =>
+              !v || validator.isURL(v, { protocols: ['http', 'https'] }),
+            message: 'Banner image URL must be valid',
+          },
+        },
         customSections: [
           {
-            title: { type: String, required: true, trim: true },
-            content: { type: String, required: true, trim: true },
+            title: {
+              type: String,
+              required: true,
+              trim: true,
+              minlength: [2, 'Section title must be at least 2 characters'],
+            },
+            content: {
+              type: String,
+              required: true,
+              trim: true,
+              minlength: [10, 'Section content must be at least 10 characters'],
+            },
+            order: { type: Number, default: 0 },
             _id: false,
           },
         ],
+        domainStatus: {
+          type: String,
+          enum: ['active', 'expired', 'pending'],
+          default: 'pending',
+        },
+        domainRenewalDate: { type: Date },
+        seo: {
+          metaTitle: { type: String, trim: true, maxlength: 60 },
+          metaDescription: { type: String, trim: true, maxlength: 160 },
+          keywords: [{ type: String, trim: true }],
+          _id: false,
+        },
+        _id: false,
       },
+      abTesting: {
+        enabled: { type: Boolean, default: false },
+        experiments: [
+          {
+            name: { type: String, required: true },
+            variant: { type: String, required: true },
+            startDate: { type: Date, required: true },
+            endDate: { type: Date },
+            metrics: { type: Schema.Types.Mixed, default: {} },
+            _id: false,
+          },
+        ],
+        _id: false,
+      },
+      _id: false,
     },
     pointsBalance: {
       type: Number,
-      default: 100,
+      default: 50,
       min: [0, 'Points balance cannot be negative'],
     },
-    pointsTransactions: [
+    pointsHistory: [
       {
         amount: {
           type: Number,
           required: true,
-          min: [0, 'Transaction amount cannot be negative'],
+          min: 0,
         },
         type: {
           type: String,
-          enum: {
-            values: ['earn', 'spend', 'redeem'],
-            message: '{VALUE} is not a valid transaction type',
-          },
+          enum: ['credit', 'debit'],
           required: true,
         },
-        description: { type: String, required: true, trim: true },
-        orderId: { type: String, trim: true },
+        reason: {
+          type: String,
+          required: true,
+          trim: true,
+          minlength: [2, 'Reason must be at least 2 characters'],
+        },
+        orderId: {
+          type: String,
+          trim: true,
+          validate: {
+            validator: (v: string) => !v || mongoose.Types.ObjectId.isValid(v),
+            message: 'Invalid order ID',
+          },
+        },
         createdAt: { type: Date, default: Date.now },
         _id: false,
       },
     ],
-    freeTrialActive: {
+    freeTrial: {
       type: Boolean,
       default: false,
     },
-    freeTrialEndDate: {
-      type: Date,
-    },
+    freeTrialEndDate: { type: Date },
     trialMonthsUsed: {
       type: Number,
       default: 0,
-      min: [0, 'Trial months used cannot be negative'],
+      min: 0,
     },
     customSiteUrl: {
       type: String,
       required: [true, 'Custom site URL is required'],
       trim: true,
-      unique: true,
-    },
-    apiKeys: [{ type: Schema.Types.ObjectId, ref: 'ApiKey', default: [] }],
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
-  },
-  {
-    timestamps: true,
-    toJSON: {
-      transform: (doc, ret) => {
-        delete ret.bankInfo?.accountNumber;
-        delete ret.__v;
-        return ret;
+      lowercase: true,
+      validate: {
+        validator: (v: string) => /^[a-z0-9_-]+$/.test(v),
+        message: 'Custom site URL must contain only lowercase letters, numbers, underscores, or hyphens',
       },
     },
-  }
+    storeName: { type: String, trim: true },
+    domain: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v: string) => !v || validator.isFQDN(v),
+        message: 'Invalid domain name',
+      },
+    },
+    apiKeys: [{ type: Schema.Types.ObjectId, ref: 'ApiKey', default: [] }],
+    isActive: { type: Boolean, default: true },
+    metadata: { type: Schema.Types.Mixed, default: {} },
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+  },
+  { timestamps: true, toJSON: { getters: true } }
 );
 
-// تشفير رقم الحساب قبل الحفظ
-SellerSchema.pre('save', async function (next) {
-  if (this.isModified('bankInfo.accountNumber') && this.bankInfo.accountNumber) {
-    try {
-      const secretKey = process.env.ENCRYPTION_KEY || 'my-secret-key-32-characters-long!';
-      const iv = crypto.randomBytes(16);
-      const cipher = crypto.createCipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
-      let encrypted = cipher.update(this.bankInfo.accountNumber, 'utf8', 'hex');
-      encrypted += cipher.final('hex');
-      this.bankInfo.accountNumber = `${iv.toString('hex')}:${encrypted}`;
-    } catch (error) {
-      console.error('Encryption error:', error);
-      return next(new Error('Failed to encrypt account number'));
+// Encrypt sensitive data before saving
+SellerSchema.pre('save', function (next) {
+  if (this.isModified('integrations')) {
+    for (const key in this.integrations) {
+      const integration = this.integrations[key];
+      if (integration.accessToken) {
+        integration.accessToken = encrypt(integration.accessToken);
+      }
+      if (integration.refreshToken) {
+        integration.refreshToken = encrypt(integration.refreshToken);
+      }
+    }
+  }
+  if (this.isModified('paymentGateways')) {
+    this.paymentGateways.forEach((gateway: any) => {
+      if (gateway.accountDetails) {
+        gateway.accountDetails = encrypt(JSON.stringify(gateway.accountDetails));
+      }
+    });
+  }
+  if (this.isModified('bankInfo')) {
+    if (this.bankInfo?.accountNumber) {
+      this.bankInfo.accountNumber = encrypt(this.bankInfo.accountNumber);
+    }
+    if (this.bankInfo?.swiftCode) {
+      this.bankInfo.swiftCode = encrypt(this.bankInfo.swiftCode);
+    }
+    if (this.bankInfo?.routingNumber) {
+      this.bankInfo.routingNumber = encrypt(this.bankInfo.routingNumber);
     }
   }
   next();
 });
 
-// فك تشفير رقم الحساب بعد الاستعلام
-async function decryptAccountNumber(doc: ISeller | Record<string, any>) {
-  if (!doc?.bankInfo?.accountNumber) return;
-
-  // تحقق من وجود الحقل بدل isSelected
-  if (
-    doc.bankInfo?.accountNumber &&
-    typeof doc.bankInfo.accountNumber === 'string' &&
-    doc.bankInfo.accountNumber.includes(':')
-  ) {
-    try {
-      const secretKey = process.env.ENCRYPTION_KEY || 'my-secret-key-32-characters-long!';
-      const [ivHex, encrypted] = doc.bankInfo.accountNumber.split(':');
-      const iv = Buffer.from(ivHex, 'hex');
-      const decipher = crypto.createDecipheriv('aes-256-cbc', Buffer.from(secretKey), iv);
-      let decrypted = decipher.update(encrypted, 'hex', 'utf8');
-      decrypted += decipher.final('utf8');
-      doc.bankInfo.accountNumber = decrypted;
-    } catch (error: unknown) {
-      console.warn(`Failed to decrypt account number for seller ${doc._id}:`, (error as Error).message);
-      doc.bankInfo.accountNumber = '';
-      doc.bankInfo.verified = false;
+// Decrypt sensitive data when retrieving
+SellerSchema.post(['find', 'findOne'], function (docs) {
+  if (!Array.isArray(docs)) {
+    docs = [docs];
+  }
+  docs.forEach((doc: any) => {
+    if (!doc) return;
+    for (const key in doc.integrations) {
+      const integration = doc.integrations[key];
+      if (integration.accessToken) {
+        integration.accessToken = decrypt(integration.accessToken);
+      }
+      if (integration.refreshToken) {
+        integration.refreshToken = decrypt(integration.refreshToken);
+      }
     }
-  }
-}
-
-SellerSchema.post('find', async function (docs: ISeller[]) {
-  if (!docs) return;
-  for (const doc of docs) {
-    await decryptAccountNumber(doc);
-  }
+    doc.paymentGateways.forEach((gateway: any) => {
+      if (gateway.accountDetails) {
+        gateway.accountDetails = JSON.parse(decrypt(gateway.accountDetails));
+      }
+    });
+    if (doc.bankInfo?.accountNumber) {
+      doc.bankInfo.accountNumber = decrypt(doc.bankInfo.accountNumber);
+    }
+    if (doc.bankInfo?.swiftCode) {
+      doc.bankInfo.swiftCode = decrypt(doc.bankInfo.swiftCode);
+    }
+    if (doc.bankInfo?.routingNumber) {
+      doc.bankInfo.routingNumber = decrypt(doc.bankInfo.routingNumber);
+    }
+  });
 });
 
-SellerSchema.post('findOne', async function (doc: ISeller | null) {
-  if (!doc) return;
-  await decryptAccountNumber(doc);
-});
-
-// إضافة نقاط
-SellerSchema.methods.addPoints = async function (
-  amount: number,
-  description: string,
-  orderId?: string
-): Promise<void> {
-  if (amount <= 0) {
-    throw new Error('Points amount must be positive');
-  }
-  if (!description || description.trim() === '') {
-    throw new Error('Transaction description is required');
-  }
-  if (orderId && !mongoose.Types.ObjectId.isValid(orderId)) {
-    throw new Error('Invalid order ID');
-  }
-
+// Methods
+SellerSchema.methods.addPoints = async function (amount: number, reason: string, orderId?: string) {
   this.pointsBalance += amount;
-  this.pointsTransactions.push({
-    amount,
-    type: 'earn',
-    description,
+  this.pointsHistory.push({
+    amount: Math.abs(amount),
+    type: amount >= 0 ? 'credit' : 'debit',
+    reason,
     orderId,
     createdAt: new Date(),
   });
-
   await this.save();
 };
 
-// إنشاء فهارس
-SellerSchema.index({ email: 1 });
+SellerSchema.methods.toggleIntegration = async function (providerName: string, isActive: boolean) {
+  if (this.integrations[providerName]) {
+    this.integrations[providerName].isActive = isActive;
+    this.integrations[providerName].lastUpdatedAt = new Date();
+    await this.save();
+  } else {
+    throw new Error(`Integration ${providerName} not found`);
+  }
+};
+
+SellerSchema.methods.logIntegrationError = async function (
+  providerName: string,
+  errorCode: string,
+  message: string
+) {
+  this.metrics.integrationErrors = this.metrics.integrationErrors || [];
+  this.metrics.integrationErrors.push({
+    providerName,
+    errorCode,
+    message,
+    timestamp: new Date(),
+  });
+  await this.save();
+};
+
+// Indexes for performance
+SellerSchema.index({ userId: 1, email: 1, customSiteUrl: 1 }, { unique: true });
 SellerSchema.index({ 'metrics.totalSales': 1 });
-SellerSchema.index({ customSiteUrl: 1 });
+SellerSchema.index({ 'integrations.providerName': 1 });
+SellerSchema.index({ 'settings.language': 1 });
+SellerSchema.index({ 'taxSettings.countryCode': 1 });
 
-const Seller: Model<ISeller> =
-  mongoose.models.Seller || mongoose.model<ISeller>('Seller', SellerSchema);
-
+if (mongoose.models.Seller) {
+  delete mongoose.models.Seller;
+}
+const Seller: Model<ISeller> = mongoose.model<ISeller>('Seller', SellerSchema);
 export default Seller;

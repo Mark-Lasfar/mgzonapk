@@ -1,17 +1,21 @@
-export type FulfillmentProvider = 
-  | 'shipbob'
-  | 'amazon'
-  | 'aliexpress'
-  | '4px';
+export interface FulfillmentCredentials {
+  apiKey?: string;
+  clientId?: string;
+  clientSecret?: string;
+  accessToken?: string;
+  refreshToken?: string;
+  apiUrl?: string;
+  webhookUrl?: string;
+  metadata?: Record<string, any>;
+  [key: string]: any; // دعم أي بيانات إضافية
+}
 
 export interface FulfillmentConfig {
-  provider: FulfillmentProvider;
-  apiKey: string;
-  apiSecret?: string;
-  warehouseId?: string;
-  region?: string;
-  sandbox?: boolean;
+  providerName: string; // من Integration.providerName
+  type: string; // من Integration.type
+  credentials: FulfillmentCredentials;
   settings?: Record<string, any>;
+  isActive: boolean;
   createdAt: string;
   createdBy: string;
   updatedAt: string;
@@ -42,7 +46,7 @@ export interface FulfillmentOrderAddress {
 
 export interface FulfillmentOrder {
   orderId: string;
-  provider: FulfillmentProvider;
+  providerName: string; // من Integration.providerName
   userId: string;
   items: FulfillmentOrderItem[];
   shippingAddress: FulfillmentOrderAddress;
@@ -76,7 +80,7 @@ export interface FulfillmentResult {
   success: boolean;
   orderId: string;
   fulfillmentId: string;
-  provider: FulfillmentProvider;
+  providerName: string; // من Integration.providerName
   status: FulfillmentStatus;
   tracking?: FulfillmentTracking;
   metadata?: Record<string, any>;
@@ -85,7 +89,7 @@ export interface FulfillmentResult {
   processedBy: string;
 }
 
-export type FulfillmentStatus = 
+export type FulfillmentStatus =
   | 'pending'
   | 'processing'
   | 'shipped'
@@ -114,7 +118,7 @@ export interface InventoryUpdate {
 
 export interface FulfillmentWebhook {
   type: string;
-  provider: FulfillmentProvider;
+  providerName: string; // من Integration.providerName
   orderId: string;
   fulfillmentId: string;
   data: any;
@@ -123,7 +127,7 @@ export interface FulfillmentWebhook {
 }
 
 export interface RateQuote {
-  provider: FulfillmentProvider;
+  providerName: string; // من Integration.providerName
   service: string;
   rate: number;
   currency: string;

@@ -4,7 +4,7 @@ import { redirect, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-import useSettingStore from '@/hooks/use-setting-store';
+// import useSettingStore from '@/hooks/use-setting-store';
 import {
   Form,
   FormControl,
@@ -16,11 +16,15 @@ import {
 import { useForm } from 'react-hook-form';
 import { IUserSignUp } from '@/types';
 import { registerUser, signInWithCredentials, verifyEmail } from '@/lib/actions/user.actions';
-import { toast } from '@/hooks/use-toast';
+// import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignUpSchema } from '@/lib/validator';
 import { Separator } from '@/components/ui/separator';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
+import useSettingStore from '../../../../hooks/use-setting-store';
+// import { Toast } from '@/components/ui/toast';
+import { toast } from '../../../../hooks/use-toast';
+import { Toast } from '@/components/ui/toast';
 
 const signUpDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -73,7 +77,7 @@ export default function SignUpForm() {
     try {
       const res = await registerUser(data);
       if (!res.success) {
-        toast({
+        Toast({
           title: 'Error',
           description: res.error,
           variant: 'destructive',
@@ -208,12 +212,12 @@ export default function SignUpForm() {
             value={verificationCode}
             onChange={(e) => setVerificationCode(e.target.value)}
             className="text-center text-lg tracking-wider"
-            maxLength={6}
+            maxLength={8}
           />
           <Button 
             onClick={handleVerification} 
             className="w-full"
-            disabled={!verificationCode || verificationCode.length !== 6}
+            disabled={!verificationCode || verificationCode.length !== 8}
           >
             Verify Email
           </Button>
