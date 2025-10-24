@@ -1,15 +1,34 @@
 import SellerIntegration, { ISellerIntegration } from '@/lib/db/models/seller-integration.model';
-// import { logger } from '@/lib/utils';
 import axios from 'axios';
 import { ProductImportService } from '@/lib/api/services/product-import';
 import { SellerError } from '@/lib/errors/seller-error';
-import { logger } from '../logging';
+import { z } from 'zod';
+
+// دالة مساعدة لتسجيل الـ logs عبر API
+async function logToApi(type: 'info' | 'error', message: string, meta: any, error?: any) {
+  try {
+    await fetch('/api/log', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type,
+        message,
+        error: error ? String(error) : undefined,
+        meta,
+      }),
+    });
+  } catch (err) {
+    console.error('Failed to send log to /api/log:', err);
+  }
+}
 
 // تعريف أنواع البيانات
 interface IntegrationData {
   _id: string;
-  type: 'warehouse' | 'payment' | 'shipping' | 'dropshipping' | 'advertising';
-  status: string;
+  type: 'payment' | 'warehouse' | 'dropshipping' | 'marketplace' | 'shipping' | 'marketing' | 'accounting' | 'crm' | 'analytics' | 'automation' | 'communication' | 'education' | 'security' | 'advertising' | 'tax' | 'other';
+  status: 'connected' | 'disconnected' | 'expired' | 'needs_reauth';
   providerName: string;
   settings: { [key: string]: any };
   logoUrl?: string;
@@ -21,6 +40,21 @@ interface ApiResponse<T> {
   data: T;
   message?: string;
 }
+
+// Schema للتحقق من بيانات المنتج
+const ProductResponseSchema = z.object({
+  sourceId: z.string(),
+  title: z.string(),
+  description: z.string().optional(),
+  price: z.number(),
+  quantity: z.number(),
+  images: z.array(z.object({ url: z.string() })).optional(),
+  category: z.string().optional(),
+  sku: z.string().optional(),
+  currency: z.string(),
+  region: z.string().optional(),
+  availability: z.enum(['in_stock', 'out_of_stock']),
+});
 
 // دالة لجلب التكاملات الديناميكية
 export async function getDynamicIntegrations(sellerId: string, sandbox: boolean): Promise<ApiResponse<IntegrationData[]>> {
@@ -38,7 +72,7 @@ export async function getDynamicIntegrations(sellerId: string, sandbox: boolean)
       return {
         _id: integration._id.toString(),
         type: integration.type,
-        status: si.status,
+        status: si.status ?? 'connected', // Default to 'connected' if undefined
         providerName: integration.providerName,
         settings: integration.settings,
         logoUrl: integration.logoUrl,
@@ -46,14 +80,17 @@ export async function getDynamicIntegrations(sellerId: string, sandbox: boolean)
       };
     });
 
-    logger.info(`Fetched ${result.length} integrations for seller ${sellerId} (sandbox: ${sandbox})`);
+    await logToApi('info', `Fetched ${result.length} integrations for seller ${sellerId} (sandbox: ${sandbox})`, {
+      sellerId,
+      sandbox,
+    });
 
     return {
       success: true,
       data: result,
     };
   } catch (error) {
-    logger.error('Error fetching integrations', { error, sellerId, sandbox });
+    await logToApi('error', 'Error fetching integrations', { sellerId, sandbox }, error);
     return {
       success: false,
       data: [],
@@ -74,24 +111,41 @@ export class DynamicIntegrationService {
     this.productImportService = new ProductImportService();
   }
 
+  async callApi<T>(config: { endpoint: string; method: string; body?: any; headers?: Record<string, string> }): Promise<T> {
+    const { endpoint, method, body, headers } = config;
+    try {
+      const response = await axios({
+        url: endpoint,
+        method,
+        data: body,
+        headers: {
+          'Content-Type': 'application/json',
+          ...headers,
+        },
+      });
+      return response.data;
+    } catch (error) {
+      throw new SellerError('API_CALL_FAILED', error instanceof Error ? error.message : 'Failed to call API');
+    }
+  }
+
   private async sendWebhook(event: string, payload: any) {
-    const webhook = this.integration.webhook;
+    const webhook = this.sellerIntegration.webhook;
     if (webhook?.enabled && webhook.url) {
       try {
-        await axios.post(
-          webhook.url,
-          {
+        await this.callApi({
+          endpoint: webhook.url,
+          method: 'POST',
+          body: {
             event,
             data: payload,
             timestamp: new Date().toISOString(),
           },
-          {
-            headers: webhook.secret ? { 'X-Webhook-Secret': webhook.secret } : {},
-          }
-        );
-        logger.info(`Webhook sent for ${event}`, { url: webhook.url });
+          headers: webhook.secret ? { 'X-Webhook-Secret': webhook.secret } : {},
+        });
+        await logToApi('info', `Webhook sent for ${event}`, { url: webhook.url });
       } catch (error) {
-        logger.error(`Failed to send webhook for ${event}`, { error, url: webhook.url });
+        await logToApi('error', `Failed to send webhook for ${event}`, { url: webhook.url }, error);
       }
     }
   }
@@ -122,23 +176,38 @@ export class DynamicIntegrationService {
         region
       );
 
-      const productData = {
+      // التحقق من بيانات المنتج باستخدام zod
+      const validatedProduct = ProductResponseSchema.parse({
         sourceId: product.sourceId,
-        name: product.title,
+        title: product.title,
         description: product.description || '',
         price: product.price,
-        countInStock: product.quantity,
+        quantity: product.quantity,
+        images: product.images || [],
         category: product.categories?.[0] || 'Uncategorized',
-        images: product.images.map((img) => img.url),
         sku: product.sku,
         currency: product.currency,
-        availability: product.availability,
         region: product.region,
+        availability: product.availability,
+      });
+
+      const productData = {
+        sourceId: validatedProduct.sourceId,
+        name: validatedProduct.title,
+        description: validatedProduct.description || '',
+        price: validatedProduct.price,
+        countInStock: validatedProduct.quantity,
+        category: validatedProduct.category || 'Uncategorized',
+        images: validatedProduct.images?.map((img) => img.url) || [], // Handle undefined images
+        sku: validatedProduct.sku,
+        currency: validatedProduct.currency,
+        availability: validatedProduct.availability,
+        region: validatedProduct.region,
       };
 
       await this.sendWebhook('product.imported', productData);
 
-      logger.info(`Product imported from ${this.integration.providerName}`, {
+      await logToApi('info', `Product imported from ${this.integration.providerName}`, {
         productId,
         sellerId,
         region,
@@ -146,13 +215,12 @@ export class DynamicIntegrationService {
 
       return productData;
     } catch (error) {
-      logger.error('Error importing product', {
-        error,
+      await logToApi('error', 'Error importing product', {
         productId,
         sellerId,
         provider: this.integration.providerName,
-      });
-      throw error instanceof SellerError ? error : new SellerError('IMPORT_FAILED', error.message || 'Failed to import product');
+      }, error);
+      throw error instanceof SellerError ? error : new SellerError('IMPORT_FAILED', error instanceof Error ? error.message : 'Failed to import product');
     }
   }
 
@@ -173,13 +241,14 @@ export class DynamicIntegrationService {
       const { credentials, apiEndpoints } = this.sellerIntegration;
       const apiKey = credentials?.get('apiKey');
       const baseUrl = apiEndpoints?.get('baseUrl') || settings.apiUrl;
+      const productEndpoint = settings.apiEndpoints?.createProduct || '/products';
 
       if (!apiKey || !baseUrl) {
         throw new SellerError('MISSING_CREDENTIALS', 'Missing API credentials or base URL');
       }
 
       await axios.post(
-        `${baseUrl}/products`,
+        `${baseUrl}${productEndpoint}`,
         {
           externalId: product.externalId,
           name: product.name,
@@ -194,10 +263,10 @@ export class DynamicIntegrationService {
 
       await this.sendWebhook('product.created', product);
 
-      logger.info(`Product created in warehouse ${providerName}`, { externalId: product.externalId });
+      await logToApi('info', `Product created in warehouse ${providerName}`, { externalId: product.externalId });
     } catch (error) {
-      logger.error('Error creating product in warehouse', { error, provider: this.integration.providerName });
-      throw error instanceof SellerError ? error : new SellerError('CREATE_FAILED', error.message || 'Failed to create product');
+      await logToApi('error', 'Error creating product in warehouse', { provider: this.integration.providerName }, error);
+      throw error instanceof SellerError ? error : new SellerError('CREATE_FAILED', error instanceof Error ? error.message : 'Failed to create product');
     }
   }
 
@@ -211,12 +280,13 @@ export class DynamicIntegrationService {
       const inventoryData = await this.productImportService.syncInventory(
         productId,
         sellerId,
-        this.integration._id
+        this.integration._id,
+        'global'
       );
 
       await this.sendWebhook('product.synced', inventoryData);
 
-      logger.info(`Inventory synced from ${this.integration.providerName}`, {
+      await logToApi('info', `Inventory synced from ${this.integration.providerName}`, {
         productId,
         sellerId,
         quantity: inventoryData.quantity,
@@ -225,13 +295,12 @@ export class DynamicIntegrationService {
 
       return inventoryData;
     } catch (error) {
-      logger.error('Error syncing inventory', {
-        error,
+      await logToApi('error', 'Error syncing inventory', {
         productId,
         sellerId,
         provider: this.integration.providerName,
-      });
-      throw error instanceof SellerError ? error : new SellerError('SYNC_FAILED', error.message || 'Failed to sync inventory');
+      }, error);
+      throw error instanceof SellerError ? error : new SellerError('SYNC_FAILED', error instanceof Error ? error.message : 'Failed to sync inventory');
     }
   }
 
@@ -270,10 +339,10 @@ export class DynamicIntegrationService {
 
       await this.sendWebhook('product.updated', { productId, ...updates });
 
-      logger.info(`Product updated in ${providerName}`, { productId, updates });
+      await logToApi('info', `Product updated in ${providerName}`, { productId, updates });
     } catch (error) {
-      logger.error('Error updating product', { error, productId, provider: this.integration.providerName });
-      throw error instanceof SellerError ? error : new SellerError('UPDATE_FAILED', error.message || 'Failed to update product');
+      await logToApi('error', 'Error updating product', { productId, provider: this.integration.providerName }, error);
+      throw error instanceof SellerError ? error : new SellerError('UPDATE_FAILED', error instanceof Error ? error.message : 'Failed to update product');
     }
   }
 
@@ -299,15 +368,14 @@ export class DynamicIntegrationService {
 
       await this.sendWebhook('product.deleted', { productId });
 
-      logger.info(`Product deleted from ${providerName}`, { productId });
+      await logToApi('info', `Product deleted from ${providerName}`, { productId });
     } catch (error) {
-      logger.error('Error deleting product', { error, productId, provider: this.integration.providerName });
-      throw error instanceof SellerError ? error : new SellerError('DELETE_FAILED', error.message || 'Failed to delete product');
+      await logToApi('error', 'Error deleting product', { productId, provider: this.integration.providerName }, error);
+      throw error instanceof SellerError ? error : new SellerError('DELETE_FAILED', error instanceof Error ? error.message : 'Failed to delete product');
     }
   }
 }
 
-// تصدير الدوال
 export default {
   getDynamicIntegrations,
   DynamicIntegrationService,

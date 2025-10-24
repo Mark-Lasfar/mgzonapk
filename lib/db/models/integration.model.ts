@@ -1,4 +1,4 @@
-// /home/mark/Music/my-nextjs-project-clean/lib/db/models/integration.model.ts
+// /lib/db/models/integration.model.ts
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 import validator from 'validator';
 import { encrypt, decrypt } from '@/lib/utils/encryption';
@@ -126,6 +126,7 @@ export interface IIntegration extends Document {
     padding?: string;
     customPosition?: { position: 'absolute' | 'relative' | 'fixed'; top?: string; left?: string };
   }>;
+  
   articles?: Array<{
     id: string;
     title: string;
@@ -155,9 +156,9 @@ export interface IIntegration extends Document {
   updatedBy: Types.ObjectId;
   history: Array<{ event: string; date: Date }>;
   enabledBySellers: Types.ObjectId[];
-  connected: boolean;
-  status: 'connected' | 'disconnected' | 'expired' | 'needs_reauth';
-  accessToken?: string; // أضفتها
+  connected?: boolean;
+  status?: 'connected' | 'disconnected' | 'expired' | 'needs_reauth';
+  accessToken?: string;
 }
 
 const integrationSchema = new Schema<IIntegration>(
@@ -364,15 +365,15 @@ const integrationSchema = new Schema<IIntegration>(
         type: String,
         enum: ['Bearer', 'Basic', 'APIKey', 'OAuth'],
       },
-      endpoints: {
-        type: Map,
-        of: {
-          type: String,
-          validate: {
-            validator: (v: string) => validator.isURL(v, { protocols: ['https'] }) || /^\/api[\w/]+$/.test(v),
-            message: 'Invalid URL or path format for endpoint',
-          },
-        },
+  endpoints: {
+    type: Map,
+    of: {
+      type: String,
+      validate: {
+        validator: (v: string) => validator.isURL(v, { protocols: ['https'] }) || /^\/api[\w/]+$/.test(v),
+        message: 'Invalid URL or path format for endpoint',
+      },
+    },
         default: {
           get: '/products/:id',
           sync: '/products/:id/sync',
@@ -383,6 +384,7 @@ const integrationSchema = new Schema<IIntegration>(
           shipmentStatus: '/shipments/:id',
           create: '/products',
           updateById: '/products/:externalId',
+          capturePayment: '/payments/capture', // إضافة نقطة نهاية للدفع
         },
       },
       responseMapping: {

@@ -1,82 +1,95 @@
-import { Metadata } from 'next';
-import { Card, CardContent, CardFooter } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
-import { auth } from '@/auth';
-import { updateSellerSubscription } from '@/lib/actions/seller.actions';
-import { redirect } from 'next/navigation';
+// /app/[locale]/(root)/account/subscriptions/redeem-points/page.tsx
+
 import { getTranslations } from 'next-intl/server';
-import { connectToDatabase } from '@/lib/db';
-import Seller from '@/lib/db/models/seller.model';
-import { subscriptionPlans } from '@/lib/constants';
+import { notFound } from 'next/navigation';
+import RedeemPointsClient from './RedeemPointsClient';
+import { ApolloClient, InMemoryCache, gql, createHttpLink } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+import { auth } from '@/auth';
+import fetch from 'cross-fetch'; 
 
-export const metadata: Metadata = {
-  title: 'Redeem Points for Subscription',
-};
+export default async function RedeemPointsPage({
+  params,
+  searchParams,
+}: {
+  params: { locale: string };
+  searchParams: { planId?: string };
+}) {
+  const { locale } = params;
+  const { planId } = searchParams;
+  const t = await getTranslations({ locale, namespace: 'subscriptions' });
 
-export default async function RedeemPointsPage({ searchParams }: { searchParams: { planId?: string } }) {
-  const t = await getTranslations('subscriptions');
   const session = await auth();
-  if (!session?.user?.id) {
-    redirect('/sign-in');
+  const userId = session?.user?.id;
+  const token = session?.user?.token;
+
+  if (!userId) return notFound();
+
+  if (!planId) {
+    return (
+      <div className="max-w-6xl mx-auto p-4">
+        <h1 className="h1-bold py-4">{t('errors.invalidPlan')}</h1>
+      </div>
+    );
   }
 
-  await connectToDatabase();
-  const seller = await Seller.findOne({ userId: session.user.id });
-  if (!seller) {
-    return <div>{t('errors.sellerNotFound')}</div>;
-  }
+  // إعداد Apollo Client مع Authorization Header
+  const httpLink = createHttpLink({
+    uri: `${process.env.NEXT_PUBLIC_BASE_URL}/graphql`,
+    fetch,
+  });
 
-  const planId = searchParams.planId;
-  const plan = subscriptionPlans.find((p) => p.id === planId);
-  if (!plan) {
-    return <div>{t('errors.invalidPlan')}</div>;
-  }
+  const authLink = setContext((_, { headers }) => ({
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : '',
+    },
+  }));
 
-  async function handleRedeem(formData: FormData) {
-    'use server';
-    try {
-      const result = await updateSellerSubscription(
-        session.user.id,
-        {
-          plan: plan.id,
-          pointsToRedeem: plan.pointsCost,
-          paymentMethod: 'points',
-        },
-        'en'
+  const client = new ApolloClient({
+    link: authLink.concat(httpLink),
+    cache: new InMemoryCache(),
+  });
+
+  try {
+    const { data } = await client.query({
+      query: gql`
+        query GetPlanAndSeller($planId: ID!, $userId: ID!) {
+          subscriptionPlan(id: $planId) {
+            id
+            name
+            pointsCost
+          }
+          sellerSubscription(userId: $userId) {
+            pointsBalance
+          }
+        }
+      `,
+      variables: { planId, userId },
+    });
+
+    if (!data?.subscriptionPlan || !data?.sellerSubscription) {
+      return (
+        <div className="max-w-6xl mx-auto p-4">
+          <h1 className="h1-bold py-4">{t('errors.invalidPlan')}</h1>
+        </div>
       );
-      if (!result.success) {
-        return { success: false, message: result.error || t('errors.failedToRedeemPoints') };
-      }
-      redirect('/account/subscriptions');
-    } catch {
-      return { success: false, message: t('errors.failedToRedeemPoints') };
     }
-  }
 
-  return (
-    <div className="max-w-6xl mx-auto p-4">
-      <h1 className="h1-bold py-4">{t('redeem.title', { plan: plan.name })}</h1>
-      <Card>
-        <CardContent className="p-6">
-          <p>{t('plan')}: {plan.name}</p>
-          <p>{t('pointsRequired')}: {plan.pointsCost}</p>
-          <p>{t('yourPointsBalance')}: {seller.pointsBalance}</p>
-          {seller.pointsBalance < plan.pointsCost && (
-            <p className="text-destructive">{t('errors.insufficientPoints')}</p>
-          )}
-        </CardContent>
-        <CardFooter>
-          <form action={handleRedeem}>
-            <Button
-              type="submit"
-              className="w-full"
-              disabled={seller.pointsBalance < plan.pointsCost}
-            >
-              {t('redeem.confirm')}
-            </Button>
-          </form>
-        </CardFooter>
-      </Card>
-    </div>
-  );
+    return (
+      <RedeemPointsClient
+        seller={data.sellerSubscription}
+        plan={data.subscriptionPlan}
+        userId={userId}
+        locale={locale}
+      />
+    );
+  } catch (error) {
+    console.error('Error fetching plan or seller:', error);
+    return (
+      <div className="max-w-6xl mx-auto p-4">
+        <h1 className="h1-bold py-4">{t('errors.serverError')}</h1>
+      </div>
+    );
+  }
 }

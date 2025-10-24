@@ -6,7 +6,6 @@ import { Input } from '@/components/ui/input';
 import { useTranslations, useLocale } from 'next-intl';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
-import { awardPoints, getPointsBalance } from '@/lib/actions/points.actions';
 import { Trophy, Star, Search, Home, LogIn } from 'lucide-react';
 import { Howl } from 'howler';
 
@@ -14,6 +13,18 @@ interface LeaderboardEntry {
   username: string;
   score: number;
   date: string;
+}
+
+async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
+  try {
+    await fetch('/api/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, meta }),
+    });
+  } catch (err) {
+    console.error('Failed to send log:', err);
+  }
 }
 
 export default function NotFound() {
@@ -43,24 +54,36 @@ export default function NotFound() {
         if (response.ok) {
           const data = await response.json();
           setLeaderboard(data);
+          await sendLog('info', 'Leaderboard fetched successfully', { count: data.length });
         } else {
-          console.error('Failed to fetch leaderboard:', response.status);
+          await sendLog('error', 'Failed to fetch leaderboard', { status: response.status });
+          setNotification({ message: t('errorSearching'), type: 'error' });
         }
       } catch (error) {
-        console.error('Error fetching leaderboard:', error);
+        const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+        await sendLog('error', 'Error fetching leaderboard', { error: errorMessage });
+        setNotification({ message: t('errorSearching'), type: 'error' });
       }
     };
     fetchLeaderboard();
-  }, []);
+  }, [t]);
 
   useEffect(() => {
     if (isAuthenticated && userId) {
       const fetchPoints = async () => {
         try {
-          const balance = await getPointsBalance(userId);
-          setPointsBalance(balance);
+          const response = await fetch('/api/points/balance');
+          const data = await response.json();
+          if (data.success) {
+            setPointsBalance(data.data);
+            await sendLog('info', 'Points balance fetched successfully', { userId, balance: data.data });
+          } else {
+            await sendLog('error', 'Failed to fetch points balance', { userId, error: data.error });
+            setNotification({ message: t('errorSearching'), type: 'error' });
+          }
         } catch (error) {
-          console.error('Error fetching points balance:', error);
+          const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+          await sendLog('error', 'Error fetching points balance', { userId, error: errorMessage });
           setNotification({ message: t('errorSearching'), type: 'error' });
         }
       };
@@ -70,6 +93,7 @@ export default function NotFound() {
 
   const saveScore = async (finalScore: number) => {
     if (!isAuthenticated) {
+      await sendLog('error', 'User not authenticated for saving score', { username });
       setNotification({ message: t('pleaseLogin'), type: 'error' });
       return;
     }
@@ -86,18 +110,40 @@ export default function NotFound() {
       });
 
       if (!scoreResponse.ok) {
+        const errorData = await scoreResponse.json();
+        await sendLog('error', 'Failed to save score', { userId, status: scoreResponse.status, error: errorData.error });
         throw new Error('Failed to save score');
       }
 
       const points = Math.floor(finalScore / 100);
       if (points > 0) {
-        const result = await awardPoints(userId!, points, `Dino Game Score: ${finalScore}`);
-        if (result.success) {
+        const pointsResponse = await fetch('/api/points/apply', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            points,
+            currency: 'USD',
+            description: `Dino Game Score: ${finalScore}`,
+          }),
+        });
+
+        const pointsData = await pointsResponse.json();
+        if (pointsData.success) {
+          await sendLog('info', 'Points awarded successfully', { userId, points, finalScore });
           setNotification({ message: `${points} ${t('points')} ${t('awarded')}`, type: 'success' });
-          const balance = await getPointsBalance(userId!);
-          setPointsBalance(balance);
+
+          // Fetch updated points balance
+          const balanceResponse = await fetch('/api/points/balance');
+          const balanceData = await balanceResponse.json();
+          if (balanceData.success) {
+            setPointsBalance(balanceData.data);
+            await sendLog('info', 'Updated points balance fetched', { userId, balance: balanceData.data });
+          } else {
+            await sendLog('error', 'Failed to fetch updated points balance', { userId, error: balanceData.error });
+          }
         } else {
-          setNotification({ message: result.message, type: 'error' });
+          await sendLog('error', 'Failed to award points', { userId, error: pointsData.error });
+          setNotification({ message: pointsData.error, type: 'error' });
         }
       }
 
@@ -105,15 +151,20 @@ export default function NotFound() {
       if (leaderboardResponse.ok) {
         const data = await leaderboardResponse.json();
         setLeaderboard(data);
+        await sendLog('info', 'Leaderboard updated', { userId, count: data.length });
+      } else {
+        await sendLog('error', 'Failed to fetch updated leaderboard', { status: leaderboardResponse.status });
       }
     } catch (error) {
-      console.error('Error saving score or awarding points:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      await sendLog('error', 'Error saving score or awarding points', { userId, error: errorMessage });
       setNotification({ message: t('errorSaving'), type: 'error' });
     }
   };
 
   const searchUserScore = async () => {
     if (!searchUsername) {
+      await sendLog('error', 'No username provided for search', {});
       setNotification({ message: t('enterUsername'), type: 'error' });
       return;
     }
@@ -122,13 +173,16 @@ export default function NotFound() {
       if (response.ok) {
         const data = await response.json();
         setUserScore(data);
+        await sendLog('info', 'User score found', { username: searchUsername, score: data.score });
         setNotification({ message: t('scoreFound'), type: 'success' });
       } else {
         setUserScore(null);
+        await sendLog('error', 'User score not found', { username: searchUsername, status: response.status });
         setNotification({ message: t('userNotFound'), type: 'error' });
       }
     } catch (error) {
-      console.error('Error fetching user score:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      await sendLog('error', 'Error fetching user score', { username: searchUsername, error: errorMessage });
       setUserScore(null);
       setNotification({ message: t('errorSearching'), type: 'error' });
     }
@@ -147,7 +201,7 @@ export default function NotFound() {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext('2d');
     if (!ctx) {
-      console.error('Failed to get canvas context');
+      sendLog('error', 'Failed to get canvas context', {});
       return;
     }
 
@@ -232,6 +286,7 @@ export default function NotFound() {
           obstacleSpeed = 6;
           obstacleFrequency = 80;
           backgroundMusic.play();
+          sendLog('info', 'Game started', { userId, username });
         }
         if (e.code === 'Space' && !dino.isJumping && isGameRunning) {
           dino.dy = dino.jumpPower;
@@ -259,6 +314,7 @@ export default function NotFound() {
             obstacles.shift();
             weaponSound.play();
             setPlayerWeapon(null);
+            sendLog('info', 'Weapon used', { userId, weapon: playerWeapon });
           }
         }
       };
@@ -296,8 +352,8 @@ export default function NotFound() {
           } else {
             ctx.fillStyle =
               obstacle.type === 'cactus' ? 'green' :
-              obstacle.type === 'pterodactyl' ? 'gray' :
-              obstacle.type === 'tree' ? 'brown' : 'blue';
+                obstacle.type === 'pterodactyl' ? 'gray' :
+                  obstacle.type === 'tree' ? 'brown' : 'blue';
             ctx.beginPath();
             if (obstacle.type === 'cactus') {
               ctx.rect(obstacle.x, obstacle.y, obstacle.width, obstacle.height);
@@ -434,6 +490,7 @@ export default function NotFound() {
             gameOverSound.play();
             backgroundMusic.stop();
             saveScore(Math.floor(score));
+            sendLog('info', 'Game over', { userId, score: Math.floor(score) });
           }
         });
 
@@ -447,6 +504,7 @@ export default function NotFound() {
             setPlayerWeapon(weapon.type);
             weapons.splice(index, 1);
             weaponSound.play();
+            sendLog('info', 'Weapon collected', { userId, weapon: weapon.type });
           }
         });
 
@@ -454,10 +512,12 @@ export default function NotFound() {
           setLevel((prev) => prev + 1);
           obstacleSpeed += 0.5;
           obstacleFrequency = Math.max(50, obstacleFrequency - 5);
+          sendLog('info', 'Level up', { userId, level: level + 1 });
         }
 
         if (score > 700 && !isNightMode) {
           setIsNightMode(true);
+          sendLog('info', 'Night mode activated', { userId });
         }
 
         frameCount++;
@@ -518,9 +578,10 @@ export default function NotFound() {
         backgroundMusic.stop();
       };
     }).catch((error) => {
-      console.error('Error loading images:', error);
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error';
+      sendLog('error', 'Error loading images', { error: errorMessage });
     });
-  }, [isAuthenticated, score, isGameOver, playerWeapon, level, isNightMode, t]);
+  }, [isAuthenticated, score, isGameOver, playerWeapon, level, isNightMode, t, userId, username]);
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-b from-gray-100 to-gray-200 py-8">

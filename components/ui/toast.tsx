@@ -1,13 +1,13 @@
-'use client'
+'use client';
 
-import * as React from 'react'
-import * as ToastPrimitives from '@radix-ui/react-toast'
-import { cva, type VariantProps } from 'class-variance-authority'
-import { X } from 'lucide-react'
+import * as React from 'react';
+import * as ToastPrimitives from '@radix-ui/react-toast';
+import { cva, type VariantProps } from 'class-variance-authority';
+import { X } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Button } from '@/components/ui/button'; // إضافة استيراد Button
 
-import { cn } from '@/lib/utils'
-
-const ToastProvider = ToastPrimitives.Provider
+const ToastProvider = ToastPrimitives.Provider;
 
 const ToastViewport = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Viewport>,
@@ -21,8 +21,8 @@ const ToastViewport = React.forwardRef<
     )}
     {...props}
   />
-))
-ToastViewport.displayName = ToastPrimitives.Viewport.displayName
+));
+ToastViewport.displayName = ToastPrimitives.Viewport.displayName;
 
 const toastVariants = cva(
   'group pointer-events-auto relative flex w-full items-center justify-between space-x-2 overflow-hidden rounded-md border p-4 pr-6 shadow-lg transition-all data-[swipe=cancel]:translate-x-0 data-[swipe=end]:translate-x-[var(--radix-toast-swipe-end-x)] data-[swipe=move]:translate-x-[var(--radix-toast-swipe-move-x)] data-[swipe=move]:transition-none data-[state=open]:animate-in data-[state=closed]:animate-out data-[swipe=end]:animate-out data-[state=closed]:fade-out-80 data-[state=closed]:slide-out-to-right-full data-[state=open]:slide-in-from-top-full data-[state=open]:sm:slide-in-from-bottom-full',
@@ -38,7 +38,7 @@ const toastVariants = cva(
       variant: 'default',
     },
   }
-)
+);
 
 const Toast = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Root>,
@@ -51,14 +51,14 @@ const Toast = React.forwardRef<
       className={cn(toastVariants({ variant }), className)}
       {...props}
     />
-  )
-})
-Toast.displayName = ToastPrimitives.Root.displayName
+  );
+});
+Toast.displayName = ToastPrimitives.Root.displayName;
 
 const ToastAction = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Action>,
   React.ComponentPropsWithoutRef<typeof ToastPrimitives.Action>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <ToastPrimitives.Action
     ref={ref}
     className={cn(
@@ -66,9 +66,11 @@ const ToastAction = React.forwardRef<
       className
     )}
     {...props}
-  />
-))
-ToastAction.displayName = ToastPrimitives.Action.displayName
+  >
+    {children}
+  </ToastPrimitives.Action>
+));
+ToastAction.displayName = ToastPrimitives.Action.displayName;
 
 const ToastClose = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Close>,
@@ -85,8 +87,8 @@ const ToastClose = React.forwardRef<
   >
     <X className="h-4 w-4" />
   </ToastPrimitives.Close>
-))
-ToastClose.displayName = ToastPrimitives.Close.displayName
+));
+ToastClose.displayName = ToastPrimitives.Close.displayName;
 
 const ToastTitle = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Title>,
@@ -97,8 +99,8 @@ const ToastTitle = React.forwardRef<
     className={cn('text-sm font-semibold [&+div]:text-xs', className)}
     {...props}
   />
-))
-ToastTitle.displayName = ToastPrimitives.Title.displayName
+));
+ToastTitle.displayName = ToastPrimitives.Title.displayName;
 
 const ToastDescription = React.forwardRef<
   React.ElementRef<typeof ToastPrimitives.Description>,
@@ -109,30 +111,78 @@ const ToastDescription = React.forwardRef<
     className={cn('text-sm opacity-90', className)}
     {...props}
   />
-))
-ToastDescription.displayName = ToastPrimitives.Description.displayName
+));
+ToastDescription.displayName = ToastPrimitives.Description.displayName;
 
-type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>
+type ToastProps = React.ComponentPropsWithoutRef<typeof Toast>;
 
-type ToastActionElement = React.ReactElement<typeof ToastAction>
+type ToastActionElement = React.ReactElement<typeof ToastAction>;
 
 export function useToast() {
-  const [toast, setToast] = React.useState<any>(null);
+  const [toasts, setToasts] = React.useState<
+    Array<{
+      id: number;
+      title?: string;
+      description: string;
+      variant?: 'default' | 'destructive';
+      open?: boolean;
+      action?: ToastActionElement; // إضافة دعم لـ action
+    }>
+  >([]);
 
-  const showToast = (message: string) => {
-    setToast({ message });
+  const toast = ({
+    title,
+    description,
+    variant = 'default',
+    action,
+  }: {
+    title?: string;
+    description: string;
+    variant?: 'default' | 'destructive';
+    action?: ToastActionElement;
+  }) => {
+    const id = Math.random() * 1000000;
+    setToasts((prev) => [
+      ...prev,
+      { id, title, description, variant, open: true, action },
+    ]);
+  };
+
+  const dismissToast = (id: number) => {
+    setToasts((prev) =>
+      prev.map((t) => (t.id === id ? { ...t, open: false } : t))
+    );
   };
 
   return {
     toast,
-    showToast,
+    toasts,
+    dismissToast,
   };
 }
 
+export function Toaster() {
+  const { toasts, dismissToast } = useToast();
 
-
-
-
+  return (
+    <ToastProvider>
+      {toasts.map(({ id, title, description, variant, open, action }) => (
+        <Toast
+          key={id}
+          variant={variant}
+          open={open}
+          onOpenChange={(isOpen) => !isOpen && dismissToast(id)}
+        >
+          {title && <ToastTitle>{title}</ToastTitle>}
+          <ToastDescription>{description}</ToastDescription>
+          {action && <ToastAction altText="Action">{action}</ToastAction>}
+          <ToastClose />
+        </Toast>
+      ))}
+      <ToastViewport />
+    </ToastProvider>
+  );
+}
 
 export {
   type ToastProps,
@@ -144,4 +194,4 @@ export {
   ToastDescription,
   ToastClose,
   ToastAction,
-}
+};

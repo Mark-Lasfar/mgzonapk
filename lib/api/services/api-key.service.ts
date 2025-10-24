@@ -35,19 +35,20 @@ export class ApiKeyService {
     if (!sessionAuth?.user?.id) {
       throw new Error('Unauthenticated user cannot create API key');
     }
-    if (!['Admin', 'SELLER'].includes(sessionAuth.user.role)) {
-      throw new Error('User does not have permission to create API key');
-    }
 
-    let sellerId: Types.ObjectId;
+    let sellerId: Types.ObjectId | undefined;
     if (params.sellerId && sessionAuth.user.role === 'Admin') {
       const seller = await Seller.findById(params.sellerId);
       if (!seller) throw new Error('Seller not found');
       sellerId = new Types.ObjectId(params.sellerId);
     } else {
       const seller = await Seller.findOne({ userId: sessionAuth.user.id });
-      if (!seller) throw new Error('Seller not found for user');
-      sellerId = seller._id;
+      if (seller) {
+        sellerId = seller._id;
+      } else {
+        // إذا مافيش seller، نستخدم userId بدلًا من رمي خطأ
+        sellerId = new Types.ObjectId(sessionAuth.user.id);
+      }
     }
 
     const createdBy = new Types.ObjectId(sessionAuth.user.id);

@@ -1,7 +1,7 @@
 'use server';
 
-import { connectToDatabase } from '../db';
-import Seller, { ISeller } from '../db/models/seller.model';
+import { connectToDatabase } from '@/lib/db';
+import Seller, { ISeller } from '@/lib/db/models/seller.model';
 import { formatError } from '../utils';
 
 export async function getSubscriptionByUserId(userId: string): Promise<{

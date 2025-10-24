@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/lib/db/models/seller.model.ts
 import mongoose, { Schema, Document, Model } from 'mongoose';
 import validator from 'validator';
 import { encrypt, decrypt } from '@/lib/utils/encryption';
@@ -5,13 +6,12 @@ import { encrypt, decrypt } from '@/lib/utils/encryption';
 export interface SellerIntegration {
   providerName: string;
   type: 'payment' | 'warehouse' | 'dropshipping' | 'marketplace' | 'shipping' | 'marketing' | 'accounting' | 'crm' | 'analytics' | 'automation' | 'communication' | 'education' | 'security' | 'advertising' | 'tax' | 'other';
-
+  token?: string;
   accessToken?: string;
   refreshToken?: string;
   expiresAt?: Date;
   metadata: Record<string, any>;
   isActive: boolean;
-  
   connectedAt: Date;
   lastUpdatedAt: Date;
   sandbox?: boolean;
@@ -29,18 +29,55 @@ export interface ISeller extends Document {
   address: {
     street: string;
     city: string;
-    state: string;
+    state?: string;
     postalCode: string;
     countryCode: string;
   };
+  aiAssistant: {
+    uses: number;
+    limit: number;
+    status: 'free' | 'premium';
+    subscriptionStart?: Date;
+    subscriptionEnd?: Date;
+  };
+  defaultPaymentGateway?: string;
+  currency?: string;
   taxId?: string;
   paymentGateways: Array<{
+    gateway: { accountId: string; atmAccessCode: string; };
     providerName: string;
-    accountDetails: Record<string, any>;
+    accountDetails: Map<string, string>;
     verified: boolean;
     isDefault: boolean;
-    isInternal: boolean; // أضفت هذا للإشارة إلى بوابة mgzon
+    isInternal: boolean;
+    isActive: boolean;
     sandbox?: boolean;
+  }>;
+  discountOffers?: Array<{
+    id: string;
+    code: string;
+    description?: string;
+    discountType: string;
+    discountValue: number;
+    minPurchase?: number;
+    maxDiscount?: number;
+    validFrom?: Date;
+    validUntil?: Date;
+    maxUses?: number;
+    usedCount?: number;
+    isActive?: boolean;
+    applicableProducts?: string[];
+    applicableCategories?: string[];
+  }>;
+  shippingOptions?: Array<{
+    id: string;
+    name: string;
+    daysToDeliver: number;
+    shippingPrice: number;
+    freeShippingMinPrice?: number;
+    supportedCountries: string[];
+    isActive: boolean;
+    provider?: string;
   }>;
   subscription: {
     plan: string;
@@ -52,11 +89,15 @@ export interface ISeller extends Document {
     endDate?: Date;
     lastPaymentDate?: Date;
     status: 'active' | 'inactive' | 'expired' | 'cancelled' | 'pending' | 'suspended';
+    currency?: string;
+    market?: string;
     isTrial?: boolean;
     trialDuration?: number;
     features: {
       productsLimit: number;
       commission: number;
+      maxProducts?: number;
+      analytics: boolean;
       prioritySupport: boolean;
       instantPayouts: boolean;
       customSectionsLimit: number;
@@ -66,7 +107,7 @@ export interface ISeller extends Document {
       abTesting: boolean;
       pointsRedeemable: boolean;
       dynamicPaymentGateways: boolean;
-      maxApiKeys: number; // أضفت هذا
+      maxApiKeys: number;
     };
     pointsRedeemed?: number;
     paymentMethod?: string;
@@ -75,12 +116,17 @@ export interface ISeller extends Document {
     activeGatewayConfig?: Record<string, any>;
     metadata?: Record<string, any>;
   };
+  wallet: {
+    balance: number;
+    pendingBalance: number; // الأموال المحجوزة حتى اكتمال الشحن
+    commissionRate: number; // نسبة العمولة
+  };
   bankInfo?: {
     verified: boolean;
-    accountName: string; 
+    accountName: string;
     accountNumber: string;
     bankName: string;
-    swiftCode: string; 
+    swiftCode: string;
     routingNumber?: string;
   };
   verification: {
@@ -95,20 +141,19 @@ export interface ISeller extends Document {
     submittedAt: Date;
     lastUpdatedAt?: Date;
   };
-
-
-
   status: 'active' | 'inactive' | 'expired' | 'cancelled' | 'pending' | 'suspended';
-
-
-  
   integrationIds: mongoose.Types.ObjectId[];
   integrations: Record<string, SellerIntegration>;
   taxSettings: Record<string, {
     countryCode: string;
     taxType: string;
     taxRate: number;
-    taxService:string;
+    taxService: string;
+  }>;
+  domains: Array<{
+    domainName: string;
+    isPrimary: boolean;
+    dnsStatus: 'pending' | 'verified' | 'failed';
   }>;
   defaultCurrency: string;
   checkoutSettings: {
@@ -146,7 +191,6 @@ export interface ISeller extends Document {
       email: boolean;
       sms: boolean;
       push: boolean;
-      
       orderUpdates: boolean;
       marketingEmails: boolean;
       pointsNotifications: boolean;
@@ -171,6 +215,7 @@ export interface ISeller extends Document {
         title: string;
         content: string;
         order: number;
+        position?: number;
       }>;
       domainStatus?: 'active' | 'expired' | 'pending';
       domainRenewalDate?: Date;
@@ -192,6 +237,7 @@ export interface ISeller extends Document {
     };
   };
   pointsBalance: number;
+  pointsTransactions: string;
   pointsHistory: Array<{
     amount: number;
     type: 'credit' | 'debit';
@@ -204,13 +250,13 @@ export interface ISeller extends Document {
   trialMonthsUsed: number;
   customSiteUrl?: string;
   storeName?: string;
-  domain?: string;
   apiKeys: mongoose.Types.ObjectId[];
   isActive: boolean;
   metadata: Record<string, any>;
   createdAt: Date;
   freeTrialActive?: boolean;
   updatedAt: Date;
+  stripeAccountId?: string;
   addPoints(amount: number, reason: string, orderId?: string): Promise<void>;
   toggleIntegration(providerName: string, isActive: boolean): Promise<void>;
   logIntegrationError(providerName: string, errorCode: string, message: string): Promise<void>;
@@ -252,6 +298,7 @@ const SellerSchema: Schema<ISeller> = new Schema(
         message: 'Please enter a valid email address',
       },
     },
+    defaultPaymentGateway: { type: String, trim: true },
     phone: {
       type: String,
       required: [true, 'Phone number is required'],
@@ -261,16 +308,16 @@ const SellerSchema: Schema<ISeller> = new Schema(
         message: 'Please enter a valid phone number',
       },
     },
-description: {
-  type: String,
-  trim: true,
-  minlength: [10, 'Description must be at least 10 characters if provided'],
-  maxlength: [500, 'Description cannot exceed 500 characters'],
-  validate: {
-    validator: (v: string) => !v || /^[\p{L}\p{N}\s.,!?&()\n-]+$/u.test(v),
-    message: 'Description contains invalid characters',
-  },
-},
+    description: {
+      type: String,
+      trim: true,
+      minlength: [10, 'Description must be at least 10 characters if provided'],
+      maxlength: [500, 'Description cannot exceed 500 characters'],
+      validate: {
+        validator: (v: string) => !v || /^[\p{L}\p{N}\s.,!?&()\n-]+$/u.test(v),
+        message: 'Description contains invalid characters',
+      },
+    },
     businessType: {
       type: String,
       enum: ['individual', 'company'],
@@ -280,34 +327,34 @@ description: {
       type: Boolean,
       default: false,
     },
-logo: {
-  type: String,
-  trim: true,
-  validate: {
-    validator: (v: string) =>
-      !v ||
-      (validator.isURL(v, { protocols: ['http', 'https'], require_protocol: true }) &&
-        /\.(png|jpg|jpeg|webp|svg)$/i.test(v)),
-    message: 'Please provide a valid image URL (png, jpg, jpeg, webp, svg)',
-  },
-  default: null,
-},
-address: {
-  street: { type: String, required: [true, 'Street is required'], trim: true },
-  city: { type: String, required: [true, 'City is required'], trim: true },
-  state: { type: String, required: [true, 'State is required'], trim: true },
-  countryCode: { type: String, required: [true, 'Country code is required'], match: /^[A-Z]{2}$/ },
-  postalCode: {
-    type: String,
-    required: [true, 'Postal code is required'],
-    trim: true,
-    validate: {
-      validator: (v: string) => /^[0-9A-Z\s-]*$/.test(v),
-      message: 'Please enter a valid postal code',
+    logo: {
+      type: String,
+      trim: true,
+      validate: {
+        validator: (v: string) =>
+          !v ||
+          (validator.isURL(v, { protocols: ['http', 'https'], require_protocol: true }) &&
+            /\.(png|jpg|jpeg|webp|svg)$/i.test(v)),
+        message: 'Please provide a valid image URL (png, jpg, jpeg, webp, svg)',
+      },
+      default: null,
     },
-  },
-  _id: false,
-},
+    address: {
+      street: { type: String, required: [true, 'Street is required'], trim: true },
+      city: { type: String, required: [true, 'City is required'], trim: true },
+      state: { type: String, required: [true, 'State is required'], trim: true },
+      countryCode: { type: String, required: [true, 'Country code is required'], match: /^[A-Z]{2}$/ },
+      postalCode: {
+        type: String,
+        required: [true, 'Postal code is required'],
+        trim: true,
+        validate: {
+          validator: (v: string) => /^[0-9A-Z\s-]*$/.test(v),
+          message: 'Please enter a valid postal code',
+        },
+      },
+      _id: false,
+    },
     taxId: {
       type: String,
       trim: true,
@@ -322,28 +369,35 @@ address: {
         providerName: { type: String, required: true },
         accountDetails: {
           type: Map,
-          of: {
-            type: String,
-            set: (val: string) => (val ? encrypt(val) : undefined),
-            get: (val: string) => (val ? decrypt(val) : undefined),
+          of: String,
+          default: new Map(),
+          set: (val: Map<string, string> | Record<string, any>) => {
+            if (val instanceof Map) {
+              const encrypted = new Map<string, string>();
+              val.forEach((value, key) => {
+                encrypted.set(key, value ? encrypt(value) : value);
+              });
+              return encrypted;
+            }
+            const encrypted = new Map<string, string>();
+            Object.entries(val || {}).forEach(([key, value]) => {
+              encrypted.set(key, value ? encrypt(String(value)) : value);
+            });
+            return encrypted;
           },
-          default: {},
+          get: (val: Map<string, string>) => {
+            const decrypted = new Map<string, string>();
+            val.forEach((value, key) => {
+              decrypted.set(key, value ? decrypt(value) : value);
+            });
+            return decrypted;
+          },
         },
         verified: { type: Boolean, default: false },
         isDefault: { type: Boolean, default: false },
         isInternal: { type: Boolean, default: false },
+        isActive: { type: Boolean, default: false },
         sandbox: { type: Boolean, default: false },
-        config: {
-          // إعدادات إضافية للبوابة
-          apiType: { type: String, enum: ['rest', 'sdk', 'other'], default: 'rest' },
-          endpoints: {
-            createOrder: { type: String, trim: true }, // نقطة طرفية لإنشاء الطلب
-            capturePayment: { type: String, trim: true }, // نقطة طرفية لتأكيد الدفع
-            auth: { type: String, trim: true }, // نقطة طرفية للمصادقة
-          },
-          sdkUrl: { type: String, trim: true }, // لدعم بوابات تستخدم SDK (مثل Stripe)
-          _id: false,
-        },
         _id: false,
       },
     ],
@@ -388,6 +442,8 @@ address: {
         commission: { type: Number, default: 10, min: 0 },
         prioritySupport: { type: Boolean, default: false },
         instantPayouts: { type: Boolean, default: false },
+        maxProducts: { type: Number, default: 100 },
+        analytics: { type: Boolean, default: false },
         customSectionsLimit: { type: Number, default: 0, min: 0 },
         domainSupport: { type: Boolean, default: false },
         domainRenewal: { type: Boolean, default: false },
@@ -395,7 +451,7 @@ address: {
         abTesting: { type: Boolean, default: false },
         pointsRedeemable: { type: Boolean, default: false },
         dynamicPaymentGateways: { type: Boolean, default: false },
-        maxApiKeys: { type: Number, default: 1, min: 0 }, 
+        maxApiKeys: { type: Number, default: 1, min: 0 },
         _id: false,
       },
       pointsRedeemed: { type: Number, default: 0, min: 0 },
@@ -406,16 +462,32 @@ address: {
       metadata: { type: Map, of: Schema.Types.Mixed },
       _id: false,
     },
+    aiAssistant: {
+      uses: { type: Number, default: 0 },
+      limit: { type: Number, default: 10 },
+      status: {
+        type: String,
+        enum: ['free', 'premium'],
+        default: 'free',
+      },
+      subscriptionStart: { type: Date },
+      subscriptionEnd: { type: Date },
+      _id: false, // عشان ما يضيفش _id للكائن الفرعي
+    },
     bankInfo: {
       verified: { type: Boolean, default: false },
-      accountName: { type: String }, 
+      accountName: { type: String },
       accountNumber: {
         type: String,
         set: (value: string) => (value ? encrypt(value) : undefined),
         get: (value: string) => (value ? decrypt(value) : undefined),
       },
       bankName: { type: String },
-      swiftCode: { type: String }, 
+      swiftCode: {
+        type: String,
+        set: (value: string) => (value ? encrypt(value) : undefined),
+        get: (value: string) => (value ? decrypt(value) : undefined),
+      },
       routingNumber: {
         type: String,
         set: (value: string) => (value ? encrypt(value) : undefined),
@@ -462,57 +534,85 @@ address: {
       lastUpdatedAt: { type: Date },
       _id: false,
     },
+    domains: [
+      {
+        domainName: {
+          type: String,
+          required: true,
+          trim: true,
+          validate: {
+            validator: (v: string) => validator.isFQDN(v),
+            message: 'Invalid domain name',
+          },
+        },
+        isPrimary: { type: Boolean, default: false },
+        dnsStatus: {
+          type: String,
+          enum: ['pending', 'verified', 'failed'],
+          default: 'pending',
+        },
+        _id: false,
+      },
+    ],
     integrationIds: [{ type: Schema.Types.ObjectId, ref: 'Integration', default: [] }],
-integrations: {
-  type: Map,
-  of: {
-    providerName: { type: String, required: true },
-    type: {
-      type: String,
-      enum: [
-        'payment', 'warehouse', 'dropshipping', 'marketplace', 'shipping', 'marketing', 'accounting',
-        'crm', 'analytics', 'automation', 'communication', 'education', 'security', 'advertising', 'tax', 'other',
-      ],
-      required: true,
-    },
-    accessToken: {
-      type: String,
-      set: (val: string) => (val ? encrypt(val) : undefined),
-      get: (val: string) => (val ? decrypt(val) : undefined),
-    },
-    refreshToken: {
-      type: String,
-      set: (val: string) => (val ? encrypt(val) : undefined),
-      get: (val: string) => (val ? decrypt(val) : undefined),
-    },
-    expiresAt: { type: Date },
-    metadata: { type: Schema.Types.Mixed, default: {} },
-    isActive: { type: Boolean, default: true },
-    connectedAt: { type: Date, default: Date.now },
-    lastUpdatedAt: { type: Date, default: Date.now },
-    sandbox: { type: Boolean, default: false },
-    apiEndpoints: {
+    integrations: {
       type: Map,
-      of: String,
+      of: {
+        providerName: { type: String, required: true },
+        type: {
+          type: String,
+          enum: [
+            'payment',
+            'warehouse',
+            'dropshipping',
+            'marketplace',
+            'shipping',
+            'marketing',
+            'accounting',
+            'crm',
+            'analytics',
+            'automation',
+            'communication',
+            'education',
+            'security',
+            'advertising',
+            'tax',
+            'other',
+          ],
+          required: true,
+        },
+        accessToken: {
+          type: String,
+          set: (val: string) => (val ? encrypt(val) : undefined),
+          get: (val: string) => (val ? decrypt(val) : undefined),
+        },
+        refreshToken: {
+          type: String,
+          set: (val: string) => (val ? encrypt(val) : undefined),
+          get: (val: string) => (val ? decrypt(val) : undefined),
+        },
+        expiresAt: { type: Date },
+        metadata: { type: Schema.Types.Mixed, default: {} },
+        isActive: { type: Boolean, default: true },
+        connectedAt: { type: Date, default: Date.now },
+        lastUpdatedAt: { type: Date, default: Date.now },
+        sandbox: { type: Boolean, default: false },
+        apiEndpoints: {
+          type: Map,
+          of: String,
+          default: {},
+        },
+        _id: false,
+      },
       default: {},
     },
-    _id: false,
-  },
-  default: {},
-},
     taxSettings: {
       type: Map,
       of: {
         countryCode: { type: String, required: true, match: /^[A-Z]{2}$/ },
-        taxType: {
-          type: String,
-          default: 'none',
-        },
+        taxType: { type: String, default: 'none' },
         taxRate: { type: Number, default: 0, min: 0 },
-        taxService: {
-          type: String,  
-          default: 'none',
-        },
+        taxService: { type: String, default: 'none' },
         _id: false,
       },
       default: {},
@@ -637,6 +737,7 @@ integrations: {
               trim: true,
               minlength: [10, 'Section content must be at least 10 characters'],
             },
+            position: { type: Number },
             order: { type: Number, default: 0 },
             _id: false,
           },
@@ -676,6 +777,7 @@ integrations: {
       default: 50,
       min: [0, 'Points balance cannot be negative'],
     },
+    pointsTransactions: { type: String, trim: true, default: '' },
     pointsHistory: [
       {
         amount: {
@@ -720,27 +822,27 @@ integrations: {
       type: String,
       required: [true, 'Custom site URL is required'],
       trim: true,
+      index: true,
       lowercase: true,
       validate: {
         validator: (v: string) => /^[a-z0-9_-]+$/.test(v),
         message: 'Custom site URL must contain only lowercase letters, numbers, underscores, or hyphens',
       },
     },
+    wallet: {
+    balance: { type: Number, default: 0 },
+    pendingBalance: { type: Number, default: 0 },
+    commissionRate: { type: Number, default: 0.1 }, // Default 10%
+  },
     storeName: { type: String, trim: true },
-    domain: {
-      type: String,
-      trim: true,
-      validate: {
-        validator: (v: string) => !v || validator.isFQDN(v),
-        message: 'Invalid domain name',
-      },
-    },
     apiKeys: [{ type: Schema.Types.ObjectId, ref: 'ApiKey', default: [] }],
     isActive: { type: Boolean, default: true },
     metadata: { type: Schema.Types.Mixed, default: {} },
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
+    stripeAccountId: { type: String, default: undefined },
   },
+  
   { timestamps: true, toJSON: { getters: true } }
 );
 
@@ -759,12 +861,23 @@ SellerSchema.pre('save', function (next) {
   }
   if (this.isModified('paymentGateways')) {
     this.paymentGateways.forEach((gateway: any) => {
-      if (gateway.accountDetails) {
-        gateway.accountDetails = encrypt(JSON.stringify(gateway.accountDetails));
+      if (gateway.accountDetails && gateway.accountDetails.size > 0) {
+        const encrypted = new Map<string, string>();
+        gateway.accountDetails.forEach((value: string, key: string) => {
+          encrypted.set(key, value ? encrypt(value) : value);
+        });
+        gateway.accountDetails = encrypted;
       }
     });
   }
   if (this.isModified('bankInfo')) {
+    const hasMgpay = this.paymentGateways.some(
+      (gateway: any) => gateway.providerName === 'mgpay' && gateway.isActive
+    );
+    if (this.bankInfo && !hasMgpay) {
+      next(new Error('bankInfo can only be set if mgpay is an active payment gateway'));
+      return;
+    }
     if (this.bankInfo?.accountNumber) {
       this.bankInfo.accountNumber = encrypt(this.bankInfo.accountNumber);
     }
@@ -785,28 +898,41 @@ SellerSchema.post(['find', 'findOne'], function (docs) {
   }
   docs.forEach((doc: any) => {
     if (!doc) return;
-    for (const key in doc.integrations) {
-      const integration = doc.integrations[key];
-      if (integration.accessToken) {
-        integration.accessToken = decrypt(integration.accessToken);
+    try {
+      for (const key in doc.integrations) {
+        const integration = doc.integrations[key];
+        if (integration.accessToken && typeof integration.accessToken === 'string') {
+          integration.accessToken = decrypt(integration.accessToken);
+        }
+        if (integration.refreshToken && typeof integration.refreshToken === 'string') {
+          integration.refreshToken = decrypt(integration.refreshToken);
+        }
       }
-      if (integration.refreshToken) {
-        integration.refreshToken = decrypt(integration.refreshToken);
+      doc.paymentGateways.forEach((gateway: any) => {
+        if (gateway.accountDetails && gateway.accountDetails instanceof Map) {
+          const decrypted = new Map<string, string>();
+          gateway.accountDetails.forEach((value: string, key: string) => {
+            decrypted.set(key, value ? decrypt(value) : value);
+          });
+          gateway.accountDetails = decrypted;
+        }
+      });
+      if (doc.bankInfo) {
+        if (doc.bankInfo.accountNumber && typeof doc.bankInfo.accountNumber === 'string') {
+          doc.bankInfo.accountNumber = decrypt(doc.bankInfo.accountNumber);
+        }
+        if (doc.bankInfo.swiftCode && typeof doc.bankInfo.swiftCode === 'string') {
+          doc.bankInfo.swiftCode = decrypt(doc.bankInfo.swiftCode);
+        }
+        if (doc.bankInfo.routingNumber && typeof doc.bankInfo.routingNumber === 'string') {
+          doc.bankInfo.routingNumber = decrypt(doc.bankInfo.routingNumber);
+        }
       }
-    }
-    doc.paymentGateways.forEach((gateway: any) => {
-      if (gateway.accountDetails) {
-        gateway.accountDetails = JSON.parse(decrypt(gateway.accountDetails));
-      }
-    });
-    if (doc.bankInfo?.accountNumber) {
-      doc.bankInfo.accountNumber = decrypt(doc.bankInfo.accountNumber);
-    }
-    if (doc.bankInfo?.swiftCode) {
-      doc.bankInfo.swiftCode = decrypt(doc.bankInfo.swiftCode);
-    }
-    if (doc.bankInfo?.routingNumber) {
-      doc.bankInfo.routingNumber = decrypt(doc.bankInfo.routingNumber);
+    } catch (error) {
+      console.error('Decryption error in SellerSchema.post:', {
+        error: error instanceof Error ? error.message : String(error),
+        docId: doc._id,
+      });
     }
   });
 });
@@ -859,5 +985,5 @@ SellerSchema.index({ 'taxSettings.countryCode': 1 });
 if (mongoose.models.Seller) {
   delete mongoose.models.Seller;
 }
-const Seller: Model<ISeller> = mongoose.model<ISeller>('Seller', SellerSchema);
+const Seller = mongoose.models.Seller || mongoose.model<ISeller>('Seller', SellerSchema);
 export default Seller;

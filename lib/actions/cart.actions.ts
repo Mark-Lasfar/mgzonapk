@@ -4,8 +4,11 @@ import { connectToDatabase } from '@/lib/db';
 import Cart, { ICart } from '@/lib/db/models/cart.model';
 import Product from '@/lib/db/models/product.model';
 import { getTranslations } from 'next-intl/server';
-import { sendNotification } from './notification.actions';
+// import { sendNotification } from './notification.actions';
 import mongoose from 'mongoose';
+import { sendNotification } from '@/lib/utils/notification';
+
+
 
 export interface CartItem {
   productId: string;
@@ -19,15 +22,14 @@ export interface CartItem {
 
 export async function addToCart(
   userId: string,
+  clientId: string | undefined,
   productId: string,
   quantity: number,
   selectedColor?: string,
-  selectedSize?: string,
-  locale: string = 'en'
-): Promise<{ success: boolean; message?: string; cart?: ICart }> {
-  let t;
+  selectedSize?: string
+): Promise<{ success: boolean; message?: string; cart?: ICart }> {  let t;
   try {
-    t = await getTranslations({ locale, namespace: 'Cart' });
+    t = await getTranslations({ locale: 'en', namespace: 'Cart' });
   } catch (error) {
     console.error('Failed to load translations:', error);
     t = (key: string) => key;
@@ -63,7 +65,7 @@ export async function addToCart(
 
       let cart = await Cart.findOne({ userId }).session(session);
       if (!cart) {
-        cart = new Cart({ userId, items: [] });
+        cart = new Cart({ userId, items: [], total: 0 });
       }
 
       const existingItemIndex = cart.items.findIndex(
@@ -80,22 +82,17 @@ export async function addToCart(
         cart.items[existingItemIndex].quantity = newQuantity;
       } else {
         cart.items.push({
-          productId: product._id,
+          productId: product._id.toString(),
           name: product.name,
           quantity,
           price: product.pricing.finalPrice,
           image: product.images[0],
           selectedColor: selectedColor || undefined,
           selectedSize: selectedSize || undefined,
-
-
-
-
-          
         });
       }
 
-      product.countInStock  -= quantity;
+      product.countInStock -= quantity;
       await product.save({ session });
       await cart.save({ session });
 
@@ -103,11 +100,11 @@ export async function addToCart(
 
       await sendNotification({
         userId,
-        type: 'cart.updated',
+        type: 'cart updated',
         title: t('cart updated title'),
         message: t('cart updated message', { productName: product.name }),
         channels: ['in_app', 'email'],
-        data: { productId: product._id, quantity },
+        data: { productId: product._id.toString(), quantity },
       });
 
       return { success: true, cart };
@@ -182,7 +179,7 @@ export async function removeFromCart(
 
       await sendNotification({
         userId,
-        type: 'cart.updated',
+        type: 'cart updated',
         title: t('cart updated title'),
         message: t('cart item removed', { productName: item.name }),
         channels: ['in_app'],
@@ -271,7 +268,7 @@ export async function updateCartItemQuantity(
 
       await sendNotification({
         userId,
-        type: 'cart.updated',
+        type: 'cart updated',
         title: t('cart updated title'),
         message: t('cart quantity updated', { productName: item.name, quantity }),
         channels: ['in_app'],
@@ -314,9 +311,18 @@ export async function getCart(userId: string, locale: string = 'en'): Promise<{
       throw new Error(t('invalid data'));
     }
 
-    const cart = await Cart.findOne({ userId });
+    const cart = await Cart.findOne({ userId }).lean();
     if (!cart) {
-      return { success: true, cart: { userId, items: [] } as ICart };
+      // إنشاء سلة جديدة إذا لم تكن موجودة
+      const newCart = new Cart({
+        userId,
+        items: [],
+        total: 0,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      });
+      await newCart.save();
+      return { success: true, cart: newCart };
     }
 
     return { success: true, cart };
@@ -365,13 +371,14 @@ export async function clearCart(userId: string, locale: string = 'en'): Promise<
       }
 
       cart.items = [];
+      cart.total = 0;
       await cart.save({ session });
 
       await session.commitTransaction();
 
       await sendNotification({
         userId,
-        type: 'cart.cleared',
+        type: 'cart cleared',
         title: t('cart cleared title'),
         message: t('cart cleared message'),
         channels: ['in_app'],

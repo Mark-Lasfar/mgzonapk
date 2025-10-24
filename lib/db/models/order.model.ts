@@ -1,6 +1,6 @@
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 import validator from 'validator';
-import { PaymentMethod, FulfillmentTracking } from '@/lib/api/types';
+import { PaymentMethod, FulfillmentTracking } from '@/lib/types';
 
 export interface IOrder extends Document {
   userId?: Types.ObjectId | string;
@@ -12,7 +12,7 @@ export interface IOrder extends Document {
     image?: string;
     price: number;
     quantity: number;
-    color?: string;
+    color?: string | { name: string };
     size?: string;
     relatedProducts?: string[];
     currency: string;
@@ -21,18 +21,19 @@ export interface IOrder extends Document {
     sku: string;
     source?: 'mgzon' | 'external';
     externalId?: string;
+    pointsUsed?: number;
+    pointsDiscount?: number;
   }>;
-  deliveredAt :Date;
-  isDelivered :boolean;
+  deliveredAt?: Date;
+  isDelivered: boolean;
   itemsPrice: number;
-  shippingPrice:number;
-  expectedDeliveryDate:Date;
-  isPaid:boolean;
-  paidAt:Date;
+  shippingPrice: number;
+  expectedDeliveryDate?: Date;
+  isPaid: boolean;
+  paidAt?: Date;
   taxPrice: number;
   totalPrice: number;
   taxAmount: number;
-  _id:string;
   shippingAmount: number;
   currency: string;
   paymentMethod: PaymentMethod;
@@ -44,8 +45,8 @@ export interface IOrder extends Document {
   shippingAddress: {
     street: string;
     city: string;
-    province:string;
-    fullName:string;
+    province: string;
+    fullName: string;
     state?: string;
     country: string;
     countryCode: string;
@@ -59,7 +60,6 @@ export interface IOrder extends Document {
     countryCode: string;
     postalCode: string;
   };
-  
   customerId: {
     name: string;
     email: string;
@@ -85,7 +85,23 @@ export interface IOrder extends Document {
   };
   integrations: Array<{
     providerId: Types.ObjectId | string;
-    type: 'payment' | 'warehouse' | 'dropshipping' | 'marketplace' | 'shipping' | 'marketing' | 'accounting' | 'crm' | 'analytics' | 'automation' | 'communication' | 'education' | 'security' | 'advertising' | 'tax' | 'other';
+    type:
+      | 'payment'
+      | 'warehouse'
+      | 'dropshipping'
+      | 'marketplace'
+      | 'shipping'
+      | 'marketing'
+      | 'accounting'
+      | 'crm'
+      | 'analytics'
+      | 'automation'
+      | 'communication'
+      | 'education'
+      | 'security'
+      | 'advertising'
+      | 'tax'
+      | 'other';
     providerName: string;
     externalOrderId?: string;
     status?: string;
@@ -97,6 +113,15 @@ export interface IOrder extends Document {
   createdAt: Date;
   updatedAt: Date;
   externalOrderId?: string;
+  pointsUsed?: number;
+  pointsDiscount?: number;
+  paymentResult?: {
+    id?: string;
+    status?: string;
+    email_address?: string;
+    pricePaid?: string;
+    [key: string]: any;
+  };
 }
 
 const orderSchema = new Schema<IOrder>(
@@ -146,7 +171,7 @@ const orderSchema = new Schema<IOrder>(
           required: [true, 'Item quantity is required'],
           min: [1, 'Quantity must be at least 1'],
         },
-        color: { type: String, trim: true },
+        color: { type: Schema.Types.Mixed, trim: true },
         size: { type: String, trim: true },
         relatedProducts: [{ type: String, trim: true }],
         currency: {
@@ -174,13 +199,30 @@ const orderSchema = new Schema<IOrder>(
           default: 'mgzon',
         },
         externalId: { type: String, trim: true },
+        pointsUsed: { type: Number, default: 0 },
+        pointsDiscount: { type: Number, default: 0 },
         _id: false,
       },
     ],
+    deliveredAt: { type: Date },
+    isDelivered: { type: Boolean, default: false },
     itemsPrice: {
       type: Number,
       required: [true, 'Items price is required'],
       min: [0, 'Items price cannot be negative'],
+    },
+    shippingPrice: {
+      type: Number,
+      required: [true, 'Shipping price is required'],
+      min: [0, 'Shipping price cannot be negative'],
+    },
+    expectedDeliveryDate: { type: Date },
+    isPaid: { type: Boolean, default: false },
+    paidAt: { type: Date },
+    taxPrice: {
+      type: Number,
+      required: [true, 'Tax price is required'],
+      min: [0, 'Tax price cannot be negative'],
     },
     totalPrice: {
       type: Number,
@@ -243,6 +285,8 @@ const orderSchema = new Schema<IOrder>(
     shippingAddress: {
       street: { type: String, required: [true, 'Street is required'], trim: true },
       city: { type: String, required: [true, 'City is required'], trim: true },
+      province: { type: String, required: [true, 'Province is required'], trim: true },
+      fullName: { type: String, required: [true, 'Full name is required'], trim: true },
       state: { type: String, trim: true },
       country: { type: String, required: [true, 'Country is required'], trim: true },
       countryCode: {
@@ -359,7 +403,22 @@ const orderSchema = new Schema<IOrder>(
         type: {
           type: String,
           enum: [
-        'payment' , 'warehouse' , 'dropshipping' , 'marketplace' , 'shipping' , 'marketing' , 'accounting' , 'crm' , 'analytics' , 'automation' , 'communication' , 'education' , 'security' , 'advertising' , 'tax' , 'other',
+            'payment',
+            'warehouse',
+            'dropshipping',
+            'marketplace',
+            'shipping',
+            'marketing',
+            'accounting',
+            'crm',
+            'analytics',
+            'automation',
+            'communication',
+            'education',
+            'security',
+            'advertising',
+            'tax',
+            'other',
           ],
           required: [true, 'Integration type is required'],
         },
@@ -388,6 +447,9 @@ const orderSchema = new Schema<IOrder>(
       default: {},
     },
     externalOrderId: { type: String, trim: true },
+    pointsUsed: { type: Number, default: 0 },
+    pointsDiscount: { type: Number, default: 0 },
+    paymentResult: { type: Schema.Types.Mixed, default: {} },
   },
   {
     timestamps: true,

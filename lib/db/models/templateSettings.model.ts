@@ -31,6 +31,9 @@ interface PaymentGateway {
   providerName: string;
   isActive: boolean;
   isDefault: boolean;
+  verified: boolean;
+  sandbox?: boolean;
+  accountDetails: Record<string, any>;
 }
 
 interface TemplateSettings extends Document {

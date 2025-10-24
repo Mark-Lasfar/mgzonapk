@@ -9,9 +9,12 @@ import {
   Package,
   PointerIcon,
   SettingsIcon,
+  Star, // أيقونة جديدة للاشتراكات
+  Bot,
 } from 'lucide-react'
 
 import { useEffect, useState } from 'react'
+import Link from 'next/link'
 
 const SettingNav = () => {
   const [active, setActive] = useState('')
@@ -32,12 +35,17 @@ const SettingNav = () => {
     sections.forEach((section) => observer.observe(section))
     return () => observer.disconnect()
   }, [])
+
   const handleScroll = (id: string) => {
     const section = document.getElementById(id)
     if (section) {
       const top = section.offsetTop - 16 // 20px above the section
       window.scrollTo({ top, behavior: 'smooth' })
     }
+  }
+
+  const handleExternalLink = (href: string) => {
+    window.location.href = href // للروابط الخارجية زي /admin/subscriptions
   }
 
   return (
@@ -73,18 +81,38 @@ const SettingNav = () => {
             icon: <Package />,
           },
           {
+            name: 'Subscriptions', // الجديد: إعدادات الاشتراكات
+            hash: 'setting-subscriptions',
+            icon: <Star />,
+          },
+          {
+            name: 'Subscription Plans', // الجديد: إدارة خطط الاشتراكات
+            hash: '/admin/subscriptions',
+            icon: <Star className="mr-2" />,
+            isExternal: true,
+          },
+          {
             name: 'Points Settings',
             hash: 'setting-points',
             icon: <PointerIcon />,
           },
+                    {
+            name: 'Ai Assistant Settings',
+            hash: 'setting-ai-assistant',
+            icon: <Bot/>,
+          },
         ].map((item) => (
           <Button
-            onClick={() => handleScroll(item.hash)}
             key={item.hash}
             variant={active === item.hash ? 'outline' : 'ghost'}
             className={`justify-start ${
               active === item.hash ? '' : 'border border-transparent'
             }`}
+            onClick={() =>
+              item.isExternal
+                ? handleExternalLink(item.hash)
+                : handleScroll(item.hash)
+            }
           >
             {item.icon}
             {item.name}

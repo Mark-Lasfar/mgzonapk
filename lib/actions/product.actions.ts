@@ -1,96 +1,41 @@
-'use server'
-
-// import { ShipBobService } from "../api/integrations/shipbob/service"
-// import { WarehouseProvider } from "../api/types"
-// import { ShipBobService } from "../services/warehouse/shipbob"
-import { ProductInputSchema, ProductUpdateSchema } from '@/lib/validator/product.validator';
-// import { connectToDatabase } from '@/lib/db'
-import Product, { IProduct } from '@/lib/db/models/product.model'
-import Seller from '@/lib/db/models/seller.model'
-import { revalidatePath } from 'next/cache'
-// import { formatError } from '../utils'
-import { auth } from '@/auth'
-// import { ProductImportService } from '@/lib/api/services/product-import';
-import { getSetting } from './setting.actions'
-// import mongoose from 'mongoose'
-// import { updateSellerMetrics, getSellerByUserId } from './seller.actions'
-// import { updateWarehouseStock } from './warehouse.actions'
-// import { z } from 'zod'
-// import { ProductInputSchema, ProductUpdateSchema } from '../validator/product.validator'
-// import { WarehouseProvider } from '../services/warehouse/types'
-// import { ShipBobService } from '../services/warehouse/shipbob'
-// import { FourPXService } from '../services/warehouse/fourpx'
-import { triggerWebhook } from './webhook.actions'
-import { sendNotification } from '../utils/notification'
-import { checkSubscription } from '../cron/subscription-check'
-// import { Parser } from 'json2csv'
-// import { ShipHeroService } from '../api/integrations/shiphero/service'
-
-import { DynamicIntegrationService } from '@/lib/services/integrations';
-
-// إعدادات مزودي المستودعات
-// import { ShipBobService } from '@/lib/api/integrations/shipbob/service';
-// import { WarehouseProvider } from '../api/types';
-import { ShipHeroService } from '../api/integrations/shiphero/service';
-// import { FourPXService } from '../services/warehouse/fourpx';
-import { ShipBobService } from '../services/warehouse/shipbob';
-// import { WarehouseProvider } from '../services/warehouse/types';
-// import { WarehouseProvider } from '/types';
-// import { connectToDatabase, getCurrentUserInfo, validateSeller, updateWarehouseStock, updateSellerMetrics, triggerWebhook, sendNotification, logOperation, revalidatePath } from '../utils';
-
-
+'use server';
 
 import { z } from 'zod';
+import { ProductInputSchema, ProductUpdateSchema } from '@/lib/validator/product.validator';
+import Product, { IProduct } from '@/lib/db/models/product.model';
+import Seller from '@/lib/db/models/seller.model';
+import { revalidatePath } from 'next/cache';
+import { auth } from '@/auth';
+import { getSetting } from './setting.actions';
+import { triggerWebhook } from './webhook.actions';
+import { sendNotification } from '../utils/notification';
+import { checkSubscription } from '../cron/subscription-check';
+import { getGoogleAccessToken } from '@/lib/google-auth';
+import { routing } from '@/i18n/routing';
+import { Parser } from 'json2csv';
+import { DynamicIntegrationService } from '@/lib/services/integrations';
+import { getWarehouseProvider } from '@/lib/services/warehouse/utils';
 import { connectToDatabase } from '@/lib/db';
-// import { ProductInputSchema, ProductUpdateSchema } from '@/lib/validator/product.validator';
-// import { Product } from '@/lib/db/models';
-// import { getSellerByUserId, updateSellerMetrics } from '@/lib/seller.actions';
-// import { checkSubscription } from '@/lib/cron/subscription';
-// import { sendNotification } from '@/lib/notification';
-// import { triggerWebhook } from '@/lib/webhook';
-// import { auth } from '@/lib/auth';
-// import { revalidatePath } from 'pathify';
-// import { ShipBobService } from '@/lib/services/shipbob';
-// import { FourPXService } from '@/lib/services/fourpx';
-// import { ShipHeroService } from '@/lib/services/shiphero';
-// import { updateWarehouseStock } from '@/lib/warehouse.actions';
-import mongoose from 'mongoose';
+import mongoose, { SortOrder } from 'mongoose';
 import { formatError } from '@/lib/utils';
-import { ProductImportService } from '../api/services/product-import'
-import { getSellerByUserId, updateSellerMetrics } from './seller.actions'
+import { ProductImportService } from '../api/services/product-import';
+import { getSellerByUserId, updateSellerMetrics } from './seller.actions';
 import { updateWarehouseStock } from './warehouse.actions';
-import SellerIntegration from '../db/models/seller-integration.model';
-// import { warehouseProviders } from '@/lib/warehouse';
-// // import { IProduct } from '@/lib/models/product';
+import SellerIntegration from '@/lib/db/models/seller-integration.model';
+import Integration from '@/lib/db/models/integration.model';
+import { logger } from '@/lib/services/logging';
+import { getTranslations } from 'next-intl/server';
+// import { sendNotification } from './notification.actions';
 
-// const warehouseProviders: { [key: string]: WarehouseProvider } = {
-//   ShipBob: new ShipBobService({
-//     clientId: process.env.SHIPBOB_CLIENT_ID!,
-//     clientSecret: process.env.SHIPBOB_CLIENT_SECRET!,
-//     redirectUri: process.env.SHIPBOB_REDIRECT_URI!,
-//     channelId: process.env.SHIPBOB_CHANNEL_ID!,
-//     apiUrl: process.env.SHIPBOB_API_URL!,
-//   }),
-//   '4PX': new FourPXService({
-//     clientId: process.env.FOURPX_CLIENT_ID!,
-//     clientSecret: process.env.FOURPX_CLIENT_SECRET!,
-//     redirectUri: process.env.FOURPX_REDIRECT_URI!,
-//     apiUrl: process.env.FOURPX_API_URL!,
-//   }),
-//   ShipHero: new ShipHeroService({
-//     clientId: process.env.SHIPHERO_CLIENT_ID!,
-//     clientSecret: process.env.SHIPHERO_CLIENT_SECRET!,
-//     apiUrl: process.env.SHIPHERO_API_URL!,
-//   }),
-// };
-
-// أنواع البيانات
+// Data Types
 type ProductSortOption =
   | 'latest'
   | 'best-selling'
   | 'price-low-to-high'
   | 'price-high-to-low'
   | 'avg-customer-review'
+  | 'views-desc'
+  | 'rating-desc';
 
 interface ProductQueryFilters {
   search?: string;
@@ -104,148 +49,88 @@ interface ProductQueryFilters {
 }
 
 interface ProductListResponse {
-  products: IProduct[]
-  totalPages: number
-  totalProducts: number
-  from: number
-  to: number
+  data: any;
+  products: IProduct[];
+  totalPages: number;
+  totalProducts: number;
+  from: number;
+  to: number;
 }
 
 interface ProductResponse {
-  success: boolean
-  message: string
-  data?: any
-  metadata?: any
-  code?: string
+  success: boolean;
+  message: string;
+  data?: any;
+  metadata?: any;
+  code?: string;
 }
 
-// دوال مساعدة
+// Helper Functions
 async function getCurrentUserInfo() {
   const session = await auth();
   if (!session?.user?.id) throw new Error('Unauthorized');
   return {
     userId: session.user.id,
     userName: session.user.name || session.user.email || session.user.id,
-    userRole: session.user.role || '`User`',
+    userRole: session.user.role || 'user',
   };
 }
 
-
 async function logOperation(operation: string, details: any) {
-  const { userName } = await getCurrentUserInfo()
+  const { userName } = await getCurrentUserInfo();
   console.log(`[${new Date().toISOString()}] 📝 ${operation}:`, {
     user: userName,
     ...details,
-  })
+  });
 }
 
 async function validateSeller(userId: string) {
-  const sellerResponse = await getSellerByUserId(userId)
+  const sellerResponse = await getSellerByUserId(userId);
   if (!sellerResponse.success || !sellerResponse.data) {
-    throw new Error('Seller account required')
+    throw new Error('Seller account required');
   }
-  const isSubscribed = await checkSubscription(sellerResponse.data._id.toString())
+  const isSubscribed = await checkSubscription(sellerResponse.data._id.toString());
   if (!isSubscribed) {
-    throw new Error('Active subscription required')
+    throw new Error('Active subscription required');
   }
-  return sellerResponse.data
+  return sellerResponse.data;
 }
 
-// استرجاع كل المنتجات للمدير
-export async function getAllProductsForAdmin({
-  query = '',
-  page = 1,
-  sort = 'latest',
-  limit,
-}: {
-  query?: string
-  page?: number
-  sort?: ProductSortOption
-  limit?: number
-}): Promise<ProductListResponse> {
+async function requestIndexing(url: string) {
   try {
-    const { userRole } = await getCurrentUserInfo()
-    if (userRole !== 'Admin') {
-      throw new Error('Unauthorized: Admin access required')
+    const urlObj = new URL(url);
+    if (!urlObj.protocol.startsWith('http') || !urlObj.hostname) {
+      throw new Error(`Invalid URL: ${url}`);
     }
 
-    await connectToDatabase()
-    const {
-      common: { pageSize },
-    } = await getSetting()
-    limit = limit || pageSize
+    const accessToken = await getGoogleAccessToken();
+    const response = await fetch('https://indexing.googleapis.com/v3/urlNotifications:publish', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        url,
+        type: 'URL_UPDATED',
+      }),
+    });
 
-    const queryFilter: any = {}
-    if (query && query !== 'all') {
-      queryFilter.$or = [
-        { name: { $regex: query, $options: 'i' } },
-        { category: { $regex: query, $options: 'i' } },
-        { brand: { $regex: query, $options: 'i' } },
-        { slug: { $regex: query, $options: 'i' } },
-      ]
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`Indexing API error: ${JSON.stringify(errorData)}`);
     }
-
-    const sortOptions: Record<string, 1 | -1> =
-      sort === 'best-selling'
-        ? { 'metrics.sales': -1 }
-        : sort === 'price-low-to-high'
-        ? { 'pricing.finalPrice': 1 }
-        : sort === 'price-high-to-low'
-        ? { 'pricing.finalPrice': -1 }
-        : sort === 'avg-customer-review'
-        ? { 'metrics.rating': -1 }
-        : { updatedAt: -1 }
-
-    const skip = (page - 1) * limit
-
-    const [products, totalProducts] = await Promise.all([
-      Product.find(queryFilter)
-        .sort(sortOptions)
-        .skip(skip)
-        .limit(limit)
-        .select({
-          name: 1,
-          slug: 1,
-          price: 1,
-          category: 1,
-          countInStock: 1,
-          isPublished: 1,
-          metrics: 1,
-          status: 1,
-          warehouseData: 1,
-        })
-        .lean(),
-      Product.countDocuments(queryFilter),
-    ])
-
-    await logOperation('Admin Products List Retrieved', {
-      total: totalProducts,
-      page,
-      limit,
-      sort,
-    })
-
-    return {
-      products: JSON.parse(JSON.stringify(products)),
-      totalPages: Math.ceil(totalProducts / limit),
-      totalProducts,
-      from: skip + 1,
-      to: skip + products.length,
-    }
+    console.log(`Successfully requested indexing for ${url}`);
   } catch (error) {
-    console.error('Error in getAllProductsForAdmin:', error)
-    return {
-      products: [],
-      totalPages: 0,
-      totalProducts: 0,
-      from: 0,
-      to: 0,
-    }
+    console.error(`Failed to request indexing for ${url}:`, error);
   }
-
 }
-// إنشاء منتج جديد
-export async function createProduct(data: z.infer<typeof ProductInputSchema>, providerId?: string, productId?: string): Promise<ProductResponse> {
+
+export async function createProduct(
+  data: z.infer<typeof ProductInputSchema>,
+  providerId?: string,
+  productId?: string
+): Promise<ProductResponse> {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -275,9 +160,13 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
 
     let productData: any;
     if (providerId && productId) {
-      // استيراد منتج عبر الدروب شيبنج
       const importService = new ProductImportService();
-      const importedProduct = await importService.importProduct(providerId, productId, seller ? seller._id.toString() : userId, data.region);
+      const importedProduct = await importService.importProduct(
+        providerId,
+        productId,
+        seller ? seller._id.toString() : userId,
+        data.region
+      );
       productData = {
         ...importedProduct,
         sellerId: seller ? seller._id : null,
@@ -287,59 +176,66 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
         updatedAt: creationTime,
       };
     } else {
-      // إنشاء منتج يدوياً
-      const validatedData = (await ProductInputSchema()).parse({
-        ...data,
-        sellerId: seller ? seller._id : undefined,
-      });
+      const validatedData = ProductInputSchema.parse(data);
 
       const existingProduct = await Product.findOne({ slug: validatedData.slug }).session(session);
       if (existingProduct) {
         throw new Error('This slug already exists');
       }
 
-      const provider = warehouseProviders[validatedData.warehouse.provider];
-      if (!provider) {
-        throw new Error('Invalid warehouse provider');
+      if (!validatedData.warehouseData || validatedData.warehouseData.length === 0) {
+        throw new Error('At least one warehouse entry is required');
       }
 
+      const provider = await getWarehouseProvider(
+        seller ? seller._id.toString() : userId,
+        validatedData.warehouse?.provider ?? 'default'
+      );
       const warehouseResponse = await provider.createProduct({
-        sku: validatedData.warehouse.sku,
+        sku: validatedData.warehouse?.sku || validatedData.warehouseData[0]?.sku || '',
         name: validatedData.name,
         description: validatedData.description,
         quantity: validatedData.warehouseData[0]?.quantity || 0,
-        dimensions: validatedData.warehouse.dimensions,
-        weight: validatedData.warehouse.weight,
+        dimensions: validatedData.warehouse?.dimensions || { length: 0, width: 0, height: 0 },
+        weight: validatedData.warehouse?.weight || 0,
       });
 
       const processedWarehouseData = validatedData.warehouseData.map((warehouse) => {
-        const totalQuantity = warehouse.colors?.reduce((total, color) => {
-          const colorTotal = color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0;
-          color.quantity = colorTotal;
-          color.inStock = colorTotal > 0;
-          return total + colorTotal;
-        }, 0) || warehouse.quantity;
+        const totalQuantity =
+          warehouse.colors?.reduce((total, color) => {
+            const colorTotal =
+              color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0;
+            color.quantity = colorTotal;
+            color.inStock = colorTotal > 0;
+            return total + colorTotal;
+          }, 0) || warehouse.quantity;
 
         return {
           ...warehouse,
           quantity: totalQuantity,
           lastUpdated: creationTime,
           updatedBy: userName,
+          warehouseId: warehouse.warehouseId ?? 'default',
         };
       });
 
-      const totalStock = processedWarehouseData.reduce((sum, warehouse) => sum + warehouse.quantity, 0);
+      const totalStock = processedWarehouseData.reduce(
+        (sum: number, warehouse: any) => sum + warehouse.quantity,
+        0
+      );
 
       const combinedColors = processedWarehouseData.reduce((allColors: any[], warehouse) => {
         if (warehouse.colors) {
-          warehouse.colors.forEach((warehouseColor) => {
+          warehouse.colors.forEach((warehouseColor: any) => {
             const existingColor = allColors.find((c) => c.name === warehouseColor.name);
             if (existingColor) {
               existingColor.quantity += warehouseColor.quantity;
               existingColor.inStock = existingColor.quantity > 0;
               if (warehouseColor.sizes) {
-                warehouseColor.sizes.forEach((warehouseSize) => {
-                  const existingSize = existingColor.sizes.find((s) => s.name === warehouseSize.name);
+                warehouseColor.sizes.forEach((warehouseSize: any) => {
+                  const existingSize = existingColor.sizes.find(
+                    (s: any) => s.name === warehouseSize.name
+                  );
                   if (existingSize) {
                     existingSize.quantity += warehouseSize.quantity;
                     existingSize.inStock = existingSize.quantity > 0;
@@ -379,6 +275,8 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
         warehouse: {
           ...validatedData.warehouse,
           externalId: warehouseResponse.id,
+          dimensions: validatedData.warehouse?.dimensions || { length: 0, width: 0, height: 0 },
+          weight: validatedData.warehouse?.weight || 0,
         },
         colors: combinedColors,
         sizes: validatedData.sizes || ['S', 'M', 'L', 'XL', 'XXL'],
@@ -386,10 +284,10 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
         sellerId: seller ? seller._id : null,
         seller: seller
           ? {
-              name: seller.businessName,
-              email: seller.email,
-              subscription: seller.subscription.plan,
-            }
+            name: seller.businessName,
+            email: seller.email,
+            subscription: seller.subscription.plan,
+          }
           : undefined,
         pricing: {
           basePrice,
@@ -411,8 +309,8 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
           totalStock === 0
             ? 'OUT_OF_STOCK'
             : totalStock <= Math.min(...processedWarehouseData.map((wh) => wh.minimumStock || 0))
-            ? 'LOW_STOCK'
-            : 'IN_STOCK',
+              ? 'LOW_STOCK'
+              : 'IN_STOCK',
         createdBy: userName,
         updatedBy: userName,
         createdAt: creationTime,
@@ -443,10 +341,11 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
 
     if (seller) {
       await updateSellerMetrics({
-        sellerId: seller._id,
+        sellerId: seller._id.toString(),
         updates: {
           productsCount: 1,
           lastProductCreated: creationTime,
+          action: 'product_created',
         },
       });
     }
@@ -463,12 +362,20 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
 
     await sendNotification({
       userId: seller ? seller._id.toString() : userId,
-      type: 'product_created',
+      type: 'product created',
       title: 'New Product Created',
       message: `Product "${createdProduct.name}" has been created successfully${seller ? ' and is awaiting review' : ''}.`,
       channels: ['email', 'in_app'],
       data: { productId: createdProduct._id },
     });
+
+    if (createdProduct.isPublished) {
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://hager-zon.vercel.app';
+      for (const locale of routing.locales) {
+        const url = `${baseUrl}/${locale}/product/${createdProduct.slug}`;
+        await requestIndexing(url);
+      }
+    }
 
     await session.commitTransaction();
 
@@ -494,7 +401,7 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
     console.error('Product creation error:', error);
     return {
       success: false,
-      message: error instanceof Error ? error.message : formatError(error),
+      message: error instanceof Error ? error.message : 'An error occurred',
       code: error instanceof Error && error.message.includes('slug') ? 'DUPLICATE_SLUG' : 'INVALID_REQUEST',
     };
   } finally {
@@ -502,8 +409,10 @@ export async function createProduct(data: z.infer<typeof ProductInputSchema>, pr
   }
 }
 
-// تحديث منتج
-export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, providerId?: string): Promise<ProductResponse> {
+export async function updateProduct(
+  data: z.infer<typeof ProductUpdateSchema>,
+  providerId?: string
+): Promise<ProductResponse> {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -513,7 +422,7 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
 
     await connectToDatabase();
 
-    const validatedData = (await ProductUpdateSchema()).parse(data);
+    const validatedData = ProductUpdateSchema.parse(data);
 
     const existingProduct = await Product.findById(validatedData._id).session(session);
     if (!existingProduct) {
@@ -531,72 +440,102 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
       }
     }
 
-    const seller = await validateSeller(
-      userRole === 'Admin' ? existingProduct.sellerId.toString() : userId
-    );
+    const seller = await Seller.findById(userRole === 'Admin' ? existingProduct.sellerId : userId).session(session);
+    if (!seller) throw new Error('Seller not found');
 
+    let updateData: any;
     if (providerId) {
-      // تحديث منتج دروب شيبنج
       const integration = await SellerIntegration.findOne({ sellerId: seller._id, integrationId: providerId, isActive: true });
       if (!integration) {
         throw new Error('Integration not connected');
       }
+      const integrationDoc = await Integration.findById(integration.integrationId);
+      if (!integrationDoc) {
+        throw new Error('Integration not found');
+      }
       const dynamicService = new DynamicIntegrationService(
-        { _id: providerId, type: 'dropshipping', status: 'connected', providerName: integration.integrationId.providerName, settings: integration.integrationId.settings },
+        {
+          _id: integration.integrationId.toString(),
+          type: 'dropshipping',
+          status: 'connected',
+          providerName: integrationDoc.providerName,
+          settings: integrationDoc.settings,
+        },
         integration
       );
       await dynamicService.updateProduct(existingProduct.sourceId, {
         name: validatedData.name,
         price: validatedData.price,
         quantity: validatedData.countInStock,
-        sku: validatedData.sku,
+        sku: validatedData.warehouse?.sku || existingProduct.warehouse.sku,
         description: validatedData.description,
       });
+
+      updateData = {
+        ...validatedData,
+        name: validatedData.name.trim(),
+        slug: validatedData.slug.trim(),
+        category: validatedData.category.trim(),
+        brand: validatedData.brand.trim(),
+        description: validatedData.description.trim(),
+        price: Number(validatedData.price),
+        listPrice: Number(validatedData.listPrice) || Number(validatedData.price),
+        countInStock: validatedData.countInStock,
+        updatedAt: updateTime,
+        updatedBy: userName,
+      };
     } else {
-      // تحديث منتج يدوياً
-      const provider = warehouseProviders[validatedData.warehouse.provider];
-      if (!provider) {
-        throw new Error('Invalid warehouse provider');
+      if (!validatedData.warehouseData || validatedData.warehouseData.length === 0) {
+        throw new Error('At least one warehouse entry is required');
       }
 
+      const provider = await getWarehouseProvider(seller._id.toString(), validatedData.warehouse?.provider ?? 'default');
       await provider.updateProduct({
         externalId: existingProduct.warehouse.externalId,
-        sku: validatedData.warehouse.sku,
+        sku: validatedData.warehouse?.sku || existingProduct.warehouse.sku,
         name: validatedData.name,
         description: validatedData.description,
         quantity: validatedData.warehouseData[0]?.quantity || 0,
-        dimensions: validatedData.warehouse.dimensions,
-        weight: validatedData.warehouse.weight,
+        dimensions: validatedData.warehouse?.dimensions || { length: 0, width: 0, height: 0 },
+        weight: validatedData.warehouse?.weight || 0,
       });
 
       const processedWarehouseData = validatedData.warehouseData.map((warehouse) => {
-        const totalQuantity = warehouse.colors?.reduce((total, color) => {
-          const colorTotal = color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0;
-          color.quantity = colorTotal;
-          color.inStock = colorTotal > 0;
-          return total + colorTotal;
-        }, 0) || warehouse.quantity;
+        const totalQuantity =
+          warehouse.colors?.reduce((total, color) => {
+            const colorTotal =
+              color.sizes?.reduce((sum, size) => sum + (size.quantity || 0), 0) || 0;
+            color.quantity = colorTotal;
+            color.inStock = colorTotal > 0;
+            return total + colorTotal;
+          }, 0) || warehouse.quantity;
 
         return {
           ...warehouse,
           quantity: totalQuantity,
           lastUpdated: updateTime,
           updatedBy: userName,
+          warehouseId: warehouse.warehouseId ?? 'default',
         };
       });
 
-      const totalStock = processedWarehouseData.reduce((sum, warehouse) => sum + warehouse.quantity, 0);
+      const totalStock = processedWarehouseData.reduce(
+        (sum: number, warehouse: any) => sum + warehouse.quantity,
+        0
+      );
 
       const combinedColors = processedWarehouseData.reduce((allColors: any[], warehouse) => {
         if (warehouse.colors) {
-          warehouse.colors.forEach((warehouseColor) => {
+          warehouse.colors.forEach((warehouseColor: any) => {
             const existingColor = allColors.find((c) => c.name === warehouseColor.name);
             if (existingColor) {
               existingColor.quantity += warehouseColor.quantity;
               existingColor.inStock = existingColor.quantity > 0;
               if (warehouseColor.sizes) {
-                warehouseColor.sizes.forEach((warehouseSize) => {
-                  const existingSize = existingColor.sizes.find((s) => s.name === warehouseSize.name);
+                warehouseColor.sizes.forEach((warehouseSize: any) => {
+                  const existingSize = existingColor.sizes.find(
+                    (s: any) => s.name === warehouseSize.name
+                  );
                   if (existingSize) {
                     existingSize.quantity += warehouseSize.quantity;
                     existingSize.inStock = existingSize.quantity > 0;
@@ -641,7 +580,7 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
         (existingProduct.countInStock > 0 && totalStock === 0) ||
         (existingProduct.countInStock === 0 && totalStock > 0);
 
-      const updateData = {
+      updateData = {
         ...validatedData,
         name: validatedData.name.trim(),
         slug: validatedData.slug.trim(),
@@ -652,6 +591,12 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
         listPrice: Number(validatedData.listPrice) || Number(validatedData.price),
         countInStock: totalStock,
         warehouseData: processedWarehouseData,
+        warehouse: {
+          ...validatedData.warehouse,
+          externalId: existingProduct.warehouse.externalId,
+          dimensions: validatedData.warehouse?.dimensions || { length: 0, width: 0, height: 0 },
+          weight: validatedData.warehouse?.weight || 0,
+        },
         colors: combinedColors,
         sizes: validatedData.sizes || existingProduct.sizes,
         pricing,
@@ -664,19 +609,21 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
           totalStock === 0
             ? 'OUT_OF_STOCK'
             : totalStock <= Math.min(...processedWarehouseData.map((wh) => wh.minimumStock || 0))
-            ? 'LOW_STOCK'
-            : 'IN_STOCK',
+              ? 'LOW_STOCK'
+              : 'IN_STOCK',
         updatedAt: updateTime,
         updatedBy: userName,
       };
+    }
 
-      const updatedProduct = await Product.findByIdAndUpdate(validatedData._id, updateData, {
-        new: true,
-        session,
-      });
+    const updatedProduct = await Product.findByIdAndUpdate(validatedData._id, updateData, {
+      new: true,
+      session,
+    });
 
+    if (!providerId) {
       await Promise.all(
-        processedWarehouseData.map((warehouse) =>
+        updateData.warehouseData.map((warehouse: any) =>
           updateWarehouseStock({
             productId: updatedProduct._id,
             warehouseId: warehouse.warehouseId,
@@ -690,54 +637,54 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
           })
         )
       );
+    }
 
-      if (isStockStatusChanged) {
-        await updateSellerMetrics({
-          sellerId: seller._id,
-          updates: {
-            action: totalStock === 0 ? 'product_out_of_stock' : 'product_back_in_stock',
-          },
-        });
-      }
-
-      await triggerWebhook({
-        event: 'product.updated',
-        payload: {
-          productId: updatedProduct._id,
-          name: updatedProduct.name,
-          sellerId: seller._id,
-          updatedAt: updateTime,
+    if (seller && updateData.countInStock !== existingProduct.countInStock) {
+      await updateSellerMetrics({
+        sellerId: seller._id.toString(),
+        updates: {
+          action: updateData.countInStock === 0 ? 'product_out_of_stock' : 'product_back_in_stock',
         },
       });
+    }
 
-      await sendNotification({
-        userId: seller._id.toString(),
-        type: 'product_updated',
-        title: 'Product Updated',
-        message: `Your product "${updatedProduct.name}" has been updated successfully`,
-        channels: ['email', 'in_app'],
-        priority: 'medium',
-        data: { productId: updatedProduct._id },
-      });
-
-      await session.commitTransaction();
-
-      revalidatePath('/seller/dashboard/products');
-      revalidatePath('/admin/products');
-      revalidatePath(`/product/${updatedProduct.slug}`);
-
-      await logOperation('Product Updated', {
+    await triggerWebhook({
+      event: 'product.updated',
+      payload: {
         productId: updatedProduct._id,
         name: updatedProduct.name,
-        updatedBy: userName,
-      });
+        sellerId: seller._id,
+        updatedAt: updateTime,
+      },
+    });
 
-      return {
-        success: true,
-        message: 'Product updated successfully',
-        data: updatedProduct,
-      };
-    }
+    await sendNotification({
+      userId: seller._id.toString(),
+      type: 'product updated',
+      title: 'Product Updated',
+      message: `Your product "${updatedProduct.name}" has been updated successfully`,
+      channels: ['email', 'in_app'],
+      priority: 'medium',
+      data: { productId: updatedProduct._id },
+    });
+
+    await session.commitTransaction();
+
+    revalidatePath('/seller/dashboard/products');
+    revalidatePath('/admin/products');
+    revalidatePath(`/product/${updatedProduct.slug}`);
+
+    await logOperation('Product Updated', {
+      productId: updatedProduct._id,
+      name: updatedProduct.name,
+      updatedBy: userName,
+    });
+
+    return {
+      success: true,
+      message: 'Product updated successfully',
+      data: updatedProduct,
+    };
   } catch (error) {
     await session.abortTransaction();
     console.error('Product update error:', error);
@@ -751,7 +698,121 @@ export async function updateProduct(data: z.infer<typeof ProductUpdateSchema>, p
   }
 }
 
-// حذف منتج
+export async function trackProductView(productId: string) {
+  const t = await getTranslations('Product');
+  try {
+    await connectToDatabase();
+    await Product.findByIdAndUpdate(productId, {
+      $inc: { 'metrics.views': 1 },
+      updatedAt: new Date(),
+    });
+    await triggerWebhook({
+      event: 'product.viewed',
+      payload: { productId, timestamp: new Date().toISOString() },
+    });
+    return { success: true, message: t('ProductViewTracked') };
+  } catch (error) {
+    logger.error(`Error tracking product view ${productId}`, error);
+    return { success: false, error: t('Error') };
+  }
+}
+
+export async function getAllProductsForAdmin({
+  query = '',
+  page = 1,
+  sort = 'latest',
+  limit,
+}: {
+  query?: string;
+  page?: number;
+  sort?: ProductSortOption;
+  limit?: number;
+}): Promise<ProductListResponse> {
+  try {
+    const { userRole } = await getCurrentUserInfo();
+    if (userRole !== 'Admin') {
+      throw new Error('Unauthorized: Admin access required');
+    }
+
+    await connectToDatabase();
+    const {
+      common: { pageSize },
+    } = await getSetting();
+    limit = limit || pageSize;
+
+    const queryFilter: any = {};
+    if (query && query !== 'all') {
+      queryFilter.$or = [
+        { name: { $regex: query, $options: 'i' } },
+        { category: { $regex: query, $options: 'i' } },
+        { brand: { $regex: query, $options: 'i' } },
+        { slug: { $regex: query, $options: 'i' } },
+      ];
+    }
+
+    const sortOptions: Record<string, SortOrder> =
+      sort === 'best-selling'
+        ? { 'metrics.sales': -1 }
+        : sort === 'price-low-to-high'
+          ? { 'pricing.finalPrice': 1 }
+          : sort === 'price-high-to-low'
+            ? { 'pricing.finalPrice': -1 }
+            : sort === 'avg-customer-review'
+              ? { 'metrics.rating': -1 }
+              : { updatedAt: -1 };
+
+    const skip = (page - 1) * limit;
+
+    const [products, totalProducts] = await Promise.all([
+      Product.find(queryFilter)
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(limit)
+        .select({
+          name: 1,
+          slug: 1,
+          price: 1,
+          category: 1,
+          countInStock: 1,
+          isPublished: 1,
+          metrics: 1,
+          status: 1,
+          warehouseData: 1,
+        })
+        .lean() as Promise<IProduct[]>,
+      Product.countDocuments(queryFilter),
+    ]);
+
+    await logOperation('Admin Products List Retrieved', {
+      total: totalProducts,
+      page,
+      limit,
+      sort,
+    });
+
+    return {
+      data: products,
+      products,
+      totalPages: Math.ceil(totalProducts / limit),
+      totalProducts,
+      from: skip + 1,
+      to: skip + products.length,
+    };
+
+  } catch (error) {
+    console.error('Error in getAllProductsForAdmin:', error);
+    return {
+      data: [],
+      products: [],
+      totalPages: 0,
+      totalProducts: 0,
+      from: 0,
+      to: 0,
+    };
+
+  }
+}
+
 export async function deleteProduct(id: string): Promise<ProductResponse> {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -771,21 +832,26 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
     }
 
     if (product.source) {
-      // حذف منتج دروب شيبنج
       const integration = await SellerIntegration.findOne({ sellerId: product.sellerId, isActive: true });
       if (integration) {
+        const integrationDoc = await Integration.findById(integration.integrationId);
+        if (!integrationDoc) {
+          throw new Error('Integration not found');
+        }
         const dynamicService = new DynamicIntegrationService(
-          { _id: integration.integrationId.toString(), type: 'dropshipping', status: 'connected', providerName: integration.integrationId.providerName, settings: integration.integrationId.settings },
+          {
+            _id: integration.integrationId.toString(),
+            type: 'dropshipping',
+            status: 'connected',
+            providerName: integrationDoc.providerName,
+            settings: integrationDoc.settings,
+          },
           integration
         );
         await dynamicService.deleteProduct(product.sourceId);
       }
     } else {
-      const provider = warehouseProviders[product.warehouse.provider];
-      if (!provider) {
-        throw new Error('Invalid warehouse provider');
-      }
-
+      const provider = await getWarehouseProvider(product.sellerId.toString(), product.warehouse.provider);
       await provider.deleteProduct({
         externalId: product.warehouse.externalId,
       });
@@ -794,10 +860,10 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
     await Product.findByIdAndDelete(id).session(session);
 
     await updateSellerMetrics({
-      sellerId: product.sellerId,
+      sellerId: product.sellerId.toString(),
       updates: {
         productsCount: -1,
-        lastUpdated: new Date(),
+        action: 'product_deleted',
       },
     });
 
@@ -813,7 +879,7 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
 
     await sendNotification({
       userId: product.sellerId.toString(),
-      type: 'product_deleted',
+      type: 'product deleted',
       title: 'Product Deleted',
       message: `Your product "${product.name}" has been deleted`,
       data: {
@@ -852,54 +918,55 @@ export async function deleteProduct(id: string): Promise<ProductResponse> {
     session.endSession();
   }
 }
-// مراجعة منتج (للمدير فقط)
+
 export async function reviewProduct(
   productId: string,
   approved: boolean,
   notes?: string
 ): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName, userRole } = await getCurrentUserInfo()
+    const { userId, userName, userRole } = await getCurrentUserInfo();
 
     if (userRole !== 'Admin') {
-      throw new Error('Admin access required')
+      throw new Error('Admin access required');
     }
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const product = await Product.findById(productId).session(session)
+    const product = await Product.findById(productId).session(session);
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     const updateData = {
       status: approved ? 'active' : 'rejected',
       adminReview: {
-        approvedBy: userId,
-        approvedAt: new Date(),
+        approved,
+        reviewedBy: userId,
+        reviewedAt: new Date(),
         notes,
       },
       updatedAt: new Date(),
       updatedBy: userName,
-    }
+    };
 
     const updatedProduct = await Product.findByIdAndUpdate(productId, updateData, {
       new: true,
       session,
-    })
+    });
 
     await sendNotification({
       userId: product.sellerId.toString(),
-      type: 'product_reviewed',
+      type: 'product reviewed',
       title: `Product ${approved ? 'Approved' : 'Rejected'}`,
       message: `Your product "${product.name}" has been ${approved ? 'approved' : 'rejected'}. ${notes || ''}`,
       channels: ['email', 'in_app'],
       priority: 'high',
       data: { productId },
-    })
+    });
 
     await triggerWebhook({
       event: approved ? 'product.approved' : 'product.rejected',
@@ -908,39 +975,36 @@ export async function reviewProduct(
         status: updateData.status,
         reviewedAt: updateData.updatedAt,
       },
-    })
+    });
 
-    await session.commitTransaction()
+    await session.commitTransaction();
 
-    revalidatePath('/admin/products')
-    revalidatePath(`/product/${product.slug}`)
+    revalidatePath('/admin/products');
+    revalidatePath(`/product/${product.slug}`);
 
     await logOperation(`Product ${approved ? 'Approved' : 'Rejected'}`, {
       productId,
       updatedBy: userName,
-    })
+    });
 
     return {
       success: true,
       message: `Product ${approved ? 'approved' : 'rejected'} successfully`,
       data: updatedProduct,
-    }
+    };
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Product review error:', error)
+    await session.abortTransaction();
+    console.error('Product review error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
 
-
-
-// مزامنة مخزون المنتج
 export async function syncProductInventory(productId: string, providerId?: string): Promise<ProductResponse> {
   const session = await mongoose.startSession();
   session.startTransaction();
@@ -961,16 +1025,10 @@ export async function syncProductInventory(productId: string, providerId?: strin
 
     let inventory: any;
     if (providerId && product.source) {
-      // مزامنة مخزون دروب شيبنج
       const importService = new ProductImportService();
       inventory = await importService.syncInventory(product.sourceId, userId, providerId);
     } else {
-      // مزامنة مخزون المستودع
-      const provider = warehouseProviders[product.warehouse.provider];
-      if (!provider) {
-        throw new Error('Invalid warehouse provider');
-      }
-
+      const provider = await getWarehouseProvider(product.sellerId.toString(), product.warehouse.provider);
       inventory = await provider.getInventory({
         sku: product.warehouse.sku,
       });
@@ -990,7 +1048,10 @@ export async function syncProductInventory(productId: string, providerId?: strin
       return warehouse;
     });
 
-    const totalStock = processedWarehouseData.reduce((sum: number, warehouse: any) => sum + warehouse.quantity, 0);
+    const totalStock = processedWarehouseData.reduce(
+      (sum: number, warehouse: any) => sum + warehouse.quantity,
+      0
+    );
 
     const updatedProduct = await Product.findByIdAndUpdate(
       productId,
@@ -1002,13 +1063,15 @@ export async function syncProductInventory(productId: string, providerId?: strin
           availableQuantity: totalStock,
           location: inventory.location,
           lastSync: new Date(),
+          dimensions: product.warehouse.dimensions || { length: 0, width: 0, height: 0 },
+          weight: product.warehouse.weight || 0,
         },
         inventoryStatus:
           totalStock === 0
             ? 'OUT_OF_STOCK'
             : totalStock <= Math.min(...processedWarehouseData.map((wh: any) => wh.minimumStock || 0))
-            ? 'LOW_STOCK'
-            : 'IN_STOCK',
+              ? 'LOW_STOCK'
+              : 'IN_STOCK',
         updatedAt: new Date(),
         updatedBy: userName,
       },
@@ -1053,7 +1116,6 @@ export async function syncProductInventory(productId: string, providerId?: strin
   }
 }
 
-// إرسال تقييم لمنتج
 export async function submitProductReview({
   productId,
   rating,
@@ -1163,7 +1225,6 @@ export async function submitProductReview({
   }
 }
 
-// استرجاع منتج مع تقييماته
 export async function getProductByIdWithReviews(productId: string): Promise<ProductResponse> {
   try {
     await connectToDatabase();
@@ -1171,7 +1232,7 @@ export async function getProductByIdWithReviews(productId: string): Promise<Prod
     const product = await Product.findById(productId)
       .select('-__v')
       .populate('reviews.user', 'name email')
-      .lean();
+      .lean() as IProduct;
 
     if (!product) {
       throw new Error('Product not found');
@@ -1185,6 +1246,7 @@ export async function getProductByIdWithReviews(productId: string): Promise<Prod
         ...review,
         createdAt: review.createdAt ? new Date(review.createdAt).toISOString() : undefined,
         updatedAt: review.updatedAt ? new Date(review.updatedAt).toISOString() : undefined,
+        user: review.user || undefined,
       })),
     };
 
@@ -1209,7 +1271,6 @@ export async function getProductByIdWithReviews(productId: string): Promise<Prod
   }
 }
 
-// استرجاع فئات المنتجات
 export async function getProductCategories(limit = 4): Promise<any[]> {
   try {
     await connectToDatabase();
@@ -1264,27 +1325,26 @@ export async function getProductCategories(limit = 4): Promise<any[]> {
   }
 }
 
-// استرجاع منتجات لبطاقات العرض
 export async function getProductsForCard({
   tag,
   limit = 4,
 }: {
-  tag: string
-  limit?: number
+  tag: string;
+  limit?: number;
 }): Promise<
   {
-    name: string
-    productId: string
-    slug: string
-    images: string[]
-    price: any
-    metrics: any
-    href?: string
-    image?: string
+    name: string;
+    productId: string;
+    slug: string;
+    images: string[];
+    price: any;
+    metrics: any;
+    href?: string;
+    image?: string;
   }[]
 > {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const products = await Product.aggregate([
       {
@@ -1313,56 +1373,55 @@ export async function getProductsForCard({
       {
         $limit: limit,
       },
-    ])
+    ]);
 
-    return products
+    return products;
   } catch (error) {
-    console.error('Product card retrieval error:', error)
-    return []
+    console.error('Product card retrieval error:', error);
+    return [];
   }
 }
 
-// استرجاع المنتجات حسب الوسم
 export async function getProductsByTag({
   tag,
   limit = 10,
   sortBy = 'relevance',
 }: {
-  tag: string
-  limit?: number
-  sortBy?: 'relevance' | 'createdAt'
+  tag: string;
+  limit?: number;
+  sortBy?: 'relevance' | 'createdAt';
 }): Promise<IProduct[]> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const query: any = {
       tags: { $in: [tag] },
       isPublished: true,
-    }
+    };
 
     if (sortBy === 'relevance') {
-      query.status = 'active'
-      query.countInStock = { $gt: 0 }
+      query.status = 'active';
+      query.countInStock = { $gt: 0 };
     }
 
-    const sortOption = sortBy === 'relevance' ? { 'metrics.sales': -1 } : { createdAt: -1 }
+    const sortOption: Record<string, SortOrder> =
+      sortBy === 'relevance' ? { 'metrics.sales': -1 } : { createdAt: -1 };
 
     const products = await Product.find(query)
       .sort(sortOption)
       .limit(limit)
-      .lean()
+      .lean() as IProduct[];
 
-    return products
+    return products;
   } catch (error) {
-    console.error('Tag-based product retrieval error:', error)
-    return []
+    console.error('Tag-based product retrieval error:', error);
+    return [];
   }
 }
 
-// استرجاع أحدث المنتجات
 export async function getLatestProducts({ limit = 4 }: { limit?: number } = {}): Promise<IProduct[]> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const products = await Product.find({
       isPublished: true,
@@ -1377,16 +1436,15 @@ export async function getLatestProducts({ limit = 4 }: { limit?: number } = {}):
         slug: 1,
         price: 1,
       })
-      .lean()
+      .lean() as IProduct[];
 
-    return products
+    return products;
   } catch (error) {
-    console.error('Latest products retrieval error:', error)
-    return []
+    console.error('Latest products retrieval error:', error);
+    return [];
   }
 }
 
-// استرجاع كل المنتجات
 export async function getAllProducts({
   query = '',
   category = 'all',
@@ -1397,175 +1455,182 @@ export async function getAllProducts({
   price,
   rating,
 }: {
-  query?: string
-  category?: string
-  tag?: string
-  sort?: ProductSortOption
-  page?: number
-  limit?: number
-  price?: string
-  rating?: number
+  query?: string;
+  category?: string;
+  tag?: string;
+  sort?: ProductSortOption;
+  page?: number;
+  limit?: number;
+  price?: string;
+  rating?: number;
 }): Promise<ProductListResponse> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const {
       common: { pageSize },
-    } = await getSetting()
-    limit = limit || pageSize
+    } = await getSetting();
+    limit = limit || pageSize;
 
     const queryFilter: any = {
       isPublished: true,
       status: 'active',
       countInStock: { $gt: 0 },
-    }
+    };
 
     if (query && query !== 'all') {
-      queryFilter.name = { $regex: query, $options: 'i' }
+      queryFilter.name = { $regex: query, $options: 'i' };
     }
 
     if (category && category !== 'all') {
-      queryFilter.category = category
+      queryFilter.category = category;
     }
 
     if (tag && tag !== 'all') {
-      queryFilter.tags = { $in: [tag] }
+      queryFilter.tags = { $in: [tag] };
     }
 
     if (rating) {
-      queryFilter['metrics.rating'] = { $gte: Number(rating) }
+      queryFilter['metrics.rating'] = { $gte: Number(rating) };
     }
 
     if (price && price !== 'all') {
-      const [minPrice, maxPrice] = price.split('-').map(Number)
+      const [minPrice, maxPrice] = price.split('-').map(Number);
       queryFilter['pricing.finalPrice'] = {
         $gte: minPrice,
         $lte: maxPrice,
-      }
+      };
     }
 
-    const sortOption: Record<string, 1 | -1> =
+    const sortOption: Record<string, SortOrder> =
       sort === 'best-selling'
         ? { 'metrics.sales': -1 }
         : sort === 'price-low-to-high'
-        ? { 'pricing.finalPrice': 1 }
-        : sort === 'price-high-to-low'
-        ? { 'pricing.finalPrice': -1 }
-        : sort === 'avg-customer-review'
-        ? { 'metrics.rating': -1 }
-        : { createdAt: -1 }
+          ? { 'pricing.finalPrice': 1 }
+          : sort === 'price-high-to-low'
+            ? { 'pricing.finalPrice': -1 }
+            : sort === 'avg-customer-review'
+              ? { 'metrics.rating': -1 }
+              : { createdAt: -1 };
 
-    const skip = (page - 1) * limit
+    const skip = (page - 1) * limit;
 
     const [products, totalProducts] = await Promise.all([
       Product.find(queryFilter)
         .sort(sortOption)
         .skip(skip)
         .limit(limit)
-        .lean(),
+        .lean() as Promise<IProduct[]>,
       Product.countDocuments(queryFilter),
-    ])
+    ]);
 
     return {
+      data: products,
       products,
       totalPages: Math.ceil(totalProducts / limit),
       totalProducts,
       from: skip + 1,
       to: skip + products.length,
-    }
+    };
+
   } catch (error) {
-    console.error('Product retrieval error:', error)
+    console.error('Product retrieval error:', error);
     return {
+      data: [],
       products: [],
       totalPages: 0,
       totalProducts: 0,
       from: 0,
       to: 0,
-    }
+    };
+
   }
 }
 
-// استرجاع منتج حسب المعرف
 export async function getProductById(productId: string): Promise<ProductResponse> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const product = await Product.findById(productId)
       .select('-__v')
-      .lean()
+      .lean() as IProduct;
 
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     const formattedProduct = {
       ...product,
       createdAt: product.createdAt ? new Date(product.createdAt).toISOString() : undefined,
       updatedAt: product.updatedAt ? new Date(product.updatedAt).toISOString() : undefined,
-    }
+    };
 
-    const { userId } = await getCurrentUserInfo()
+    const { userId } = await getCurrentUserInfo();
     await logOperation('Product Accessed', {
       productId,
       userId,
-    })
+    });
 
     return {
       success: true,
       message: 'Product retrieved successfully',
       data: formattedProduct,
-    }
+    };
   } catch (error) {
-    console.error('Product retrieval error:', error)
+    console.error('Product retrieval error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   }
 }
 
-// استرجاع منتج حسب الـ slug
 export async function getProductBySlug(slug: string): Promise<IProduct> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
     const product = await Product.findOne({
       slug,
       isPublished: true,
       status: 'active',
-    }).lean()
+    })
+      .lean() as IProduct;
 
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
-    return product
+    return product;
   } catch (error) {
-    console.error('Product slug retrieval error:', error)
-    throw error instanceof Error ? error : new Error(formatError(error))
+    console.error('Product slug retrieval error:', error);
+    throw error instanceof Error ? error : new Error(formatError(error));
   }
 }
 
-// استرجاع المنتجات ذات الصلة
 export async function getRelatedProducts({
   productId,
   category,
   limit = 4,
 }: {
-  productId: string
-  category: string
-  limit: number
+  productId?: string;
+  category: string;
+  limit: number;
 }): Promise<IProduct[]> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const products = await Product.find({
-      _id: { $ne: productId },
+    const query: any = {
       category,
       isPublished: true,
       status: 'active',
       countInStock: { $gt: 0 },
-    })
+    };
+
+    if (productId) {
+      query._id = { $ne: productId };
+    }
+
+    const products = await Product.find(query)
       .sort({ 'metrics.sales': -1 })
       .limit(limit)
       .select({
@@ -1573,68 +1638,67 @@ export async function getRelatedProducts({
         images: 1,
         slug: 1,
         price: 1,
+        finalPrice: 1,
       })
-      .lean()
+      .lean() as IProduct[];
 
-    return products
+    return products;
   } catch (error) {
-    console.error('Related products retrieval error:', error)
-    return []
+    console.error('Related products retrieval error:', error);
+    return [];
   }
 }
 
-// استرجاع المنتجات ذات الصلة حسب الفئة
 export async function getRelatedProductsByCategory({
   category,
   productId,
   limit = 4,
   page = 1,
 }: {
-  category: string
-  productId: string
-  limit?: number
-  page: number
+  category: string;
+  productId: string;
+  limit?: number;
+  page: number;
 }): Promise<{ data: IProduct[]; totalPages: number }> {
   try {
     const {
       common: { pageSize },
-    } = await getSetting()
-    limit = limit || pageSize
+    } = await getSetting();
+    limit = limit || pageSize;
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const skip = (page - 1) * limit
+    const skip = (page - 1) * limit;
     const conditions = {
       isPublished: true,
       category,
       _id: { $ne: productId },
       status: 'active',
       countInStock: { $gt: 0 },
-    }
+    };
 
     const [products, totalProducts] = await Promise.all([
       Product.find(conditions)
         .sort({ 'metrics.sales': -1 })
         .skip(skip)
         .limit(limit)
-        .lean(),
+        .lean() as Promise<IProduct[]>,
       Product.countDocuments(conditions),
-    ])
+    ]);
 
     return {
       data: products,
       totalPages: Math.ceil(totalProducts / limit),
-    }
+    };
   } catch (error) {
-    console.error('Related products by category retrieval error:', error)
-    return { data: [], totalPages: 0 }
+    console.error('Related products by category retrieval error:', error);
+    return { data: [], totalPages: 0 };
   }
 }
 
-// استرجاع كل الوسوم
 export async function getAllTags(): Promise<string[]> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const tags = await Product.aggregate([
       {
@@ -1646,7 +1710,7 @@ export async function getAllTags(): Promise<string[]> {
       { $unwind: '$tags' },
       { $group: { _id: null, uniqueTags: { $addToSet: '$tags' } } },
       { $project: { _id: 0, uniqueTags: 1 } },
-    ])
+    ]);
 
     return (
       tags[0]?.uniqueTags
@@ -1657,56 +1721,55 @@ export async function getAllTags(): Promise<string[]> {
             .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
             .join(' ')
         ) || []
-    )
+    );
   } catch (error) {
-    console.error('Tags retrieval error:', error)
-    return []
+    console.error('Tags retrieval error:', error);
+    return [];
   }
 }
 
-// استرجاع كل الفئات
 export async function getAllCategories(): Promise<string[]> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
     const categories = await Product.distinct('category', {
       isPublished: true,
       status: 'active',
-    })
+    });
 
-    return categories
+    return categories;
   } catch (error) {
-    console.error('Categories retrieval error:', error)
-    return []
+    console.error('Categories retrieval error:', error);
+    return [];
   }
 }
 
-// استرجاع منتجات بائع معين
 export async function getSellerProducts({
   sellerId,
   query = '',
   page = 1,
   limit = 10,
 }: {
-  sellerId: string
-  query?: string
-  page?: number
-  limit?: number
+  sellerId: string;
+  query?: string;
+  page?: number;
+  limit?: number;
+  excludeProductId?: string;
 }): Promise<ProductListResponse> {
   try {
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const queryFilter: any = { sellerId }
+    const queryFilter: any = { sellerId };
     if (query) {
       queryFilter.$or = [
         { name: { $regex: query, $options: 'i' } },
         { category: { $regex: query, $options: 'i' } },
         { brand: { $regex: query, $options: 'i' } },
         { slug: { $regex: query, $options: 'i' } },
-      ]
+      ];
     }
 
-    const skip = (page - 1) * limit
+    const skip = (page - 1) * limit;
 
     const [products, totalProducts] = await Promise.all([
       Product.find(queryFilter)
@@ -1724,57 +1787,61 @@ export async function getSellerProducts({
           status: 1,
           warehouseData: 1,
         })
-        .lean(),
+        .lean() as Promise<IProduct[]>,
       Product.countDocuments(queryFilter),
-    ])
+    ]);
 
     await logOperation('Seller Products Retrieved', {
       sellerId,
       total: totalProducts,
       page,
       limit,
-    })
+
+    });
 
     return {
+      data: products,
       products,
       totalPages: Math.ceil(totalProducts / limit),
       totalProducts,
       from: skip + 1,
       to: skip + products.length,
-    }
+    };
+
   } catch (error) {
-    console.error('Seller products retrieval error:', error)
+    console.error('Seller products retrieval error:', error);
     return {
+      data: [],
       products: [],
       totalPages: 0,
       totalProducts: 0,
       from: 0,
       to: 0,
-    }
+    };
+
   }
 }
 
-// استرجاع إحصائيات المنتجات
 export async function getProductStats({
   sellerId,
   startDate,
   endDate,
 }: {
-  sellerId?: string
-  startDate?: Date
-  endDate?: Date
+  sellerId?: string;
+  startDate?: Date;
+  endDate?: Date;
 }): Promise<ProductResponse> {
   try {
-    const { userId, userRole } = await getCurrentUserInfo()
+    const { userId, userRole } = await getCurrentUserInfo();
     if (userRole !== 'Admin' && userRole !== 'SELLER') {
-      throw new Error('Unauthorized')
+      throw new Error('Unauthorized');
     }
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const query: any = userRole === 'SELLER' ? { sellerId: userId } : sellerId ? { sellerId } : {}
+    const query: any = userRole === 'SELLER' ? { sellerId: userId } : sellerId ? { sellerId } : {};
     if (startDate && endDate) {
-      query.createdAt = { $gte: startDate, $lte: endDate }
+      query.createdAt = { $gte: startDate, $lte: endDate };
     }
 
     const stats = await Product.aggregate([
@@ -1791,7 +1858,7 @@ export async function getProductStats({
           },
         },
       },
-    ])
+    ]);
 
     return {
       success: true,
@@ -1803,39 +1870,38 @@ export async function getProductStats({
         averagePrice: 0,
         activeProducts: 0,
       },
-    }
+    };
   } catch (error) {
-    console.error('Get product stats error:', error)
+    console.error('Get product stats error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   }
 }
 
-// تصدير المنتجات
 export async function exportProducts({
   sellerId,
   format = 'csv',
 }: {
-  sellerId?: string
-  format?: 'csv'
+  sellerId?: string;
+  format?: 'csv';
 }): Promise<ProductResponse> {
   try {
-    const { userId, userRole, userName } = await getCurrentUserInfo()
+    const { userId, userRole, userName } = await getCurrentUserInfo();
     if (userRole !== 'Admin' && userRole !== 'SELLER') {
-      throw new Error('Unauthorized')
+      throw new Error('Unauthorized');
     }
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const query = userRole === 'SELLER' ? { sellerId: userId } : sellerId ? { sellerId } : {}
-    
-    const products = await Product.find(query).lean()
+    const query = userRole === 'SELLER' ? { sellerId: userId } : sellerId ? { sellerId } : {};
+
+    const products = await Product.find(query).lean() as IProduct[];
 
     if (!products.length) {
-      throw new Error('No products found to export')
+      throw new Error('No products found to export');
     }
 
     const fields = [
@@ -1851,16 +1917,16 @@ export async function exportProducts({
       'sellerId',
       'createdAt',
       'updatedAt',
-    ]
-    const json2csvParser = new Parser({ fields })
-    const csv = json2csvParser.parse(products)
+    ];
+    const json2csvParser = new Parser({ fields });
+    const csv = json2csvParser.parse(products);
 
     await logOperation('Products Exported', {
       userId,
       userName,
       productCount: products.length,
       format,
-    })
+    });
 
     return {
       success: true,
@@ -1870,61 +1936,59 @@ export async function exportProducts({
         format,
         count: products.length,
       },
-    }
+    };
   } catch (error) {
-    console.error('Export products error:', error)
+    console.error('Export products error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   }
 }
 
-// تطبيق خصم على منتج
 export async function applyDiscount({
   productId,
   discountPercentage,
   startDate,
   endDate,
 }: {
-  productId: string
-  discountPercentage: number
-  startDate: Date
-  endDate: Date
+  productId: string;
+  discountPercentage: number;
+  startDate: Date;
+  endDate: Date;
 }): Promise<ProductResponse> {
-  const session = await mongoose.startSession()
-  session.startTransaction()
+  const session = await mongoose.startSession();
+  session.startTransaction();
 
   try {
-    const { userId, userName, userRole } = await getCurrentUserInfo()
+    const { userId, userName, userRole } = await getCurrentUserInfo();
     if (userRole !== 'Admin' && userRole !== 'SELLER') {
-      throw new Error('Unauthorized')
+      throw new Error('Unauthorized');
     }
 
-    await connectToDatabase()
+    await connectToDatabase();
 
-    const product = await Product.findById(productId).session(session)
+    const product = await Product.findById(productId).session(session);
     if (!product) {
-      throw new Error('Product not found')
+      throw new Error('Product not found');
     }
 
     if (userRole === 'SELLER' && product.sellerId.toString() !== userId) {
-      throw new Error('Unauthorized to modify this product')
+      throw new Error('Unauthorized to modify this product');
     }
 
     const discount = {
-      percentage: discountPercentage,
+      type: 'percentage' as 'percentage',
+      value: discountPercentage,
       startDate,
       endDate,
-      appliedBy: userName,
-      appliedAt: new Date(),
-    }
+    };
 
-    product.pricing.discount = discount
-    product.pricing.finalPrice = product.pricing.basePrice * (1 - discountPercentage / 100)
+    product.pricing.discount = discount;
+    product.pricing.finalPrice = product.pricing.basePrice * (1 - discountPercentage / 100);
 
-    await product.save({ session })
+    await product.save({ session });
 
     await triggerWebhook({
       event: 'product.discount_applied',
@@ -1935,7 +1999,7 @@ export async function applyDiscount({
         endDate,
         appliedBy: userId,
       },
-    })
+    });
 
     await sendNotification({
       userId: product.sellerId.toString(),
@@ -1945,33 +2009,36 @@ export async function applyDiscount({
       channels: ['email', 'in_app'],
       priority: 'medium',
       data: { productId },
-    })
+    });
 
-    await session.commitTransaction()
+    await session.commitTransaction();
 
-    revalidatePath(`/product/${product.slug}`)
-    revalidatePath('/seller/dashboard/products')
+    revalidatePath(`/product/${product.slug}`);
+    revalidatePath('/seller/dashboard/products');
 
     await logOperation('Discount Applied', {
       productId,
       discountPercentage,
       appliedBy: userName,
-    })
+    });
 
     return {
       success: true,
       message: 'Discount applied successfully',
       data: product,
-    }
+    };
   } catch (error) {
-    await session.abortTransaction()
-    console.error('Apply discount error:', error)
+    await session.abortTransaction();
+    console.error('Apply discount error:', error);
     return {
       success: false,
       message: error instanceof Error ? error.message : formatError(error),
       code: error instanceof Error && error.message.includes('not found') ? 'NOT_FOUND' : 'INVALID_REQUEST',
-    }
+    };
   } finally {
-    session.endSession()
+    session.endSession();
   }
 }
+
+// Re-export IProduct type
+export type { IProduct } from '@/lib/db/models/product.model';

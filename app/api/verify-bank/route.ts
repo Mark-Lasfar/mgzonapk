@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/app/api/verify-bank/route.ts
 import { NextResponse } from 'next/server';
 // import { isValidIBAN } from 'iban';
 import { getTranslations, getLocale } from 'next-intl/server';
@@ -7,14 +8,13 @@ import { t } from 'i18next';
 const SWIFT_REGEX = /^[A-Z]{4}[A-Z]{2}[A-Z0-9]{2}([A-Z0-9]{3})?$/;
 const STRIPE_COUNTRIES = ['DE', 'FR', 'GB', 'US', 'CA', 'ES', 'IT', 'NL', 'BE', 'AT'];
 const PAYPAL_COUNTRIES = ['EG', 'SA', 'AE', 'JO', 'QA', 'KW', 'IN', 'CN', 'PK'];
-
+const ROUTING_REGEX = /^\d{9}$/;
 export async function POST(req: Request) {
   try {
     const locale = await getLocale();
     const t = await getTranslations({ locale, namespace: 'api' });
 
-    const { iban, swift, countryCode, bankDocumentUrl } = await req.json();
-
+    const { iban, swift, routingNumber, countryCode, bankDocumentUrl } = await req.json();
     if (!isValidIBAN(iban)) {
       return NextResponse.json(
         { valid: false, message: t('errors.invalidIBAN') },
@@ -32,6 +32,12 @@ export async function POST(req: Request) {
     if (!bankDocumentUrl) {
       return NextResponse.json(
         { valid: false, message: t('errors.missingBankDocument') },
+        { status: 400 }
+      );
+    }
+    if (routingNumber && !ROUTING_REGEX.test(routingNumber)) {
+      return NextResponse.json(
+        { valid: false, message: t('errors.invalidRoutingNumber') },
         { status: 400 }
       );
     }

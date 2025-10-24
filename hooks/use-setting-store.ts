@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/hooks/use-setting-store.ts
 /* eslint-disable no-unused-vars */
 
 import data from '@/lib/data'

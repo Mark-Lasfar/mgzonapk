@@ -1,41 +1,78 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/db';
 import { auth } from '@/auth';
+import { connectToDatabase } from '@/lib/db';
 import SellerIntegration from '@/lib/db/models/seller-integration.model';
-import { logger } from '@/lib/api/services/logging';
+import { customLogger } from '@/lib/api/services/logging';
+import { getTranslations } from 'next-intl/server';
 import { v4 as uuidv4 } from 'uuid';
+import mongoose from 'mongoose';
 
-export async function POST(req: NextRequest, { params }: { params: { id: string } }) {
+export async function DELETE(req: NextRequest, { params }: { params: { id: string } }) {
   const requestId = uuidv4();
+  const t = await getTranslations('api.integrations.disconnect');
+  const session = await mongoose.startSession();
   try {
-    const session = await auth();
-    if (!session?.user?.id || session.user.role !== 'SELLER') {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    session.startTransaction();
+    const authSession = await auth();
+    if (!authSession?.user?.id || authSession.user.role !== 'SELLER') {
+      await customLogger.error('Unauthorized access to disconnect integration', { requestId, service: 'api' });
+      return NextResponse.json(
+        { success: false, error: t('unauthorized'), requestId, timestamp: new Date().toISOString() },
+        { status: 401 }
+      );
     }
 
     const { searchParams } = new URL(req.url);
     const sandbox = searchParams.get('sandbox') === 'true';
 
     await connectToDatabase(sandbox ? 'sandbox' : 'live');
-    const result = await SellerIntegration.updateOne(
-      { sellerId: session.user.id, integrationId: params.id, sandbox },
-      {
-        isActive: false,
-        status: 'disconnected',
-        lastUpdated: new Date(),
-        $push: { history: { event: 'disconnected', date: new Date() } },
-      }
-    );
 
-    if (result.modifiedCount === 0) {
-      return NextResponse.json({ error: 'Integration not found' }, { status: 404 });
+    const sellerIntegration = await SellerIntegration.findOne({
+      sellerId: authSession.user.id,
+      integrationId: params.id,
+      sandbox,
+    }).session(session);
+
+    if (!sellerIntegration) {
+      await customLogger.error('Integration not found', { requestId, integrationId: params.id, service: 'api' });
+      return NextResponse.json(
+        { success: false, error: t('not_found'), requestId, timestamp: new Date().toISOString() },
+        { status: 404 }
+      );
     }
 
-    logger.info('Integration disconnected', { requestId, integrationId: params.id, sandbox });
-    return NextResponse.json({ success: true });
+    sellerIntegration.isActive = false;
+    sellerIntegration.status = 'disconnected';
+    sellerIntegration.history.push({ event: 'disconnected', date: new Date() });
+    await sellerIntegration.save({ session });
+
+    await session.commitTransaction();
+    await customLogger.info('Integration disconnected successfully', {
+      requestId,
+      integrationId: params.id,
+      sellerId: authSession.user.id,
+      service: 'api',
+    });
+
+    return NextResponse.json({
+      success: true,
+      message: t('disconnected'),
+      requestId,
+      timestamp: new Date().toISOString(),
+    });
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    logger.error('Failed to disconnect integration', { requestId, error: errorMessage });
-    return NextResponse.json({ error: errorMessage }, { status: 500 });
+    await session.abortTransaction();
+    const errorMessage = error instanceof Error ? error.message : t('unknown_error');
+    await customLogger.error('Failed to disconnect integration', {
+      requestId,
+      error: errorMessage,
+      service: 'api',
+    });
+    return NextResponse.json(
+      { success: false, error: errorMessage, requestId, timestamp: new Date().toISOString() },
+      { status: 500 }
+    );
+  } finally {
+    session.endSession();
   }
 }

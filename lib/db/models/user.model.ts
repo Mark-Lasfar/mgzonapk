@@ -1,7 +1,7 @@
-import { Document, Model, model, models, Schema } from 'mongoose';
-import { Notification } from '@/lib/api/types';
-import { IUserInput } from '@/lib/types';
+// /home/mark/Music/my-nextjs-project-clean/lib/db/models/user.model.ts
 
+import { Document, Model, model, models, Schema } from 'mongoose';
+import { IUserInput , Notification } from '@/lib/types';
 export interface IUser extends Document, IUserInput {
   _id: string;
   password?: string;
@@ -21,6 +21,9 @@ export interface IUser extends Document, IUserInput {
   email: string;
   pushToken?: string;
   whatsapp?: string;
+  nickname?: string;
+    mgzonId?: string;
+
 }
 
 const userSchema = new Schema<IUser>(
@@ -33,15 +36,114 @@ const userSchema = new Schema<IUser>(
       lowercase: true,
       match: [/^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/, 'Please enter a valid email address'],
     },
-
     name: {
       type: String,
       required: [true, 'Name is required'],
       trim: true,
       minlength: [2, 'Name must be at least 2 characters'],
-
-      phone: { type: String, required: false },
     },
+    phone: {
+      type: String,
+      trim: true,
+      match: [/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, 'Please enter a valid phone number'],
+      required: false,
+    },
+        mgzonId: {
+      type: String,
+      sparse: true,
+    },
+    profile: {
+      nickname: {
+        type: String,
+        unique: true,
+        sparse: true,
+        trim: true,
+      },
+      avatar: String,
+      status: String,
+      jobTitle: String,
+      bio: String,
+      phone: String,
+      socialLinks: {
+        linkedin: String,
+        behance: String,
+        github: String,
+        whatsapp: String,
+      },
+      education: [
+        {
+          institution: String,
+          degree: String,
+          year: String,
+        },
+      ],
+      experience: [
+        {
+          company: String,
+          role: String,
+          duration: String,
+        },
+      ],
+      certificates: [
+        {
+          name: String,
+          issuer: String,
+          year: String,
+        },
+      ],
+      skills: [
+        {
+          name: String,
+          percentage: Number,
+        },
+      ],
+      projects: [
+        {
+          title: String,
+          description: String,
+          image: String,
+          links: [
+            {
+              option: String,
+              value: String,
+            },
+          ],
+        },
+      ],
+      interests: [String],
+      isPublic: {
+        type: Boolean,
+        default: true,
+      },
+      customFields: [
+        {
+          key: String,
+          value: String,
+        },
+      ],
+      avatarDisplayType: {
+        type: String,
+        enum: ['svg', 'normal'],
+        default: 'normal',
+      },
+      svgColor: {
+        type: String,
+        default: '#000000',
+      },
+      portfolioName: {
+        type: String,
+        default: 'Portfolio',
+      },
+    },
+        refreshTokens: [
+      {
+        token: String,
+        createdAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
     role: {
       type: String,
       required: [true, 'Role is required'],
@@ -63,8 +165,8 @@ const userSchema = new Schema<IUser>(
       type: Boolean,
       default: false,
     },
-  pushToken: { type: String },
-  whatsapp: { type: String },
+    pushToken: { type: String },
+    whatsapp: { type: String },
     isActive: {
       type: Boolean,
       default: true,
@@ -155,12 +257,6 @@ const userSchema = new Schema<IUser>(
       type: String,
       trim: true,
     },
-    phone: {
-      type: String,
-      trim: true,
-      match: [/^[+]?[(]?[0-9]{1,4}[)]?[-\s./0-9]*$/, 'Please enter a valid phone number'],
-      required: true,
-    },
     locale: {
       type: String,
       default: 'en',
@@ -181,6 +277,11 @@ const userSchema = new Schema<IUser>(
       type: Number,
       default: 0,
     },
+    nickname: {
+      type: String,
+      trim: true,
+      minlength: [2, 'Nickname must be at least 2 characters'],
+    },
   },
   {
     timestamps: true,
@@ -188,6 +289,7 @@ const userSchema = new Schema<IUser>(
 );
 
 userSchema.index({ role: 1 });
+userSchema.index({ 'profile.nickname': 1 }, { unique: true, sparse: true });
 userSchema.index({ createdAt: 1 });
 userSchema.index({ 'notifications.status': 1 });
 userSchema.index({ fcmToken: 1 });
@@ -201,6 +303,9 @@ userSchema.pre('save', function (next) {
   }
   if (this.isModified('phone')) {
     this.phone = this.phone?.trim();
+  }
+  if (this.isModified('nickname')) {
+    this.nickname = this.nickname?.trim();
   }
   next();
 });

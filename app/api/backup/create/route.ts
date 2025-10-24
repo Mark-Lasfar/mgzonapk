@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { connectToDatabase } from '@/lib/db';
+import { getMongoClient } from '@/lib/db'; // استيراد getMongoClient بدلاً من MongoClient
 import { auth } from '@/auth';
-import { MongoClient } from 'mongodb';
 import { logger } from '@/lib/api/services/logging';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { createGzip } from 'zlib';
 import { pipeline } from 'stream/promisify';
-import { encrypt, encryptStream } from '@/lib/utils/encryption';
+import { encrypt } from '@/lib/utils/encryption'; // تعديل لاستخدام encrypt بدلاً من encryptStream
 import { Readable } from 'stream';
 
 const s3Client = new S3Client({
@@ -26,11 +25,9 @@ export async function POST(req: NextRequest) {
     }
 
     const { incremental = false, collections: selectedCollections } = await req.json();
-    await connectToDatabase();
 
-    const client = new MongoClient(process.env.MONGODB_URI!);
-    await client.connect();
-    const db = client.db();
+    const client = await getMongoClient(); // استخدام getMongoClient
+    const db = client.db(); // الوصول إلى قاعدة البيانات
 
     const collections = (await db.listCollections().toArray())
       .map(c => c.name)
@@ -53,13 +50,13 @@ export async function POST(req: NextRequest) {
     const backupFileName = `backup-${incremental ? 'incremental' : 'full'}-${new Date().toISOString()}.json.gz.enc`;
     const backupStream = Readable.from(JSON.stringify(backupData));
     const gzipStream = createGzip();
-    const encrypt = encrypt(process.env.BACKUP_ENCRYPTION_KEY!);
+    const encryptStream = encrypt(process.env.BACKUP_ENCRYPTION_KEY!); // تعديل لتجنب الالتباس
 
-    const uploadStream = await s3Client.send(
+    await s3Client.send(
       new PutObjectCommand({
         Bucket: process.env.AWS_S3_BUCKET!,
         Key: backupFileName,
-        Body: backupStream.pipe(gzipStream).pipe(encrypt),
+        Body: backupStream.pipe(gzipStream).pipe(encryptStream),
         ContentType: 'application/octet-stream',
       })
     );
@@ -72,8 +69,6 @@ export async function POST(req: NextRequest) {
       createdAt: new Date(),
       createdBy: session.user.id,
     });
-
-    await client.close();
 
     logger.info('Backup created', { requestId, backupFileName, incremental });
     return NextResponse.json({ success: true, fileName: backupFileName });

@@ -55,20 +55,23 @@ const apiKeySchema = new Schema<IApiKey>(
       {
         type: String,
         required: [true, 'Permission is required'],
-        enum: {
-          values: [
-            'products:read',
-            'products:write',
-            'orders:read',
-            'orders:write',
-            'customers:read',
-            'customers:write',
-            'inventory:read',
-            'inventory:write',
-            'analytics:read',
-          ],
-          message: '{VALUE} is not a valid permission',
-        },
+enum: {
+  values: [
+    'profile:read',
+    'profile:write',
+    'products:read',
+    'products:write',
+    'orders:read',
+    'orders:write',
+    'customers:read',
+    'customers:write',
+    'inventory:read',
+    'inventory:write',
+    'analytics:read',
+  ],
+  message: '{VALUE} is not a valid permission',
+},
+
       },
     ],
     isActive: {

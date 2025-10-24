@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
-import { emailService } from '@/lib/services/email/mailer';
+
+import { emailService } from '@/lib/services/email';
 import { generateRecoveryCode } from '@/lib/utils/verification';
 import { connectToDatabase } from '@/lib/db';
 import VerificationCode from '@/lib/db/models/verification-code.model';

@@ -1,10 +1,11 @@
+// /lib/api/services/generic-integration.ts
 import { IIntegration } from '@/lib/db/models/integration.model';
 import { ISellerIntegration } from '@/lib/db/models/seller-integration.model';
 import { customLogger } from '@/lib/api/services/logging';
 import axios from 'axios';
 import { randomUUID } from 'crypto';
 import { decrypt, encrypt } from '@/lib/utils/encryption';
-import { NotificationService } from './notification';
+import { emailService } from '@/lib/services/email';
 import { get } from 'lodash';
 import { SellerError } from '@/lib/errors/seller-error';
 
@@ -30,7 +31,6 @@ export class GenericIntegrationService {
   private integration: IIntegration;
   private sellerIntegration: ISellerIntegration;
   private requestId: string;
-  private notificationService: NotificationService;
   private maxRetries: number;
   private retryDelay: number;
 
@@ -38,7 +38,6 @@ export class GenericIntegrationService {
     this.integration = integration;
     this.sellerIntegration = sellerIntegration;
     this.requestId = randomUUID();
-    this.notificationService = new NotificationService();
     this.maxRetries = this.integration.settings?.retryOptions?.maxRetries || 3;
     this.retryDelay = this.integration.settings?.retryOptions?.initialDelay || 1000;
   }
@@ -68,7 +67,7 @@ export class GenericIntegrationService {
         if (!clientId || !clientSecret) {
           throw new SellerError('CONFIG_ERROR', `Client ID or Client Secret not configured for ${this.integration.providerName}`);
         }
-        authHeaders['Authorization'] = `Basic ${Buffer.from(`${clientId}:${decrypt(clientSecret)}`).toString('base64')}`;
+        authHeaders['Authorization'] = `Basic ${Buffer.from(`${decrypt(clientId)}:${decrypt(clientSecret)}`).toString('base64')}`;
       }
 
       const config = {
@@ -102,7 +101,7 @@ export class GenericIntegrationService {
       });
 
       if (webhookEvent && this.sellerIntegration.webhook?.enabled && this.sellerIntegration.webhook?.url) {
-        await this.notificationService.sendWebhook(
+        await emailService.sendWebhook(
           {
             url: this.sellerIntegration.webhook.url,
             headers: { 'X-Webhook-Secret': decrypt(this.sellerIntegration.webhook.secret || '') },
@@ -141,16 +140,19 @@ export class GenericIntegrationService {
         if (!adminEmail) {
           throw new SellerError('CONFIG_ERROR', 'Admin email not configured');
         }
-        await this.notificationService.sendEmail(
-          [adminEmail],
-          `Critical Integration Failure: ${this.integration.providerName}`,
-          {
-            provider: this.integration.providerName,
-            type: this.integration.type,
-            error: errorMessage,
-            requestId: this.requestId,
-          }
-        );
+        await emailService.send({
+          to: adminEmail,
+          subject: `Critical Integration Failure: ${this.integration.providerName}`,
+          html: `
+            <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px;">
+              <h1>Critical Integration Failure</h1>
+              <p>Provider: ${this.integration.providerName}</p>
+              <p>Type: ${this.integration.type}</p>
+              <p>Error: ${errorMessage}</p>
+              <p>Request ID: ${this.requestId}</p>
+            </div>
+          `,
+        });
       }
 
       throw new SellerError('API_CALL_FAILED', `API call failed for ${this.integration.providerName}: ${errorMessage}`);
@@ -158,13 +160,13 @@ export class GenericIntegrationService {
   }
 
   async createProduct(productData: ProductData): Promise<{ id: string; [key: string]: any }> {
-const endpoint = this.integration.apiEndpoints?.get('products') || '/products';
+    const endpoint = this.integration.settings?.endpoints?.get('products') || '/products';
     try {
       const response = await this.callApi({
         endpoint,
         method: 'POST',
         body: productData,
-        webhookEvent: 'product created',
+        webhookEvent: 'product.created',
       });
 
       if (!response.id) {
@@ -224,7 +226,7 @@ const endpoint = this.integration.apiEndpoints?.get('products') || '/products';
         {
           grant_type: 'refresh_token',
           refresh_token: decrypt(this.sellerIntegration.refreshToken),
-          client_id: this.integration.credentials?.get('clientId'),
+          client_id: decrypt(this.integration.credentials?.get('clientId') || ''),
           client_secret: decrypt(this.integration.credentials?.get('clientSecret') || ''),
         },
         {

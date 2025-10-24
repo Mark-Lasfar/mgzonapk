@@ -1,4 +1,5 @@
-import { Schema, model, models, Document } from 'mongoose';
+// /home/mark/Music/my-nextjs-project-clean/lib/db/models/template.model.ts
+import mongoose, { Schema, model, models, Document } from 'mongoose';
 
 interface ITemplate extends Document {
   templateId: string;
@@ -10,11 +11,7 @@ interface ITemplate extends Document {
     background: string;
   };
   components: string[];
-  layout: {
-    header: string;
-    footer: string;
-    main: string[];
-  };
+
   testimonials: {
     id: string;
     name: string;
@@ -23,13 +20,46 @@ interface ITemplate extends Document {
     image?: string;
   }[];
   backgroundImage: string;
-  createdBy: string;
+  // createdBy: string;
   createdAt: Date;
   updatedAt: Date;
+
+
+  name: string;
+  createdBy: mongoose.Types.ObjectId;
+  isPublic: boolean;
+  layout: string[];
+  heroConfig: {
+    title: string;
+    subtitle: string;
+  };
+  sections: Array<{
+    id: string;
+    type: 'text' | 'image' | 'video' | 'button' | 'carousel' | 'countdown' | 'reviews';
+    content: Record<string, any>;
+    position: number;
+  }>;
 }
 
 const templateSchema = new Schema<ITemplate>(
   {
+    name: { type: String, required: true },
+    createdBy: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+    isPublic: { type: Boolean, default: false },
+    layout: { type: [String], default: [] },
+    heroConfig: {
+      title: { type: String, default: '' },
+      subtitle: { type: String, default: '' },
+    },
+    sections: [{
+      id: { type: String, required: true },
+      type: { type: String, enum: ['text', 'image', 'video', 'button', 'carousel', 'countdown', 'reviews'], required: true },
+      content: { type: Schema.Types.Mixed, default: {} },
+      position: { type: Number, required: true },
+    }],
+    createdAt: { type: Date, default: Date.now },
+    updatedAt: { type: Date, default: Date.now },
+
     templateId: {
       type: String,
       required: [true, 'Template ID is required'],
@@ -73,25 +103,6 @@ const templateSchema = new Schema<ITemplate>(
         trim: true,
       },
     ],
-    layout: {
-      header: {
-        type: String,
-        required: [true, 'Header layout is required'],
-        trim: true,
-      },
-      footer: {
-        type: String,
-        required: [true, 'Footer layout is required'],
-        trim: true,
-      },
-      main: [
-        {
-          type: String,
-          required: [true, 'Main layout component is required'],
-          trim: true,
-        },
-      ],
-    },
     testimonials: [
       {
         id: { type: String, required: true },
@@ -112,24 +123,13 @@ const templateSchema = new Schema<ITemplate>(
       required: [true, 'Background image is required'],
       trim: true,
     },
-    createdBy: {
-      type: String,
-      required: [true, 'Created by is required'],
-      trim: true,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
-    },
+
   },
   {
     timestamps: true,
   }
 );
+
 
 const Template = models.Template || model<ITemplate>('Template', templateSchema);
 export default Template;

@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/app/[locale]/(root)/seller/dashboard/analytics/page.tsx
 'use client';
 
 import { useState, useEffect } from 'react';

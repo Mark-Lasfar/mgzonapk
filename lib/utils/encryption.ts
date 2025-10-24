@@ -50,6 +50,7 @@ export function encrypt(text: string): string {
     const cipher = crypto.createCipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
     let encrypted = cipher.update(text, 'utf8', 'hex');
     encrypted += cipher.final('hex');
+    console.log('Encryption successful:', { iv: iv.toString('hex'), encryptedLength: encrypted.length });
     return `${iv.toString('hex')}:${encrypted}`;
   } catch (error) {
     console.error('Encryption error:', {
@@ -73,6 +74,7 @@ export function decrypt<T = string>(text: string, parseJson: boolean = false): T
       throw new Error('Input must be a non-empty string');
     }
     const [ivHex, encryptedHex] = text.split(':');
+    console.log('Decryption input:', { ivLength: ivHex?.length, encryptedLength: encryptedHex?.length });
     if (!ivHex || !encryptedHex || ivHex.length !== IV_LENGTH * 2) {
       throw new Error('Invalid encrypted text format or IV length');
     }
@@ -81,6 +83,7 @@ export function decrypt<T = string>(text: string, parseJson: boolean = false): T
     const decipher = crypto.createDecipheriv(ALGORITHM, ENCRYPTION_KEY, iv);
     let decrypted = decipher.update(encrypted, undefined, 'utf8');
     decrypted += decipher.final('utf8');
+    console.log('Decryption successful:', { decryptedLength: decrypted.length });
     if (parseJson) {
       return JSON.parse(decrypted) as T;
     }

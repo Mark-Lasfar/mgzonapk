@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import ApiKeyModel from '@/lib/db/models/api-key.model';
 import { auth } from '@/auth';
-import { ApiKeyRequest } from '@/lib/api/types';
+import { ApiKeyRequest } from '@/lib/types';
 
 export async function POST(request: NextRequest) {
   try {

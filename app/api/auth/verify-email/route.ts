@@ -4,6 +4,7 @@ import VerificationCode from '@/lib/db/models/verification-code.model';
 import User from '@/lib/db/models/user.model';
 import { validation } from '@/lib/utils/validation';
 import { sendNotification } from '@/lib/utils/notification';
+
 import { logger } from '@/lib/api/services/logging';
 import {
   checkVerificationAttempts,

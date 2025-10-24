@@ -1,6 +1,6 @@
 // /app/api/auth/session/route.ts
 
-import { auth } from "@/auth"; // أو "@/lib/auth" حسب مكانك الفعلي
+import { auth } from "@/auth";
 import { NextResponse } from "next/server";
 
 export async function GET() {

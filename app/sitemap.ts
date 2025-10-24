@@ -1,15 +1,16 @@
-import { MetadataRoute } from 'next'
-import { getSetting } from '@/lib/actions/setting.actions'
-import Product from '@/lib/db/models/product.model'
-import { connectToDatabase } from '@/lib/db'
-import { routing } from '@/i18n/routing'
+import { MetadataRoute } from 'next';
+import { getSetting } from '@/lib/actions/setting.actions';
+import Product from '@/lib/db/models/product.model';
+import Seller from '@/lib/db/models/seller.model'; // أضف موديل Seller
+import { connectToDatabase } from '@/lib/db';
+import { routing } from '@/i18n/routing';
 
 type SitemapEntry = {
-  url: string
-  lastModified: Date
-  changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never'
-  priority: number
-}
+  url: string;
+  lastModified: Date;
+  changeFrequency: 'always' | 'hourly' | 'daily' | 'weekly' | 'monthly' | 'yearly' | 'never';
+  priority: number;
+};
 
 const STATIC_PAGES: { path: string; priority: number }[] = [
   { path: '', priority: 1.0 },
@@ -29,19 +30,19 @@ const STATIC_PAGES: { path: string; priority: number }[] = [
   { path: '/faq', priority: 0.4 },
   { path: '/blog', priority: 0.9 },
   { path: '/search', priority: 0.8 },
-]
+];
 
-const DEFAULT_BASE_URL = 'https://hager-zon.vercel.app'
+const DEFAULT_BASE_URL = 'https://hager-zon.vercel.app';
 
 const getBaseUrl = (url?: string): string => {
   if (url?.startsWith(DEFAULT_BASE_URL)) {
-    return url.replace(/\/+$/, '')
+    return url.replace(/\/+$/, '');
   }
-  return DEFAULT_BASE_URL
-}
+  return DEFAULT_BASE_URL;
+};
 
 const createStaticRoutes = (baseUrl: string): SitemapEntry[] => {
-  const now = new Date()
+  const now = new Date();
   return routing.locales.flatMap((locale) =>
     STATIC_PAGES.map(({ path, priority }) => ({
       url: `${baseUrl}/${locale}${path}`,
@@ -49,46 +50,66 @@ const createStaticRoutes = (baseUrl: string): SitemapEntry[] => {
       changeFrequency: 'weekly',
       priority,
     }))
-  )
-}
+  );
+};
 
 const createProductRoutes = async (baseUrl: string): Promise<SitemapEntry[]> => {
   const products = await Product.find({
     isPublished: true,
     deletedAt: { $exists: false },
   })
-    .select('slug updatedAt')
-    .lean()
+    .select('slug updatedAt sellerId')
+    .lean();
 
-  return products.flatMap((product) =>
-    routing.locales.map((locale) => ({
-      url: `${baseUrl}/${locale}/product/${product.slug}`,
-      lastModified: product.updatedAt || new Date(),
-      changeFrequency: 'daily',
-      priority: 0.8,
-    }))
-  )
-}
+  const sellers = await Seller.find({}).select('customSiteUrl').lean();
 
-// 👇 التصدير الوحيد المسموح به مع Metadata Route
+  const productUrls: SitemapEntry[] = [];
+  for (const product of products) {
+    // صفحات المنتجات العادية
+    routing.locales.forEach((locale) => {
+      productUrls.push({
+        url: `${baseUrl}/${locale}/product/${product.slug}`,
+        lastModified: product.updatedAt || new Date(),
+        changeFrequency: 'daily',
+        priority: 0.8,
+      });
+    });
+
+    // صفحات المنتجات في متاجر البائعين
+    const seller = sellers.find((s) => s._id.toString() === product.sellerId.toString());
+    if (seller?.customSiteUrl) {
+      routing.locales.forEach((locale) => {
+        productUrls.push({
+          url: `${baseUrl}/${locale}/${seller.customSiteUrl}/products/${product.slug}`,
+          lastModified: product.updatedAt || new Date(),
+          changeFrequency: 'daily',
+          priority: 0.7, // أولوية أقل شوية لصفحات البائعين
+        });
+      });
+    }
+  }
+
+  return productUrls;
+};
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   try {
     await connectToDatabase();
-    const { site: { url } } = await getSetting()
-    const baseUrl = getBaseUrl(url)
+    const { site: { url } } = await getSetting();
+    const baseUrl = getBaseUrl(url);
 
     return [
       ...createStaticRoutes(baseUrl),
       ...(await createProductRoutes(baseUrl)),
-    ]
+    ];
   } catch (error) {
-    console.error('Error generating sitemap:', error)
-    const fallbackBase = DEFAULT_BASE_URL
+    console.error('Error generating sitemap:', error);
+    const fallbackBase = DEFAULT_BASE_URL;
     return createStaticRoutes(fallbackBase).map((route) => ({
       ...route,
       priority: Math.max(route.priority - 0.2, 0),
-    }))
+    }));
   }
 }
 
-export const revalidate = 3600
+export const revalidate = 3600;

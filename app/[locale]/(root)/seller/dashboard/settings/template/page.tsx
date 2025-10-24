@@ -1,62 +1,70 @@
-'use client';
-import { useState, useEffect } from 'react';
-import { useTranslations } from 'next-intl';
-import TemplateBuilder from '@/components/templateBuilder';
-import { Button } from '@/components/ui/button';
-import { useSession } from 'next-auth/react';
-import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
+import { getTranslations } from 'next-intl/server';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { connectToDatabase } from '@/lib/db';
+import Store from '@/lib/db/models/store.model';
+import TemplateSettingsFormWrapper from '@/components/seller/TemplateSettingsFormWrapper';
 
-export default function TemplateSettings() {
-  const t = useTranslations('Template');
-  const { data: session } = useSession();
-  const [template, setTemplate] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, meta, timestamp: new Date().toISOString() }),
+    });
+  } catch (err) {
+    console.error('Failed to send log:', err);
+  }
+}
 
-  useEffect(() => {
-    async function fetchTemplate() {
-      if (!session?.user?.storeId) return;
-      try {
-        const res = await fetch(`/api/stores/${session.user.storeId}/template`);
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-        setTemplate(data.template);
-      } catch (err) {
-        setError(t('fetchError'));
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchTemplate();
-  }, [session, t]);
+export default async function TemplateSettingsPage({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}) {
+  const t = await getTranslations('Template');
+  const { locale } = await params;
+  const session = await auth();
 
-  const saveTemplate = async (newTemplate: any) => {
-    try {
-      const res = await fetch(`/api/stores/${session?.user?.storeId}/template`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(newTemplate),
-      });
-      const data = await res.json();
-      if (data.error) throw new Error(data.error);
-      setTemplate(data.template);
-      alert(t('saveSuccess'));
-    } catch (err) {
-      setError(t('saveError'));
-    }
-  };
+  if (!session?.user?.storeId) {
+    await sendLog('error', t('errors.unauthorized'), { userId: session?.user?.id });
+    redirect(`/${locale}/sign-in`);
+  }
 
-  if (loading) return <p>{t('loading')}</p>;
-  if (error) return <p className="text-red-500">{error}</p>;
+  await connectToDatabase();
+  const store = await Store.findOne({ storeId: session.user.storeId }).lean();
+  if (!store) {
+    await sendLog('error', t('errors.storeNotFound'), { userId: session.user.id });
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">{t('title')}</h1>
+        <p className="text-red-600">{t('errors.storeNotFound')}</p>
+      </div>
+    );
+  }
+
+  // Fetch template data
+  const templateResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/stores/${session.user.storeId}/template`,
+    { cache: 'no-store' }
+  );
+  const templateResult = await templateResponse.json();
+  if (!templateResult.success || !templateResult.template) {
+    await sendLog('error', t('errors.fetchError'), { userId: session.user.id });
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-3xl font-bold mb-6">{t('title')}</h1>
+        <p className="text-red-600">{t('errors.fetchError')}</p>
+      </div>
+    );
+  }
+
+  const template = templateResult.template;
 
   return (
-    <Card className="p-6">
-      <CardHeader>
-        <CardTitle>{t('title')}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <TemplateBuilder template={template} onSave={saveTemplate} />
-      </CardContent>
-    </Card>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6">{t('title')}</h1>
+      <TemplateSettingsFormWrapper defaultValues={template} locale={locale} storeId={session.user.storeId} />
+    </div>
   );
 }

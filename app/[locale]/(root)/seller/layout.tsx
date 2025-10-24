@@ -1,8 +1,9 @@
+// /home/mark/Music/my-nextjs-project-clean/app/[locale]/(root)/seller/layout.tsx
 import { redirect } from 'next/navigation'
 import { auth } from '@/auth'
 import type { ReactNode } from 'react'
 import { headers } from 'next/headers'
-
+import { Sellerchatbote } from '@/components/seller/Chatbote'
 export default async function SellerLayout({
   children,
   params,
@@ -33,6 +34,8 @@ export default async function SellerLayout({
     return (
       <div className="min-h-screen bg-background">
         {children}
+
+        <Sellerchatbote />
       </div>
     )
   } catch (error) {

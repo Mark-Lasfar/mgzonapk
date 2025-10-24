@@ -1,3 +1,4 @@
+// /app/[locale]/[customSiteUrl]/checkout/seller-checkout-form.tsx
 'use client';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -8,13 +9,9 @@ import { ShippingAddressSchema } from '@/lib/validator';
 import { ShippingAddress, SellerCheckoutFormProps } from '@/types';
 import { createOrder } from '@/lib/actions/order.actions';
 import { getCart } from '@/lib/actions/cart.actions';
-import { createPaymentSession } from '@/lib/utils/payments';
-import { getSellerProducts, applyDiscount } from '@/lib/actions/product.actions';
 import { formatCurrency, calculateFutureDate, formatDateTime, timeUntilMidnight } from '@/lib/utils';
 import Image from 'next/image';
 import Link from 'next/link';
-import SellerIntegration from '@/lib/db/models/seller-integration.model';
-import { customLogger } from '@/lib/api/services/logging';
 import { Card, CardContent, CardFooter } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -22,6 +19,19 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useTranslations } from 'next-intl';
+
+// دالة لإرسال اللوج إلى API route
+async function sendLog(type: 'info' | 'error', message: string, error?: any, meta?: any) {
+  try {
+    await fetch('/api/log', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, error, meta }),
+    });
+  } catch (err) {
+    console.error('Failed to send log:', err);
+  }
+}
 
 const defaultShippingAddress: ShippingAddress = {
   fullName: '',
@@ -58,54 +68,70 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
     defaultValues: shippingAddress || defaultShippingAddress,
   });
 
-  // Fetch cart, seller's products, payment methods, delivery options, and points
+  // جلب البيانات (السلة، المنتجات، طرق الدفع، خيارات التوصيل، النقاط)
   useEffect(() => {
     async function fetchData() {
       try {
-        // Fetch cart
+        // جلب السلة
         const cartResult = await getCart(sellerId);
         if (cartResult.success && cartResult.cart) {
           setCart(cartResult.cart.items);
         } else {
+          await sendLog('error', t('failed to load cart'), cartResult.message, { storeId, sellerId });
           toast({ description: t('failed to load data'), variant: 'destructive' });
         }
 
-        // Fetch seller's products
-        const sellerProducts = await getSellerProducts(storeId);
-        setProducts(sellerProducts);
+        // جلب منتجات البائع عبر API
+        const productsResponse = await fetch(`/api/products?sellerId=${sellerId}`);
+        const productsData = await productsResponse.json();
+        if (productsData.products) {
+          setProducts(productsData.products);
+        } else {
+          await sendLog('error', t('failed to load products'), productsData.message, { storeId, sellerId });
+          toast({ description: t('failed to load data'), variant: 'destructive' });
+        }
 
-        // Fetch payment methods from SellerIntegration
-        const integrations = await SellerIntegration.find({ sellerId, type: 'payment', status: 'connected', isActive: true });
-        const methods = integrations
-          .filter((int: any) => int.integrationId)
-          .map((int: any) => ({
-            name: int.providerName,
-            id: int.integrationId,
-          }));
-        setPaymentMethods(methods);
+        // جلب طرق الدفع عبر API
+        const paymentMethodsResponse = await fetch(`/api/seller/integrations?type=payment&sellerId=${sellerId}`);
+        const paymentMethodsData = await paymentMethodsResponse.json();
+        if (paymentMethodsData.success && paymentMethodsData.data) {
+          const methods = paymentMethodsData.data
+            .filter((int: any) => int.integrationId)
+            .map((int: any) => ({
+              name: int.providerName,
+              id: int.integrationId,
+            }));
+          setPaymentMethods(methods);
+        } else {
+          await sendLog('error', t('failed to load payment methods'), paymentMethodsData.message, { storeId, sellerId });
+          toast({ description: t('failed to load data'), variant: 'destructive' });
+        }
 
-        // Fetch delivery options
+        // خيارات التوصيل (محددة مسبقًا كمثال)
         setDeliveryDates([
           { name: 'Standard', daysToDeliver: 5, shippingPrice: 10, freeShippingMinPrice: 50 },
           { name: 'Express', daysToDeliver: 2, shippingPrice: 20, freeShippingMinPrice: 100 },
         ]);
 
-        // Fetch available points
+        // جلب النقاط المتاحة
         const pointsResponse = await fetch('/api/points/balance');
         const pointsData = await pointsResponse.json();
         if (pointsData.success) {
           setAvailablePoints(pointsData.data);
         } else {
+          await sendLog('error', t('failed to load points'), pointsData.message, { storeId, sellerId });
           toast({ description: t('failed to load data'), variant: 'destructive' });
         }
       } catch (error) {
-        toast({ description: t('failed to load data'), variant: 'destructive' });
+        const errorMessage = error instanceof Error ? error.message : t('failed to load data');
+        await sendLog('error', t('failed to load data'), errorMessage, { storeId, sellerId });
+        toast({ description: errorMessage, variant: 'destructive' });
       }
     }
     fetchData();
   }, [storeId, sellerId, toast, t]);
 
-  // Update form with saved shipping address
+  // تحديث الفورم بعنوان الشحن المحفوظ
   useEffect(() => {
     if (!shippingAddress) return;
     shippingAddressForm.setValue('fullName', shippingAddress.fullName);
@@ -124,15 +150,29 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
 
   const handleApplyDiscount = async () => {
     try {
-      const response = await applyDiscount(storeId, discountCode);
-      if (response.success) {
-        setDiscount(response.data.discount);
-        toast({ description: t('discount applied', { amount: formatCurrency(response.data.discount) }) });
+      const response = await fetch('/api/products/discount', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ storeId, discountCode }),
+      });
+      const data = await response.json();
+      if (data.success) {
+        setDiscount(data.data.discount);
+        await sendLog('info', t('discount applied'), null, {
+          storeId,
+          sellerId,
+          discount: data.data.discount,
+          discountCode,
+        });
+        toast({ description: t('discount applied', { amount: formatCurrency(data.data.discount) }) });
       } else {
-        toast({ description: response.message || t('failed to apply discount'), variant: 'destructive' });
+        await sendLog('error', t('failed to apply discount'), data.message, { storeId, sellerId, discountCode });
+        toast({ description: data.message || t('failed to apply discount'), variant: 'destructive' });
       }
     } catch (error) {
-      toast({ description: t('failed to apply discount'), variant: 'destructive' });
+      const errorMessage = error instanceof Error ? error.message : t('failed to apply discount');
+      await sendLog('error', t('failed to apply discount'), errorMessage, { storeId, sellerId, discountCode });
+      toast({ description: errorMessage, variant: 'destructive' });
     }
   };
 
@@ -147,12 +187,21 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
       if (data.success) {
         setPointsError(null);
         setDiscount((prev) => prev + data.data.discount);
+        await sendLog('info', t('points applied'), null, {
+          storeId,
+          sellerId,
+          points,
+          discount: data.data.discount,
+        });
         toast({ description: t('discount applied', { amount: formatCurrency(data.data.discount) }) });
       } else {
         setPointsError(data.message || t('failed to apply discount'));
+        await sendLog('error', t('failed to apply points'), data.message, { storeId, sellerId, points });
       }
     } catch (error) {
-      setPointsError(t('failed to apply discount'));
+      const errorMessage = error instanceof Error ? error.message : t('failed to apply discount');
+      setPointsError(errorMessage);
+      await sendLog('error', t('failed to apply points'), errorMessage, { storeId, sellerId, points });
     }
   };
 
@@ -163,29 +212,42 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
       }
       const itemsPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
       const shippingPrice = deliveryDateIndex !== null ? deliveryDates[deliveryDateIndex].shippingPrice : 0;
-      const taxPrice = itemsPrice * 0.1; // Example tax calculation
+      const taxPrice = itemsPrice * 0.1; // مثال لحساب الضريبة
       const totalPrice = itemsPrice + shippingPrice + taxPrice - discount;
 
-      const paymentIntegration = await SellerIntegration.findOne({
-        sellerId,
-        type: 'payment',
-        providerName: selectedPaymentMethod,
-        status: 'connected',
-        isActive: true,
-      });
-
-      if (!paymentIntegration || !paymentIntegration.integrationId) {
-        throw new Error(t('failed to load data'));
+      // جلب تكامل الدفع عبر API
+      const paymentIntegrationResponse = await fetch(
+        `/api/seller/integrations?type=payment&sellerId=${sellerId}&providerName=${selectedPaymentMethod}`
+      );
+      const paymentIntegrationData = await paymentIntegrationResponse.json();
+      if (!paymentIntegrationData.success || !paymentIntegrationData.data?.[0]?.integrationId) {
+        throw new Error(t('failed to load payment integration'));
       }
+      const paymentIntegration = paymentIntegrationData.data[0];
 
-      const paymentUrl = await createPaymentSession({
-        userId: sellerId,
-        planId: 'order',
-        amount: totalPrice,
-        currency: 'USD',
-        method: selectedPaymentMethod,
-        paymentGatewayId: paymentIntegration.integrationId,
+      // إنشاء جلسة دفع عبر API
+      const paymentResponse = await fetch('/api/payment/session', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          userId: sellerId,
+          planId: 'order',
+          amount: totalPrice,
+          currency: 'USD',
+          method: selectedPaymentMethod,
+          paymentGatewayId: paymentIntegration.integrationId,
+          shippingOptionId: deliveryDateIndex !== null ? deliveryDates[deliveryDateIndex].name : undefined,
+          discountCode,
+        }),
       });
+
+      const paymentData = await paymentResponse.json();
+
+      if (!paymentData.success || !paymentData.paymentUrl) {
+        throw new Error(paymentData.message || t('failed to create payment session'));
+      }
 
       const order = await createOrder({
         storeId,
@@ -203,14 +265,19 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
       });
 
       if (order.success) {
-        await customLogger.info(t('order created'), { orderId: order.data.orderId, storeId, userId: sellerId });
-        router.push(`/checkout/${order.data.orderId}`);
+        await sendLog('info', t('order created'), null, {
+          orderId: order.data.orderId,
+          storeId,
+          userId: sellerId,
+        });
+        window.location.href = paymentData.paymentUrl; // توجيه المستخدم للدفع
       } else {
+        await sendLog('error', t('order creation failed'), order.message, { storeId, userId: sellerId });
         toast({ description: order.message || t('failed to load data'), variant: 'destructive' });
       }
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : t('failed to load data');
-      await customLogger.error(t('order creation failed'), { storeId, error: errorMessage });
+      await sendLog('error', t('order creation failed'), errorMessage, { storeId, userId: sellerId });
       toast({ description: errorMessage, variant: 'destructive' });
     }
   };
@@ -218,7 +285,7 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
   const CheckoutSummary = () => {
     const itemsPrice = cart.reduce((total, item) => total + item.price * item.quantity, 0);
     const shippingPrice = deliveryDateIndex !== null ? deliveryDates[deliveryDateIndex].shippingPrice : 0;
-    const taxPrice = itemsPrice * 0.1; // Example tax calculation
+    const taxPrice = itemsPrice * 0.1; // مثال لحساب الضريبة
     const totalPrice = itemsPrice + shippingPrice + taxPrice - discount;
 
     return (
@@ -226,7 +293,10 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
         <CardContent className="p-4">
           {!isAddressSelected && (
             <div className="border-b mb-4">
-              <Button className="rounded-full w-full" onClick={shippingAddressForm.handleSubmit(onSubmitShippingAddress)}>
+              <Button
+                className="rounded-full w-full"
+                onClick={shippingAddressForm.handleSubmit(onSubmitShippingAddress)}
+              >
                 {t('ship to this address')}
               </Button>
               <p className="text-xs text-center py-2">
@@ -236,12 +306,13 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
           )}
           {isAddressSelected && !isPaymentMethodSelected && (
             <div className="mb-4">
-              <Button className="rounded-full w-full" onClick={() => setIsPaymentMethodSelected(true)}>
+              <Button
+                className="rounded-full w-full"
+                onClick={() => setIsPaymentMethodSelected(true)}
+              >
                 {t('use this payment method')}
               </Button>
-              <p className="text-xs text-center py-2">
-                {t('choose a payment method')}
-              </p>
+              <p className="text-xs text-center py-2">{t('choose a payment method')}</p>
             </div>
           )}
           {isPaymentMethodSelected && isAddressSelected && (
@@ -250,10 +321,14 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                 {t('place your order')}
               </Button>
               <p className="text-xs text-center py-2">
-                {t('by placing your order', {
-                  privacyLink: <Link href="/page/privacy-policy">{t('privacy notice')}</Link>,
-                  conditionsLink: <Link href="/page/conditions-of-use">{t('conditions of use')}</Link>,
-                })}
+                {t('by placing your order')}{' '}
+                <Link href="/page/privacy-policy" className="text-blue-600 hover:underline">
+                  {t('privacy notice')}
+                </Link>{' '}
+                {t('and')}{' '}
+                <Link href="/page/conditions-of-use" className="text-blue-600 hover:underline">
+                  {t('conditions of use')}
+                </Link>
               </p>
             </div>
           )}
@@ -289,7 +364,9 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                   onChange={(e) => setDiscountCode(e.target.value)}
                   placeholder={t('enter discount code')}
                 />
-                <Button onClick={handleApplyDiscount} className="mt-2">{t('apply discount')}</Button>
+                <Button onClick={handleApplyDiscount} className="mt-2">
+                  {t('apply discount')}
+                </Button>
                 <FormLabel>{t('use points')}</FormLabel>
                 <Input
                   type="number"
@@ -492,7 +569,10 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                       {paymentMethods.map((pm) => (
                         <div key={pm.id} className="flex items-center py-1">
                           <RadioGroupItem value={pm.name} id={`payment-${pm.id}`} />
-                          <FormLabel className="font-bold pl-2 cursor-pointer" htmlFor={`payment-${pm.id}`}>
+                          <FormLabel
+                            className="font-bold pl-2 cursor-pointer"
+                            htmlFor={`payment-${pm.id}`}
+                          >
                             {pm.name}
                           </FormLabel>
                         </div>
@@ -500,7 +580,10 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                     </RadioGroup>
                   </CardContent>
                   <CardFooter className="p-4">
-                    <Button onClick={() => setIsPaymentMethodSelected(true)} className="rounded-full font-bold">
+                    <Button
+                      onClick={() => setIsPaymentMethodSelected(true)}
+                      className="rounded-full font-bold"
+                    >
                       {t('use this payment method')}
                     </Button>
                   </CardFooter>
@@ -523,7 +606,9 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                 </div>
                 <div className="col-span-5">
                   <p>
-                    {t('delivery date')}: {formatDateTime(calculateFutureDate(deliveryDates[deliveryDateIndex].daysToDeliver)).dateOnly}
+                    {t('delivery date')}:{' '}
+                    {formatDateTime(calculateFutureDate(deliveryDates[deliveryDateIndex].daysToDeliver))
+                      .dateOnly}
                   </p>
                   <ul>
                     {cart.map((item, index) => (
@@ -549,9 +634,15 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                   <CardContent className="p-4">
                     <p className="mb-2">
                       <span className="text-lg font-bold text-green-700">
-                        {t('arriving')} {formatDateTime(calculateFutureDate(deliveryDates[deliveryDateIndex || 0].daysToDeliver)).dateOnly}
+                        {t('arriving')}{' '}
+                        {formatDateTime(
+                          calculateFutureDate(deliveryDates[deliveryDateIndex || 0].daysToDeliver)
+                        ).dateOnly}
                       </span>{' '}
-                      {t('if you order in the next', { hours: timeUntilMidnight().hours, minutes: timeUntilMidnight().minutes })}
+                      {t('if you order in the next', {
+                        hours: timeUntilMidnight().hours,
+                        minutes: timeUntilMidnight().minutes,
+                      })}
                     </p>
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
@@ -575,18 +666,28 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                                   if (value === '0') {
                                     setCart(cart.filter((_, i) => i !== index));
                                   } else {
-                                    setCart(cart.map((cartItem, i) => i === index ? { ...cartItem, quantity: Number(value) } : cartItem));
+                                    setCart(
+                                      cart.map((cartItem, i) =>
+                                        i === index ? { ...cartItem, quantity: Number(value) } : cartItem
+                                      )
+                                    );
                                   }
                                 }}
                               >
                                 <SelectTrigger className="w-24">
-                                  <SelectValue>{t('quantity')}: {item.quantity}</SelectValue>
+                                  <SelectValue>
+                                    {t('quantity')}: {item.quantity}
+                                  </SelectValue>
                                 </SelectTrigger>
                                 <SelectContent position="popper">
                                   {Array.from({ length: item.countInStock }).map((_, i) => (
-                                    <SelectItem key={i + 1} value={`${i + 1}`}>{i + 1}</SelectItem>
+                                    <SelectItem key={i + 1} value={`${i + 1}`}>
+                                      {i + 1}
+                                    </SelectItem>
                                   ))}
-                                  <SelectItem key="delete" value="0">{t('delete')}</SelectItem>
+                                  <SelectItem key="delete" value="0">
+                                    {t('delete')}
+                                  </SelectItem>
                                 </SelectContent>
                               </Select>
                             </div>
@@ -606,12 +707,17 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
                             {deliveryDates.map((dd) => (
                               <div key={dd.name} className="flex">
                                 <RadioGroupItem value={dd.name} id={`address-${dd.name}`} />
-                                <FormLabel className="pl-2 space-y-2 cursor-pointer" htmlFor={`address-${dd.name}`}>
+                                <FormLabel
+                                  className="pl-2 space-y-2 cursor-pointer"
+                                  htmlFor={`address-${dd.name}`}
+                                >
                                   <div className="text-green-700 font-semibold">
                                     {formatDateTime(calculateFutureDate(dd.daysToDeliver)).dateOnly}
                                   </div>
                                   <div>
-                                    {dd.shippingPrice === 0 ? t('free shipping') : formatCurrency(dd.shippingPrice)}
+                                    {dd.shippingPrice === 0
+                                      ? t('free shipping')
+                                      : formatCurrency(dd.shippingPrice)}
                                   </div>
                                 </FormLabel>
                               </div>
@@ -637,14 +743,30 @@ export default function SellerCheckoutForm({ storeId, sellerId }: SellerCheckout
               </div>
               <Card className="hidden md:block">
                 <CardContent className="p-4 flex flex-col md:flex-row justify-between items-center gap-3">
-                  <Button onClick={handlePlaceOrder} className="rounded-full">{t('place your order')}</Button>
+                  <Button onClick={handlePlaceOrder} className="rounded-full">
+                    {t('place your order')}
+                  </Button>
                   <div className="flex-1">
-                    <p className="font-bold text-lg">{t('order total')}: {formatCurrency(cart.reduce((total, item) => total + item.price * item.quantity, 0) + (deliveryDateIndex !== null ? deliveryDates[deliveryDateIndex].shippingPrice : 0) + (cart.reduce((total, item) => total + item.price * item.quantity, 0) * 0.1) - discount)}</p>
+                    <p className="font-bold text-lg">
+                      {t('order total')}:{' '}
+                      {formatCurrency(
+                        cart.reduce((total, item) => total + item.price * item.quantity, 0) +
+                          (deliveryDateIndex !== null
+                            ? deliveryDates[deliveryDateIndex].shippingPrice
+                            : 0) +
+                          cart.reduce((total, item) => total + item.price * item.quantity, 0) * 0.1 -
+                          discount
+                      )}
+                    </p>
                     <p className="text-xs">
-                      {t('by placing your order', {
-                        privacyLink: <Link href="/page/privacy-policy">{t('privacy notice')}</Link>,
-                        conditionsLink: <Link href="/page/conditions-of-use">{t('conditions of use')}</Link>,
-                      })}
+                      {t('by placing your order')}{' '}
+                      <Link href="/page/privacy-policy" className="text-blue-600 hover:underline">
+                        {t('privacy notice')}
+                      </Link>{' '}
+                      {t('and')}{' '}
+                      <Link href="/page/conditions-of-use" className="text-blue-600 hover:underline">
+                        {t('conditions of use')}
+                      </Link>
                     </p>
                   </div>
                 </CardContent>

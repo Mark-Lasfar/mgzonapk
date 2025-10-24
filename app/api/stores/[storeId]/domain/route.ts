@@ -1,12 +1,13 @@
+// /home/mark/Music/my-nextjs-project-clean/app/api/stores/[storeId]/domain/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { assignDomain } from '@/lib/domainManager';
-import { auth } from '@/auth'; // تغيير الاستيراد
+import { auth } from '@/auth';
 import { connectToDatabase } from '@/lib/db';
 import mongoose from 'mongoose';
 
 export async function POST(req: NextRequest, { params }: { params: { storeId: string } }) {
   try {
-    const session = await auth(); // استخدام auth بدلاً من getServerSession
+    const session = await auth(); 
     if (!session?.user?.storeId || session.user.storeId !== params.storeId) {
       return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
     }

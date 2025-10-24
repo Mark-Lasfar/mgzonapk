@@ -36,6 +36,8 @@ interface PaymentGateway {
   providerName: string;
   isActive: boolean;
   isDefault: boolean;
+  sandbox?: boolean;
+  verified: boolean;
 }
 
 interface TemplateConfig {

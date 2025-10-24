@@ -5,6 +5,8 @@ import Integration from '@/lib/db/models/integration.model';
 import SellerIntegration from '@/lib/db/models/seller-integration.model';
 import { PaymentService, PaymentRequest } from '../api/services/payment';
 import { sendNotification } from '@/lib/utils/notification';
+// import { sendNotification } from '@/lib/actions/notification.actions';
+
 import { customLogger } from '@/lib/services/logging';
 import { randomUUID } from 'crypto';
 
@@ -27,8 +29,8 @@ export async function initiatePayment(options: PaymentOptions) {
       throw new Error('Seller not found');
     }
 
-    // التحقق من تفعيل الحساب البنكي لبوابة mgpay
-    if (paymentGatewayId === 'mgpay' && !seller.bankInfo?.verified) {
+    // التحقق من تفعيل الحساب البنكي بس لـ mgpay
+    if (paymentMethod === 'mgpay' && !seller.bankInfo?.verified) {
       throw new Error('Bank account not verified. Please complete your financial profile.');
     }
 
@@ -50,7 +52,7 @@ export async function initiatePayment(options: PaymentOptions) {
       isActive: true,
     });
 
-    const providerName = integration ? integration.providerName : paymentGatewayId === 'mgpay' ? 'mgpay' : null;
+    const providerName = integration ? integration.providerName : paymentMethod === 'mgpay' ? 'mgpay' : null;
     if (!providerName) {
       throw new Error('Invalid or inactive payment integration');
     }

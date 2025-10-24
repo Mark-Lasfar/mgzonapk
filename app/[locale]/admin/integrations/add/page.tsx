@@ -20,6 +20,8 @@ import { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 import { useToast } from '@/hooks/use-toast';
 import { PlusCircle, Trash2, GripVertical } from 'lucide-react';
 import Image from 'next/image';
+import crypto from '@/lib/utils/encryption';
+
 
 // Constants
 const ItemType = 'CONTENT_ITEM';
@@ -178,7 +180,8 @@ const integrationSchema = z.object({
   logoUrl: z.string().url('admin integrations add.validation logo format').optional().or(z.literal('')),
   isActive: z.boolean().default(true),
   sandbox: z.boolean().default(false),
-  credentials: z.record(z.string().min(1, 'admin integrations add.credential value')).optional(),
+  credentials: z.record(z.string().min(1, 'admin integrations add.credential value'), z.string()).optional(),
+
   oauth: z.object({
     enabled: z.boolean().default(false),
     authorizationUrl: z.string().url('admin integrations add.validation authorization url').optional().or(z.literal('')),
@@ -191,7 +194,8 @@ const integrationSchema = z.object({
     secret: z.string().optional(),
     events: z.array(z.string()).default([]), // Allow any string for custom events
   }).optional(),
-  apiEndpoints: z.record(z.string().url('admin integrations add.validation endpoint value').or(z.literal(''))).optional(),
+  apiEndpoints: z.record(z.string().url('admin integrations add.validation endpoint value'), z.union([z.string(), z.literal('')])).optional(),
+
   settings: z.object({
     supportedCurrencies: z.array(z.string().regex(/^[A-Z]{3}$/, 'admin integrations add.validation supported currencies')).optional(),
     supportedCountries: z.array(z.string().regex(/^[A-Z]{2}$/, 'admin integrations add.validation supported countries')).optional(),
@@ -201,7 +205,8 @@ const integrationSchema = z.object({
     clientId: z.string().optional(),
     clientSecret: z.string().optional(),
     redirectUri: z.string().url('admin integrations add.validation redirect uri').optional().or(z.literal('')),
-    responseMapping: z.record(z.string()).optional(),
+    responseMapping: z.record(z.string(), z.string()).optional(),
+
     retryOptions: z.object({
       maxRetries: z.number().min(0).default(3).optional(),
       initialDelay: z.number().min(0).default(1000).optional(),

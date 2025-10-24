@@ -1,5 +1,4 @@
-// المسار: /home/hager/Trash/my-nextjs-project-master/lib/db/models/product.model.ts
-import { Schema, model, models, Document } from 'mongoose';
+import { Schema, model, models, Document, Types } from 'mongoose';
 import SellerIntegration from './seller-integration.model';
 
 interface Review {
@@ -27,6 +26,12 @@ interface WarehouseColor {
   sizes: WarehouseSize[];
 }
 
+interface Dimensions {
+  length: number;
+  width: number;
+  height: number;
+}
+
 interface WarehouseStock {
   warehouseId: string;
   provider: string;
@@ -38,6 +43,8 @@ interface WarehouseStock {
   colors: WarehouseColor[];
   lastUpdated: Date;
   updatedBy?: string;
+  dimensions?: Dimensions;
+  weight?: number;
 }
 
 interface Marketplace {
@@ -125,6 +132,12 @@ const warehouseColorSchema = new Schema({
   sizes: [warehouseSizeSchema],
 }, { _id: false });
 
+const dimensionsSchema = new Schema({
+  length: { type: Number, min: 0, default: 0 },
+  width: { type: Number, min: 0, default: 0 },
+  height: { type: Number, min: 0, default: 0 },
+}, { _id: false });
+
 const warehouseStockSchema = new Schema({
   warehouseId: {
     type: String,
@@ -169,6 +182,8 @@ const warehouseStockSchema = new Schema({
     type: String,
     trim: true,
   },
+  dimensions: { type: dimensionsSchema, required: false },
+  weight: { type: Number, min: 0, default: 0 },
 }, { _id: false });
 
 const marketplaceSchema = new Schema({
@@ -325,6 +340,7 @@ const productSchema = new Schema({
     type: String,
     trim: true,
   }],
+  finalPrice: { type: Number, required: true },
   featured: {
     type: Boolean,
     default: false,
@@ -349,38 +365,44 @@ const productSchema = new Schema({
   pricing: {
     basePrice: {
       type: Number,
-    min: [0, 'Base price cannot be negative'],
+      min: [0, 'Base price cannot be negative'],
+      required: true,
     },
     markup: {
       type: Number,
       min: [0, 'Markup cannot be negative'],
+      required: true,
     },
     profit: {
       type: Number,
       min: [0, 'Profit cannot be negative'],
+      required: true,
     },
     commission: {
       type: Number,
       min: [0, 'Commission cannot be negative'],
+      required: true,
     },
     finalPrice: {
       type: Number,
       min: [0, 'Final price cannot be negative'],
+      required: true,
     },
     discount: {
       type: {
         type: String,
         enum: ['none', 'percentage', 'fixed'],
         default: 'none',
+        required: true,
       },
       value: {
         type: Number,
         default: 0,
         min: [0, 'Discount value cannot be negative'],
+        required: true,
         validate: {
-          validator: function (v: number) {
-            if (this.type === 'percentage') return v <= 100;
-            return true;
+          validator: function (this: { type: string; value: number }, v: number) {
+            return this.type !== 'percentage' || v <= 100;
           },
           message: 'Percentage discount cannot exceed 100%',
         },
@@ -388,10 +410,10 @@ const productSchema = new Schema({
       startDate: {
         type: Date,
         validate: {
-          validator: function (v: Date) {
-            return !this.endDate || !v || v <= this.endDate;
+          validator: function (this: { endDate?: Date; startDate?: Date }, v: Date) {
+            return !this.endDate || !this.startDate || this.startDate <= this.endDate;
           },
-          message: 'Start date must be before end date',
+          message: 'Start date must be before or equal to end date',
         },
       },
       endDate: {
@@ -419,6 +441,12 @@ const productSchema = new Schema({
       type: Number,
       default: 0,
       min: [0, 'Returns cannot be negative'],
+    },
+    rating: {
+      type: Number,
+      default: 0,
+      min: [0, 'Rating cannot be negative'],
+      max: [5, 'Rating cannot exceed 5'],
     },
   },
   status: {
@@ -516,7 +544,7 @@ productSchema.virtual('colors').get(function () {
   return Array.from(allColors.values());
 });
 
-productSchema.pre('save', async function (next) {
+productSchema.pre('save', async function (this: any, next) {
   // Update rating distribution and metrics
   if (this.isModified('reviews')) {
     const distribution = Array(5).fill(0);
@@ -528,7 +556,13 @@ productSchema.pre('save', async function (next) {
       count,
     }));
     this.numReviews = this.reviews.length;
-    this.metrics = this.metrics || { views: 0, sales: 0, revenue: 0, returns: 0 };
+    this.metrics = this.metrics || {
+      views: 0,
+      sales: 0,
+      revenue: 0,
+      returns: 0,
+      rating: 0,
+    };
     this.metrics.rating = this.avgRating;
   }
 
@@ -549,8 +583,8 @@ productSchema.pre('save', async function (next) {
 
   // Validate discount dates
   if (this.isModified('pricing.discount')) {
-    const { discount } = this.pricing;
-    if (discount.type !== 'none' && (!discount.startDate || !discount.endDate)) {
+    const discount = this.pricing?.discount;
+    if (discount && discount.type !== 'none' && (!discount.startDate || !discount.endDate)) {
       return next(new Error('Discount start and end dates are required when discount is applied'));
     }
   }
@@ -580,6 +614,13 @@ productSchema.pre('save', async function (next) {
   next();
 });
 
+export interface IReview {
+  user: string; // MongoDB ObjectId as string
+  name: string;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}
 export interface IProduct extends Document {
   name: string;
   slug: string;
@@ -590,9 +631,14 @@ export interface IProduct extends Document {
   images: string[];
   price: number;
   listPrice: number;
+  finalPrice: number;
   countInStock: number;
   numReviews: number;
   reviews: Review[];
+    source?: {
+    providerId: Types.ObjectId;
+    productId: string;
+  };
   tags: string[];
   sizes: string[];
   featured: boolean;
@@ -615,6 +661,26 @@ export interface IProduct extends Document {
       startDate?: Date;
       endDate?: Date;
     };
+  };
+  warehouse?: {
+    providerName: string;
+    sku: string;
+    externalId: string;
+    availableQuantity: number;
+    location: string;
+    lastSync: Date;
+    dimensions?: {
+      length: number;
+      width: number;
+      height: number;
+      unit: string;
+    };
+    weight?: {
+      value: number;
+      unit: string;
+    };
+    provider: string;
+
   };
   metrics: {
     views: number;

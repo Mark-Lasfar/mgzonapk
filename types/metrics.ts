@@ -10,7 +10,9 @@ export type MetricType =
   | 'api_requests'
   | 'withdrawals'
   | 'payment_success'
-  | 'payment_failed';
+  | 'payment_failed'
+  | 'SUPPORT';
+  
   
 
 export interface IMetric {

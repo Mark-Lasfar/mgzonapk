@@ -1,11 +1,10 @@
-// ========== INTERFACES ==========
-
+// /home/mark/Music/my-nextjs-project-clean/lib/utils/csv.ts
 export interface CSVParseOptions {
   delimiter?: string;
   skipHeader?: boolean;
   columns?: string[];
   trim?: boolean;
-  currencyFields?: string[]; // Added for currency conversion
+  currencyFields?: string[];
 }
 
 export interface CSVCreateOptions {
@@ -18,8 +17,6 @@ export interface CSVValidationResult {
   valid: boolean;
   errors: string[];
 }
-
-// ========== PARSER ==========
 
 export function parseCSV<T>(
   content: string,
@@ -86,7 +83,6 @@ export function parseCSV<T>(
         else if (lower === 'false') value = false;
         else if (!isNaN(Number(value))) value = Number(value);
         else if (currencyFields.includes(header)) {
-          // تحويل العملة إلى تنسيق ISO 4217
           value = value.toUpperCase().slice(0, 3);
         }
       }
@@ -99,8 +95,6 @@ export function parseCSV<T>(
 
   return results;
 }
-
-// ========== CREATOR ==========
 
 export function createCSV(
   data: any[],
@@ -144,8 +138,6 @@ export function createCSV(
   return lines.join('\n');
 }
 
-// ========== VALIDATOR ==========
-
 export function validateCSV(
   content: string,
   requiredFields: string[],
@@ -168,7 +160,6 @@ export function validateCSV(
         errors.push(`Row ${i + 1}: Field "${field}" is empty.`);
       }
     }
-    // التحقق من حقول الدروب شيبنج
     if ('source' in row && !row.source) {
       errors.push(`Row ${i + 1}: Source cannot be empty.`);
     }
@@ -186,15 +177,11 @@ export function validateCSV(
   };
 }
 
-// ========== FILE UTILS (For Browser) ==========
-
 export function readCSVFile(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
-
     reader.onload = () => resolve(reader.result as string);
     reader.onerror = () => reject(reader.error);
-
     reader.readAsText(file, 'utf-8');
   });
 }

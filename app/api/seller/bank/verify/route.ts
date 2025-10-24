@@ -8,7 +8,9 @@ const bankInfoSchema = z.object({
   accountName: z.string().min(2).max(100),
   accountNumber: z.string().min(8).max(34),
   bankName: z.string().min(2).max(100),
-  swiftCode: z.string().min(8).max(11).regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/).optional(),
+  swiftCode: z.string().min(8).max(11).regex(/^[A-Z]{6}[A-Z0-9]{2}([A-Z0-9]{3})?$/),
+  routingNumber: z.string().regex(/^\d{9}$/).optional(),
+  bankDocumentUrl: z.string().url().optional(),
 });
 
 export async function POST(request: NextRequest) {

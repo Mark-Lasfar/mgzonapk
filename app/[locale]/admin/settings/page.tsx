@@ -7,6 +7,8 @@ import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import SettingNav from './setting-nav';
 import { getSetting } from '@/lib/actions/setting.actions';
+import AIAssistantForm from './ai-assistant-form';
+
 
 export const metadata: Metadata = {
   title: 'Admin Settings',
@@ -45,6 +47,15 @@ export default async function SettingPage() {
           </CardHeader>
           <CardContent>
             <IntegrationSettingsForm settings={settings.integrations} />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t('aiAssistantSettings')}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <AIAssistantForm id="setting-ai-assistant" />
           </CardContent>
         </Card>
       </main>

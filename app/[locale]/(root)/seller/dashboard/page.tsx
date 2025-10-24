@@ -17,7 +17,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from '@/components/ui/tooltip';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils.client';
 import {
   BarChart,
   Bar,

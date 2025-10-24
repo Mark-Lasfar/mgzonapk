@@ -2,13 +2,13 @@ import { cwd } from 'process';
 import { loadEnvConfig } from '@next/env';
 import bcrypt from 'bcryptjs';
 import data from '@/lib/data';
-import { connectToDatabase } from '.';
+// import { connectToDatabase } from '.';
 import User from './models/user.model';
 import Product from './models/product.model';
 import Review from './models/review.model';
 import WebPage from './models/web-page.model';
 import Setting from './models/setting.model';
-import Order from './models/order.model';
+// import Order from './models/order.model';
 import Seller from './models/seller.model';
 import {
   calculateFutureDate,
@@ -17,6 +17,8 @@ import {
   round2,
 } from '../utils';
 import { OrderItem, IOrderInput, ShippingAddress } from '@/types';
+import { Order } from './models/order.model';
+import { connectToDatabase } from '.';
 
 // Load environment variables
 loadEnvConfig(cwd());
@@ -176,6 +178,7 @@ const generateOrder = async (
   
   // العنوان الافتراضي في حالة عدم وجود عنوان للمستخدم
   const defaultAddress: ShippingAddress = {
+    fullName: 'mark elasfar',
     street: '123 Main St',
     city: 'Sample City',
     province: 'Sample State',
@@ -420,7 +423,7 @@ const main = async () => {
       );
       orderOperations.push({
         updateOne: {
-          filter: { userId: order.userId, createdAt: order.createdAt },
+          filter: { userId: order.user, createdAt: order.createdAt },
           update: { $set: order },
           upsert: true,
         },

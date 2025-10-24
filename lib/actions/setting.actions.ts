@@ -1,10 +1,11 @@
+// /home/mark/Music/my-nextjs-project-clean/lib/actions/setting.actions.ts
 'use server';
 
 import { unstable_cache } from 'next/cache';
 import { ISettingInput } from '@/types';
 import data from '../data';
-import Setting from '../db/models/setting.model';
-import { connectToDatabase } from '../db';
+import Setting from '@/lib/db/models/setting.model';
+import { connectToDatabase } from '@/lib/db';
 import { formatError } from '../utils';
 import { cookies } from 'next/headers';
 
@@ -24,11 +25,18 @@ const DEFAULT_SETTINGS: ISettingInput = {
     url: process.env.NEXT_PUBLIC_APP_URL || 'https://hager-zon.vercel.app',
     email: 'support@mgzon.com',
     address: '123 Main St',
-    phone: '+1234567890',
+    phone: '+02 1212444617',
     logo: 'icons/logo.svg',
     keywords: 'ecommerce, shopping',
     author: 'MGZon Team',
     copyright: '© 2025 MGZon',
+  },
+  seo: {
+    metaTitle: 'MGZon',
+    metaDescription: 'Shop online for the best products at great prices',
+    keywords: 'ecommerce, shopping',
+    ogImage: '/icons/og-image.jpg',
+    robots: 'index, follow',
   },
   common: {
     pageSize: 9,
@@ -36,6 +44,7 @@ const DEFAULT_SETTINGS: ISettingInput = {
     freeShippingMinPrice: 0,
     defaultTheme: 'light',
     defaultColor: 'gold',
+    featuredCategories: [],
   },
   availableLanguages: [
     {
@@ -90,6 +99,35 @@ const DEFAULT_SETTINGS: ISettingInput = {
     },
   ],
   defaultDeliveryDate: 'Standard Shipping',
+  integrations: [],
+  points: {
+    earnRate: 1,
+    redeemValue: 0.05,
+    registrationBonus: {
+      buyer: 50,
+      seller: 100,
+    },
+    sellerPointsPerSale: 10,
+    enabled: true,
+    rate: 1,
+  },
+  subscriptions: {
+    points: {
+      earnRate: 1,
+      redeemValue: 0.05,
+      registrationBonus: {
+        buyer: 50,
+        seller: 100,
+      },
+      sellerPointsPerSale: 10,
+      enabled: true,
+      rate: 1,
+    },
+    // يمكن إضافة المزيد من إعدادات الاشتراكات هنا
+    enabled: true,
+    trialDays: 14,
+    autoRenew: true,
+  },
 };
 
 /**
@@ -99,12 +137,17 @@ function ensureSettings(settings: ISettingInput | null | undefined): ISettingInp
   if (!settings || !settings.site) {
     return { ...DEFAULT_SETTINGS };
   }
+  
   return {
     ...DEFAULT_SETTINGS,
     ...settings,
     site: {
       ...DEFAULT_SETTINGS.site,
       ...settings.site,
+    },
+    seo: {
+      ...DEFAULT_SETTINGS.seo,
+      ...settings.seo,
     },
     common: {
       ...DEFAULT_SETTINGS.common,
@@ -122,6 +165,21 @@ function ensureSettings(settings: ISettingInput | null | undefined): ISettingInp
     availableDeliveryDates: settings.availableDeliveryDates?.length
       ? settings.availableDeliveryDates
       : DEFAULT_SETTINGS.availableDeliveryDates,
+    integrations: settings.integrations?.length
+      ? settings.integrations
+      : DEFAULT_SETTINGS.integrations,
+    points: {
+      ...DEFAULT_SETTINGS.points,
+      ...settings.points,
+    },
+    subscriptions: {
+      ...DEFAULT_SETTINGS.subscriptions,
+      ...settings.subscriptions,
+      points: {
+        ...DEFAULT_SETTINGS.subscriptions.points,
+        ...settings.subscriptions?.points,
+      },
+    },
   };
 }
 

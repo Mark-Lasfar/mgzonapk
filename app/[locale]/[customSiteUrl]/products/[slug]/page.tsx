@@ -1,19 +1,15 @@
 import { notFound } from 'next/navigation';
 import { getTranslations } from 'next-intl/server';
-import { getSellerByCustomSiteUrl } from '@/lib/actions/seller.actions';
-import { getProductBySlug, getRelatedProducts } from '@/lib/actions/product.actions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { auth } from '@/auth';
+import ProductDetails from '@/components/shared/product/ProductDetails';
+import ProductReviews from './components/ProductReviews';
+import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Badge } from '@/components/ui/badge';
-import { Separator } from '@/components/ui/separator';
-import AddToCart from '@/components/shared/product/add-to-cart';
-import ProductReviews from './components/ProductReviews';
-import { recordVisit } from '@/lib/actions/visit.actions';
-import { createOrder } from '@/lib/actions/order.actions';
-// import { getFulfillmentService } from '@/lib/api/services/fulfillment';
-import { auth } from '@/auth';
-import { FulfillmentService } from '@/lib/api/services/fulfillment';
+import { getSetting } from '@/lib/actions/setting.actions';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import crypto from 'crypto';
 
 type ProductPageProps = {
   params: Promise<{
@@ -23,89 +19,115 @@ type ProductPageProps = {
   }>;
 };
 
+async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, meta }),
+    });
+  } catch (err) {
+    console.error('Failed to send log:', err);
+  }
+}
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; customSiteUrl: string; slug: string }> }) {
+  const { locale, slug } = await params;
+  const t = await getTranslations({ locale, namespace: 'product' });
+  const settings = await getSetting();
+
+  const productResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?slug=${slug}&action=getProductBySlug`);
+  const productData = await productResponse.json();
+
+  if (!productData.success || !productData.data) {
+    await sendLog('error', t('Product not found'), { slug });
+    return {
+      title: t('Product not found'),
+      description: settings.seo?.metaDescription || 'The product you are looking for is not available.',
+      keywords: settings.seo?.keywords || 'ecommerce, shopping',
+      openGraph: {
+        title: t('Product not found'),
+        description: settings.seo?.metaDescription || 'The product you are looking for is not available.',
+        images: [{ url: `${process.env.NEXT_PUBLIC_BASE_URL}/icons/og-image.jpg`, alt: 'MGZon' }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: t('Product not found'),
+        description: settings.seo?.metaDescription || 'The product you are looking for is not available.',
+        images: [`${process.env.NEXT_PUBLIC_BASE_URL}/icons/og-image.jpg`],
+      },
+    };
+  }
+
+  const product = productData.data;
+  await sendLog('info', t('Product metadata fetched'), { slug });
+
+  return {
+    title: `${product.name} | ${settings.site?.name || 'MGZon'}`,
+    description: product.description || settings.seo?.metaDescription || `Buy ${product.name} at the best price on MGZon`,
+    keywords: `${product.name}, ${product.category}, ${product.brand || ''}, ${product.tags.join(', ')}, ${settings.seo?.keywords || 'ecommerce, shopping, deals'}`,
+    openGraph: {
+      title: product.name,
+      description: product.description || settings.seo?.metaDescription,
+      images: product.images[0] ? [{ url: product.images[0], alt: product.name }] : [{ url: settings.seo?.ogImage || '/icons/og-image.jpg', alt: product.name }],
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${locale}/${product.customSiteUrl}/products/${product.slug}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description || settings.seo?.metaDescription,
+      images: product.images[0] ? [product.images[0]] : [settings.seo?.ogImage || '/icons/og-image.jpg'],
+    },
+  };
+}
+
 export default async function ProductPage(props: ProductPageProps) {
   const { locale, customSiteUrl, slug } = await props.params;
   const t = await getTranslations('product');
   const session = await auth();
+  const requestId = crypto.randomUUID();
 
-  const sellerResponse = await getSellerByCustomSiteUrl(customSiteUrl, locale);
-  if (!sellerResponse.success || !sellerResponse.data) {
+  // جلب بيانات البائع عبر API
+  const sellerResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/seller?customSiteUrl=${customSiteUrl}&locale=${locale}`);
+  const sellerData = await sellerResponse.json();
+
+  if (!sellerData.success || !sellerData.data) {
+    await sendLog('error', t('Seller not found for customSiteUrl'), { requestId, customSiteUrl });
     notFound();
   }
-  const seller = sellerResponse.data;
+  const seller = sellerData.data;
 
-  let product;
-  try {
-    product = await getProductBySlug(slug);
-  } catch (error) {
+  // جلب بيانات المنتج عبر API
+  const productResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?slug=${slug}&action=getProductBySlug`);
+  const productData = await productResponse.json();
+
+  if (!productData.success || !productData.data) {
+    await sendLog('error', t('Product not found'), { requestId, slug });
     notFound();
   }
+  const product = productData.data;
 
   if (product.sellerId.toString() !== seller._id.toString()) {
+    await sendLog('error', t('Product does not belong to seller'), { requestId, productId: product._id, sellerId: seller._id });
     notFound();
   }
 
-  const relatedProducts = await getRelatedProducts({
-    category: product.category,
-    productId: product._id,
-    limit: 4,
+  // جلب المنتجات المرتبطة عبر API
+  const relatedProductsResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?category=${product.category}&productId=${product._id}&limit=4&action=getRelatedProducts`
+  );
+  const relatedProductsData = await relatedProductsResponse.json();
+  const relatedProducts = relatedProductsData.success ? relatedProductsData.data : [];
+
+  // تسجيل زيارة
+  const visitorId = crypto.randomUUID();
+  await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/visit`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ visitorId, sellerId: seller._id, page: '', productId: '', customSiteUrl: '' }),
   });
 
-  const visitorId = crypto.randomUUID();
-  await recordVisit(visitorId, seller._id.toString(), '', '', '');
-
-  async function handleAddToCart(formData: FormData) {
-    'use server';
-    if (!session?.user) {
-      return { error: t('loginRequired') };
-    }
-
-    const color = formData.get('color') as string;
-    const size = formData.get('size') as string;
-    const quantity = parseInt(formData.get('quantity') as string) || 1;
-
-    const order = await createOrder({
-      userId: session.user.id,
-      sellerId: seller._id.toString(),
-      items: [{
-        productId: product._id.toString(),
-        name: product.name,
-        slug: product.slug,
-        image: product.images[0],
-        price: product.pricing.finalPrice,
-        quantity,
-        color,
-        size,
-      }],
-      paymentMethod: 'stripe',
-      itemsPrice: product.pricing.finalPrice * quantity,
-    });
-
-    if (!order.success) {
-      return { error: t('orderFailed') };
-    }
-
-    const fulfillmentService = FulfillmentService(product.warehouseData[0]?.provider || 'shipbob');
-    await fulfillmentService.createFulfillmentOrder({
-      orderId: order.data._id,
-      items: [{
-        sku: product.warehouseData[0]?.sku,
-        quantity,
-      }],
-      shippingAddress: {
-        name: session.user.name,
-        street: session.user.address?.street || '',
-        city: session.user.address?.city || '',
-        state: session.user.address?.state || '',
-        country: session.user.address?.country || '',
-        postalCode: session.user.address?.postalCode || '',
-        phone: session.user.phone || '',
-      },
-      shippingMethod: 'standard',
-    });
-
-    return { success: true, orderId: order.data._id };
-  }
+  await sendLog('info', t('Product page data fetched successfully'), { requestId, customSiteUrl, slug });
 
   return (
     <div className="container py-6">
@@ -123,128 +145,18 @@ export default async function ProductPage(props: ProductPageProps) {
           <Link href={`/${locale}/${customSiteUrl}`}>{seller.businessName}</Link>
         </h1>
       </header>
-
       <Separator className="mb-8" />
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-        <div className="space-y-4">
-          {product.images[0] && (
-            <Image
-              src={product.images[0]}
-              alt={product.name}
-              width={500}
-              height={500}
-              className="w-full h-auto object-cover rounded-lg"
-              priority
-            />
-          )}
-          <div className="grid grid-cols-4 gap-2">
-            {product.images.slice(1).map((image, index) => (
-              <Image
-                key={index}
-                src={image}
-                alt={`${product.name} image ${index + 2}`}
-                width={100}
-                height={100}
-                className="w-full h-auto object-cover rounded-lg"
-              />
-            ))}
-          </div>
-        </div>
-
-        <div className="space-y-6">
-          <h1 className="text-3xl font-bold">{product.name}</h1>
-          <div className="flex items-center space-x-2">
-            <span className="text-2xl font-semibold text-primary">
-              {product.pricing.finalPrice.toFixed(2)} USD
-            </span>
-            {product.pricing.discount && (
-              <Badge variant="secondary">
-                {t('discount', { percentage: product.pricing.discount })}
-              </Badge>
-            )}
-          </div>
-          <p className="text-gray-600">{product.description}</p>
-
-          <div>
-            <span className="font-semibold">{t('availability')}:</span>{' '}
-            {product.countInStock > 0 ? (
-              <span className="text-green-600">{t('inStock')}</span>
-            ) : (
-              <span className="text-red-600">{t('outOfStock')}</span>
-            )}
-          </div>
-
-          {product.colors.length > 0 && (
-            <div>
-              <span className="font-semibold">{t('colors')}:</span>
-              <div className="flex space-x-2 mt-2">
-                {product.colors.map((color) => (
-                  <button
-                    key={color.name}
-                    name="color"
-                    value={color.name}
-                    className={`flex items-center space-x-2 px-3 py-1 border rounded ${!color.inStock ? 'opacity-50 cursor-not-allowed' : ''}`}
-                    disabled={!color.inStock}
-                    formAction={handleAddToCart}
-                  >
-                    <span
-                      className="w-4 h-4 rounded-full"
-                      style={{ backgroundColor: color.hex || color.name }}
-                    />
-                    <span>{color.name}</span>
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {product.sizes.length > 0 && (
-            <div>
-              <span className="font-semibold">{t('sizes')}:</span>
-              <div className="flex space-x-2 mt-2">
-                {product.sizes.map((size) => (
-                  <button
-                    key={size}
-                    name="size"
-                    value={size}
-                    className="px-3 py-1 border rounded"
-                    formAction={handleAddToCart}
-                  >
-                    {size}
-                  </button>
-                ))}
-              </div>
-            </div>
-          )}
-
-          <form action={handleAddToCart}>
-            <input type="number" name="quantity" defaultValue={1} min={1} className="w-16 p-2 border rounded" />
-            <AddToCart item={product} />
-          </form>
-
-          <Card>
-            <CardHeader>
-              <CardTitle>{t('details')}</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <ul className="list-disc pl-5 space-y-2">
-                <li>{t('category')}: {product.category}</li>
-                <li>{t('brand')}: {product.brand}</li>
-                {product.warehouseData[0]?.location && (
-                  <li>{t('warehouseLocation')}: {product.warehouseData[0].location}</li>
-                )}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-
+      <ProductDetails
+        product={product}
+        seller={seller}
+        locale={locale}
+        urlPath={`${locale}/${customSiteUrl}/products/${product.slug}`}
+      />
       {relatedProducts.length > 0 && (
         <section className="mt-12">
           <h2 className="text-2xl font-bold mb-4">{t('relatedProducts')}</h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-            {relatedProducts.map((relatedProduct) => (
+            {relatedProducts.map((relatedProduct: any) => (
               <Card key={relatedProduct._id}>
                 <CardContent className="p-4">
                   {relatedProduct.images[0] && (
@@ -271,7 +183,6 @@ export default async function ProductPage(props: ProductPageProps) {
           </div>
         </section>
       )}
-
       <ProductReviews
         productId={product._id}
         reviews={product.reviews || []}

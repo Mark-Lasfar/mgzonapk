@@ -1,23 +1,24 @@
-import { NextResponse } from 'next/server'
-import { getSetting } from '@/lib/actions/setting.actions'
-import Product from '@/lib/db/models/product.model'
-import { connectToDatabase } from '@/lib/db'
-import { routing } from '@/i18n/routing'
+import { NextResponse } from 'next/server';
+import { getSetting } from '@/lib/actions/setting.actions';
+import Product from '@/lib/db/models/product.model';
+import Seller from '@/lib/db/models/seller.model'; // أضف موديل Seller
+import { connectToDatabase } from '@/lib/db';
+import { routing } from '@/i18n/routing';
 
 export async function GET() {
   try {
-    await connectToDatabase()
-    const {
-      site: { url },
-    } = await getSetting()
-    const baseUrl = url || 'https://hager-zon.vercel.app'
+    await connectToDatabase();
+    const { site: { url } } = await getSetting();
+    const baseUrl = url || 'https://hager-zon.vercel.app';
 
     const products = await Product.find({
       isPublished: true,
       deletedAt: { $exists: false },
     })
-      .select('slug updatedAt')
-      .lean()
+      .select('slug updatedAt sellerId')
+      .lean();
+
+    const sellers = await Seller.find({}).select('customSiteUrl').lean();
 
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
@@ -47,8 +48,9 @@ export async function GET() {
   ${products
     .map((product) =>
       routing.locales
-        .map(
-          (locale) => `
+        .map((locale) => {
+          const seller = sellers.find((s) => s._id.toString() === product.sellerId.toString());
+          let xmlSegment = `
     <url>
       <loc>${baseUrl}/${locale}/product/${product.slug}</loc>
       <lastmod>${product.updatedAt?.toISOString() || new Date().toISOString()}</lastmod>
@@ -65,21 +67,42 @@ export async function GET() {
         )
         .join('')}
     </url>
-  `
+  `;
+          if (seller?.customSiteUrl) {
+            xmlSegment += `
+    <url>
+      <loc>${baseUrl}/${locale}/${seller.customSiteUrl}/products/${product.slug}</loc>
+      <lastmod>${product.updatedAt?.toISOString() || new Date().toISOString()}</lastmod>
+      <changefreq>daily</changefreq>
+      <priority>0.7</priority>
+      ${routing.locales
+        .map(
+          (altLocale) => `
+        <xhtml:link 
+          rel="alternate" 
+          hreflang="${altLocale}" 
+          href="${baseUrl}/${altLocale}/${seller.customSiteUrl}/products/${product.slug}"
+        />`
         )
+        .join('')}
+    </url>
+  `;
+          }
+          return xmlSegment;
+        })
         .join('')
     )
     .join('')}
-</urlset>`
+</urlset>`;
 
     return new NextResponse(xml, {
       headers: {
         'Content-Type': 'application/xml',
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=59',
       },
-    })
+    });
   } catch (error) {
-    console.error('Error generating sitemap:', error)
-    return new NextResponse('Error generating sitemap', { status: 500 })
+    console.error('Error generating sitemap:', error);
+    return new NextResponse('Error generating sitemap', { status: 500 });
   }
 }

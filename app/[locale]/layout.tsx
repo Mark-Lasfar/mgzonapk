@@ -26,143 +26,68 @@ interface Locale {
   locale: string
 }
 
-function validateLocale(locale: string): string {
-  if (!routing.locales.includes(locale)) {
-    notFound()
+function validateLocale(locale?: string): string {
+  if (!locale || !routing.locales.includes(locale)) {
+    console.warn('⚠️ Locale is invalid or missing:', locale);
+    return routing.defaultLocale || 'en'; // أو استبدل 'en' بالافتراضي عندك
   }
-  return locale
+  return locale;
 }
+
 
 export async function generateMetadata({
   params,
 }: {
-  params: Locale
+  params: { locale: string }
 }): Promise<Metadata> {
-
   try {
-    const { locale } = await params
-    const validLocale = validateLocale(locale)
+    const { locale } =  params;
+    const validLocale = validateLocale(locale);
     const {
       site: { slogan, name, description, url },
-    } = await getSetting()
-    const baseUrl = url || process.env.NEXT_PUBLIC_BASE_URL || 'https://hager-zon.vercel.app'
+      seo,
+    } = await getSetting();
+    const baseUrl = url || process.env.NEXT_PUBLIC_BASE_URL || 'https://hager-zon.vercel.app';
 
     const keywords = [
       // Primary Keywords
       'mgzon',
       'ecommerce',
-      'shopping',
-      'online store',
-      'marketplace',
       'online shopping',
-      'online market',
-      'MGZon shopping',
-      'amazon',
-      'ebay',
-      'alibaba',
-      'aliexpress',
-      'best online shopping',
-      'best online store',
-      'best marketplace',
-      'best ecommerce',
-      'sell online',
-      'buy online',
-      'shop online',
-
+      'marketplace',
+      'best deals',
+      'secure shopping',
+      'fast delivery',
       // Shopping Categories
-      'clothes',
-      'toys',
-      'gifts',
-      'shoes',
-      'furniture',
-      "men's clothing",
-      "women's clothing",
-      "children's clothing",
+      'electronics',
+      'clothing',
       'home appliances',
       'sports equipment',
-      'electronics',
       'beauty products',
       'books',
       'accessories',
-
       // Business and Commerce
-      'selling on mgzon',
-      'profit from mgzon',
+      'sell online',
+      'buy online',
       'wholesale',
-      'earn money',
-      'save money',
       'best products',
-      'MGZon seller',
-      'MGZon marketplace',
-      'MGZon store',
-      'توصيل سريع',
-      'تسوق عبر الإنترنت',
-      'تسوق آمن',
-      'تسوق موثوق',
-      'تسوق عالمي',
-      'تسوق دولي',
-      'تسوق عبر الإنترنت في mgzon',
-      'ربح من mgzon',
-      'بيع عبر الإنترنت',
-      'تخفيضات',
-      'عروض خاصة',
-      'ابراهيم الاصفر',
-      'ibrahim lasfar',
-      'ibrahim lasfar mgzon',
-      'ibrahim lasfar store',
-      'mark elasfar',
-      'mark elasfar mgzon',
-      'mark elasfar store',
-      'ibrahim elasfar',
-      'ibrahim elasfar mgzon',
-      'ibrahim elasfar store',
-      'mark lasfar',
-      'sell on amazon',
-      'sell on ebay',
-      'sell on alibaba',
-      'sell on aliexpress',
-      'sell on mgzon',
-      'sell on marketplace',
-      'اعلي ماركت',
-      'اعلي تسوق',
-      'اعلي تسوق عبر الإنترنت',
-
       // Shopping Experience
-      'online shopping mgzon',
-      'mgzon products',
-      'buy on mgzon',
-      'best deals',
-      'discount shopping',
-      'fast delivery',
-      'secure shopping',
       'customer reviews',
       'product ratings',
-
-      // Trust and Service
-      'trusted marketplace',
-      'customer service',
       'easy returns',
       'secure payments',
-      'fast shipping',
-      'buyer protection',
-
       // Location and Language
       'global marketplace',
       'international shipping',
-      'worldwide shopping',
       'multi-language support',
-
       // Mobile and Tech
       'mobile shopping',
       'shopping app',
-      'digital marketplace',
-      'easy checkout',
-      'mobile payments',
-    ]
+      ...(seo?.keywords?.split(', ') || []), // إضافة كلمات مفتاحية من settings.seo
+    ];
 
-    const metadataDescription = `${description} | Shop online for clothes, toys, gifts, shoes, furniture, home appliances, sports equipment and more at MGZon. Best prices, secure shopping, worldwide delivery.`
+    const metadataDescription = `${description} | Shop online for electronics, clothing, home appliances, and more at MGZon. Best prices, secure shopping, worldwide delivery.`;
 
-    // DO NOT include viewport or themeColor in metadata export.
     const metadata: Metadata = {
       title: {
         template: `%s | ${name}`,
@@ -178,7 +103,7 @@ export async function generateMetadata({
       },
       verification: {
         google: process.env.NEXT_PUBLIC_GOOGLE_VERIFICATION || 'PQo-i3w5jhSFT2MCdZxg0HnFOHDQ-iYMLNg8rYeFtXM',
-        yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION || 'yandex-verification-code',
+        yandex: process.env.NEXT_PUBLIC_YANDEX_VERIFICATION || 'G-38F9VZMY43',
         other: {
           'msvalidate.01': process.env.NEXT_PUBLIC_BING_VERIFICATION || 'B43661E5D49F850A9492D8B9EF683229',
           'baidu-site-verification': 'baidu-verification-code',
@@ -223,7 +148,7 @@ export async function generateMetadata({
         title: name,
         description: metadataDescription,
         images: [`${baseUrl}/icons/icon-512x512.png`],
-        creator: '@ibrahim_lasfar',
+        creator: '@mgzon_official',
         site: '@mgzon_official',
       },
       icons: {
@@ -237,11 +162,11 @@ export async function generateMetadata({
       },
       manifest: '/manifest.json',
       authors: [
-        { name: 'Ibrahim Lasfar', url: 'https://github.com/ibrahim-lasfar' },
+        { name: 'MGZon Team', url: 'https://hager-zon.vercel.app' },
       ],
       generator: 'Next.js',
       keywords: keywords.join(', '),
-      creator: 'Ibrahim Lasfar',
+      creator: 'MGZon Team',
       publisher: 'MGZon',
       category: 'ecommerce',
       applicationName: 'MGZon',
@@ -251,11 +176,11 @@ export async function generateMetadata({
         address: false,
         telephone: false,
       },
-    }
+    };
 
-    return metadata
+    return metadata;
   } catch (error) {
-    console.error('Metadata generation error:', error)
+    console.error('Metadata generation error:', error);
     return {
       title: 'MGZon E-commerce',
       description: 'Your ultimate shopping destination',
@@ -265,9 +190,10 @@ export async function generateMetadata({
           'msvalidate.01': process.env.NEXT_PUBLIC_BING_VERIFICATION || 'B43661E5D49F850A9492D8B9EF683229',
         },
       },
-    }
+    };
   }
 }
+
 
 // Exports for viewport and themeColor are required by Next.js 15+
 export const viewport = {
@@ -286,11 +212,12 @@ export default async function AppLayout({
   params,
 }: {
   children: React.ReactNode
-  params: Locale
+  params: { locale: string }
+
 }) {
 
   try {
-    const { locale } = await params
+    const { locale } =  params;
     const validLocale = validateLocale(locale)
 
     const [setting, cookieStore, messages] = await Promise.all([
@@ -379,9 +306,10 @@ export default async function AppLayout({
                 'query-input': 'required name=search_term_string',
               },
               sameAs: [
-                'https://twitter.com/mgzon_official',
-                'https://facebook.com/mgzon',
-                'https://instagram.com/mgzon_official',
+                'https://twitter.com/mgz0m',
+                'https://www.facebook.com/profile.php?id=61581526301289',
+                //  https://www.facebook.com/profile.php?id=61581526301289
+                'https://instagram.com/mgzon',
                 'https://linkedin.com/company/mgzon',
               ],
             }}

@@ -1,10 +1,6 @@
 import { auth } from '@/auth';
 import AddToCart from '@/components/shared/product/add-to-cart';
 import { Card, CardContent } from '@/components/ui/card';
-import {
-  getProductBySlug,
-  getRelatedProductsByCategory,
-} from '@/lib/actions/product.actions';
 import ReviewList from './review-list';
 import { generateId, round2 } from '@/lib/utils';
 import SelectVariant from '@/components/shared/product/select-variant';
@@ -16,19 +12,69 @@ import BrowsingHistoryList from '@/components/shared/browsing-history-list';
 import RatingSummary from '@/components/shared/product/rating-summary';
 import ProductSlider from '@/components/shared/product/product-slider';
 import { getTranslations } from 'next-intl/server';
+import { getSetting } from '@/lib/actions/setting.actions';
+
+async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, meta }),
+    });
+  } catch (err) {
+    console.error('Failed to send log:', err);
+  }
+}
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>;
 }) {
   const t = await getTranslations();
   const params = await props.params;
-  const product = await getProductBySlug(params.slug);
-  if (!product) {
-    return { title: t('Product.Product not found') };
+  const settings = await getSetting();
+
+  const productResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?slug=${params.slug}&action=getProductBySlug`);
+  const productData = await productResponse.json();
+
+  if (!productData.success || !productData.data) {
+    await sendLog('error', t('Product.Product not found'), { slug: params.slug });
+    return {
+      title: t('Product.Product not found'),
+      description: settings.seo?.metaDescription || 'The product you are looking for is not available.',
+      keywords: settings.seo?.keywords || 'ecommerce, shopping',
+      openGraph: {
+        title: t('Product.Product not found'),
+        description: settings.seo?.metaDescription || 'The product you are looking for is not available.',
+        images: [{ url: `${process.env.NEXT_PUBLIC_BASE_URL}/icons/og-image.jpg`, alt: 'MGZon' }],
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: t('Product.Product not found'),
+        description: settings.seo?.metaDescription || 'The product you are looking for is not available.',
+        images: [`${process.env.NEXT_PUBLIC_BASE_URL}/icons/og-image.jpg`],
+      },
+    };
   }
+
+  const product = productData.data;
+  await sendLog('info', t('Product metadata fetched'), { slug: params.slug });
+
   return {
-    title: product.name,
-    description: product.description,
+    title: `${product.name} | ${settings.site?.name || 'MGZon'}`,
+    description: product.description || settings.seo?.metaDescription || `Buy ${product.name} at the best price on MGZon`,
+    keywords: `${product.name}, ${product.category}, ${product.brand || ''}, ${product.tags.join(', ')}, ${settings.seo?.keywords || 'ecommerce, shopping, deals'}`,
+    openGraph: {
+      title: product.name,
+      description: product.description || settings.seo?.metaDescription,
+      images: product.images[0] ? [{ url: product.images[0], alt: product.name }] : [{ url: settings.seo?.ogImage || '/icons/og-image.jpg', alt: product.name }],
+      url: `${process.env.NEXT_PUBLIC_BASE_URL}/${params.locale}/product/${product.slug}`,
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: product.name,
+      description: product.description || settings.seo?.metaDescription,
+      images: product.images[0] ? [product.images[0]] : [settings.seo?.ogImage || '/icons/og-image.jpg'],
+    },
   };
 }
 
@@ -43,9 +89,12 @@ export default async function ProductDetails(props: {
   const session = await auth();
   const t = await getTranslations();
 
-  // Fetch product by slug
-  const product = await getProductBySlug(slug);
-  if (!product) {
+  // جلب المنتج عبر API
+  const productResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?slug=${slug}&action=getProductBySlug`);
+  const productData = await productResponse.json();
+
+  if (!productData.success || !productData.data) {
+    await sendLog('error', t('Product.Product not found'), { slug });
     return (
       <div className="text-center py-10">
         <h2 className="text-xl font-bold">{t('Product.Product not found')}</h2>
@@ -53,12 +102,16 @@ export default async function ProductDetails(props: {
     );
   }
 
-  // Fetch related products
-  const relatedProducts = await getRelatedProductsByCategory({
-    category: product.category,
-    productId: product._id,
-    page: Number(page || '1'),
-  });
+  const product = productData.data;
+
+  // جلب المنتجات المرتبطة عبر API
+  const relatedProductsResponse = await fetch(
+    `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?category=${product.category}&productId=${product._id}&page=${page || '1'}&action=getRelatedProductsByCategory`
+  );
+  const relatedProductsData = await relatedProductsResponse.json();
+  const relatedProducts = relatedProductsData.success ? relatedProductsData.data : { data: [], totalPages: 0 };
+
+  await sendLog('info', t('Product details fetched'), { slug, category: product.category, page });
 
   // Set default color and size with validation
   const defaultColor = product.colors.length > 0 ? product.colors[0].name : '';
@@ -150,8 +203,8 @@ export default async function ProductDetails(props: {
                         price: round2(product.price),
                         quantity: 1,
                         image: product.images[0],
-                        size: size || defaultSize,
-                        color: color || defaultColor,
+                        size: size || product.sizes[0],
+                        color: color || product.colors[0],
                       }}
                     />
                   </div>
@@ -162,8 +215,8 @@ export default async function ProductDetails(props: {
         </div>
       </section>
       <section className="mt-10">
-        <h2 className="h2-bold mb-2" id="reviews" aria-label={t('Product.Customer Reviews')}>
-          {t('Product.Customer Reviews')}
+        <h2 className="h2-bold mb-2" id="reviews" aria-label={t('Product Customer Reviews')}>
+          {t('Product Customer Reviews')}
         </h2>
         <ReviewList product={product} userId={session?.user.id} />
       </section>

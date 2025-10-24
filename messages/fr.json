@@ -33,6 +33,35 @@
     "Subtotal": "Sous-total",
     "Go to cart": "Aller au panier"
   },
+
+  "Chatbote": {
+       "aiChat": "Chat IA",
+       "you": "Vous",
+       "assistant": "Assistant",
+       "typeMessage": "Tapez votre message ici...",
+       "send": "Envoyer",
+       "emptyMessage": "Veuillez entrer un message avant d'envoyer.",
+       "apiError": "Erreur API",
+       "errorUnexpected": "Désolé, une erreur inattendue s'est produite.",
+       "noClearAnswer": "Aucune réponse claire n'a été trouvée.",
+       "unknownError": "Erreur inconnue",
+       "serverUnreachable": "Désolé, je n'ai pas pu contacter le serveur.",
+       "missingQuestion": "Veuillez fournir une question.",
+       "foundProducts": "{count} produit(s) trouvé(s) :",
+       "refineSearch": "Vous pouvez affiner votre recherche en spécifiant la catégorie ou la plage de prix.",
+       "oauthDocsInstructions": "Consultez la section appropriée de la documentation OAuth pour plus de détails.",
+       "gptOssInstructions": "Ceci est une réponse générale du modèle GPT‑OSS‑120B.",
+       "requestProcessingError": "Désolé, je n'ai pas pu traiter votre demande.",
+       "oauth": {
+         "introductionDesc": "L'OAuth de MGZon offre une méthode sécurisée et standardisée pour autoriser les applications à accéder aux données des utilisateurs et à gérer les ressources sans partager les informations de connexion. Il suit la norme OAuth 2.0, permettant une intégration fluide avec la plateforme MGZon.",
+         "flowDesc": "Le flux OAuth dans MGZon consiste à rediriger l'utilisateur vers une page d'autorisation, où il accorde des permissions, puis à échanger le code d'autorisation contre un jeton d'accès, qui peut être utilisé pour accéder aux ressources protégées.",
+         "sellerSetupDesc": "Pour les vendeurs, MGZon propose une API simplifiée pour gérer les produits et l'inventaire. Des clés API peuvent être générées pour un accès direct sans le flux OAuth complet, idéal pour les intégrations backend.",
+         "sellerApiKeyExample": "Exemple : Vous pouvez générer une clé API via le tableau de bord des vendeurs en utilisant une requête POST à /api/v1/keys avec des permissions comme products:read ou inventory:write.",
+         "scopesDesc": "Les scopes dans MGZon définissent le niveau d'accès accordé aux applications. Les exemples incluent profile:read pour lire les données des utilisateurs, products:write pour gérer les produits, et ads:write pour créer des campagnes publicitaires.",
+         "advertisingDesc": "L'API publicitaire de MGZon permet aux vendeurs de créer et de gérer des campagnes publicitaires. Vous pouvez intégrer des publicités en utilisant des scopes comme ads:read et ads:write pour accéder aux données des campagnes et créer de nouvelles publicités."
+       },
+       "chatbotFallback": "Désolé, je n'ai pas compris votre question. Essayez de la reformuler ou posez une autre question !"
+     },
   "Home": {
     "Categories to explore": "Catégories à explorer",
     "See More": "Voir plus",

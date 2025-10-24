@@ -1,4 +1,4 @@
-/home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/(root)/seller/dashboard/products/transfer/transfer-modal.tsx
+//home/hager/new/my-nextjs-project-master (3)/my-nextjs-project-master/app/[locale]/(root)/seller/dashboard/products/transfer/transfer-modal.tsx
 'use client';
 
 import { useState, useEffect } from 'react';

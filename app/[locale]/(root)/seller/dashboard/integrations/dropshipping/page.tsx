@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { useToast } from '@/hooks/use-toast';
 
 export default function DropshippingPage() {
-  const t = useTranslations('seller.dashboard.integrations.dropshipping');
+  const t = useTranslations('seller dashboard integrations dropshipping');
   const router = useRouter();
   const { toast } = useToast();
   const [integrations, setIntegrations] = useState([]);

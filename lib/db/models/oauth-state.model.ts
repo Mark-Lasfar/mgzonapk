@@ -14,6 +14,7 @@ const oauthStateSchema = new Schema<IOAuthState>(
     providerId: { type: String, required: true },
     sellerId: { type: String, required: true },
     sandbox: { type: Boolean, default: false },
+    createdAt: { type: Date, default: Date.now, expires: '30h' },
   },
   { timestamps: true }
 );

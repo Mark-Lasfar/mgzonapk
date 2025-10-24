@@ -9,10 +9,11 @@ export type NotificationType =
 | 'order cancelled'
 | 'order shipped'
 | 'order delivered'
-| 'product imported' // إضافة نوع جديد
+| 'product imported'
 | 'order payment completed'
 | 'order shipment updated'
 | 'payment success'
+| 'cart cleared'
 | 'payment failed'
 | 'product created'
 | 'product updated'
@@ -50,11 +51,18 @@ export type NotificationType =
 | 'trial reminder'
 | 'subscription expired'
 | 'cart updated'
+| 'cart update'
 | 'promotion'
 | 'verification'
+| 'orderConfirmation'
+| 'passwordReset'
+| 'subscriptionConfirmation'
+| 'paymentFailure'
 | 'registration'
 | 'product_status_updated'
+| 'product_discount_applied'
 | 'subscription_updated'
+| 'product_review_added'
 | 'reset password';
 
 
@@ -140,10 +148,16 @@ const notificationSchema = new Schema<INotification>(
         'trial reminder',
         'subscription expired',
         'cart updated',
+        'cart update',
+        'cart cleared',
         'promotion',
         'verification',
+        'orderConfirmation',
+        'passwordReset',
+        'subscriptionConfirmation',
+        'paymentFailure',
         'reset password',
-      'subscription_updated',
+        'subscription_updated',
 
       ],
     },

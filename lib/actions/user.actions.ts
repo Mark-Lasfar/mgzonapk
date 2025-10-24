@@ -4,18 +4,18 @@ import bcrypt from 'bcryptjs';
 import { auth, signIn, signOut } from '@/auth';
 import { IUserSignIn, IUserSignUp } from '@/types';
 import { UserSignUpSchema, UserUpdateSchema } from '../validator';
-import User, { IUser } from '../db/models/user.model';
+import User, { IUser } from '@/lib/db/models/user.model';
 import { revalidatePath } from 'next/cache';
 import { z } from 'zod';
-import VerificationCode from '../db/models/verification-code.model';
-import { emailService } from '../services/email/mailer';
-import { connectToDatabase } from '../db';
+import VerificationCode from '@/lib/db/models/verification-code.model';
+import { emailService } from '../services/email';
+import { connectToDatabase } from '@/lib/db';
 // import { formatError, generateVerificationCode } from '../utils';
 import { getTranslations } from 'next-intl/server';
 import { getSetting } from './setting.actions';
 import { generateVerificationCode } from '../utils/verification';
 import { formatError } from '../utils';
-import Seller from '../db/models/seller.model';
+import Seller from '@/lib/db/models/seller.model';
 
 interface ActionResponse {
   success: boolean;
@@ -193,14 +193,40 @@ export async function signInWithCredentials(credentials: IUserSignIn): Promise<A
   const t = await getTranslations('Auth');
   try {
     await connectToDatabase();
-    const user = await User.findOne({ email: credentials.email });
+    const user = await User.findOne({ email: credentials.email }).select('+password');
+    console.log('signInWithCredentials: User lookup:', {
+      email: credentials.email,
+      found: !!user,
+      emailVerified: user?.emailVerified,
+      isActive: user?.isActive,
+      hasPassword: !!user?.password,
+    });
 
     if (!user) {
+      console.log('signInWithCredentials: No user found for email:', credentials.email);
       throw new Error(t('invalidCredentials'));
     }
 
     if (!user.emailVerified || !user.isActive) {
+      console.log('signInWithCredentials: User not verified or inactive:', {
+        email: credentials.email,
+        emailVerified: user.emailVerified,
+        isActive: user.isActive,
+      });
       return await checkUserAndSendVerification(user.email, user.name);
+    }
+
+    if (!user.password) {
+      console.log('signInWithCredentials: No password set for user:', credentials.email);
+      throw new Error(t('useGoogleSignIn'));
+    }
+
+    const isMatch = await bcrypt.compare(credentials.password, user.password);
+    console.log('signInWithCredentials: Password match:', isMatch);
+
+    if (!isMatch) {
+      console.log('signInWithCredentials: Password mismatch for user:', credentials.email);
+      throw new Error(t('invalidCredentials'));
     }
 
     const result = await signIn('credentials', {
@@ -209,12 +235,20 @@ export async function signInWithCredentials(credentials: IUserSignIn): Promise<A
       password: credentials.password,
     });
 
+    console.log('signInWithCredentials: NextAuth signIn result:', {
+      ok: result?.ok,
+      error: result?.error,
+      url: result?.url,
+    });
+
     if (!result?.ok) {
-      throw new Error(t('invalidCredentials'));
+      console.log('signInWithCredentials: NextAuth signIn failed:', result?.error);
+      throw new Error(result?.error || t('authenticationFailed'));
     }
 
     return { success: true, redirect: '/' };
   } catch (error) {
+    console.error('signInWithCredentials: Error:', error);
     return {
       success: false,
       error: error instanceof Error ? error.message : t('authenticationFailed'),

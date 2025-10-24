@@ -1,37 +1,15 @@
+// /lib/api/services/payment.ts
+'use server';
+
 import { customLogger } from '@/lib/api/services/logging';
 import { randomUUID } from 'crypto';
 import { GenericIntegrationService, ApiCallOptions } from './generic-integration';
 import { connectToDatabase } from '@/lib/db';
-import IntegrationModel from '@/lib/db/models/integration.model';
-import SellerIntegrationModel from '@/lib/db/models/seller-integration.model';
+import Integration from '@/lib/db/models/integration.model';
+import SellerIntegration from '@/lib/db/models/seller-integration.model';
 import Seller from '@/lib/db/models/seller.model';
 import { SellerError } from '@/lib/errors/seller-error';
-import { Types, Document } from 'mongoose';
-
-interface Integration {
-  _id: Types.ObjectId;
-  providerName: string;
-  type: string;
-  isActive: boolean;
-  status: 'connected' | 'disconnected' | 'expired' | 'needs_reauth';
-  settings: {
-    endpoints?: Map<string, string>;
-    credentials?: {
-      apiKey?: string;
-      oauthToken?: string;
-      refreshToken?: string;
-      expiresAt?: Date;
-    };
-  };
-}
-
-interface SellerIntegration {
-  _id: Types.ObjectId;
-  sellerId: string;
-  integrationId: string;
-  isActive: boolean;
-  status: 'connected' | 'disconnected' | 'expired' | 'needs_reauth';
-}
+import { Types } from 'mongoose';
 
 export interface PaymentRequest {
   amount: number;
@@ -52,30 +30,31 @@ export interface PaymentResponse {
   metadata?: Record<string, any>;
 }
 
-export class PaymentService {
-  private integration: Integration;
-  private sellerIntegration: SellerIntegration;
-  private requestId: string;
-  private baseUrl: string;
+export async function createPaymentService(sellerId: string, providerName: string): Promise<{
+  integration: any | null;
+  sellerIntegration: any | null;
+  baseUrl: string;
+  requestId: string;
+}> {
+  const requestId = randomUUID();
+  try {
+    await connectToDatabase();
 
-  constructor(integration: Integration, sellerIntegration: SellerIntegration) {
-    this.requestId = randomUUID();
-    if (!integration.isActive || integration.status !== 'connected') {
-      throw new SellerError('INACTIVE_INTEGRATION', `Integration ${integration.providerName} is not active or connected`);
+    // Check if seller exists
+    const seller = await Seller.findById(sellerId);
+    if (!seller) {
+      throw new SellerError('SELLER_NOT_FOUND', `Seller ${sellerId} not found`);
     }
-    this.integration = integration;
-    this.sellerIntegration = sellerIntegration;
-    this.baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
-    if (!this.baseUrl) {
-      throw new SellerError('CONFIG_ERROR', 'Base URL is not configured');
-    }
-  }
 
-  static async createFromSellerId(sellerId: string, providerName: string): Promise<PaymentService> {
-    const requestId = randomUUID();
-    try {
-      await connectToDatabase();
-      const integration = await IntegrationModel.findOne({
+    // If no providerName is specified, allow operation to proceed without payment gateway
+    if (!providerName) {
+      throw new SellerError('NO_PAYMENT_GATEWAY', 'No payment gateway specified. Please configure a payment gateway.');
+    }
+
+    // Check for integration (for non-mgpay providers)
+    let integration: any | null = null;
+    if (providerName !== 'mgpay') {
+      integration = await Integration.findOne({
         providerName,
         type: 'payment',
         isActive: true,
@@ -85,214 +64,225 @@ export class PaymentService {
       if (!integration) {
         throw new SellerError('NO_INTEGRATION', `No active payment integration found for provider ${providerName}`);
       }
+    }
 
-      const sellerIntegration = await SellerIntegrationModel.findOne({
-        sellerId,
-        integrationId: integration._id,
+    // Check for seller integration (for non-mgpay providers)
+    let sellerIntegration: any | null = null;
+    if (providerName !== 'mgpay') {
+      sellerIntegration = await SellerIntegration.findOne({
+        sellerId: new Types.ObjectId(sellerId),
+        integrationId: integration?._id,
         isActive: true,
         status: 'connected',
       });
 
-      if (!sellerIntegration && providerName !== 'mgpay') {
+      if (!sellerIntegration) {
         throw new SellerError('SELLER_NOT_ENABLED', `Seller ${sellerId} has not enabled ${providerName}`);
       }
-
-      // التحقق من تفعيل الحساب البنكي لبوابة mgpay
-      if (providerName === 'mgpay') {
-        const seller = await Seller.findById(sellerId);
-        if (!seller) {
-          throw new SellerError('SELLER_NOT_FOUND', `Seller ${sellerId} not found`);
-        }
-        if (!seller.bankInfo?.verified) {
-          throw new SellerError('BANK_NOT_VERIFIED', 'Bank account not verified');
-        }
-      }
-
-      return new PaymentService(integration, sellerIntegration || { _id: new Types.ObjectId(), sellerId, integrationId: integration._id, isActive: true, status: 'connected' });
-    } catch (error) {
-      const errorMessage = error instanceof SellerError ? error.message : String(error);
-      await customLogger.error('Failed to create PaymentService', {
-        requestId,
-        sellerId,
-        providerName,
-        error: errorMessage,
-        service: 'payment',
-      });
-      throw error instanceof SellerError ? error : new SellerError('CREATE_FAILED', errorMessage);
     }
-  }
 
-  async initiatePayment(request: PaymentRequest): Promise<PaymentResponse> {
-    try {
-      if (!this.integration.settings?.endpoints) {
-        throw new SellerError('CONFIG_ERROR', `Endpoints not configured for ${this.integration.providerName}`);
-      }
-
-      const paymentEndpoint = this.integration.settings.endpoints.get('payment');
-      if (!paymentEndpoint) {
-        throw new SellerError('ENDPOINT_MISSING', `Payment endpoint not configured for ${this.integration.providerName}`);
-      }
-
-      
-
-      const integrationService = new GenericIntegrationService(this.integration, this.sellerIntegration);
-      const apiOptions: ApiCallOptions = {
-        endpoint: paymentEndpoint,
-        method: 'POST',
-        headers: {
-          ...(this.integration.settings.credentials?.apiKey && {
-            Authorization: `Bearer ${this.integration.settings.credentials.apiKey}`,
-          }),
-        },
-        body: {
-          amount: request.amount,
-          currency: request.currency,
-          order_id: request.orderId,
-          customer: request.customer,
-          metadata: {
-            ...request.metadata,
-            success_url: `${this.baseUrl}/account/subscriptions?success=true`,
-            cancel_url: `${this.baseUrl}/account/subscriptions?cancelled=true`,
-            sellerId: this.sellerIntegration.sellerId,
-          },
-        },
-        webhookEvent: 'payment.initiated',
-      };
-
-      const response = await integrationService.callApi(apiOptions);
-      const result: PaymentResponse = {
-        transactionId: response.transaction_id || response.id || randomUUID(),
-        status: response.status || 'pending',
-        paymentUrl: response.payment_url || response.redirect_url,
-        metadata: response.metadata,
-      };
-
-      await customLogger.info('Payment initiated successfully', {
-        requestId: this.requestId,
-        provider: this.integration.providerName,
-        transactionId: result.transactionId,
-        status: result.status,
-        sellerId: this.sellerIntegration.sellerId,
-        service: 'payment',
-      });
-
-      return result;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Payment initiation failed', {
-        requestId: this.requestId,
-        provider: this.integration.providerName,
-        error: errorMessage,
-        sellerId: this.sellerIntegration.sellerId,
-        service: 'payment',
-      });
-      throw new SellerError('PAYMENT_FAILED', `Payment initiation failed: ${errorMessage}`);
-    }
-  }
-
-  async verifyPayment(transactionId: string): Promise<PaymentResponse> {
-    try {
-      if (!this.integration.settings?.endpoints) {
-        throw new SellerError('CONFIG_ERROR', `Endpoints not configured for ${this.integration.providerName}`);
-      }
-
-      const paymentEndpoint = this.integration.settings.endpoints.get('payment');
-      if (!paymentEndpoint) {
-        throw new SellerError('ENDPOINT_MISSING', `Payment endpoint not configured for ${this.integration.providerName}`);
-      }
-
-      const integrationService = new GenericIntegrationService(this.integration, this.sellerIntegration);
-      const apiOptions: ApiCallOptions = {
-        endpoint: `${paymentEndpoint}/${transactionId}`,
-        method: 'GET',
-        headers: {
-          ...(this.integration.settings.credentials?.apiKey && {
-            Authorization: `Bearer ${this.integration.settings.credentials.apiKey}`,
-          }),
-        },
-        webhookEvent: 'payment.verified',
-      };
-
-      const response = await integrationService.callApi(apiOptions);
-      const result: PaymentResponse = {
-        transactionId: response.transaction_id || response.id,
-        status: response.status || 'pending',
-        metadata: response.metadata,
-      };
-
-      await customLogger.info('Payment verified successfully', {
-        requestId: this.requestId,
-        provider: this.integration.providerName,
-        transactionId,
-        status: result.status,
-        sellerId: this.sellerIntegration.sellerId,
-        service: 'payment',
-      });
-
-      return result;
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Payment verification failed', {
-        requestId: this.requestId,
-        provider: this.integration.providerName,
-        transactionId,
-        error: errorMessage,
-        sellerId: this.sellerIntegration.sellerId,
-        service: 'payment',
-      });
-      throw new SellerError('PAYMENT_VERIFICATION_FAILED', `Payment verification failed: ${errorMessage}`);
-    }
-  }
-
-  async refreshOAuthToken(): Promise<void> {
-    try {
-      if (!this.integration.settings?.credentials?.refreshToken) {
-        throw new SellerError('NO_REFRESH_TOKEN', `No refresh token available for ${this.integration.providerName}`);
-      }
-
-      const tokenEndpoint = this.integration.settings.endpoints?.get('token');
-      if (!tokenEndpoint) {
-        throw new SellerError('ENDPOINT_MISSING', `Token endpoint not configured for ${this.integration.providerName}`);
-      }
-
-      const integrationService = new GenericIntegrationService(this.integration, this.sellerIntegration);
-      const response = await integrationService.callApi({
-        endpoint: tokenEndpoint,
-        method: 'POST',
-        body: {
-          grant_type: 'refresh_token',
-          refresh_token: this.integration.settings.credentials.refreshToken,
-        },
-        webhookEvent: 'token.refreshed',
-      });
-
-      await IntegrationModel.updateOne(
-        { _id: this.integration._id },
-        {
-          $set: {
-            'settings.credentials.oauthToken': response.access_token,
-            'settings.credentials.refreshToken': response.refresh_token || this.integration.settings.credentials.refreshToken,
-            'settings.credentials.expiresAt': new Date(Date.now() + (response.expires_in * 1000)),
-          },
-        }
+    // Verify bank account for mgpay
+    if (providerName === 'mgpay') {
+      const hasMgpay = seller.paymentGateways.some(
+        (gateway: any) => gateway.providerName === 'mgpay' && gateway.isActive && gateway.verified
       );
-
-      await customLogger.info('OAuth token refreshed successfully', {
-        requestId: this.requestId,
-        provider: this.integration.providerName,
-        sellerId: this.sellerIntegration.sellerId,
-        service: 'payment',
-      });
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('OAuth token refresh failed', {
-        requestId: this.requestId,
-        provider: this.integration.providerName,
-        error: errorMessage,
-        sellerId: this.sellerIntegration.sellerId,
-        service: 'payment',
-      });
-      throw new SellerError('TOKEN_REFRESH_FAILED', `OAuth token refresh failed: ${errorMessage}`);
+      if (!hasMgpay || !seller.bankInfo?.verified) {
+        throw new SellerError('BANK_NOT_VERIFIED', 'Bank account not verified or mgpay not active');
+      }
     }
+
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+    if (!baseUrl) {
+      throw new SellerError('CONFIG_ERROR', 'Base URL is not configured');
+    }
+
+    return {
+      integration: integration || { _id: new Types.ObjectId(), providerName: 'mgpay', type: 'payment', isActive: true, status: 'connected', settings: {} },
+      sellerIntegration: sellerIntegration || { _id: new Types.ObjectId(), sellerId, integrationId: integration?._id || new Types.ObjectId(), isActive: true, status: 'connected' },
+      baseUrl,
+      requestId,
+    };
+  } catch (error) {
+    const errorMessage = error instanceof SellerError ? error.message : String(error);
+    await customLogger.error('Failed to create PaymentService configuration', {
+      requestId,
+      sellerId,
+      providerName,
+      error: errorMessage,
+      service: 'payment',
+    });
+    throw error instanceof SellerError ? error : new SellerError('CREATE_FAILED', errorMessage);
+  }
+}
+
+export async function initiatePayment(sellerId: string, providerName: string, request: PaymentRequest): Promise<PaymentResponse> {
+  const { integration, sellerIntegration, baseUrl, requestId } = await createPaymentService(sellerId, providerName);
+
+  try {
+    let paymentEndpoint = '';
+    if (providerName !== 'mgpay') {
+      paymentEndpoint = integration?.settings?.endpoints?.get('capturePayment') || '';
+      if (!paymentEndpoint) {
+        throw new SellerError('ENDPOINT_MISSING', `Payment endpoint not configured for ${integration.providerName}`);
+      }
+    }
+
+    const integrationService = new GenericIntegrationService(integration, sellerIntegration);
+    const apiOptions: ApiCallOptions = {
+      endpoint: paymentEndpoint,
+      method: 'POST',
+      headers: {},
+      body: {
+        amount: request.amount,
+        currency: request.currency,
+        order_id: request.orderId,
+        customer: request.customer,
+        metadata: {
+          ...request.metadata,
+          success_url: `${baseUrl}/account/subscriptions?success=true`,
+          cancel_url: `${baseUrl}/account/subscriptions?cancelled=true`,
+          sellerId: sellerIntegration.sellerId,
+        },
+      },
+      webhookEvent: 'payment.initiated',
+    };
+
+    const response = await integrationService.callApi(apiOptions);
+    const result: PaymentResponse = {
+      transactionId: response.transaction_id || response.id || randomUUID(),
+      status: response.status || 'pending',
+      paymentUrl: response.payment_url || response.redirect_url,
+      metadata: response.metadata,
+    };
+
+    await customLogger.info('Payment initiated successfully', {
+      requestId,
+      provider: integration?.providerName || 'mgpay',
+      transactionId: result.transactionId,
+      status: result.status,
+      sellerId: sellerIntegration.sellerId,
+      service: 'payment',
+    });
+
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    await customLogger.error('Payment initiation failed', {
+      requestId,
+      provider: integration?.providerName || 'mgpay',
+      error: errorMessage,
+      sellerId: sellerIntegration.sellerId,
+      service: 'payment',
+    });
+    throw new SellerError('PAYMENT_FAILED', `Payment initiation failed: ${errorMessage}`);
+  }
+}
+
+export async function verifyPayment(sellerId: string, providerName: string, transactionId: string): Promise<PaymentResponse> {
+  const { integration, sellerIntegration, requestId } = await createPaymentService(sellerId, providerName);
+
+  try {
+    let paymentEndpoint = '';
+    if (providerName !== 'mgpay') {
+      paymentEndpoint = integration?.settings?.endpoints?.get('capturePayment') || '';
+      if (!paymentEndpoint) {
+        throw new SellerError('ENDPOINT_MISSING', `Payment endpoint not configured for ${integration.providerName}`);
+      }
+    }
+
+    const integrationService = new GenericIntegrationService(integration, sellerIntegration);
+    const apiOptions: ApiCallOptions = {
+      endpoint: `${paymentEndpoint}/${transactionId}`,
+      method: 'GET',
+      headers: {},
+      webhookEvent: 'payment.verified',
+    };
+
+    const response = await integrationService.callApi(apiOptions);
+    const result: PaymentResponse = {
+      transactionId: response.transaction_id || response.id,
+      status: response.status || 'pending',
+      metadata: response.metadata,
+    };
+
+    await customLogger.info('Payment verified successfully', {
+      requestId,
+      provider: integration?.providerName || 'mgpay',
+      transactionId,
+      status: result.status,
+      sellerId: sellerIntegration.sellerId,
+      service: 'payment',
+    });
+
+    return result;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    await customLogger.error('Payment verification failed', {
+      requestId,
+      provider: integration?.providerName || 'mgpay',
+      transactionId,
+      error: errorMessage,
+      sellerId: sellerIntegration.sellerId,
+      service: 'payment',
+    });
+    throw new SellerError('PAYMENT_VERIFICATION_FAILED', `Payment verification failed: ${errorMessage}`);
+  }
+}
+
+export async function refreshOAuthToken(sellerId: string, providerName: string): Promise<void> {
+  const { integration, sellerIntegration, requestId } = await createPaymentService(sellerId, providerName);
+
+  try {
+    if (!sellerIntegration?.refreshToken && providerName !== 'mgpay') {
+      throw new SellerError('NO_REFRESH_TOKEN', `No refresh token available for ${integration.providerName}`);
+    }
+
+    const tokenEndpoint = integration?.oauth?.tokenUrl || '';
+    if (!tokenEndpoint && providerName !== 'mgpay') {
+      throw new SellerError('ENDPOINT_MISSING', `Token endpoint not configured for ${integration.providerName}`);
+    }
+
+    const integrationService = new GenericIntegrationService(integration, sellerIntegration);
+    const response = await integrationService.callApi({
+      endpoint: tokenEndpoint,
+      method: 'POST',
+      body: {
+        grant_type: 'refresh_token',
+        refresh_token: sellerIntegration?.refreshToken,
+        client_id: integration?.credentials?.get('clientId'),
+        client_secret: integration?.credentials?.get('clientSecret'),
+      },
+      webhookEvent: 'token.refreshed',
+    });
+
+    await SellerIntegration.updateOne(
+      { _id: sellerIntegration._id },
+      {
+        $set: {
+          accessToken: response.access_token,
+          refreshToken: response.refresh_token || sellerIntegration.refreshToken,
+          expiresAt: new Date(Date.now() + (response.expires_in * 1000)),
+          status: 'connected',
+          lastUpdated: new Date(),
+        },
+      }
+    );
+
+    await customLogger.info('OAuth token refreshed successfully', {
+      requestId,
+      provider: integration?.providerName || 'mgpay',
+      sellerId: sellerIntegration.sellerId,
+      service: 'payment',
+    });
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    await customLogger.error('OAuth token refresh failed', {
+      requestId,
+      provider: integration?.providerName || 'mgpay',
+      error: errorMessage,
+      sellerId: sellerIntegration.sellerId,
+      service: 'payment',
+    });
+    throw new SellerError('TOKEN_REFRESH_FAILED', `OAuth token refresh failed: ${errorMessage}`);
   }
 }

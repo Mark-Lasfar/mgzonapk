@@ -5,12 +5,16 @@ import { auth } from '@/auth';
 import { getTranslations } from 'next-intl/server';
 import { z } from 'zod';
 import mongoose from 'mongoose';
+import { v4 as uuidv4 } from 'uuid';
 
 const subscriptionPlanSchema = z.object({
-  id: z.string().min(1).regex(/^[a-z0-9_-]+$/),
+  id: z.string().regex(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i, {
+    message: 'Plan ID must be a valid UUID',
+  }),
   name: z.string().min(2).max(50),
   price: z.number().min(0),
   pointsCost: z.number().min(0),
+  currency: z.string().default('USD'),
   description: z.string().min(10).max(500),
   features: z.object({
     productsLimit: z.number().min(0),
@@ -31,47 +35,46 @@ const subscriptionPlanSchema = z.object({
 
 export async function GET(req: NextRequest) {
   const locale = req.nextUrl.searchParams.get('locale') || 'en';
-  const t = await getTranslations({ locale, namespace: 'admin subscriptions' });
+  const t = await getTranslations({ locale, namespace: 'admin.subscriptions' });
 
   try {
     await connectToDatabase();
     const plans = await SubscriptionPlan.find({ isActive: true }).lean();
-    console.log('Fetched plans:', plans);
     return NextResponse.json({
       success: true,
-      data: plans.map(plan => ({
-        id: plan._id.toString(),
+      data: plans.map((plan) => ({
+        id: plan.id,
         name: plan.name,
         price: plan.price,
+        pointsCost: plan.pointsCost,
+        currency: plan.currency,
         description: plan.description,
+        features: plan.features,
+        isTrial: plan.isTrial,
+        trialDuration: plan.trialDuration,
+        isActive: plan.isActive,
       })),
     });
   } catch (error: unknown) {
     console.error('Error fetching subscription plans:', error);
     const message = error instanceof Error ? error.message : t('errors.server');
-    return NextResponse.json(
-      { success: false, message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }
 
 export async function POST(req: NextRequest) {
-  const locale = req.nextUrl.searchParams.get('locale') || 'en ,ar , fr';
-  const t = await getTranslations({ locale, namespace: 'admin subscriptions' });
+  const locale = req.nextUrl.searchParams.get('locale') || 'en';
+  const t = await getTranslations({ locale, namespace: 'admin.subscriptions' });
   const session = await auth();
 
   if (!session?.user?.id || session.user.role !== 'Admin') {
-    return NextResponse.json(
-      { success: false, message: t('errors.unauthorized') },
-      { status: 401 }
-    );
+    return NextResponse.json({ success: false, message: t('errors.unauthorized') }, { status: 401 });
   }
 
   try {
     await connectToDatabase();
     const body = await req.json();
-    const validatedData = subscriptionPlanSchema.parse(body);
+    const validatedData = subscriptionPlanSchema.parse({ ...body, id: body.id || uuidv4() });
 
     const sessionDb = await mongoose.startSession();
     sessionDb.startTransaction();
@@ -102,7 +105,7 @@ export async function POST(req: NextRequest) {
         {
           success: false,
           message: t('errors.invalidData'),
-          errors: error.errors.map((err) => ({
+          errors: error.issues.map((err: z.ZodIssue) => ({
             path: err.path.join('.'),
             message: err.message,
           })),
@@ -111,23 +114,17 @@ export async function POST(req: NextRequest) {
       );
     }
     const message = error instanceof Error ? error.message : t('errors.server');
-    return NextResponse.json(
-      { success: false, message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }
 
 export async function PUT(req: NextRequest) {
   const locale = req.nextUrl.searchParams.get('locale') || 'en';
-  const t = await getTranslations({ locale, namespace: 'admin subscriptions' });
+  const t = await getTranslations({ locale, namespace: 'admin.subscriptions' });
   const session = await auth();
 
   if (!session?.user?.id || session.user.role !== 'Admin') {
-    return NextResponse.json(
-      { success: false, message: t('errors.unauthorized') },
-      { status: 401 }
-    );
+    return NextResponse.json({ success: false, message: t('errors.unauthorized') }, { status: 401 });
   }
 
   try {
@@ -163,7 +160,7 @@ export async function PUT(req: NextRequest) {
         {
           success: false,
           message: t('errors.invalidData'),
-          errors: error.errors.map((err) => ({
+          errors: error.issues.map((err: z.ZodIssue) => ({
             path: err.path.join('.'),
             message: err.message,
           })),
@@ -172,23 +169,17 @@ export async function PUT(req: NextRequest) {
       );
     }
     const message = error instanceof Error ? error.message : t('errors.server');
-    return NextResponse.json(
-      { success: false, message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }
 
 export async function DELETE(req: NextRequest) {
   const locale = req.nextUrl.searchParams.get('locale') || 'en';
-  const t = await getTranslations({ locale, namespace: 'admin subscriptions' });
+  const t = await getTranslations({ locale, namespace: 'admin.subscriptions' });
   const session = await auth();
 
   if (!session?.user?.id || session.user.role !== 'Admin') {
-    return NextResponse.json(
-      { success: false, message: t('errors.unauthorized') },
-      { status: 401 }
-    );
+    return NextResponse.json({ success: false, message: t('errors.unauthorized') }, { status: 401 });
   }
 
   try {
@@ -216,9 +207,6 @@ export async function DELETE(req: NextRequest) {
   } catch (error: unknown) {
     console.error('Error deleting subscription plan:', error);
     const message = error instanceof Error ? error.message : t('errors.server');
-    return NextResponse.json(
-      { success: false, message },
-      { status: 500 }
-    );
+    return NextResponse.json({ success: false, message }, { status: 500 });
   }
 }

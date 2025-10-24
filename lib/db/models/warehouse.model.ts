@@ -9,6 +9,7 @@ import {
 } from '@/lib/services/warehouse/types';
 import { logger } from '@/lib/api/services/logging';
 import Integration from './integration.model';
+import mongoose from 'mongoose';
 
 export interface IShipmentEvent {
   date: Date;
@@ -46,10 +47,11 @@ export interface IShipment extends Document {
 }
 
 export interface IWarehouseStock {
-  productId: Schema.Types.ObjectId;
+  productId: mongoose.Types.ObjectId;
   sku: string;
   name: string;
   quantity: number;
+  price: number;
   location?: string;
   lastSync: Date;
   lastUpdated: Date;
@@ -124,6 +126,7 @@ const warehouseStockSchema = new Schema<IWarehouseStock>({
   sku: { type: String, required: true },
   name: { type: String, required: true },
   quantity: { type: Number, default: 0 },
+  price: { type: Number, min: 0 },
   location: String,
   lastSync: Date,
   lastUpdated: Date,
@@ -161,16 +164,17 @@ warehouseSchema.methods.createShipment = async function (request: CreateShipment
     }
 
     for (const item of request.items) {
-      const stock = this.products.get(item.productId);
+      const stock = this.products.get(item.productId.toString());
       if (!stock || stock.quantity < item.quantity) {
         throw new Error(`Insufficient stock for product ${item.productId}`);
       }
     }
 
-    const response = await fetch(`${integration.credentials.apiUrl}/shipments`, {
+    const response = await fetch(`${integration.credentials.get('apiUrl')}/shipments`, {
       method: 'POST',
       headers: {
-        Authorization: `Bearer ${integration.credentials.apiKey}`,
+        Authorization: `Bearer ${integration.credentials.get('apiKey')}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify(request),
     });
@@ -197,7 +201,7 @@ warehouseSchema.methods.createShipment = async function (request: CreateShipment
     await this.save();
 
     for (const item of request.items) {
-      await this.updateStock(item.productId, this.products.get(item.productId)!.quantity - item.quantity);
+      await this.updateStock(item.productId.toString(), this.products.get(item.productId.toString())!.quantity - item.quantity);
     }
 
     await WebhookDispatcher.dispatch(this.createdBy, 'warehouse.shipment.created', {
@@ -224,9 +228,10 @@ warehouseSchema.methods.getShipmentStatus = async function (trackingId: string) 
     throw new Error('Integration not found');
   }
 
-  const response = await fetch(`${integration.credentials.apiUrl}/shipments/${trackingId}`, {
+  const response = await fetch(`${integration.credentials.get('apiUrl')}/shipments/${trackingId}`, {
     headers: {
-      Authorization: `Bearer ${integration.credentials.apiKey}`,
+      Authorization: `Bearer ${integration.credentials.get('apiKey')}`,
+      'Content-Type': 'application/json',
     },
   });
 
@@ -253,11 +258,12 @@ warehouseSchema.methods.syncInventory = async function (productId?: string) {
     }
 
     const url = productId
-      ? `${integration.credentials.apiUrl}/inventory/${productId}`
-      : `${integration.credentials.apiUrl}/inventory`;
+      ? `${integration.credentials.get('apiUrl')}/inventory/${productId}`
+      : `${integration.credentials.get('apiUrl')}/inventory`;
     const response = await fetch(url, {
       headers: {
-        Authorization: `Bearer ${integration.credentials.apiKey}`,
+        Authorization: `Bearer ${integration.credentials.get('apiKey')}`,
+        'Content-Type': 'application/json',
       },
     });
 
@@ -299,13 +305,18 @@ warehouseSchema.methods.updateStock = async function (productId: string, quantit
       throw new Error('Integration not found');
     }
 
-    await fetch(`${integration.credentials.apiUrl}/inventory/${productId}`, {
+    const response = await fetch(`${integration.credentials.get('apiUrl')}/inventory/${productId}`, {
       method: 'PATCH',
       headers: {
-        Authorization: `Bearer ${integration.credentials.apiKey}`,
+        Authorization: `Bearer ${integration.credentials.get('apiKey')}`,
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ quantity }),
     });
+
+    if (!response.ok) {
+      throw new Error('Failed to update stock');
+    }
 
     const stock = this.products.get(productId);
     if (stock) {

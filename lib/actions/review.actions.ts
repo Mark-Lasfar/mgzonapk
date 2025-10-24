@@ -6,9 +6,9 @@ import { z } from 'zod'
 
 import { auth } from '@/auth'
 
-import { connectToDatabase } from '../db'
-import Product from '../db/models/product.model'
-import Review, { IReview } from '../db/models/review.model'
+import { connectToDatabase } from '@/lib/db'
+import Product from '@/lib/db/models/product.model'
+import Review, { IReview } from '@/lib/db/models/review.model'
 import { formatError } from '../utils'
 import { ReviewInputSchema } from '../validator'
 import { IReviewDetails } from '@/types'

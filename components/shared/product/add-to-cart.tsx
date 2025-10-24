@@ -9,7 +9,6 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { addToCart } from '@/lib/actions/cart.actions';
-// import { useToast } from '@/hooks/use-toast';
 import { useTranslations, useLocale } from 'next-intl';
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
@@ -31,6 +30,7 @@ interface AddToCartProps {
     price: number;
     quantity: number;
     image?: string;
+    size?: string;
     brand?: string;
     sellerName?: string;
     colors: Array<{
@@ -71,11 +71,11 @@ export default function AddToCart({ item, minimal = false, clientId }: AddToCart
   useEffect(() => {
     let stock = item.countInStock;
     if (selectedColor && item.colors) {
-      const color = item.colors.find(c => c.name === selectedColor);
+      const color = item.colors.find((c) => c.name === selectedColor);
       if (color) stock = Math.min(stock, color.quantity);
     }
     if (selectedSize && item.sizes) {
-      const size = item.sizes.find(s => s.name === selectedSize);
+      const size = item.sizes.find((s) => s.name === selectedSize);
       if (size) stock = Math.min(stock, size.quantity);
     }
     setAvailableStock(stock);
@@ -120,11 +120,10 @@ export default function AddToCart({ item, minimal = false, clientId }: AddToCart
       const result = await addToCart(
         session.user.id,
         clientId || '',
-        item._id,
+        item._id, // تمرير item._id كـ string
         quantity,
         selectedColor || undefined,
-        selectedSize || undefined,
-        locale
+        selectedSize || undefined
       );
 
       if (!result.success) {

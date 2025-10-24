@@ -44,6 +44,7 @@ export interface UpdateWarehouseStockParams {
   location?: string;
   minimumStock: number;
   reorderPoint: number;
+  updatedBy: string;
   colors?: Array<{
     name: string;
     quantity: number;
@@ -233,16 +234,17 @@ await fetch(`${integration.credentials.get('apiUrl')}/inventory/${validatedData.
 });
 
 
-    warehouse.products.set(validatedData.productId, {
-      productId: validatedData.productId,
-      sku: validatedData.sku,
-      name: product.name,
-      quantity: validatedData.quantity,
-      location: validatedData.location,
-      lastSync: new Date(),
-      lastUpdated: new Date(),
-      updatedBy: sessionAuth.user.id,
-    });
+warehouse.products.set(validatedData.productId.toString(), {
+  productId: validatedData.productId,
+  sku: validatedData.sku,
+  name: product.name,
+  quantity: validatedData.quantity,
+  location: validatedData.location,
+  lastSync: new Date(),
+  lastUpdated: new Date(),
+  updatedBy: sessionAuth.user.id,
+});
+
 
     await warehouse.save({ session });
 

@@ -1,3 +1,4 @@
+// /app/api/seller/registration/route.ts
 import { connectToDatabase } from '@/lib/db';
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
@@ -7,9 +8,10 @@ import mongoose from 'mongoose';
 import { z } from 'zod';
 import { uploadToStorage } from '@/lib/utils/cloudinary';
 import { getTranslations, getLocale } from 'next-intl/server';
-import { sendNotification } from '@/lib/actions/notification.actions';
 import { logger } from '@/lib/api/services/logging';
 import { prometheusMetrics } from '@/lib/api/services/metrics';
+import { decrypt } from '@/lib/utils/encryption';
+import { sendNotification } from '@/lib/utils/notification';
 
 // مخطط Zod للتحقق من بيانات تسجيل البائع
 const sellerRegistrationSchema = z
@@ -51,9 +53,10 @@ const sellerRegistrationSchema = z
       street: z.string().min(1, { message: 'validation.address.street.required' }),
       city: z.string().min(1, { message: 'validation.address.city.required' }),
       state: z.string().min(1, { message: 'validation.address.state.required' }),
-      countryCode: z.string().min(2, { message: 'validation.address.country.required' }).regex(/^[A-Z]{2}$/, {
-        message: 'validation.address.country.format',
-      }),
+      countryCode: z
+        .string()
+        .min(2, { message: 'validation.address.country.required' })
+        .regex(/^[A-Z]{2}$/, { message: 'validation.address.country.format' }),
       postalCode: z
         .string()
         .min(1, { message: 'validation.address.postalCode.required' })
@@ -63,6 +66,7 @@ const sellerRegistrationSchema = z
       .boolean()
       .refine((val) => val === true, { message: 'validation.terms.required' }),
     is_trial: z.boolean().default(true),
+    phoneCountryCode: z.string().optional(),
   })
   .refine(
     (data) => data.businessType !== 'company' || (data.taxId && data.taxId.length > 0),
@@ -84,7 +88,7 @@ export async function POST(request: NextRequest) {
       await prometheusMetrics.recordSellerRegistration('failed');
       logger.warn('Unauthorized access attempt', { route: '/api/seller/registration' });
       return NextResponse.json(
-        { success: false, message: t('errors.unauthorized') },
+        { success: false, message: t('errors.unauthorized') || 'Unauthorized access' },
         { status: 401 }
       );
     }
@@ -92,18 +96,34 @@ export async function POST(request: NextRequest) {
     // تحليل بيانات النموذج
     const formData = await request.formData();
     let data: SellerRegistrationData;
-
     try {
       const jsonData = formData.get('data');
       if (!jsonData || typeof jsonData !== 'string') {
-        throw new Error(t('errors.invalidFormData'));
+        throw new Error(t('errors.invalidFormData') || 'Invalid or missing form data');
       }
+      console.log('Received form data:', jsonData);
 
       const parsedData = JSON.parse(jsonData);
-      logger.debug('Parsed form data', { parsedData });
+      console.log('Parsed form data:', parsedData);
+
+      if (!parsedData.sensitiveData || typeof parsedData.sensitiveData !== 'string') {
+        throw new Error(t('errors.invalidFormData') || 'Missing or invalid sensitive data');
+      }
+
+      // فك تشفير البيانات الحساسة
+      const sensitiveData = decrypt<Record<string, unknown>>(parsedData.sensitiveData, true);
+      console.log('Decrypted sensitive data:', sensitiveData);
+
+      // دمج البيانات المفكوكة مع البيانات غير الحساسة
+      const mergedData = {
+        ...parsedData,
+        ...sensitiveData,
+        phoneCountryCode: undefined, // إزالة phoneCountryCode إذا لم يكن مطلوبًا
+      };
+      delete mergedData.sensitiveData; // إزالة sensitiveData من البيانات النهائية
 
       // التحقق من البيانات باستخدام Zod
-      data = sellerRegistrationSchema.parse(parsedData);
+      data = sellerRegistrationSchema.parse(mergedData);
       logger.debug('Validated data', { businessType: data.businessType });
 
       // التحقق من وجود ملف logo في FormData
@@ -122,7 +142,7 @@ export async function POST(request: NextRequest) {
           logger.debug('Logo uploaded to Cloudinary', { secureUrl });
         } catch (uploadError) {
           logger.error('Logo upload error', { error: (uploadError as Error).message });
-          throw new Error(t('errors.logoUploadFailed'));
+          throw new Error(t('errors.logoUploadFailed') || 'Failed to upload logo');
         }
       }
     } catch (error) {
@@ -133,19 +153,21 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             success: false,
-            message: t('errors.invalidData'),
+            message: t('errors.invalidData') || 'Invalid form data',
             errors: error.errors.map((err) => ({
               path: err.path.join('.'),
-              message: t(err.message, { count: err.path.includes('email') ? 5 : err.path.includes('phone') ? 10 : 2 }),
+              message: t(err.message, {
+                count: err.path.includes('email') ? 5 : err.path.includes('phone') ? 10 : err.path.includes('description') ? 50 : 2,
+              }) || err.message,
             })),
           },
           { status: 400 }
         );
       }
-      const errorMessage = error instanceof Error ? error.message : t('errors.parseFailed');
+      const errorMessage = error instanceof Error ? error.message : (t('errors.parseFailed') || 'Failed to parse form data');
       logger.error('Parse error', { error: errorMessage });
       return NextResponse.json(
-        { success: false, message: t('errors.parseFailed'), error: errorMessage },
+        { success: false, message: t('errors.parseFailed') || 'Failed to parse form data', error: errorMessage },
         { status: 400 }
       );
     }
@@ -154,13 +176,17 @@ export async function POST(request: NextRequest) {
     await connectToDatabase();
     const dbSession = await mongoose.startSession();
     dbSession.startTransaction();
-
     try {
       // التحقق من وجود بائع مسجل مسبقًا
       const existingSeller = await Seller.findOne({
         $or: [{ email: data.email }, { userId: userSession.user.id }],
       }).session(dbSession);
-
+      console.log('Existing seller:', existingSeller ? {
+        _id: existingSeller._id,
+        paymentGateways: existingSeller.paymentGateways,
+        bankInfo: existingSeller.bankInfo,
+        integrations: existingSeller.integrations,
+      } : 'No existing seller found');
       if (existingSeller) {
         await prometheusMetrics.recordRequest('POST', '/api/seller/registration', true, Date.now() - startTime);
         await prometheusMetrics.recordSellerRegistration('success');
@@ -168,7 +194,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json(
           {
             success: true,
-            message: t('messages.sellerExists'),
+            message: t('messages.sellerExists') || 'Seller already exists',
             data: {
               id: existingSeller._id,
               businessName: existingSeller.businessName,
@@ -188,7 +214,7 @@ export async function POST(request: NextRequest) {
         logger.error('User not found before role update', { userId: userSession.user.id });
         await dbSession.abortTransaction();
         return NextResponse.json(
-          { success: false, message: t('errors.userNotFound') },
+          { success: false, message: t('errors.userNotFound') || 'User not found' },
           { status: 404 }
         );
       }
@@ -239,9 +265,6 @@ export async function POST(request: NextRequest) {
               pointsCost: 20,
               isTrial: data.is_trial,
               pointsRedeemed: 0,
-            },
-            bankInfo: {
-              verified: false,
             },
             verification: {
               status: 'pending',
@@ -345,12 +368,11 @@ export async function POST(request: NextRequest) {
         },
         { new: true, session: dbSession }
       );
-
       if (!updatedUser) {
         logger.error('User not found for role update', { userId: userSession.user.id });
         await dbSession.abortTransaction();
         return NextResponse.json(
-          { success: false, message: t('errors.updateUserRoleFailed') },
+          { success: false, message: t('errors.userNotFound') || 'User not found' },
           { status: 500 }
         );
       }
@@ -360,23 +382,26 @@ export async function POST(request: NextRequest) {
         sendNotification({
           userId: userSession.user.id,
           type: 'welcome',
-          title: t('notifications.sellerRegistered.title'),
-          message: t('notifications.sellerRegistered.message'),
+          title: t('notifications.sellerRegistered.title') || 'Welcome to MGZon Seller Program!',
+          message: t('notifications.sellerRegistered.message') || 'Your seller account has been successfully created.',
           channels: ['email', 'in_app'],
+          locale,
         }),
         sendNotification({
           userId: userSession.user.id,
           type: 'points.earned',
-          title: t('messages.bonusPointsTitle'),
-          message: t('messages.bonusPointsMessage', { points: 50 }),
+          title: t('messages.bonusPointsTitle') || 'Welcome Bonus',
+          message: t('messages.bonusPointsMessage', { points: 50 }) || `You have been awarded 50 points as a welcome bonus!`,
           channels: ['email', 'in_app'],
+          locale,
         }),
         sendNotification({
           userId: userSession.user.id,
           type: 'trial.reminder',
-          title: t('messages.trialActiveTitle'),
-          message: t('messages.trialActiveMessage', { trialDays: 5 }),
+          title: t('messages.trialActiveTitle') || 'Trial Period Activated',
+          message: t('messages.trialActiveMessage', { trialDays: 5 }) || 'Your 5-day trial period is now active.',
           channels: ['email', 'in_app'],
+          locale,
         }),
       ]);
 
@@ -387,7 +412,7 @@ export async function POST(request: NextRequest) {
 
       return NextResponse.json({
         success: true,
-        message: t('messages.success'),
+        message: t('messages.success') || 'Seller registration successful!',
         data: {
           id: seller[0]._id,
           businessName: seller[0].businessName,
@@ -409,7 +434,7 @@ export async function POST(request: NextRequest) {
   } catch (error) {
     await prometheusMetrics.recordRequest('POST', '/api/seller/registration', false, Date.now() - startTime);
     await prometheusMetrics.recordSellerRegistration('failed');
-    const errorMessage = error instanceof Error ? error.message : t('errors.serverError');
+    const errorMessage = error instanceof Error ? error.message : (t('errors.serverError') || 'Server error occurred');
     logger.error('Seller registration error', { error: errorMessage });
 
     if (error instanceof z.ZodError) {
@@ -417,21 +442,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         {
           success: false,
-          message: t('errors.invalidData'),
+          message: t('errors.invalidData') || 'Invalid form data',
           errors: error.errors.map((err) => ({
             path: err.path.join('.'),
-            message: t(err.message, { count: err.path.includes('email') ? 5 : err.path.includes('phone') ? 10 : 2 }),
+            message: t(err.message, {
+              count: err.path.includes('email') ? 5 : err.path.includes('phone') ? 10 : err.path.includes('description') ? 50 : 2,
+            }) || err.message,
           })),
         },
         { status: 400 }
       );
     }
-
     if (error instanceof mongoose.Error.ValidationError) {
       return NextResponse.json(
         {
           success: false,
-          message: t('errors.invalidData'),
+          message: t('errors.invalidData') || 'Invalid form data',
           errors: Object.values(error.errors).map((err) => ({
             field: err.path,
             message: err.message,
@@ -440,21 +466,19 @@ export async function POST(request: NextRequest) {
         { status: 400 }
       );
     }
-
     if (error instanceof mongoose.mongo.MongoServerError && error.code === 11000) {
       return NextResponse.json(
         {
           success: false,
-          message: t('messages.sellerExists'),
+          message: t('messages.sellerExists') || 'Seller already exists',
         },
         { status: 409 }
       );
     }
-
     return NextResponse.json(
       {
         success: false,
-        message: t('errors.serverError'),
+        message: t('errors.serverError') || 'Server error occurred',
         error: errorMessage,
       },
       { status: 500 }

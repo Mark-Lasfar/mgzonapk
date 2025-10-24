@@ -1,16 +1,16 @@
+// /home/mark/Music/my-nextjs-project-clean/app/api/products/import/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import Product from '@/lib/db/models/product.model';
 import Seller from '@/lib/db/models/seller.model';
 import Integration from '@/lib/db/models/integration.model';
 import SellerIntegration from '@/lib/db/models/seller-integration.model';
-import { ProductImportService } from '@/lib/api/services/product-import';
 import { customLogger } from '@/lib/api/services/logging';
 import { auth } from '@/auth';
-import { MarketplaceProduct } from '@/lib/types/marketplace';
 import { SellerError } from '@/lib/errors/seller-error';
 import { readXMLFile, validateXML } from '@/lib/utils/xml';
 import crypto from 'crypto';
+import { ImportExportService } from '@/lib/services/marketplace/import-export';
 
 export async function POST(request: NextRequest) {
   const requestId = crypto.randomUUID();
@@ -23,7 +23,7 @@ export async function POST(request: NextRequest) {
     }
 
     const contentType = request.headers.get('content-type');
-    let provider: string, productId: string, products: any[], sellerId: string, region: string = 'global';
+    let provider: string, productId: string | undefined, products: any[] | undefined, sellerId: string, region: string = 'global';
 
     if (contentType?.includes('multipart/form-data')) {
       const formData = await request.formData();
@@ -67,8 +67,8 @@ export async function POST(request: NextRequest) {
       throw new SellerError('SELLER_NOT_FOUND', 'Seller not found or unauthorized');
     }
 
-    const importService = new ProductImportService();
-    const importedProducts: MarketplaceProduct[] = [];
+    const importService = new ImportExportService();
+    const importedProducts: any[] = [];
 
     if (provider === 'file') {
       if (!products || !Array.isArray(products)) {
@@ -98,7 +98,7 @@ export async function POST(request: NextRequest) {
         importedProducts.push(product);
       }
     } else {
-      const integration = await Integration.findOne({ _id: provider, type: 'dropshipping', isActive: true });
+      const integration = await Integration.findOne({ providerName: provider, type: 'marketplace', isActive: true });
       if (!integration) {
         await customLogger.error('Integration not found', { requestId, provider, service: 'api' });
         throw new SellerError('INTEGRATION_NOT_FOUND', 'Integration not found');
@@ -115,9 +115,13 @@ export async function POST(request: NextRequest) {
         throw new SellerError('INTEGRATION_NOT_CONNECTED', 'Integration not connected');
       }
 
-      const product = await importService.importProduct(provider, productId, sellerId, region);
-      await importService.syncInventory(product.sourceId, sellerId, provider);
-      importedProducts.push(product);
+      const result = await importService.importProducts(provider, sellerId, {
+        source: products ? 'file' : 'api',
+        productId,
+        products,
+        region,
+      });
+      importedProducts.push(...result.products);
     }
 
     await customLogger.info('Products imported successfully', {

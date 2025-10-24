@@ -4,8 +4,9 @@ import { connectToDatabase } from '@/lib/db';
 import Product from '@/lib/db/models/product.model';
 import Seller from '@/lib/db/models/seller.model';
 import { z } from 'zod';
-import { sendNotification } from '@/lib/actions/notification.actions';
+// import { sendNotification } from '@/lib/actions/notification.actions';
 import { ShipBobService } from '@/lib/api/integrations/shipbob/service';
+import { sendNotification } from '@/lib/utils/notification';
 // import { ShipBobService } from '@/lib/api/integrations/warehouses/shipbob/service';
 
 // Validation schema

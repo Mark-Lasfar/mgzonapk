@@ -13,7 +13,7 @@ import {
   Tailwind,
   Text,
 } from '@react-email/components';
-import { formatCurrency } from '@/lib/utils';
+import { formatCurrency } from '@/lib/utils.client';
 import { IOrder } from '@/lib/db/models/order.model';
 
 type OrderInformationProps = {

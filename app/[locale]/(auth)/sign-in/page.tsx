@@ -1,10 +1,10 @@
-'use client';
+// /home/mark/Music/my-nextjs-project-clean/app/[locale]/(auth)/sign-in/page.tsx
 
+'use client';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-// import useSettingStore from '@/hooks/use-setting-store';
 import {
   Form,
   FormControl,
@@ -17,7 +17,6 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useForm } from 'react-hook-form';
 import { IUserSignIn } from '@/types';
 import { signInWithCredentials } from '@/lib/actions/user.actions';
-// import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignInSchema } from '@/lib/validator';
 import { useState } from 'react';
@@ -25,6 +24,7 @@ import { Loader2 } from 'lucide-react';
 import { GoogleSignInForm } from './google-signin-form';
 import useSettingStore from '../../../../hooks/use-setting-store';
 import { toast } from '../../../../hooks/use-toast';
+import { useSession } from 'next-auth/react'; // استيراد useSession
 
 const SeparatorWithOr = () => (
   <div className="relative my-4">
@@ -37,10 +37,16 @@ const SeparatorWithOr = () => (
   </div>
 );
 
-const signInDefaultValues = {
-  email: process.env.NODE_ENV === 'development' ? 'admin@mgzon.com' : '',
-  password: process.env.NODE_ENV === 'development' ? 'elasfar691458' : '',
-};
+const signInDefaultValues =
+  process.env.NODE_ENV === 'development'
+    ? {
+        email: 'admin@mgzon.com',
+        password: 'elasfar691458',
+      }
+    : {
+        email: '',
+        password: '',
+      };
 
 const allowedPaths = [
   '/seller/registration',
@@ -57,15 +63,18 @@ export default function CredentialsSignInForm() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const { data: session, status } = useSession(); // استخدام useSession للحصول على CSRF token
 
-  // Handle error from searchParams
   const error = searchParams?.get('error');
   if (error) {
+    console.log('SignIn: Error from search params:', error);
     toast({
       title: 'Error',
       description:
         error === 'CredentialsSignin'
           ? 'Invalid authentication method. Try signing in with Google.'
+          : error === 'MissingCSRF'
+          ? 'CSRF token missing. Please refresh the page and try again.'
           : 'An error occurred during sign-in. Please try again.',
       variant: 'destructive',
     });
@@ -88,13 +97,22 @@ export default function CredentialsSignInForm() {
   const onSubmit = async (data: IUserSignIn) => {
     try {
       setIsLoading(true);
+      console.log('SignIn: Submitting credentials for email:', data.email);
+
+      // إضافة CSRF token إلى الطلب
+      const csrfToken = session?.csrfToken || (await fetch('/api/auth/csrf').then((res) => res.json())).csrfToken;
+      console.log('SignIn: CSRF token:', csrfToken);
+
       const result = await signInWithCredentials({
         email: data.email,
         password: data.password,
+        csrfToken, // تمرير CSRF token
       });
+      console.log('SignIn: signInWithCredentials result:', result);
 
       if (!result.success) {
         if (result.requiresVerification) {
+          console.log('SignIn: Verification required for email:', data.email);
           router.push(`/verify-code?email=${encodeURIComponent(data.email)}`);
           toast({
             title: 'Verification Required',
@@ -102,11 +120,14 @@ export default function CredentialsSignInForm() {
           });
           return;
         }
+        console.log('SignIn: Authentication failed:', result.error);
         throw new Error(result.error || 'Authentication failed');
       }
 
+      console.log('SignIn: Success, redirecting to:', result.redirect || callbackUrl);
       router.push(result.redirect || callbackUrl);
     } catch (error) {
+      console.error('SignIn: Error:', error);
       toast({
         title: 'Error',
         description:
@@ -127,6 +148,12 @@ export default function CredentialsSignInForm() {
             <Form {...form}>
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 <input type="hidden" name="callbackUrl" value={callbackUrl} />
+                {/* إضافة حقل CSRF المخفي */}
+                <input
+                  type="hidden"
+                  name="csrfToken"
+                  value={session?.csrfToken || ''} // استخدام CSRF token من الجلسة
+                />
 
                 <FormField
                   control={control}
@@ -225,6 +252,13 @@ export default function CredentialsSignInForm() {
         <h2 className="text-lg font-bold mb-4">Quick Links</h2>
         <ul className="space-y-2">
           <li>
+            <Link href="/docs/oauth">
+              <Button variant="outline" className="w-full">
+                Docs as a Developer
+              </Button>
+            </Link>
+          </li>
+          <li>
             <Link href="/seller/registration">
               <Button variant="outline" className="w-full">
                 Register as a Seller
@@ -232,21 +266,21 @@ export default function CredentialsSignInForm() {
             </Link>
           </li>
           <li>
-            <Link href="/admin/api-keys">
+            <Link href="/account/APIKEY">
               <Button variant="outline" className="w-full">
                 API Key Management
               </Button>
             </Link>
           </li>
           <li>
-            <Link href="/admin/integrations">
+            <Link href="/seller/dashboard/integrations">
               <Button variant="outline" className="w-full">
                 Integrations & API Dashboard
               </Button>
             </Link>
           </li>
           <li>
-            <Link href="/help">
+            <Link href="/support/tickets/create">
               <Button variant="outline" className="w-full">
                 Help & Documentation
               </Button>

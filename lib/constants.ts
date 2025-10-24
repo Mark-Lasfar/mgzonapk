@@ -2,15 +2,15 @@ import SubscriptionPlanModel from '@/lib/db/models/subscription-plan.model';
 import { connectToDatabase } from '@/lib/db';
 
 export const SENDER_NAME = process.env.SENDER_NAME || 'support';
-export const SENDER_EMAIL = process.env.SENDER_EMAIL || 'onboarding@resend.dev';
+export const SENDER_EMAIL = process.env.SENDER_EMAIL || 'marklasfar@gmail.com';
 
-export const USER_ROLES = ['admin', 'user', 'SELLER'] as const;
+export const USER_ROLES = ['Admin', 'user', 'SELLER'] as const;
 export const COLORS = ['Gold', 'Blue', 'Red'] as const;
 export const THEMES = ['default', 'dark', 'light'] as const;
 
 export interface SubscriptionPlan {
   id: string;
-  name: string; // أزلت الـ enum لدعم الاشتراكات الديناميكية عشان الادمن هو اللي هيضيف الاشتراكات من لوحه التحكم 
+  name: string;
   price: number;
   pointsCost: number;
   description: string;
@@ -22,9 +22,11 @@ export interface SubscriptionPlan {
     customSectionsLimit: number;
     domainSupport: boolean;
     domainRenewal: boolean;
+    analyticsAccess:boolean;
     pointsRedeemable: boolean;
     dynamicPaymentGateways: boolean;
     maxApiKeys: number;
+    abTesting: boolean;
   };
   isTrial?: boolean;
   trialDuration?: number;
@@ -50,7 +52,11 @@ export async function getSubscriptionPlans(): Promise<SubscriptionPlan[]> {
       domainRenewal: plan.features.domainRenewal,
       pointsRedeemable: plan.features.pointsRedeemable,
       dynamicPaymentGateways: plan.features.dynamicPaymentGateways,
+      analyticsAccess: plan.features.analyticsAccess,
+      abTesting: plan.features.abTesting,
       maxApiKeys: plan.features.maxApiKeys || 1,
+
+
     },
     isTrial: plan.isTrial,
     trialDuration: plan.trialDuration,

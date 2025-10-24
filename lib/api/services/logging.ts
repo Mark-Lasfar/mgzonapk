@@ -2,10 +2,15 @@ import winston from 'winston';
 import { Redis } from '@upstash/redis';
 import crypto from 'crypto';
 import { Request, Response, NextFunction } from 'express';
+import dotenv from 'dotenv';
+
+dotenv.config({ path: '/home/mark/Music/my-nextjs-project-clean/.env.local' });
 
 const redis = new Redis({
-  url: `https://${process.env.UPSTASH_REDIS_URL}`,
-  token: process.env.UPSTASH_REDIS_REST_TOKEN!,
+    url: process.env.UPSTASH_REDIS_URL!,
+
+    token: process.env.UPSTASH_REDIS_TOKEN!,
+
 });
 
 const getCurrentTimestamp = () => new Date().toISOString();

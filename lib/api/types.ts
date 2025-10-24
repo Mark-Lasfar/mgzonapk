@@ -9,6 +9,15 @@ export interface ApiResponse<T = any> {
   };
 }
 
+
+interface ProductResponse {
+  success: boolean
+  message: string
+  data?: any
+  metadata?: any
+  code?: string
+}
+
 export interface PaginatedResponse<T> extends ApiResponse {
   data: {
     items: T[];

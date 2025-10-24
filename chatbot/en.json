@@ -1,0 +1,359 @@
+[
+  {
+    "question": "What is OAuth in MGZon?",
+    "answer": "OAuth in MGZon is a protocol that allows third-party applications to securely access resources using access tokens instead of passwords. It enables users to share or control their data without exposing sensitive information.",
+    "explanation": "The answer is derived from the 'introduction' section, specifically from `t('oauth.introductionDesc')`, which explains the purpose of OAuth.",
+    "instructions": "To get started, read the Introduction section in MGZon's documentation to understand the basics, then proceed to the Setup section to create an application.",
+    "section": "Introduction"
+  },
+  {
+    "question": "Why use OAuth with MGZon?",
+    "answer": "OAuth provides a secure and easy way to access MGZon’s APIs, such as managing products, orders, or ads, without sharing login credentials.",
+    "explanation": "The documentation clarifies that OAuth is used to authorize access (scopes) to specific resources like profile:read or products:write.",
+    "instructions": "Focus on the Scopes section to understand how to select the appropriate permissions for your application.",
+    "section": "Introduction"
+  },
+  {
+    "question": "I’m a new developer, how do I start with MGZon’s APIs?",
+    "answer": "Start by reading MGZon’s OAuth documentation. It will help you understand how to register an application, use the OAuth flow, and obtain tokens to access resources. The Introduction section gives an overview, and the Setup section details the steps.",
+    "explanation": "The question is general and beginner-friendly, so the answer links the user to the relevant sections (Introduction and Setup).",
+    "instructions": "Begin by creating an OAuth application via a POST request to `/api/v1/clients`, as shown in the Setup section.",
+    "section": "Introduction"
+  },
+  {
+    "question": "What’s the difference between using OAuth and API Key in MGZon?",
+    "answer": "OAuth allows users to authorize third-party applications to access resources on their behalf using temporary tokens. API Keys, however, provide direct access to resources (like product or inventory management) without user authorization, typically used by sellers.",
+    "explanation": "The documentation distinguishes between OAuth (in Flow and Endpoints sections) and API Key (in SellerSetup).",
+    "instructions": "Use OAuth for user-facing apps. For seller resource management, use an API Key from the SellerSetup section.",
+    "section": "Introduction"
+  },
+  {
+    "question": "How do I register an OAuth application in MGZon?",
+    "answer": "Send a POST request to `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/clients` with the headers:\n- `Authorization: Bearer YOUR_ACCESS_TOKEN`\n- `Content-Type: application/json`\nAnd the body:\n```json\n{\n  \"name\": \"MyApp\",\n  \"redirectUris\": [\"https://your-app.com/callback\"],\n  \"scopes\": [\"profile:read\", \"products:write\"]\n}\n```\nThe response will include application details like `clientId` and `clientSecret`.",
+    "explanation": "The answer is directly from the 'setup' section, specifically the first `CodeBlock` example.",
+    "instructions": "Ensure you have a valid access token and select appropriate scopes from the Scopes section.",
+    "section": "Setup"
+  },
+  {
+    "question": "What happens after I register an OAuth application?",
+    "answer": "After registering the application, you’ll receive a JSON response containing:\n- `clientId`: Application identifier.\n- `clientSecret`: Application secret.\n- `name`: Application name.\n- `redirectUris`: Allowed redirect URIs.\n- `scopes`: Granted permissions.\n- `createdAt`: Creation date.",
+    "explanation": "The response is detailed in the second `CodeBlock` in the Setup section.",
+    "instructions": "Store `clientId` and `clientSecret` securely, as you’ll need them for the OAuth flow.",
+    "section": "Setup"
+  },
+  {
+    "question": "If I want to build an app that reads user data, what are the first steps?",
+    "answer": "First, register an OAuth application via a POST request to `/api/v1/clients` with the `profile:read` scope. Then, use the `clientId` and `clientSecret` in the OAuth flow to obtain an access token.",
+    "explanation": "The question asks for practical steps, so the answer focuses on the first step from the Setup section.",
+    "instructions": "Read the Flow section after Setup to understand how to use the token in API requests.",
+    "section": "Setup"
+  },
+  {
+    "question": "What’s required to build an app that integrates with MGZon?",
+    "answer": "You need to register an OAuth application by sending a POST request to `/api/v1/clients`, specifying the app name, redirect URIs, and required scopes (e.g., `products:read` or `orders:write`). You’ll receive a `clientId` and `clientSecret` for use in the OAuth flow.",
+    "explanation": "The question is broad, so the answer covers the core points from the Setup section.",
+    "instructions": "If integrating with sales platforms, check the SellerIntegrations section after Setup.",
+    "section": "Setup"
+  },
+  {
+    "question": "How do I create an API Key in MGZon?",
+    "answer": "Send a POST request to `${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/keys` with:\n- `Authorization: Bearer YOUR_ACCESS_TOKEN`\n- `Content-Type: application/json`\nAnd the body:\n```json\n{\n  \"name\": \"My Seller API Key\",\n  \"permissions\": [\"products:read\", \"products:write\", \"inventory:read\", \"inventory:write\"]\n}\n```\nThe response will provide the `key` and other details.",
+    "explanation": "The answer comes from the first `CodeBlock` in the SellerSetup section.",
+    "instructions": "Use the API Key for requests like managing products or inventory (see SellerIntegrations).",
+    "section": "SellerSetup"
+  },
+  {
+    "question": "What’s the difference between permissions and scopes in MGZon?",
+    "answer": "Scopes are used in OAuth to define permissions for third-party apps (e.g., `profile:read`) and require user consent. Permissions are used in API Keys for sellers to directly access resources (e.g., `products:write`) without user authorization.",
+    "explanation": "The documentation differentiates between these in the Scopes and SellerSetup sections.",
+    "instructions": "For direct seller access, use an API Key with appropriate permissions.",
+    "section": "SellerSetup"
+  },
+  {
+    "question": "As a seller, how can I manage my products without sharing my data?",
+    "answer": "Create an API Key via a POST request to `/api/v1/keys`, specifying the needed permissions (e.g., `products:read` or `inventory:write`). The API Key lets you securely manage products and inventory without sharing login credentials.",
+    "explanation": "The question targets sellers, so the answer is based on the SellerSetup section.",
+    "instructions": "Try the code in `sellerApiKeyJs` to create the key easily.",
+    "section": "SellerSetup"
+  },
+  {
+    "question": "If I want to automate inventory management, what’s the best approach?",
+    "answer": "Use an API Key with `inventory:read` and `inventory:write` permissions. Create the key via a POST request to `/api/v1/keys`, then use it in requests like `/api/products/sync` to sync inventory.",
+    "explanation": "The question asks for a practical solution, so the answer links SellerSetup and SellerIntegrations.",
+    "instructions": "Check the `syncInventory` example in the SellerIntegrations section for ready-to-use code.",
+    "section": "SellerSetup"
+  },
+  {
+    "question": "What scopes are available in MGZon?",
+    "answer": "Available scopes include:\n- `profile:read`: Read user data.\n- `profile:write`: Modify user data.\n- `products:read`: Read product data.\n- `products:write`: Create or modify products.\n- `orders:read`: Read orders.\n- `orders:write`: Create or modify orders.\n- `customers:read`: Read customer data.\n- `customers:write`: Modify customer data.\n- `inventory:read`: Read inventory.\n- `inventory:write`: Modify inventory.\n- `analytics:read`: Read analytics data.\n- `ads:read`: Read ad data.\n- `ads:write`: Create or modify ads.",
+    "explanation": "The answer comes from the scopes table in the Scopes section.",
+    "instructions": "Choose scopes based on your app’s needs and specify them during application registration.",
+    "section": "Scopes"
+  },
+  {
+    "question": "How do I request a specific scope in the OAuth flow?",
+    "answer": "Add the desired scopes (e.g., `profile:read products:write`) to the query string of the authorization request:\n```javascript\nconst authUrl = `${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/mgz?client_id=${clientId}&redirect_uri=${redirectUri}&scope=profile:read%20products:write&state=STATE`;\n```",
+    "explanation": "The answer comes from the `scopesExample` in the Scopes section.",
+    "instructions": "Ensure the requested scopes are supported and match those registered with the application.",
+    "section": "Scopes"
+  },
+  {
+    "question": "If I want to build an app that lets users modify their products, which scopes do I need?",
+    "answer": "You’ll need the `products:write` scope to allow creating or modifying products. If you also want to read product data, add `products:read`.",
+    "explanation": "The question specifies a function, so the answer focuses on relevant scopes from the Scopes table.",
+    "instructions": "Include these scopes in your application registration and OAuth flow requests.",
+    "section": "Scopes"
+  },
+  {
+    "question": "Do I need to request all scopes or just the ones I need?",
+    "answer": "Only request the scopes you need to minimize security risks and improve user experience. Requesting unnecessary scopes may lead users to deny authorization.",
+    "explanation": "The documentation emphasizes selecting appropriate scopes in the Scopes section.",
+    "instructions": "Review the scopes table in the documentation and select only what your app requires.",
+    "section": "Scopes"
+  },
+  {
+    "question": "How do I import products from Shopify to MGZon?",
+    "answer": "Send a POST request to `/api/products/import` with:\n- `Authorization: Bearer YOUR_API_KEY`\n- `Content-Type: application/json`\nAnd the body:\n```json\n{\n  \"provider\": \"shopify\",\n  \"productId\": \"SHOPIFY_PRODUCT_ID\",\n  \"sellerId\": \"YOUR_SELLER_ID\",\n  \"region\": \"us\"\n}\n```\nThe response will provide details of the imported product.",
+    "explanation": "The answer comes from the `importProducts` example in the SellerIntegrations section.",
+    "instructions": "Ensure your API Key has the `products:write` permission.",
+    "section": "SellerIntegrations"
+  },
+  {
+    "question": "What product data is returned after importing?",
+    "answer": "The response includes:\n- `_id`: Product identifier.\n- `title`: Product name.\n- `description`: Product description.\n- `price`: Price.\n- `sku`: Product SKU.\n- `quantity`: Quantity.\n- `currency`: Currency.\n- `region`: Region.\n- `sellerId`: Seller identifier.\n- `source`: Source (e.g., shopify).\n- `sourceId`: Product ID in the source platform.",
+    "explanation": "The answer comes from the `importProductsResponse` in the documentation.",
+    "instructions": "Use this data to manage the product in MGZon.",
+    "section": "SellerIntegrations"
+  },
+  {
+    "question": "If I have a Shopify store, how do I transfer my products to MGZon?",
+    "answer": "Use an API Key with `products:write` permission and send a POST request to `/api/products/import`, specifying `provider` as 'shopify' along with `productId` and `sellerId`.",
+    "explanation": "The question asks for a practical solution for sellers, so the answer uses the import example from SellerIntegrations.",
+    "instructions": "Try the `syncInventory` code in JavaScript from the SellerIntegrations section.",
+    "section": "SellerIntegrations"
+  },
+  {
+    "question": "Can I automatically sync inventory between MGZon and another platform?",
+    "answer": "Yes, use a POST request to `/api/products/sync` with an API Key that has `inventory:write` permission. Include `productId`, `provider` (e.g., shopify), and `sellerId` to sync quantities.",
+    "explanation": "The question asks for automation, and the answer relies on the `syncInventory` example in SellerIntegrations.",
+    "instructions": "Use the code in `sellerIntegrationsJs` to set up automation.",
+    "section": "SellerIntegrations"
+  },
+  {
+    "question": "What are the steps of the OAuth flow in MGZon?",
+    "answer": "1. Redirect the user to `/api/auth/mgz` with `client_id`, `redirect_uri`, `scope`, and `state`.\n2. The user authorizes the requested scopes.\n3. MGZon redirects to the `redirect_uri` with a `code`.\n4. Send a POST request to `/api/token` with `code`, `client_id`, `client_secret`, and `redirect_uri` to obtain `access_token` and `refresh_token`.\n5. Use the `access_token` in API requests like `/api/userinfo`.",
+    "explanation": "The answer comes from the `flow` section, specifically the steps in `flowDesc` and the `flowExample`.",
+    "instructions": "Try the Node.js code in `flowExample` to implement the flow.",
+    "section": "Flow"
+  },
+  {
+    "question": "How do I obtain an access token after user authorization?",
+    "answer": "Send a POST request to `/api/token` with:\n```json\n{\n  \"grant_type\": \"authorization_code\",\n  \"code\": \"AUTH_CODE\",\n  \"client_id\": \"YOUR_CLIENT_ID\",\n  \"client_secret\": \"YOUR_CLIENT_SECRET\",\n  \"redirect_uri\": \"YOUR_REDIRECT_URI\"\n}\n```\nThe response will provide `access_token`, `refresh_token`, and `expires_in`.",
+    "explanation": "The answer comes from the `tokenEndpoint` example in the Endpoints section.",
+    "instructions": "Store the `refresh_token` to renew the token when it expires.",
+    "section": "Flow"
+  },
+  {
+    "question": "How do I make my app request user consent for data access?",
+    "answer": "Redirect the user to `/api/auth/mgz` with query parameters like `client_id`, `redirect_uri`, and `scope`. After user approval, you’ll receive a `code` to exchange for an `access_token`.",
+    "explanation": "The question asks for a simplified flow explanation, so the answer focuses on the first step from the Flow section.",
+    "instructions": "Use the `flowExample` in Node.js to implement the process.",
+    "section": "Flow"
+  },
+  {
+    "question": "What do I do if the token expires?",
+    "answer": "Use the `refresh_token` in a POST request to `/api/token` with:\n```json\n{\n  \"grant_type\": \"refresh_token\",\n  \"refresh_token\": \"REFRESH_TOKEN\",\n  \"client_id\": \"YOUR_CLIENT_ID\",\n  \"client_secret\": \"YOUR_CLIENT_SECRET\"\n}\n```\nYou’ll receive a new `access_token`.",
+    "explanation": "The answer comes from the `refreshToken` part in the Endpoints section.",
+    "instructions": "Store the `refresh_token` in a secure database.",
+    "section": "Flow"
+  },
+  {
+    "question": "What are the available OAuth endpoints in MGZon?",
+    "answer": "- `/api/auth/mgz`: Initiates the authorization flow.\n- `/api/token`: Obtains `access_token` and `refresh_token`.\n- `/api/userinfo`: Retrieves user data.",
+    "explanation": "The answer comes from the `endpoints` section in the documentation.",
+    "instructions": "Use these endpoints with the appropriate `access_token`.",
+    "section": "Endpoints"
+  },
+  {
+    "question": "How do I retrieve user data using OAuth?",
+    "answer": "Send a GET request to `/api/userinfo` with:\n- `Authorization: Bearer ACCESS_TOKEN`\nThe response will include data like `sub`, `email`, `name`, and `sellerId`.",
+    "explanation": "The answer comes from the `userinfoEndpoint` in the Endpoints section.",
+    "instructions": "Ensure the `access_token` is valid and has the `profile:read` scope.",
+    "section": "Endpoints"
+  },
+  {
+    "question": "If I want to get the email of a logged-in user, what do I do?",
+    "answer": "After obtaining an `access_token` from the OAuth flow, send a GET request to `/api/userinfo` with the token in the header. The response will include the email in the `email` field.",
+    "explanation": "The question asks for a specific function, and the answer relies on `userinfoEndpoint`.",
+    "instructions": "Try the `fetchUserInfo` code from the Errors section to handle errors.",
+    "section": "Endpoints"
+  },
+  {
+    "question": "What should I do after the user authorizes my app?",
+    "answer": "You’ll receive a `code` in the `redirect_uri`. Use it in a POST request to `/api/token` to obtain an `access_token` and `refresh_token`.",
+    "explanation": "The question asks for the next step in the flow, so the answer comes from `tokenEndpoint`.",
+    "instructions": "Check the `flowExample` in the Flow section.",
+    "section": "Endpoints"
+  },
+  {
+    "question": "What errors might I encounter in OAuth?",
+    "answer": "- `invalid_request`: The request is missing or has invalid parameters.\n- `invalid_client`: Incorrect `client_id` or `client_secret`.\n- `invalid_grant`: Invalid `code` or `refresh_token`.\n- `unauthorized_client`: The app isn’t authorized for the requested scopes.\n- `unsupported_grant_type`: The grant type is not supported.\n- `integration_not_found`: The integration doesn’t exist.\n- `integration_not_connected`: The integration isn’t connected.",
+    "explanation": "The answer comes from the errors table in the `errors` section.",
+    "instructions": "Review the request parameters if you encounter an error.",
+    "section": "Errors"
+  },
+  {
+    "question": "How do I handle the `invalid_request` error?",
+    "answer": "The `invalid_request` error occurs when the request is missing or has invalid parameters. Ensure:\n- All required parameters (e.g., `client_id`, `redirect_uri`) are included.\n- Parameters are correctly formatted (e.g., `scope` is space-separated).",
+    "explanation": "The answer comes from the `invalid_request` description in the Errors section.",
+    "instructions": "Use the error-handling code in `errorsExample`.",
+    "section": "Errors"
+  },
+  {
+    "question": "Why am I getting an error when trying to get an access token?",
+    "answer": "It could be due to errors like `invalid_request` (missing parameters) or `invalid_client` (incorrect app credentials). Verify `client_id`, `client_secret`, and `redirect_uri` in the `/api/token` request.",
+    "explanation": "The question is general, so the answer covers common errors from the Errors section.",
+    "instructions": "Review the code in `tokenEndpoint` and verify parameters.",
+    "section": "Errors"
+  },
+  {
+    "question": "If the API returns an error, how do I identify the issue?",
+    "answer": "Check the error code in the response (e.g., `invalid_grant` or `integration_not_found`) and compare it to the errors table in MGZon’s documentation. Each error has a description and cause.",
+    "explanation": "The answer relies on the errors table and `errorsExample`.",
+    "instructions": "Add error handling to your code, as shown in `errorsExample`.",
+    "section": "Errors"
+  },
+  {
+    "question": "How do I create an ad campaign in MGZon?",
+    "answer": "Send a POST request to `/api/seller/ads?sandbox=false` with:\n- `Authorization: Bearer YOUR_API_KEY`\n- Body:\n```json\n{\n  \"integrationId\": \"INTEGRATION_ID\",\n  \"name\": \"Summer Sale Campaign\",\n  \"budget\": { \"amount\": 1000, \"currency\": \"USD\" },\n  \"schedule\": { \n    \"startDate\": \"2025-08-18T10:00:00.000Z\",\n    \"endDate\": \"2025-09-18T10:00:00.000Z\"\n  },\n  \"creatives\": [\n    { \n      \"type\": \"image\", \n      \"url\": \"https://example.com/ad.jpg\",\n      \"dimensions\": { \"width\": 1200, \"height\": 600 }\n    }\n  ],\n  \"products\": [\"PRODUCT_ID_1\", \"PRODUCT_ID_2\"],\n  \"targeting\": {\n    \"regions\": [\"us\", \"eu\"],\n    \"demographics\": { \"age\": \"18-45\", \"gender\": \"all\" }\n  }\n}\n```",
+    "explanation": "The answer comes from the `createAdCampaign` example in the Advertising section.",
+    "instructions": "Use an API Key with `ads:write` permission.",
+    "section": "Advertising"
+  },
+  {
+    "question": "How do I view all my ad campaigns?",
+    "answer": "Send a GET request to `/api/seller/ads` with:\n- `Authorization: Bearer YOUR_API_KEY`\n- `Accept: application/json`\nThe response will provide a list of campaigns with details like `_id`, `name`, and `status`.",
+    "explanation": "The answer comes from `listAdCampaigns` in the Advertising section.",
+    "instructions": "Try the `listAdCampaigns` code to display campaigns.",
+    "section": "Advertising"
+  },
+  {
+    "question": "If I want to create ads for my products, where do I start?",
+    "answer": "Start by creating an API Key with `ads:write` permission, then send a POST request to `/api/seller/ads` with campaign details like name, budget, and targeted products.",
+    "explanation": "The question is beginner-focused, so the answer links SellerSetup and Advertising.",
+    "instructions": "Check the `advertisementsJs` or `advertisementsPython` examples for ready-to-use code.",
+    "section": "Advertising"
+  },
+  {
+    "question": "How do I track the performance of my ads in MGZon?",
+    "answer": "Send a POST request to `/api/seller/ads/sync` with `campaignId` to sync metrics like views, clicks, and conversions.",
+    "explanation": "The answer comes from `syncAdMetrics` in the Advertising section.",
+    "instructions": "Use the code in `syncAdMetrics` to retrieve data.",
+    "section": "Advertising"
+  },
+  {
+    "question": "How do I use OAuth in a Node.js application?",
+    "answer": "Use the `passport-mgzon` library as shown in the example:\n```javascript\nconst express = require('express');\nconst passport = require('passport');\nconst MGZonStrategy = require('passport-mgzon');\n\npassport.use(new MGZonStrategy({\n  clientID: 'YOUR_CLIENT_ID',\n  clientSecret: 'YOUR_CLIENT_SECRET',\n  callbackURL: 'https://your-app.com/auth/mgz/callback',\n  scope: ['profile:read', 'products:write']\n}, async (accessToken, refreshToken, profile, done) => {\n  const user = { id: profile.id, email: profile.email, name: profile.name };\n  return done(null, user);\n}));\n\napp.get('/auth/mgz', passport.authenticate('mgzon'));\napp.get('/auth/mgz/callback', passport.authenticate('mgzon', { session: false }), (req, res) => {\n  res.redirect('/profile');\n});\n\napp.listen(3000);\n```",
+    "explanation": "The answer comes from `exampleNode` in the Example section.",
+    "instructions": "Replace `YOUR_CLIENT_ID` and `YOUR_CLIENT_SECRET` with actual values.",
+    "section": "Example"
+  },
+  {
+    "question": "How do I import a product in my app using JavaScript?",
+    "answer": "Use the code:\n```javascript\nconst fetch = require('node-fetch');\n\nasync function importProduct(apiKey, sellerId, provider, productId) {\n  const response = await fetch('${process.env.NEXT_PUBLIC_BASE_URL}/api/products/import', {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json',\n      'Authorization': `Bearer ${apiKey}`\n    },\n    body: JSON.stringify({ provider, productId, sellerId, region: 'us' })\n  });\n  const result = await response.json();\n  if (!result.success) throw new Error(result.error);\n  return result.data;\n}\n```",
+    "explanation": "The answer comes from `exampleSellerImport` in the Example section.",
+    "instructions": "Ensure the API Key has `products:write` permission.",
+    "section": "Example"
+  },
+  {
+    "question": "I want to build an app using Python, how do I start with OAuth?",
+    "answer": "Use Flask and follow the `examplePython` in the documentation. Redirect the user to `/api/auth/mgz`, and use the `code` to obtain an `access_token` from `/api/token`.",
+    "explanation": "The question asks for a Python solution, so the answer relies on `examplePython`.",
+    "instructions": "Try the code in `examplePython` and focus on error handling.",
+    "section": "Example"
+  },
+  {
+    "question": "How do I export products from MGZon to another platform?",
+    "answer": "Use a POST request to `/api/products/export` with an API Key that has `products:write` permission. Include `productId`, `targetPlatform` (e.g., shipbob), and `sellerId`.",
+    "explanation": "The question asks for exporting, so the answer comes from `exampleSellerExport`.",
+    "instructions": "Try the `exportProduct` code in JavaScript.",
+    "section": "Example"
+  },
+  {
+    "question": "How do I create an OAuth application as a developer?",
+    "answer": "Send a POST request to `/api/v1/clients` with:\n```javascript\nconst fetch = require('node-fetch');\n\nasync function createApplication(token, name, redirectUris, scopes) {\n  const response = await fetch('${process.env.NEXT_PUBLIC_BASE_URL}/api/v1/clients', {\n    method: 'POST',\n    headers: {\n      'Content-Type': 'application/json',\n      'Authorization': `Bearer ${token}`\n    },\n    body: JSON.stringify({ name, redirectUris, scopes })\n  });\n  const result = await response.json();\n  if (!result.success) throw new Error(result.error);\n  return result.data;\n}\n```",
+    "explanation": "The answer comes from `developersCreateApp` in the Developers section.",
+    "instructions": "Use a valid access token and specify appropriate scopes.",
+    "section": "Developers"
+  },
+  {
+    "question": "How do I view all the applications I’ve registered?",
+    "answer": "Send a GET request to `/api/v1/clients` with `Authorization: Bearer YOUR_ACCESS_TOKEN`. The response will list all your applications.",
+    "explanation": "The answer comes from `developersListApps` in the Developers section.",
+    "instructions": "Try the `listApplications` code in JavaScript.",
+    "section": "Developers"
+  },
+  {
+    "question": "If I want to create a new app, what are the steps?",
+    "answer": "Create an application via a POST request to `/api/v1/clients`, specifying the name, redirect URIs, and scopes. You’ll receive a `clientId` and `clientSecret` for use in the OAuth flow.",
+    "explanation": "The question is general, so the answer relies on `developersCreateApp`.",
+    "instructions": "Read the Developers section for more details.",
+    "section": "Developers"
+  },
+  {
+    "question": "Can I manage multiple applications in MGZon?",
+    "answer": "Yes, send a GET request to `/api/v1/clients` to view all registered applications, and create new ones with POST requests to the same endpoint.",
+    "explanation": "The answer comes from `developersListApps` and `developersCreateApp`.",
+    "instructions": "Use the code in `developersListApps` to manage applications.",
+    "section": "Developers"
+  },
+  {
+    "question": "How do I ensure my application is secure with MGZon?",
+    "answer": "Use HTTPS for redirect URIs, store `clientSecret` and `access_token` securely, and request only the necessary scopes. Also, implement error handling as shown in the Errors section.",
+    "explanation": "The answer combines security tips from the Setup, Scopes, and Errors sections.",
+    "instructions": "Review the Errors section for error handling and the Scopes section for minimal permissions.",
+    "section": "General"
+  },
+  {
+    "question": "If I don’t understand something in MGZon’s documentation, what should I do?",
+    "answer": "Use the chatbot on the page (bottom-right chat button). Enter your question, and it will respond based on the documentation or training data.",
+    "explanation": "The question is general, and the answer uses the chatbot feature mentioned in the documentation.",
+    "instructions": "Try simple questions in the chatbot, and if unclear, review the relevant section.",
+    "section": "General"
+  },
+  {
+    "question": "Does MGZon support programming languages other than JavaScript and Python?",
+    "answer": "Yes, MGZon’s APIs use HTTP, so you can use any language that supports HTTP requests (e.g., Ruby, PHP, Go). The examples in the documentation use JavaScript and Python, but the principles are the same.",
+    "explanation": "The endpoints (e.g., `/api/auth/mgz`) use HTTP, making them language-agnostic.",
+    "instructions": "Use an HTTP library in your preferred language and follow the examples in the Example section.",
+    "section": "General"
+  },
+  {
+    "question": "How do I test my application before publishing it?",
+    "answer": "Use the sandbox mode in ad requests (e.g., `/api/seller/ads?sandbox=true`) to test without affecting real data. Also, try your requests in a local development environment.",
+    "explanation": "The sandbox mode is mentioned in the Advertising section.",
+    "instructions": "Start with simple requests like `/api/userinfo` in a test environment.",
+    "section": "General"
+  },
+  {
+    "question": "Is OAuth in MGZon similar to OAuth in other platforms like Google?",
+    "answer": "The core concept is similar (Authorization Code Grant), but MGZon has specific endpoints and scopes like `/api/auth/mgz` and `products:write`. Review the Flow section for details.",
+    "explanation": "The question is curious, and the answer compares MGZon’s OAuth to standard OAuth practices.",
+    "instructions": "Review the Flow section to understand the differences and details.",
+    "section": "General"
+  },
+  {
+    "question": "If I want to build an app like Amazon, can I use MGZon’s APIs?",
+    "answer": "Yes, MGZon provides APIs for managing products, orders, and ads. Start with the Setup and SellerIntegrations sections.",
+    "explanation": "The question asks for a broad vision, so the answer focuses on the capabilities of MGZon’s APIs.",
+    "instructions": "Begin with the Setup section to create an app, then SellerIntegrations for product management.",
+    "section": "General"
+  },
+  {
+    "question": "What if I forget my `client_secret`?",
+    "answer": "Create a new application via `/api/v1/clients`, as `client_secret` cannot be retrieved for security reasons.",
+    "explanation": "The documentation doesn’t specify a direct solution, but this is a standard security practice.",
+    "instructions": "Store `client_secret` securely immediately after creation.",
+    "section": "General"
+  }
+]

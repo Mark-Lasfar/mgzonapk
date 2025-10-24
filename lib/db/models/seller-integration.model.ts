@@ -1,4 +1,4 @@
-// /home/hager/Trash/my-nextjs-project-master/lib/db/models/sellerIntegration.model.ts
+// lib/db/models/seller-integration.model.ts
 import mongoose, { Schema, Document, Model, Types } from 'mongoose';
 import validator from 'validator';
 import { encrypt, decrypt } from '@/lib/utils/encryption';
@@ -8,6 +8,7 @@ export interface ISellerIntegration extends Document {
   integrationId: Types.ObjectId;
   accessToken?: string;
   refreshToken?: string;
+  providerName: string; // 
   accountDetails: Map<string, string>;
   expiresAt?: Date;
   isActive: boolean;
@@ -29,37 +30,36 @@ export interface ISellerIntegration extends Document {
     enabled: boolean;
     url?: string;
     events?: Array<
-  | 'order created'
-  | 'order fulfilled'
-  | 'order cancelled'
-  | 'order payment completed'
-  | 'order shipment updated'
-  | 'order updated'
-  | 'payment succeeded'
-  | 'shipment updated'
-  | 'tax transaction created'
-  | 'tax report created'
-  | 'product created'
-  | 'product updated'
-  | 'product deleted'
-  | 'product imported'
-  | 'product synced'
-  | 'inventory updated'
-  | 'customer created'
-  | 'customer updated'
-  | 'withdrawal created'
-  | 'withdrawal updated'
-  | 'seller registered'
-  | 'seller updated'
-  | 'campaign updated'
-  | 'ad performance updated'
-  | 'transaction recorded'
-  | 'analytics updated'
-  | 'automation triggered'
-  | 'message sent'
-  | 'course updated'
-  | 'security alert'
-
+      | 'order created'
+      | 'order fulfilled'
+      | 'order cancelled'
+      | 'order payment completed'
+      | 'order shipment updated'
+      | 'order updated'
+      | 'payment succeeded'
+      | 'shipment updated'
+      | 'tax transaction created'
+      | 'tax report created'
+      | 'product created'
+      | 'product updated'
+      | 'product deleted'
+      | 'product imported'
+      | 'product synced'
+      | 'inventory updated'
+      | 'customer created'
+      | 'customer updated'
+      | 'withdrawal created'
+      | 'withdrawal updated'
+      | 'seller registered'
+      | 'seller updated'
+      | 'campaign updated'
+      | 'ad performance updated'
+      | 'transaction recorded'
+      | 'analytics updated'
+      | 'automation triggered'
+      | 'message sent'
+      | 'course updated'
+      | 'security alert'
     >;
     secret?: string;
   };
@@ -95,6 +95,11 @@ const sellerIntegrationSchema = new Schema<ISellerIntegration>(
       type: String,
       get: (val: string | undefined) => (val ? decrypt(val) : undefined),
       set: (val: string | undefined) => (val ? encrypt(val) : undefined),
+    },
+    providerName: {
+      type: String, // تعديل من Types.ObjectId إلى String
+      required: [true, 'Provider name is required'],
+      trim: true,
     },
     accountDetails: {
       type: Map,
@@ -181,37 +186,36 @@ const sellerIntegrationSchema = new Schema<ISellerIntegration>(
         {
           type: String,
           enum: [
-    'order created',
-    'order fulfilled',
-    'order cancelled',
-    'order payment completed',
-    'order shipment updated',
-    'order updated',
-    'payment succeeded',
-    'shipment updated',
-    'tax transaction created',
-    'tax report created',
-    'product created',
-    'product updated',
-    'product deleted',
-    'product imported',
-    'product synced',
-    'inventory updated',
-    'customer created',
-    'customer updated',
-    'withdrawal created',
-    'withdrawal updated',
-    'seller registered',
-    'seller updated',
-    'campaign updated',
-    'ad performance updated',
-    'transaction recorded',
-    'analytics updated',
-    'automation triggered',
-    'message sent',
-    'course updated',
-    'security alert'
-
+            'order created',
+            'order fulfilled',
+            'order cancelled',
+            'order payment completed',
+            'order shipment updated',
+            'order updated',
+            'payment succeeded',
+            'shipment updated',
+            'tax transaction created',
+            'tax report created',
+            'product created',
+            'product updated',
+            'product deleted',
+            'product imported',
+            'product synced',
+            'inventory updated',
+            'customer created',
+            'customer updated',
+            'withdrawal created',
+            'withdrawal updated',
+            'seller registered',
+            'seller updated',
+            'campaign updated',
+            'ad performance updated',
+            'transaction recorded',
+            'analytics updated',
+            'automation triggered',
+            'message sent',
+            'course updated',
+            'security alert'
           ],
         },
       ],

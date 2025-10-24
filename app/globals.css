@@ -1,3 +1,4 @@
+/* /home/mark/Music/my-nextjs-project-clean/app/globals.css */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -305,3 +306,22 @@ video {
 
 
 
+@keyframes slide-up {
+  from { transform: translateY(20px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-up {
+  animation: slide-up 0.5s ease-out;
+}
+
+@media (orientation: landscape) and (max-width: 768px) {
+  .container {
+    flex-direction: row;
+  }
+  aside {
+    width: 30%;
+  }
+  main {
+    width: 70%;
+  }
+}

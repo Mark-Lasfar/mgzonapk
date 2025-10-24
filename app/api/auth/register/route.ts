@@ -3,6 +3,8 @@ import { connectToDatabase } from '@/lib/db';
 import User from '@/lib/db/models/user.model';
 import { generateRecoveryCode } from '@/lib/utils/verification';
 import { sendNotification } from '@/lib/utils/notification';
+// import { sendNotification } from '@/lib/actions/notification.actions';
+
 import VerificationCode from '@/lib/db/models/verification-code.model';
 
 export async function POST(req: NextRequest) {
@@ -54,5 +56,5 @@ export async function POST(req: NextRequest) {
   } catch (error) {
     console.error('Registration error:', error);
     return NextResponse.json({ success: false, error: 'Registration failed' }, { status: 500 });
-  }
+  } 
 }

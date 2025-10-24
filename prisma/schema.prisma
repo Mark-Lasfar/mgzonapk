@@ -1,0 +1,26 @@
+model Product {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  slug          String   @unique
+  description   String
+  price         Float
+  listPrice     Float
+  countInStock  Int
+  category      String
+  brand         String
+  featured      Boolean
+  isPublished   Boolean
+  pricing       Json // Update to include basePrice, markup, profit, commission, finalPrice, currency
+  warehouseData Json?
+  images        String[]
+  relatedProducts String[] @db.ObjectId
+  dropshipping  Json?
+  translations  Json[]
+  sections      Json[]
+  layout        String
+  tags          String[]
+  sellerId      String   @db.ObjectId
+  createdAt     String
+  updatedAt     String
+  availability  String // Added to support MarketplaceProduct
+}

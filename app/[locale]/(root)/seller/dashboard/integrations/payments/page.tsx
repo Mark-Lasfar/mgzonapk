@@ -10,7 +10,7 @@ import { useToast } from '@/components/ui/use-toast';
 import { useSession } from 'next-auth/react';
 
 export default function PaymentsPage({ locale }: { locale: string }) {
-  const t = useTranslations('seller.dashboard.integrations.payments');
+  const t = useTranslations('seller dashboard integrations payments');
   const router = useRouter();
   const { toast } = useToast();
   const { data: session } = useSession();

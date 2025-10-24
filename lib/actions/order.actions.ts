@@ -1,3 +1,4 @@
+
 'use server'
 
 import { connectToDatabase } from '@/lib/db'
@@ -14,7 +15,7 @@ import { formatError, round2 } from '../utils'
 import { paypal } from '../paypal'
 import { OrderInputSchema } from '../validator'
 import { auth } from '@/auth'
-import SellerIntegration from '../db/models/seller-integration.model'
+import SellerIntegration from '@/lib/db/models/seller-integration.model'
 
 interface IOrderList extends IOrder {
   user: { name: string }
@@ -49,24 +50,20 @@ export const createOrderFromCart = async (
   clientSideCart: Cart,
   userId: string
 ) => {
-  const cartResult = await calcDeliveryDateAndPrice({
-    items: clientSideCart.items,
-    shippingAddress: clientSideCart.shippingAddress,
-    deliveryDateIndex: clientSideCart.deliveryDateIndex,
-  })
-
   const cart = {
     ...clientSideCart,
-    ...cartResult,
+    ...calcDeliveryDateAndPrice({
+      items: clientSideCart.items,
+      shippingAddress: clientSideCart.shippingAddress,
+      deliveryDateIndex: clientSideCart.deliveryDateIndex,
+    }),
   }
 
   const order = OrderInputSchema.parse({
-    userId: userId,
-    sellerId: clientSideCart.sellerId || 'default_seller_id', // Add default sellerId if not provided
+    user: userId,
     items: cart.items.map((item) => ({
       ...item,
-      color: item.color || 'N/A',
-      pointsUsed: item.pointsUsed || 0,
+      color: item.color && typeof item.color === 'object' && 'name' in item.color ? item.color.name : (item.color as string) || 'N/A',
     })),
     shippingAddress: cart.shippingAddress,
     paymentMethod: cart.paymentMethod,
@@ -99,7 +96,7 @@ export async function updateOrderToPaid(orderId: string) {
     const defaultCurrency = settings.defaultCurrency
     const currency = defaultCurrency || 'USD'
     const points = Math.floor(order.totalPrice)
-    await awardPoints(order.userId.toString(), points, `Purchase on order ${orderId}`, orderId)
+    await awardPoints(order.user.toString(), points, `Purchase on order ${orderId}`, orderId)
 
     for (const item of order.items) {
       const product = await Product.findById(item.productId).session(session)
@@ -193,7 +190,7 @@ export async function getAllOrders({
   await connectToDatabase()
   const skipAmount = (Number(page) - 1) * limit
   const orders = await Order.find()
-    .populate('userId', 'name')
+    .populate('user', 'name')
     .sort({ createdAt: 'desc' })
     .skip(skipAmount)
     .limit(limit)
@@ -222,12 +219,12 @@ export async function getMyOrders({
   }
   const skipAmount = (Number(page) - 1) * limit
   const orders = await Order.find({
-    userId: session?.user?.id,
+    user: session?.user?.id,
   })
     .sort({ createdAt: 'desc' })
     .skip(skipAmount)
     .limit(limit)
-  const ordersCount = await Order.countDocuments({ userId: session?.user?.id })
+  const ordersCount = await Order.countDocuments({ user: session?.user?.id })
   return {
     data: JSON.parse(JSON.stringify(orders)),
     totalPages: Math.ceil(ordersCount / limit),
@@ -272,7 +269,7 @@ export async function approvePayPalOrder(
 ) {
   await connectToDatabase()
   try {
-    const order = await Order.findById(orderId).populate('userId', 'email')
+    const order = await Order.findById(orderId).populate('user', 'email')
     if (!order) throw new Error('Order not found')
     const captureData = await paypal.capturePayment(data.orderID)
     if (
@@ -280,8 +277,19 @@ export async function approvePayPalOrder(
       captureData.id !== order.paymentResult?.id ||
       captureData.status !== 'COMPLETED'
     )
-      throw new Error('Error in PayPal payment')
+      throw new Error('Error in paypal payment')
+    order.isPaid = true
+    order.paidAt = new Date()
+    order.paymentResult = {
+      id: captureData.id,
+      status: captureData.status,
+      email_address: captureData.payer.email_address,
+      pricePaid:
+        captureData.purchase_units[0]?.payments?.captures[0]?.amount?.value,
+    }
+    await order.save()
 
+    // التحقق من وجود تكامل البائع مع PayPal
     const sellerIntegration = await SellerIntegration.findOne({
       sellerId: order.sellerId,
       providerName: 'paypal',
@@ -303,16 +311,6 @@ export async function approvePayPalOrder(
       })
     }
 
-    order.isPaid = true
-    order.paidAt = new Date()
-    order.paymentResult = {
-      id: captureData.id,
-      status: captureData.status,
-      email_address: captureData.payer.email_address,
-      pricePaid:
-        captureData.purchase_units[0]?.payments?.captures[0]?.amount?.value,
-    }
-    await order.save()
     await sendPurchaseReceipt({ order })
     revalidatePath(`/account/orders/${orderId}`)
     return {
@@ -345,12 +343,12 @@ export const calcDeliveryDateAndPrice = async ({
     ]
   const shippingPrice =
     !shippingAddress || !deliveryDate
-      ? 0
+      ? undefined
       : deliveryDate.freeShippingMinPrice > 0 &&
         itemsPrice >= deliveryDate.freeShippingMinPrice
       ? 0
       : deliveryDate.shippingPrice
-  const taxPrice = !shippingAddress ? 0 : round2(itemsPrice * 0.15)
+  const taxPrice = !shippingAddress ? undefined : round2(itemsPrice * 0.15)
   let totalPrice = round2(
     itemsPrice +
       (shippingPrice ? round2(shippingPrice) : 0) +
@@ -382,12 +380,12 @@ export const calcDeliveryDateAndPrice = async ({
 }
 
 function getPointsValue(currency: string): number {
-  const rates = {
+  const rates: Record<string, number> = {
     USD: 0.05,
     EUR: 0.045,
     EGP: 1,
-  }
-  return rates[currency] || 0.05
+  };
+  return rates[currency] || 0.05;
 }
 
 export async function getOrderSummary(date: DateRange) {
@@ -464,7 +462,7 @@ export async function getOrderSummary(date: DateRange) {
   } = await getSetting()
   const limit = pageSize
   const latestOrders = await Order.find()
-    .populate('userId', 'name')
+    .populate('user', 'name')
     .sort({ createdAt: 'desc' })
     .limit(limit)
   return {
@@ -536,7 +534,7 @@ async function getTopSalesProducts(date: DateRange) {
         _id: {
           name: '$items.name',
           image: '$items.image',
-          _id: '$items.productId',
+          _id: '$items.product',
         },
         totalSales: {
           $sum: { $multiply: ['$items.quantity', '$items.price'] },
@@ -577,7 +575,7 @@ async function getTopSalesCategories(date: DateRange) {
     {
       $lookup: {
         from: 'products',
-        localField: 'items.productId',
+        localField: 'items.product',
         foreignField: '_id',
         as: 'product',
       },

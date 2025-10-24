@@ -19,7 +19,9 @@ import {
   UserSignUpSchema,
   WebPageInputSchema,
 } from '@/lib/validator';
+import { Types } from 'mongoose';
 import { z } from 'zod';
+
 
 // Base interfaces
 export interface ISiteInfo {
@@ -36,12 +38,15 @@ export interface ISiteInfo {
   address: string;
 }
 
+
 export interface ICommonSettings {
   pageSize: number;
   isMaintenanceMode: boolean;
   freeShippingMinPrice: number;
   defaultTheme: string;
   defaultColor: string;
+  featuredCategories: string[]; // Added to store category IDs or similar
+
 }
 
 /**
@@ -49,6 +54,8 @@ export interface ICommonSettings {
  */
 export interface IThirdPartyIntegration {
   provider: string;
+  providerName: string;
+  type: string;
   apiKey?: string;
   secretKey?: string;
   token?: string;
@@ -57,13 +64,36 @@ export interface IThirdPartyIntegration {
   metadata?: Record<string, any>;
 }
 
+export interface IPointsSettings {
+  earnRate: number;
+  redeemValue: number;
+  registrationBonus: {
+    buyer: number;
+    seller: number;
+  };
+  sellerPointsPerSale: number;
+  enabled: boolean;
+  rate: number;
+}
+
 export interface ISettingInput {
   site: ISiteInfo;
   common: ICommonSettings;
+  
+  featuredSellerId?: string; 
+  // featuredCategories: string[]; // Added to align with common.featuredCategories
+
   availableLanguages: Array<{
     name: string;
     code: string;
   }>;
+    seo: {
+    metaTitle: string;
+    metaDescription: string;
+    keywords: string;
+    ogImage?: string;
+    robots?: string;
+  };
   carousels: Array<{
     title: string;
     url: string;
@@ -92,6 +122,14 @@ export interface ISettingInput {
   }>;
   defaultDeliveryDate: string;
   integrations?: IThirdPartyIntegration[];
+  points: IPointsSettings;
+  aiAssistant: {
+    price: number;
+    description: string;
+    image: string;
+    enabled: boolean;
+    freeLimit: number;
+  };
 }
 
 // Seller types
@@ -154,6 +192,7 @@ export interface IProduct {
   images: string[];
   category: string;
   brand: string;
+  offerEndTime?: string;
   tags: string[];
   colors: Array<{
     name: string;
@@ -182,6 +221,11 @@ export interface IProduct {
     finalPrice: number;
     discount?: number;
   };
+  
+   source?: {
+    providerId: Types.ObjectId;
+    productId: string;
+  };
   warehouse: {
     providerName: string;
     sku: string;
@@ -199,6 +243,8 @@ export interface IProduct {
       value: number;
       unit: string;
     };
+    provider: string;
+
   };
   warehouseData: Array<{
     warehouseId: string;
@@ -246,7 +292,7 @@ export interface IProduct {
     userName: string;
     rating: number;
     comment: string;
-    createdAt: Date;
+    createdAt: string;
   }>;
   createdBy: string;
   updatedBy: string;
@@ -373,8 +419,15 @@ export interface IOrderList {
 
 
 
-export type OrderItem = z.infer<typeof OrderItemSchema>;
-export type Cart = z.infer<typeof CartSchema>;
+export interface OrderItem extends z.infer<typeof OrderItemSchema> {
+  pointsUsed?: number;
+  pointsDiscount?: number;
+  
+}
+export interface Cart extends z.infer<typeof CartSchema> {
+  pointsUsed?: number;
+  pointsDiscount?: number;
+}
 export type ShippingAddress = z.infer<typeof ShippingAddressSchema>;
 
 // Site configuration types

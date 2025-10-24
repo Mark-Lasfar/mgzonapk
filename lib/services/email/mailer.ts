@@ -2,6 +2,7 @@ import nodemailer from 'nodemailer';
 import { EMAIL_CONFIG } from '@/lib/config/email';
 import { logger } from '@/lib/api/services/logging';
 import crypto from 'crypto';
+import { Data } from '@/types';
 
 // تعريف الأنواع
 interface EmailOptions {
@@ -284,6 +285,8 @@ class EmailService {
     plan: string;
     amount: number;
     currency: string;
+    email:string;
+    // market: string;
   }) {
     const metadata = this.getMetadata();
 

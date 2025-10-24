@@ -68,7 +68,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/page/advertise">
+                <Link href={`/${locale}/seller/dashboard/ads`}>
                   {t('Footer.Advertise Your Products')}
                 </Link>
               </li>
@@ -88,7 +88,7 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/docs/support">{t('Footer.Help')}</Link>
+                <Link href={`/${locale}/support/tickets/create`}>{t('Footer.Help')}</Link>
               </li>
             </ul>
           </div>

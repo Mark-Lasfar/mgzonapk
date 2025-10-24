@@ -1,260 +1,204 @@
 'use client';
 
 import { useState } from 'react';
-import { updateSellerById, suspendSeller, deleteSeller } from '@/lib/actions/seller.actions';
-import { useRouter } from 'next/navigation';
+import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { useTranslations } from 'next-intl';
-import Seller from '@/lib/db/models/seller.model';
-
-interface Seller {
-  _id: string;
-  userId: string;
-  businessName: string;
-  email: string;
-  phone: string;
-  description?: string;
-}
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useToast } from '@/hooks/use-toast';
+import { useMutation, useQueryClient } from '@apollo/client/react';
+import { UPDATE_SELLER, SUSPEND_SELLER, DELETE_SELLER, UNSUSPEND_SELLER } from '@/graphql/admin/seller/mutations';
+import { GET_SELLER } from '@/graphql/admin/seller/queries';
 
 interface SellerEditFormProps {
-  seller: Seller;
-  locale: string;
+  seller: any;
 }
 
-export default function SellerEditForm({ seller, locale }: SellerEditFormProps) {
+export default function SellerEditForm({ seller }: SellerEditFormProps) {
   const t = useTranslations('Admin.sellers');
+  const { toast } = useToast();
+  const queryClient = useQueryClient();
+  
   const [editField, setEditField] = useState<string | null>(null);
   const [editValue, setEditValue] = useState<string>('');
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
   const [suspendReason, setSuspendReason] = useState<string>('');
-  const router = useRouter();
+
+  const [updateSeller] = useMutation(UPDATE_SELLER, {
+    onCompleted: (data) => {
+      if (data.updateSeller.success) {
+        toast({ description: t('updateSuccess') });
+        setEditField(null);
+        setEditValue('');
+        queryClient.refetchQueries({ include: [GET_SELLER] });
+      } else {
+        toast({ variant: 'destructive', description: data.updateSeller.message });
+      }
+    },
+    onError: (error) => {
+      toast({ variant: 'destructive', description: error.message });
+    }
+  });
+
+  const [suspendSeller] = useMutation(SUSPEND_SELLER, {
+    onCompleted: (data) => {
+      if (data.suspendSeller.success) {
+        toast({ description: t('suspendSuccess') });
+        setSuspendReason('');
+        queryClient.refetchQueries({ include: [GET_SELLER] });
+      } else {
+        toast({ variant: 'destructive', description: data.suspendSeller.message });
+      }
+    }
+  });
+
+  const [deleteSeller] = useMutation(DELETE_SELLER, {
+    onCompleted: (data) => {
+      if (data.deleteSeller.success) {
+        toast({ description: t('deleteSuccess') });
+      } else {
+        toast({ variant: 'destructive', description: data.deleteSeller.message });
+      }
+    }
+  });
+
+  const [unsuspendSeller] = useMutation(UNSUSPEND_SELLER, {
+    onCompleted: (data) => {
+      if (data.unsuspendSeller.success) {
+        toast({ description: 'Seller unsuspended successfully' });
+        queryClient.refetchQueries({ include: [GET_SELLER] });
+      } else {
+        toast({ variant: 'destructive', description: data.unsuspendSeller.message });
+      }
+    }
+  });
 
   const handleEdit = (field: string, value: string) => {
     setEditField(field);
     setEditValue(value);
   };
 
-  const handleSave = async () => {
-    const updateData: Partial<Seller> = { [editField!]: editValue };
-    const result = await updateSellerById(seller.userId, updateData, { revalidate: true }, locale);
-
-    if (result.success) {
-      setSuccess(t('updateSuccess'));
-      setEditField(null);
-      setEditValue('');
-      setTimeout(() => setSuccess(null), 3000);
-      router.refresh();
-    } else {
-      setError(`${t('error')}: ${result.error}`);
-      setTimeout(() => setError(null), 3000);
-    }
+  const handleSave = () => {
+    if (!editField || !editValue) return;
+    
+    updateSeller({
+      variables: {
+        sellerId: seller._id,
+        input: { [editField]: editValue }
+      }
+    });
   };
 
-  const handleSuspend = async () => {
+  const handleSuspend = () => {
     if (!suspendReason) {
-      setError(t('suspendReasonRequired'));
-      setTimeout(() => setError(null), 3000);
+      toast({ variant: 'destructive', description: t('suspendReasonRequired') });
       return;
     }
 
-    const result = await suspendSeller(seller._id, suspendReason, locale);
-
-    if (result.success) {
-      setSuccess(t('suspendSuccess'));
-      setSuspendReason('');
-      setTimeout(() => setSuccess(null), 3000);
-      router.refresh();
-    } else {
-      setError(`${t('error')}: ${result.error}`);
-      setTimeout(() => setError(null), 3000);
-    }
-  };
-
-  const handleDelete = async () => {
-    if (confirm(t('confirmDelete'))) {
-      const result = await deleteSeller(seller.userId, locale);
-
-      if (result.success) {
-        setSuccess(t('deleteSuccess'));
-        setTimeout(() => router.push(`/${locale}/admin/sellers`), 2000);
-      } else {
-        setError(`${t('error')}: ${result.error}`);
-        setTimeout(() => setError(null), 3000);
+    suspendSeller({
+      variables: {
+        input: {
+          sellerId: seller._id,
+          reason: suspendReason
+        }
       }
+    });
+  };
+
+  const handleDelete = () => {
+    if (confirm(t('confirmDelete'))) {
+      deleteSeller({
+        variables: {
+          input: { sellerId: seller._id }
+        }
+      });
     }
   };
 
-  return (
-    <div>
-      {success && <p className="text-green-600 mb-4">{success}</p>}
-      {error && <p className="text-red-600 mb-4">{error}</p>}
+  const handleUnsuspend = () => {
+    unsuspendSeller({ variables: { sellerId: seller._id } });
+  };
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <div>
-          <label className="font-medium">{t('businessName')}:</label>
-          <div className="flex items-center">
-            {editField === 'businessName' ? (
-              <Input
-                type="text"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                className="mr-2"
-              />
-            ) : (
-              <span className="mr-2">{seller.businessName}</span>
-            )}
-            {editField === 'businessName' ? (
-              <>
-                <Button onClick={handleSave} size="sm" className="mr-2">
-                  {t('save')}
-                </Button>
-                <Button onClick={() => setEditField(null)} variant="outline" size="sm">
-                  {t('cancel')}
-                </Button>
-              </>
-            ) : (
-              <Button
-                onClick={() => handleEdit('businessName', seller.businessName)}
-                variant="link"
-                size="sm"
-              >
-                {t('edit')}
-              </Button>
-            )}
-          </div>
-        </div>
-        <div>
-          <label className="font-medium">{t('email')}:</label>
-          <div className="flex items-center">
-            {editField === 'email' ? (
-              <Input
-                type="email"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                className="mr-2"
-              />
-            ) : (
-              <span className="mr-2">{seller.email}</span>
-            )}
-            {editField === 'email' ? (
-              <>
-                <Button onClick={handleSave} size="sm" className="mr-2">
-                  {t('save')}
-                </Button>
-                <Button onClick={() => setEditField(null)} variant="outline" size="sm">
-                  {t('cancel')}
-                </Button>
-              </>
-            ) : (
-              <Button
-                onClick={() => handleEdit('email', seller.email)}
-                variant="link"
-                size="sm"
-              >
-                {t('edit')}
-              </Button>
-            )}
-          </div>
-        </div>
-        <div>
-          <label className="font-medium">{t('phone')}:</label>
-          <div className="flex items-center">
-            {editField === 'phone' ? (
-              <Input
-                type="text"
-                value={editValue}
-                onChange={(e) => setEditValue(e.target.value)}
-                className="mr-2"
-              />
-            ) : (
-              <span className="mr-2">{seller.phone}</span>
-            )}
-            {editField === 'phone' ? (
-              <>
-                <Button onClick={handleSave} size="sm" className="mr-2">
-                  {t('save')}
-                </Button>
-                <Button onClick={() => setEditField(null)} variant="outline" size="sm">
-                  {t('cancel')}
-                </Button>
-              </>
-            ) : (
-              <Button
-                onClick={() => handleEdit('phone', seller.phone)}
-                variant="link"
-                size="sm"
-              >
-                {t('edit')}
-              </Button>
-            )}
-          </div>
-        </div>
-        <div>
-          <label className="font-medium">{t('description')}:</label>
-          <div className="flex items-center">
-            {editField === 'description' ? (
+  const renderField = (field: string, label: string, value: string, type: 'text' | 'email' | 'textarea' = 'text') => (
+    <div className="space-y-2">
+      <label className="font-medium">{label}:</label>
+      <div className="flex items-center gap-2">
+        {editField === field ? (
+          <>
+            {type === 'textarea' ? (
               <Textarea
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
-                className="mr-2 w-full"
+                className="flex-1"
               />
             ) : (
-              <span className="mr-2">{seller.description || t('na')}</span>
+              <Input
+                type={type}
+                value={editValue}
+                onChange={(e) => setEditValue(e.target.value)}
+                className="flex-1"
+              />
             )}
-            {editField === 'description' ? (
-              <>
-                <Button onClick={handleSave} size="sm" className="mr-2">
-                  {t('save')}
-                </Button>
-                <Button onClick={() => setEditField(null)} variant="outline" size="sm">
-                  {t('cancel')}
-                </Button>
-              </>
-            ) : (
-              <Button
-                onClick={() => handleEdit('description', seller.description || '')}
-                variant="link"
-                size="sm"
-              >
-                {t('edit')}
-              </Button>
-            )}
-          </div>
-        </div>
-      </div>
-
-      <div className="mt-6">
-        <h2 className="text-2xl font-semibold mb-4">{t('adminActions')}</h2>
-        <div className="flex flex-col gap-4">
-          <div>
-            <label className="font-medium">{t('suspendSeller')}:</label>
-            <Input
-              type="text"
-              placeholder={t('suspendReasonPlaceholder')}
-              value={suspendReason}
-              onChange={(e) => setSuspendReason(e.target.value)}
-              className="mr-2 w-full md:w-1/2"
-            />
+            <Button onClick={handleSave} size="sm">{t('save')}</Button>
+            <Button onClick={() => setEditField(null)} variant="outline" size="sm">{t('cancel')}</Button>
+          </>
+        ) : (
+          <>
+            <span className="px-2 py-1 bg-gray-100 rounded">{value || t('na')}</span>
             <Button
-              onClick={handleSuspend}
-              className="bg-yellow-600 text-white mt-2"
+              onClick={() => handleEdit(field, value)}
+              variant="outline"
+              size="sm"
             >
-              {t('suspend')}
+              {t('edit')}
             </Button>
-          </div>
-          <div>
-            <Button
-              onClick={handleDelete}
-              className="bg-red-600 text-white"
-            >
-              {t('deleteSeller')}
-            </Button>
-          </div>
-        </div>
+          </>
+        )}
       </div>
     </div>
+  );
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>{t('editSeller')}</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {renderField('businessName', t('businessName'), seller.businessName)}
+          {renderField('email', t('email'), seller.email, 'email')}
+          {renderField('phone', t('phone'), seller.phone)}
+          {renderField('description', t('description'), seller.description || '', 'textarea')}
+        </div>
+
+        <div className="space-y-4">
+          <h3 className="font-semibold">{t('adminActions')}</h3>
+          
+          {seller.suspended ? (
+            <div>
+              <p className="text-yellow-600">{t('suspendedReason')}: {seller.suspendReason}</p>
+              <Button onClick={handleUnsuspend} variant="outline">
+                {t('unsuspend')}
+              </Button>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <Input
+                placeholder={t('suspendReasonPlaceholder')}
+                value={suspendReason}
+                onChange={(e) => setSuspendReason(e.target.value)}
+              />
+              <Button onClick={handleSuspend} className="bg-yellow-600">
+                {t('suspend')}
+              </Button>
+            </div>
+          )}
+
+          <Button onClick={handleDelete} variant="destructive">
+            {t('deleteSeller')}
+          </Button>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

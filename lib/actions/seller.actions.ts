@@ -10,6 +10,8 @@ import { revalidatePath } from 'next/cache';
 // import { uploadToStorage, deleteFromStorage } from '@/lib/utils/s3'; // تم تصحيح uploadToS3 إلى uploadToStorage
 import { uploadToStorage as uploadToCloudinary, uploadToStorage } from '@/lib/utils/cloudinary';
 import { sendNotification } from '@/lib/utils/notification';
+// import { sendNotification } from '@/lib/actions/notification.actions';
+
 import { DocumentVerification } from '@/lib/utils/verification';
 import { cache } from 'react';
 import { getSetting } from './setting.actions';
@@ -31,12 +33,13 @@ import Integration, { IIntegration } from '@/lib/db/models/integration.model';
 // import { getTranslations } from '@/lib/i18n';
 import { getSubscriptionPlans, SubscriptionPlan } from '@/lib/constants';
 import { WebhookDispatcher } from '@/lib/api/webhook-dispatcher';
+
 // import { logger } from '@/lib/utils/logger';
 import { NextResponse } from 'next/server';
 // import { getSubscriptionPlans } from '../constants';
 import { auth, authenticateUser } from '@/auth';
 import { customLogger, logger } from '../services/logging';
-import { emailService } from '../services/email/mailer';
+// import { emailService } from '../services/email/mailer';
 import { ObjectId } from 'mongodb';
 import ApiKey from '@/lib/db/models/api-key.model';
 // import { NotificationType } from '../models/notification.model';
@@ -44,13 +47,17 @@ import ApiKey from '@/lib/db/models/api-key.model';
 // import { NotificationType } from '../models/notification.model';
 import { updateBankInfo } from './bank.actions';
 import { SellerFormData, SettingsFormData } from '../types';
-import { Order } from '../db/models/order.model';
-import SellerIntegration from '../db/models/seller-integration.model';
+import { Order } from '@/lib/db/models/order.model';
+import SellerIntegration from '@/lib/db/models/seller-integration.model';
 import { SettingsFormDataSchema } from '../types/settings';
 // import { uploadToStorage } from '../utils/s3';
 // import { ISeller } from '../db/models/seller.model';
 import { SellerError } from '../errors/seller-error';
-import { NotificationType } from '../db/models/notification.model';
+import { NotificationType } from '@/lib/db/models/notification.model';
+import validator from 'validator';
+import { languages } from 'countries-list';
+import { subscriptionUpdateSchema } from '../validator';
+// import { emailService } from '@/lib/services/email/mailer';
 
 // Initialize Stripe
 // const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -97,6 +104,14 @@ const PERFORMANCE_MARKERS = {
 
 
 
+export interface SubscriptionUpdateData {
+  plan: string;
+  pointsToRedeem?: number;
+  paymentMethod?: string;
+  currency?: string;
+  market?: string;
+  trialMonthsUsed?: number;
+}
 
 // export type SellerFormData = {
 //   businessName: string;
@@ -265,7 +280,14 @@ const updateSellerSchema = z.object({
         .object({
           twoFactorAuth: z.boolean().optional(),
           loginNotifications: z.boolean().optional(),
-          ipWhitelist: z.array(z.string().ip()).optional(),
+          ipWhitelist: z
+            .array(
+              z.string().refine(
+                (value) => validator.isIP(value),
+                { message: 'Invalid IP address' }
+              )
+            )
+            .optional(),
         })
         .optional(),
       customSite: z
@@ -302,7 +324,6 @@ const updateSellerSchema = z.object({
         .optional(),
     })
     .optional(),
-
   bankInfo: z
     .object({
       accountName: z.string().min(1).optional(),
@@ -312,7 +333,6 @@ const updateSellerSchema = z.object({
       routingNumber: z.string().optional(),
     })
     .optional(),
-
 });
 
 export async function updateSeller(
@@ -377,7 +397,7 @@ await connectToDatabase();
 
     await sendNotification({
       userId,
-      type: 'profile.updated',
+      type: 'profile updated',
       title: t('messages.profileUpdatedTitle'),
       message: t('messages.profileUpdatedMessage'),
       channels: ['in_app', 'email', 'sms', 'push'],
@@ -592,7 +612,7 @@ await connectToDatabase();
             businessType: data.businessType,
             vatRegistered: data.vatRegistered || false,
             taxId: data.taxId,
-            logo: logoUrl || null,
+            logo: data.logo || null,
             address: {
               street: data.address.street,
               city: data.address.city,
@@ -694,14 +714,14 @@ await connectToDatabase();
         }),
         sendNotification({
           userId,
-          type: 'points.earned',
+          type: 'points earned',
           title: t('messages.bonusPointsTitle'),
           message: t('messages.bonusPointsMessage', { points: 50 }),
           channels: ['email', 'in_app'],
         }),
         sendNotification({
           userId,
-          type: 'trial.reminder',
+          type: 'trial reminder',
           title: t('messages.trialActiveTitle'),
           message: t('messages.trialActiveMessage', { trialDays: 5 }),
           channels: ['email', 'in_app'],
@@ -748,34 +768,35 @@ await connectToDatabase();
  */
 
 export async function updateSellerSettings(
-  formData: SettingsFormData,
+  userId: string,
+  data: Partial<SettingsFormData>,
   files?: FormData,
   locale: string = 'en'
 ) {
   const t = await getTranslations({ locale, namespace: 'api' });
   try {
-await connectToDatabase();
+    await connectToDatabase();
     const session = await auth();
-    if (!session?.user?.id || session.user.role !== 'SELLER') {
+    if (!session?.user?.id || session.user.id !== userId || session.user.role !== 'SELLER') {
       throw new SellerError(t('errors.unauthorized'), 'UNAUTHORIZED');
     }
 
-    const seller = await Seller.findOne({ userId: session.user.id });
+    const seller = await Seller.findOne({ userId });
     if (!seller) {
       throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
     }
 
-    // التحقق من صحة البيانات باستخدام Zod
-    const validatedData = SettingsFormDataSchema.parse(formData);
+    // Validate data with Zod
+    const validatedData = SettingsFormDataSchema.partial().parse(data);
 
-    // تحديث معلومات الأعمال
+    // Update business information
     seller.businessName = validatedData.businessName || seller.businessName;
     seller.description = validatedData.description || seller.description;
     seller.email = validatedData.email || seller.email;
     seller.phone = validatedData.phone || seller.phone;
     seller.customSiteUrl = validatedData.customSiteUrl || seller.customSiteUrl;
 
-    // تحديث العنوان
+    // Update address
     if (validatedData.address) {
       if (!validatedData.address.countryCode?.match(/^[A-Z]{2}$/)) {
         throw new SellerError(t('errors.invalidCountryCode'), 'INVALID_COUNTRY_CODE');
@@ -783,18 +804,25 @@ await connectToDatabase();
       seller.address = validatedData.address;
     }
 
-    // تحديث معلومات البنك
+    // Update bank info if mgpay is active
     if (validatedData.bankInfo) {
-      seller.bankInfo = {
-        accountName: validatedData.bankInfo.accountName,
-        accountNumber: encrypt(validatedData.bankInfo.accountNumber),
-        bankName: validatedData.bankInfo.bankName,
-        swiftCode: encrypt(validatedData.bankInfo.swiftCode),
-        verified: validatedData.bankInfo.verified || false,
-      };
+      const hasMgpay = seller.paymentGateways.some(
+        (gateway: any) => gateway.providerName === 'mgpay' && gateway.isActive
+      );
+      if (hasMgpay) {
+        seller.bankInfo = {
+          accountName: validatedData.bankInfo.accountName,
+          accountNumber: encrypt(validatedData.bankInfo.accountNumber),
+          bankName: validatedData.bankInfo.bankName,
+          swiftCode: encrypt(validatedData.bankInfo.swiftCode),
+          verified: validatedData.bankInfo.verified || false,
+        };
+      } else {
+        throw new SellerError(t('errors.bankInfoNotAllowed'), 'BANK_INFO_NOT_ALLOWED');
+      }
     }
 
-    // تحديث خيارات الشحن
+    // Update shipping options
     if (validatedData.shippingOptions) {
       seller.shippingOptions = validatedData.shippingOptions.map((option) => ({
         id: option.id || new mongoose.Types.ObjectId().toString(),
@@ -807,7 +835,7 @@ await connectToDatabase();
       }));
     }
 
-    // تحديث عروض الخصم
+    // Update discount offers
     if (validatedData.discountOffers) {
       seller.discountOffers = validatedData.discountOffers.map((offer) => ({
         id: offer.id || new mongoose.Types.ObjectId().toString(),
@@ -827,7 +855,7 @@ await connectToDatabase();
       }));
     }
 
-    // تحديث بوابات الدفع
+    // Update payment gateways
     if (validatedData.paymentGateways) {
       seller.paymentGateways = validatedData.paymentGateways.map((gateway) => ({
         providerName: gateway.providerName,
@@ -844,32 +872,64 @@ await connectToDatabase();
       }));
     }
 
-    // تحديث الإعدادات
-    seller.settings = {
-      notifications: validatedData.notifications,
-      display: validatedData.display,
-      security: validatedData.security,
-      customSite: validatedData.customSite,
-    };
+    // Update settings
+    if (validatedData.notifications) {
+      seller.settings.notifications = validatedData.notifications;
+    }
+    if (validatedData.display) {
+      seller.settings.display = {
+        showRating: validatedData.display.showRating,
+        showContactInfo: validatedData.display.showContactInfo,
+        showMetrics: validatedData.display.showMetrics,
+        showPointsBalance: validatedData.display.showPointsBalance,
+        welcomeSeen: validatedData.display.welcomeSeen ?? false,
+      };
+    }
+    if (validatedData.security) {
+      seller.settings.security = validatedData.security;
+    }
+    if (validatedData.customSite) {
+      seller.settings.customSite = {
+        theme: validatedData.customSite.theme,
+        primaryColor: validatedData.customSite.primaryColor,
+        bannerImage: validatedData.customSite.bannerImage,
+        customSections: validatedData.customSite.customSections,
+        domainStatus: validatedData.customSite.domainStatus,
+        domainRenewalDate: validatedData.customSite.domainRenewalDate,
+        seo: validatedData.customSite.seo ?? {
+          metaTitle: '',
+          metaDescription: '',
+          keywords: [],
+        },
+      };
+    }
 
-    // معالجة رفع الملفات
+    // Handle file uploads
     if (files) {
       if (files.get('logo')) {
         const logoFile = files.get('logo') as File;
-        const uploadResult = await uploadFile(logoFile, `sellers/${seller._id}/logo`);
-        seller.logo = uploadResult.url;
+        const uploadResult = await uploadToStorage(logoFile, `sellers/${seller._id}/logo`, {
+          contentType: logoFile.type,
+          maxSize: 5 * 1024 * 1024,
+          allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+        });
+        seller.logo = uploadResult.secureUrl;
       }
       if (files.get('bannerImage')) {
         const bannerFile = files.get('bannerImage') as File;
-        const uploadResult = await uploadFile(bannerFile, `sellers/${seller._id}/banner`);
-        seller.settings.customSite.bannerImage = uploadResult.url;
+        const uploadResult = await uploadToStorage(bannerFile, `sellers/${seller._id}/banner`, {
+          contentType: bannerFile.type,
+          maxSize: 5 * 1024 * 1024,
+          allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
+        });
+        seller.settings.customSite.bannerImage = uploadResult.secureUrl;
       }
     }
 
     await seller.save();
     await sendNotification({
       userId: session.user.id,
-      type: 'profile.updated',
+      type: 'profile_updated',
       title: t('messages.profileUpdatedTitle'),
       message: t('messages.profileUpdatedMessage'),
       channels: ['in_app', 'email'],
@@ -881,7 +941,7 @@ await connectToDatabase();
     const errorMessage = error instanceof SellerError ? error.message : t('errors.serverError');
     const errorCode = error instanceof SellerError ? error.code : 'UNKNOWN';
     console.error('Update seller settings error', {
-      userId: session?.user?.id,
+      userId,
       error: errorMessage,
       code: errorCode,
     });
@@ -903,41 +963,42 @@ await connectToDatabase();
  */
 
 // Schema for updateSellerSubscription input
-const subscriptionUpdateSchema = z.object({
-  plan: z.string().min(1, 'Plan ID is required'),
-  pointsToRedeem: z.number().min(0, 'Points must be non-negative'),
-  paymentMethod: z.enum(['stripe', 'paypal', 'points']).optional(),
-});
+
+interface ExchangeRateResponse {
+  rates: Record<string, number>;
+}
+
 async function convertCurrency(amount: number, fromCurrency: string, toCurrency: string): Promise<number> {
   try {
-    const response = await axios.get(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
+    const response = await axios.get<ExchangeRateResponse>(`https://api.exchangerate-api.com/v4/latest/${fromCurrency}`);
     const rate = response.data.rates[toCurrency];
     if (!rate) throw new Error(`Exchange rate not found for ${toCurrency}`);
     return round2(amount * rate);
   } catch (error) {
     logger.error('Currency conversion failed', { error: String(error) });
-    return amount; // Fallback to original amount
+    return amount;
   }
 }
 
 // Subscription Management
 export async function updateSellerSubscription(
   userId: string,
-  data: { plan: string; pointsToRedeem: number; paymentMethod?: string; currency?: string; market?: string },
+  data: SubscriptionUpdateData,
   locale: string = 'en'
-): Promise<{ success: boolean; error?: string; code?: string }> {
-  const t = await getSafeTranslations(locale, 'subscriptionConfirm');
-await connectToDatabase();
-
+): Promise<{ success: boolean; data?: ISeller; error?: string; code?: string }> {
+  const t = await getSafeTranslations(locale, 'subscriptions');
   try {
+    // Validate input data
     const validatedData = subscriptionUpdateSchema.parse(data);
     const targetCurrency = validatedData.currency || 'USD';
 
+    await connectToDatabase();
     const session = await mongoose.startSession();
-    let attempt = 0;
-    const maxAttempts = 3;
+    session.startTransaction();
 
     let convertedAmount = 0;
+    let attempt = 0;
+    const maxAttempts = 3;
 
     while (attempt < maxAttempts) {
       try {
@@ -947,28 +1008,37 @@ await connectToDatabase();
             throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
           }
 
-          const plan = getSubscriptionPlans.find((p) => p.id.toLowerCase() === validatedData.plan.toLowerCase());
+          const user = await User.findById(userId).session(session);
+          if (!user) {
+            throw new SellerError(t('errors.userNotFound'), 'USER_NOT_FOUND');
+          }
+
+          const plans = await getSubscriptionPlans();
+          const plan = plans.find((p) => p.id.toLowerCase() === validatedData.plan.toLowerCase());
           if (!plan) {
             throw new SellerError(t('errors.invalidPlan'), 'INVALID_PLAN');
           }
 
-          // تحويل العملة
+          // Convert currency
           convertedAmount = await convertCurrency(plan.price, 'USD', targetCurrency);
 
+          // Check if subscription is already active
           const currentDate = new Date();
           if (
             seller.subscription.status === 'active' &&
             seller.subscription.plan.toLowerCase() === plan.id.toLowerCase() &&
+            seller.subscription.endDate &&
             seller.subscription.endDate > currentDate
           ) {
             throw new SellerError(t('errors.activeSubscription'), 'ACTIVE_SUBSCRIPTION');
           }
 
+          // Check if trial is allowed
           if (plan.isTrial && seller.freeTrial) {
             throw new SellerError(t('errors.trialNotAllowed'), 'TRIAL_NOT_ALLOWED');
           }
 
-          // التحقق من تكامل الدفع إذا لم يتم استخدام النقاط
+          // Handle payment integration if not using points
           let paymentIntegration: IIntegration | null = null;
           if (validatedData.paymentMethod && validatedData.pointsToRedeem === 0) {
             paymentIntegration = await Integration.findOne({
@@ -976,13 +1046,17 @@ await connectToDatabase();
               type: 'payment',
               isActive: true,
             }).session(session);
-            if (!paymentIntegration) {
+            if (!paymentIntegration && validatedData.paymentMethod !== 'mgpay') {
               throw new SellerError(t('errors.paymentMethodNotFound'), 'PAYMENT_METHOD_NOT_FOUND');
             }
-            // تنفيذ عملية الدفع عبر التكامل
+            // Check bankInfo for mgpay
+            if (validatedData.paymentMethod === 'mgpay' && !seller.bankInfo?.verified) {
+              throw new SellerError(t('errors.bankNotVerified'), 'BANK_NOT_VERIFIED');
+            }
+            // Process payment
             const paymentResult = await processPayment(
               seller,
-              paymentIntegration,
+              paymentIntegration || { providerName: 'mgpay', type: 'payment', isActive: true, status: 'connected', settings: {} },
               convertedAmount,
               targetCurrency,
               plan.id
@@ -992,38 +1066,53 @@ await connectToDatabase();
             }
           }
 
-          if (validatedData.pointsToRedeem > 0) {
+          // Handle points redemption
+          if (validatedData.pointsToRedeem && validatedData.pointsToRedeem > 0) {
+            if (!plan.features.pointsRedeemable) {
+              throw new SellerError(t('errors.pointsNotSupported'), 'POINTS_NOT_SUPPORTED');
+            }
             if (seller.pointsBalance < validatedData.pointsToRedeem) {
               throw new SellerError(t('errors.insufficientPoints'), 'INSUFFICIENT_POINTS');
             }
             seller.pointsBalance -= validatedData.pointsToRedeem;
-            seller.pointsHistory.push({
+            seller.pointsTransactions.push({
               amount: validatedData.pointsToRedeem,
               type: 'debit',
-              reason: `Redeemed points for ${plan.name} subscription in ${validatedData.market}`,
+              description: `Redeemed points for ${plan.name} subscription in ${validatedData.market || 'unknown'}`,
               createdAt: new Date(),
             });
           }
 
+          // Update subscription
           const startDate = new Date();
           const endDate = new Date();
           endDate.setMonth(endDate.getMonth() + (plan.isTrial ? plan.trialDuration! : 1));
 
           seller.subscription = {
-            plan: plan.name as 'trial' | 'Basic' | 'Pro' | 'VIP',
+            plan: plan.name as 'Trial' | 'Basic' | 'Pro' | 'VIP',
+            planId: validatedData.plan,
+            price: plan.price || 0,
+            trialMonthsUsed: validatedData.trialMonthsUsed ?? 0,
+            pointsCost: plan.pointsCost || 0,
             startDate,
             endDate,
             status: 'active',
             features: {
               productsLimit: plan.features.productsLimit,
-              commissionRate: plan.features.commission,
+              analytics: plan.features.analyticsAccess || false,
+              commission: plan.features.commission,
               prioritySupport: plan.features.prioritySupport,
               instantPayouts: plan.features.instantPayouts,
               customSectionsLimit: plan.features.customSectionsLimit || 0,
               domainSupport: plan.features.domainSupport || false,
               domainRenewal: plan.features.domainRenewal || false,
+              analyticsAccess: plan.features.analyticsAccess || false,
+              abTesting: plan.features.abTesting || false,
+              pointsRedeemable: plan.features.pointsRedeemable || false,
+              dynamicPaymentGateways: plan.features.dynamicPaymentGateways || false,
+              maxApiKeys: plan.features.maxApiKeys || 1,
             },
-            pointsRedeemed: validatedData.pointsToRedeem,
+            pointsRedeemed: validatedData.pointsToRedeem || 0,
             paymentMethod: validatedData.paymentMethod,
             currency: targetCurrency,
             market: validatedData.market,
@@ -1035,23 +1124,27 @@ await connectToDatabase();
             seller.trialMonthsUsed = plan.trialDuration!;
           }
 
-          await seller.save({ session });
-
-          if (validatedData.pointsToRedeem > 0 || paymentIntegration) {
+          // Create subscription order
+          if (validatedData.pointsToRedeem > 0 || paymentIntegration || validatedData.paymentMethod === 'mgpay') {
             await SubscriptionOrder.create(
-              [{
-                userId,
-                planId: plan.id,
-                amount: convertedAmount,
-                currency: targetCurrency,
-                paymentMethod: validatedData.pointsToRedeem > 0 ? 'points' : validatedData.paymentMethod,
-                isPaid: true,
-                paidAt: new Date(),
-                market: validatedData.market,
-              }],
+              [
+                {
+                  userId,
+                  sellerId: seller._id,
+                  planId: plan.id,
+                  amount: convertedAmount,
+                  currency: targetCurrency,
+                  paymentMethod: validatedData.pointsToRedeem > 0 ? 'points' : validatedData.paymentMethod,
+                  isPaid: true,
+                  paidAt: new Date(),
+                  market: validatedData.market,
+                },
+              ],
               { session }
             );
           }
+
+          await seller.save({ session });
         });
 
         break;
@@ -1062,8 +1155,17 @@ await connectToDatabase();
       }
     }
 
+    // Send subscription confirmation email via API Route
     if (validatedData.pointsToRedeem > 0 || validatedData.paymentMethod) {
       const seller = await Seller.findOne({ userId });
+      if (!seller) {
+        throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
+      }
+      const user = await User.findById(userId);
+      if (!user) {
+        throw new SellerError(t('errors.userNotFound'), 'USER_NOT_FOUND');
+      }
+
       await WebhookDispatcher.dispatch(userId, 'subscription_updated', {
         userId,
         plan: validatedData.plan,
@@ -1073,15 +1175,35 @@ await connectToDatabase();
         market: validatedData.market,
       });
 
-      await emailService.sendSubscriptionConfirmation({
-        email: seller!.email,
-        to: seller!.businessName,
-        plan: { planId: validatedData.plan },
-        amount: convertedAmount,
-        currency: targetCurrency,
-        market: validatedData.market,
+      // Use API Route to send email
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/email/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'subscription',
+          to: seller.email,
+          name: user.name || seller.businessName,
+          plan: validatedData.plan,
+          amount: convertedAmount,
+          currency: targetCurrency,
+          email: seller.email,
+        }),
       });
+
+      if (!emailResponse.ok) {
+        logger.error('Failed to send subscription confirmation email', {
+          userId,
+          sellerId: seller._id,
+          error: await emailResponse.text(),
+        });
+        // Don't fail the transaction if email fails
+      }
     }
+
+    await session.commitTransaction();
+
+    revalidatePath(`/${locale}/account/subscriptions`, 'page');
+    revalidatePath(`/${locale}/seller/dashboard`, 'page');
 
     logger.info('Subscription updated', {
       userId,
@@ -1089,13 +1211,12 @@ await connectToDatabase();
       pointsRedeemed: validatedData.pointsToRedeem,
       paymentMethod: validatedData.paymentMethod,
       currency: targetCurrency,
-      market: validatedData.market,
       convertedAmount,
     });
 
-    revalidatePath('/[locale]/account/subscriptions', 'page');
-    return { success: true };
+    return { success: true, data: await Seller.findOne({ userId }) };
   } catch (error) {
+    await session.abortTransaction();
     const errorMessage = error instanceof SellerError ? error.message : t('errors.failedToUpdateSubscription');
     const errorCode = error instanceof SellerError ? error.code : 'UNKNOWN';
     logger.error('Update subscription error', {
@@ -1109,38 +1230,42 @@ await connectToDatabase();
     session.endSession();
   }
 }
-
 // دالة مساعدة لمعالجة الدفع عبر تكامل ديناميكي
-async function processPayment(
+export async function processPayment(
   seller: ISeller,
   integration: IIntegration,
   amount: number,
   currency: string,
   planId: string
-): Promise<{ success: boolean; error?: string }> {
+): Promise<{ success: boolean; transactionId?: string; error?: string }> {
   try {
     const { authType, endpoints, clientId, clientSecret } = integration.settings;
     let headers: Record<string, string> = { 'Content-Type': 'application/json' };
 
-    // إعداد المصادقة بناءً على نوع التكامل
     if (authType === 'Bearer') {
       headers['Authorization'] = `Bearer ${clientId}`;
     } else if (authType === 'Basic') {
       const authString = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
       headers['Authorization'] = `Basic ${authString}`;
     } else if (authType === 'APIKey') {
+      if (!clientId) {
+        throw new SellerError('Client ID is required for APIKey authentication', 'MISSING_CLIENT_ID');
+      }
       headers['X-API-Key'] = clientId;
     } else if (authType === 'OAuth') {
-      // تنفيذ مصادقة OAuth إذا لزم الأمر
-      const sellerIntegration = seller.integrations.find((i: any) => i.provider === integration.providerName);
-      if (!sellerIntegration?.token) {
+      const sellerIntegration = seller.integrations.find((i: SellerIntegration) => i.providerName === integration.providerName);
+      if (!sellerIntegration?.accessToken) {
         throw new SellerError('OAuth token not found', 'OAUTH_TOKEN_NOT_FOUND');
       }
-      headers['Authorization'] = `Bearer ${await decrypt(sellerIntegration.token)}`;
+      headers['Authorization'] = `Bearer ${await decrypt(sellerIntegration.accessToken)}`;
     }
 
-    // إرسال طلب الدفع إلى endpoint التكامل
-    const response = await fetch(endpoints?.payment, {
+    const paymentEndpoint = endpoints?.get('capturePayment');
+    if (!paymentEndpoint) {
+      throw new SellerError('Payment endpoint not found', 'MISSING_ENDPOINT');
+    }
+
+    const response = await fetch(paymentEndpoint, {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -1152,33 +1277,50 @@ async function processPayment(
       }),
     });
 
-
-
     const result = await response.json();
-    return { success: result.success };
+    return { success: result.success, transactionId: result.transactionId || undefined };
   } catch (error) {
     return { success: false, error: String(error) };
   }
 }
 
 
-
 export async function syncPaymentGateways(sellerId: string) {
-  const integrations = await SellerIntegration.find({ sellerId, type: 'payment', status: 'connected', isActive: true });
-  const paymentGateways = integrations.map((int: any) => ({
-    providerName: int.providerName,
-    accountDetails: int.credentials ? Object.fromEntries(int.credentials.map((c: any) => [c.key, encrypt(c.value)])) : {},
-    verified: int.status === 'connected',
-    isDefault: false, // Logic to determine default gateway
-    isInternal: int.providerName === 'mgzon',
-    sandbox: int.sandbox || false,
-  }));
+  const t = await getTranslations({ locale: 'en', namespace: 'api' });
+  try {
+    const integrations = await SellerIntegration.find({ sellerId, type: 'payment', status: 'connected', isActive: true });
+    
+    // هنا قمنا باستخدام Promise.all مع map لتعامل مع العمليات غير المتزامنة
+    const paymentGateways = await Promise.all(integrations.map(async (int: any) => {
+      const verified = int.providerName === 'mgpay' 
+        ? (await Seller.findById(sellerId))?.bankInfo?.verified ?? false
+        : int.status === 'connected';
 
-  const seller = await Seller.findById(sellerId);
-  seller.paymentGateways = paymentGateways;
-  await seller.save();
-  return paymentGateways;
+      return {
+        providerName: int.providerName,
+        accountDetails: int.credentials ? Object.fromEntries(int.credentials.map((c: any) => [c.key, encrypt(c.value)])) : {},
+        verified,
+        isDefault: false, // Logic to determine default gateway
+        isInternal: int.providerName === 'mgpay',
+        sandbox: int.sandbox || false,
+      };
+    }));
+
+    const seller = await Seller.findById(sellerId);
+    if (!seller) {
+      throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
+    }
+
+    seller.paymentGateways = paymentGateways;
+    await seller.save();
+    return paymentGateways;
+  } catch (error) {
+    const errorMessage = error instanceof SellerError ? error.message : t('errors.failedToSyncGateways');
+    console.error('Sync payment gateways error', { sellerId, error: errorMessage });
+    throw error;
+  }
 }
+
 
 
 export async function addPaymentGateway(
@@ -1191,7 +1333,7 @@ export async function addPaymentGateway(
 ) {
   const t = await getTranslations({ locale, namespace: 'api' });
   try {
-await connectToDatabase();
+    await connectToDatabase();
     const session = await mongoose.startSession();
     session.startTransaction();
     try {
@@ -1221,9 +1363,12 @@ await connectToDatabase();
         throw new SellerError(t('errors.integrationNotFound'), 'INTEGRATION_NOT_FOUND');
       }
 
-      // التحقق من بيانات PayPal
+      // التحقق من بيانات البوابات الخارجية
       if (providerName === 'paypal' && (!accountDetails.clientId || !accountDetails.clientSecret)) {
         throw new SellerError(t('errors.invalidPaypalCredentials'), 'INVALID_CREDENTIALS');
+      }
+      if (providerName === 'stripe' && !accountDetails.apiKey) {
+        throw new SellerError(t('errors.invalidStripeCredentials'), 'INVALID_CREDENTIALS');
       }
 
       const encryptedDetails = new Map<string, string>();
@@ -1239,7 +1384,7 @@ await connectToDatabase();
       seller.paymentGateways.push({
         providerName,
         accountDetails: encryptedDetails,
-        verified: providerName === 'mgpay' ? seller.bankInfo?.verified : false,
+        verified: providerName === 'mgpay' ? (seller.bankInfo?.verified ?? false) : false,
         isDefault: seller.paymentGateways.length === 0,
         isInternal,
         sandbox,
@@ -1316,16 +1461,17 @@ await connectToDatabase();
     const integrations = await Integration.find({ isActive: true }).lean();
 
     // إضافة حالة التكامل (متصل/غير متصل) بناءً على إعدادات البائع
-    const enrichedIntegrations = integrations.map((integration) => {
-      const sellerIntegration = seller.integrations.find(
-        (i: any) => i.provider === integration.providerName
-      );
-      return {
-        ...integration,
-        connected: !!sellerIntegration,
-        status: sellerIntegration?.status || 'disconnected',
-      };
-    });
+const enrichedIntegrations = integrations.map((integration) => {
+  const sellerIntegration = Object.values(seller.integrations).find(
+    (i) => i.providerName === integration.providerName
+  );
+  return {
+    ...integration,
+    credentials: new Map(Object.entries(integration.credentials || {})), // تحويل إلى Map
+    connected: !!sellerIntegration,
+    status: sellerIntegration?.isActive ? 'connected' : 'disconnected',
+  };
+});
 
     return {
       success: true,
@@ -1886,7 +2032,7 @@ await connectToDatabase();
     }
 
     const earnings = await getSellerEarnings(sellerId, startDate, endDate);
-    const commissionRate = seller.subscription.features.commissionRate / 100;
+    const commissionRate = seller.subscription.features.commission / 100;
     const netProfit = round2(earnings * (1 - commissionRate));
     const platformFee = round2(earnings * commissionRate);
 
@@ -1951,7 +2097,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId: seller.userId,
-        type: 'inventory.updated',
+        type: 'inventory updated',
         title: t('messages.inventoryUpdatedTitle'),
         message: t('messages.inventoryUpdatedMessage', { productName: product.name, quantity: warehouseResponse.quantity }),
         data: { productId, sellerId: seller._id },
@@ -2073,7 +2219,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId: seller.userId,
-        type: 'integration_updated',
+        type: 'integration updated',
         title: t('messages.integrationUpdatedTitle'),
         message: t('messages.integrationUpdatedMessage', { provider: tokenData.provider }),
         data: { sellerId: seller._id, provider: tokenData.provider },
@@ -2100,14 +2246,25 @@ await connectToDatabase();
 }
 
 // دالة مساعدة للتحقق من الحساب البنكي بناءً على التكامل
-async function verifyBankAccount(bankInfo: any, integration: IIntegration): Promise<{ success: boolean; error?: string }> {
+async function verifyBankAccount(
+  bankInfo: { accountNumber: string; accountName: string; swiftCode: string },
+  integration: IIntegration
+): Promise<{ success: boolean; error?: string }> {
   try {
-    // تنفيذ التحقق بناءً على إعدادات التكامل
     const { authType, endpoints, clientId, clientSecret } = integration.settings;
+
+    // التحقق من وجود endpoints و endpoint الخاص بالتحقق (verify)
+    if (!endpoints || !endpoints.has('verify')) {
+      throw new Error('Verification endpoint not configured');
+    }
+
+    const verifyEndpoint = endpoints.get('verify');
+    if (!verifyEndpoint) {
+      throw new Error('Verification endpoint URL is missing');
+    }
+
     if (authType === 'OAuth') {
-      // تنفيذ التحقق عبر OAuth
-      // مثال: إرسال طلب إلى endpoint التحقق
-      const response = await fetch(endpoints?.bankVerification, {
+      const response = await fetch(verifyEndpoint, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${clientId}`,
@@ -2119,13 +2276,18 @@ async function verifyBankAccount(bankInfo: any, integration: IIntegration): Prom
           swiftCode: bankInfo.swiftCode,
         }),
       });
+
       const result = await response.json();
       return { success: result.success };
     }
-    // إضافة أنواع أخرى من التحقق (Basic, APIKey, إلخ)
+
+    // دعم أنواع أخرى من التحقق (مثل Basic أو APIKey)
     return { success: true }; // محاكاة نجاح التحقق
   } catch (error) {
-    return { success: false, error: String(error) };
+    return {
+      success: false,
+      error: error instanceof Error ? error.message : String(error),
+    };
   }
 }
 
@@ -2137,13 +2299,17 @@ export async function getSellerByUserId(
   userId: string,
   locale: string = 'en'
 ): Promise<{ success: boolean; data?: ISeller; error?: string; code?: string }> {
-  const t = await getTranslations({ locale, namespace: 'api' });
+  let t;
+  try {
+    t = await getTranslations({ locale, namespace: 'api' });
+  } catch (error) {
+    console.error('Failed to load translations:', error);
+    t = (key: string) => key;
+  }
 
   try {
     await connectToDatabase();
     const seller = await Seller.findOne({ userId }).lean();
-    console.log('Seller query result:', { userId, seller });
-
     if (!seller) {
       throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
     }
@@ -2154,7 +2320,11 @@ export async function getSellerByUserId(
       throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
     }
 
-    if (sellerDoc.subscription?.endDate && new Date(sellerDoc.subscription.endDate) < now && sellerDoc.subscription.status !== 'expired') {
+    if (
+      sellerDoc.subscription?.endDate &&
+      new Date(sellerDoc.subscription.endDate) < now &&
+      sellerDoc.subscription.status !== 'expired'
+    ) {
       await Seller.updateOne(
         { userId },
         {
@@ -2169,10 +2339,28 @@ export async function getSellerByUserId(
       sellerDoc.freeTrial = false;
     }
 
+    // Remove sensitive data
+    const sanitizedSeller = {
+      ...sellerDoc.toObject(),
+      bankInfo: sellerDoc.bankInfo
+        ? { ...sellerDoc.bankInfo, accountNumber: '', swiftCode: '', routingNumber: '' }
+        : undefined,
+      paymentGateways: sellerDoc.paymentGateways.map((gateway: any) => ({
+        ...gateway,
+        accountDetails: new Map(),
+      })),
+      integrations: Object.fromEntries(
+        Object.entries(sellerDoc.integrations || {}).map(([key, integration]: [string, any]) => [
+          key,
+          { ...integration, accessToken: '', refreshToken: '' },
+        ])
+      ),
+    };
+
     logger.info('Seller fetched successfully', { userId, sellerId: seller._id });
     return {
       success: true,
-      data: seller as ISeller,
+      data: sanitizedSeller as ISeller,
     };
   } catch (error) {
     const errorMessage = error instanceof SellerError ? error.message : t('errors.failedToFetchSeller');
@@ -2262,7 +2450,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId,
-        type: 'points_earned',
+        type: 'points earned',
         title: t('messages.pointsEarnedTitle'),
         message: t('messages.pointsEarnedMessage', { points: amount, description }),
         data: { points: amount, sellerId: seller._id },
@@ -2374,14 +2562,29 @@ export async function checkSubscriptionStatus(userId: string, locale: string = '
   }
 
   try {
-await connectToDatabase();
+    await connectToDatabase();
     const seller = await Seller.findOne({ userId });
     if (!seller) {
       throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
     }
 
+    // التحقق من endDate قبل استخدامه
+    if (!seller.subscription.endDate) {
+      // لو endDate undefined، اعتبر الاشتراك مستمر (غير منتهي)
+      // يمكن تضيف هنا logic إضافي، زي إرسال إشعار أو تحديث الـ status
+      return {
+        success: true,
+        data: {
+          plan: seller.subscription.plan,
+          status: seller.subscription.status, // ربما 'active' أو 'ongoing'
+          endDate: null, // أو 'Indefinite' كـ string
+        },
+      };
+    }
+
     const currentDate = new Date();
-    const endDate = new Date(seller.subscription.endDate);
+    const endDate = new Date(seller.subscription.endDate); // دلوقتي آمن لأننا تأكدنا إنه موجود
+
     if (currentDate > endDate) {
       seller.subscription.status = 'expired';
       await seller.save();
@@ -2650,7 +2853,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId,
-        type: 'api_key_rotated',
+        type: 'api_key rotated',
         title: t('messages.apiKeyRotatedTitle'),
         message: t('messages.apiKeyRotatedMessage', { name: rotatedApiKey.name }),
         data: { sellerId: seller._id, apiKeyId: rotatedApiKey._id },
@@ -2721,7 +2924,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId,
-        type: 'api_key.deactivated',
+        type: 'api_key deactivated',
         title: t('messages.apiKeyDeactivatedTitle'),
         message: t('messages.apiKeyDeactivatedMessage', { name: apiKey.name }),
         data: { sellerId: seller._id, apiKeyId },
@@ -2823,15 +3026,19 @@ await connectToDatabase();
   }
 }
 
-export async function updateSellerMetrics(
-  sellerId: string,
-  data: {
+export async function updateSellerMetrics({
+  sellerId,
+  updates,
+  locale = 'en',
+}: {
+  sellerId: string;
+  updates: {
     productsCount?: number;
     lastProductCreated?: Date;
-    action: string;
-  },
-  locale: string = 'en'
-) {
+    action?: string;
+  };
+  locale?: string;
+}): Promise<{ success: boolean; data?: ISeller; error?: string; code?: string }> {
   let t;
   try {
     t = await getTranslations({ locale, namespace: 'api.errors' });
@@ -2841,12 +3048,12 @@ export async function updateSellerMetrics(
   }
 
   try {
-await connectToDatabase();
+    await connectToDatabase();
     const session = await mongoose.startSession();
     session.startTransaction();
 
     try {
-      if (!isValidObjectId(sellerId)) {
+      if (!mongoose.Types.ObjectId.isValid(sellerId)) {
         throw new SellerError(t('invalidSellerData'), 'INVALID_ID');
       }
 
@@ -2859,23 +3066,28 @@ await connectToDatabase();
         updatedAt: new Date(),
       };
 
-      if (typeof data.productsCount === 'number') {
-        updateData['metrics.productsCount'] = Math.max(0, data.productsCount);
+      if (typeof updates.productsCount === 'number') {
+        updateData['metrics.productsCount'] = Math.max(0, (seller.metrics.productsCount || 0) + updates.productsCount);
       }
 
-      if (data.action === 'product_created') {
-        updateData['metrics.lastProductCreated'] = data.lastProductCreated || new Date();
-        updateData['metrics.products.total'] = (seller.metrics.products?.total || 0) + 1;
-        updateData['metrics.products.active'] = (seller.metrics.products?.active || 0) + 1;
-      } else if (data.action === 'product_deleted') {
-        updateData['metrics.products.total'] = Math.max(0, (seller.metrics.products?.total || 0) - 1);
-        updateData['metrics.products.active'] = Math.max(0, (seller.metrics.products?.active || 0) - 1);
-      } else if (data.action === 'product_out_of_stock') {
-        updateData['metrics.products.active'] = Math.max(0, (seller.metrics.products?.active || 0) - 1);
-        updateData['metrics.products.outOfStock'] = (seller.metrics.products?.outOfStock || 0) + 1;
-      } else if (data.action === 'product_back_in_stock') {
-        updateData['metrics.products.active'] = (seller.metrics.products?.active || 0) + 1;
-        updateData['metrics.products.outOfStock'] = Math.max(0, (seller.metrics.products?.outOfStock || 0) - 1);
+      if (updates.lastProductCreated) {
+        updateData['metrics.lastProductCreated'] = updates.lastProductCreated;
+      }
+
+      if (updates.action) {
+        if (updates.action === 'product_created') {
+          updateData['metrics.products.total'] = (seller.metrics.products?.total || 0) + 1;
+          updateData['metrics.products.active'] = (seller.metrics.products?.active || 0) + 1;
+        } else if (updates.action === 'product_deleted') {
+          updateData['metrics.products.total'] = Math.max(0, (seller.metrics.products?.total || 0) - 1);
+          updateData['metrics.products.active'] = Math.max(0, (seller.metrics.products?.active || 0) - 1);
+        } else if (updates.action === 'product_out_of_stock') {
+          updateData['metrics.products.active'] = Math.max(0, (seller.metrics.products?.active || 0) - 1);
+          updateData['metrics.products.outOfStock'] = (seller.metrics.products?.outOfStock || 0) + 1;
+        } else if (updates.action === 'product_back_in_stock') {
+          updateData['metrics.products.active'] = (seller.metrics.products?.active || 0) + 1;
+          updateData['metrics.products.outOfStock'] = Math.max(0, (seller.metrics.products?.outOfStock || 0) - 1);
+        }
       }
 
       const updatedSeller = await Seller.findByIdAndUpdate(
@@ -2941,7 +3153,8 @@ await connectToDatabase();
 
       // التحقق من وجود تكامل دفع نشط
       const paymentIntegration = await Integration.findOne({
-        providerName: { $in: seller.integrations.map((i: any) => i.provider) },
+        providerName: { $in: Object.values(seller.integrations).map((i: any) => i.provider) },
+        
         type: 'payment',
         isActive: true,
       }).session(session);
@@ -2974,7 +3187,7 @@ await connectToDatabase();
         throw new SellerError(t('errors.noEarnings'), 'NO_EARNINGS');
       }
 
-      const commissionRate = seller.subscription.features.commissionRate / 100;
+      const commissionRate = seller.subscription.features.commission / 100;
       const netEarnings = round2(earnings * (1 - commissionRate));
       const platformFee = round2(earnings * commissionRate);
 
@@ -3022,7 +3235,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId: seller.userId,
-        type: 'earnings.distributed',
+        type: 'earnings distributed',
         title: t('messages.earningsDistributedTitle'),
         message: `${t('messages.earningsDistributedMessage')} Amount: ${netEarnings}, Period: ${period}`,
         data: {
@@ -3166,309 +3379,9 @@ await connectToDatabase();
 
 
 // New Functions for Product Management
-export async function createProduct(
-  userId: string,
-  data: {
-    name: string;
-    description: string;
-    price: number;
-    countInStock: number;
-    category: string;
-    images?: File[];
-    status?: 'active' | 'draft';
-  },
-  locale: string = 'en'
-) {
-  let t;
-  try {
-    t = await getTranslations({ locale, namespace: 'api' });
-  } catch (error) {
-    console.error('Failed to load translations:', error);
-    t = (key: string) => key;
-  }
 
-  try {
-await connectToDatabase();
-    const session = await mongoose.startSession();
-    session.startTransaction();
 
-    try {
-      if (!isValidObjectId(userId)) {
-        throw new SellerError(t('errors.invalidSellerData'), 'INVALID_ID');
-      }
 
-      const seller = await Seller.findOne({ userId }).session(session);
-      if (!seller) {
-        throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
-      }
-
-      if (seller.subscription.status !== 'active') {
-        throw new SellerError(t('errors.inactiveSubscription'), 'INACTIVE_SUBSCRIPTION');
-      }
-
-      const productLimit = seller.subscription.features.productsLimit || 50;
-      const currentProducts = await Product.countDocuments({ sellerId: seller._id });
-      if (currentProducts >= productLimit) {
-        throw new SellerError(t('errors.productLimitReached', { limit: productLimit }), 'PRODUCT_LIMIT');
-      }
-
-      let imageUrls: string[] = [];
-      if (data.images && data.images.length > 0) {
-        imageUrls = await Promise.all(
-          data.images.map((file, index) =>
-            uploadToStorage(file, `sellers/${userId}/products/${data.name}-${index}-${Date.now()}`, {
-              contentType: file.type,
-              maxSize: 5 * 1024 * 1024,
-              allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
-            })
-          )
-        );
-      }
-
-      const product = await Product.create(
-        [
-          {
-            sellerId: seller._id,
-            name: data.name,
-            description: data.description,
-            price: data.price,
-            countInStock: data.countInStock,
-            category: data.category,
-            images: imageUrls,
-            status: data.status || 'draft',
-            metrics: {
-              rating: 0,
-              sales: 0,
-              views: 0,
-            },
-          },
-        ],
-        { session }
-      );
-
-      await updateSellerMetrics(seller._id.toString(), {
-        productsCount: currentProducts + 1,
-        action: 'product_created',
-        lastProductCreated: new Date(),
-      }, locale);
-
-      await session.commitTransaction();
-
-      revalidatePath('/[locale]/seller/dashboard/products', 'page');
-      revalidatePath(`/[locale]/${seller.customSiteUrl}`, 'page');
-
-      await sendNotification({
-        userId,
-        type: 'product.created',
-        title: t('messages.productCreatedTitle'),
-        message: t('messages.productCreatedMessage', { productName: data.name }),
-        data: { productId: product[0]._id, sellerId: seller._id },
-        channels: ['in_app', 'email', 'sms'],
-      });
-
-      return {
-        success: true,
-        data: product[0],
-      };
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
-  } catch (error) {
-    console.error('Create product error:', error);
-    return {
-      success: false,
-      error: error instanceof SellerError ? error.message : t('errors.failedToCreateProduct'),
-      code: error instanceof SellerError ? error.code : 'UNKNOWN',
-    };
-  }
-}
-
-export async function updateProduct(
-  userId: string,
-  productId: string,
-  data: {
-    name?: string;
-    description?: string;
-    price?: number;
-    countInStock?: number;
-    category?: string;
-    images?: File[];
-    status?: 'active' | 'draft';
-  },
-  locale: string = 'en'
-) {
-  let t;
-  try {
-    t = await getTranslations({ locale, namespace: 'api' });
-  } catch (error) {
-    console.error('Failed to load translations:', error);
-    t = (key: string) => key;
-  }
-
-  try {
-await connectToDatabase();
-    const session = await mongoose.startSession();
-    session.startTransaction();
-
-    try {
-      if (!isValidObjectId(userId) || !isValidObjectId(productId)) {
-        throw new SellerError(t('errors.invalidData'), 'INVALID_DATA');
-      }
-
-      const seller = await Seller.findOne({ userId }).session(session);
-      if (!seller) {
-        throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
-      }
-
-      const product = await Product.findById(productId).session(session);
-      if (!product || product.sellerId.toString() !== seller._id.toString()) {
-        throw new SellerError(t('errors.productNotFound'), 'PRODUCT_NOT_FOUND');
-      }
-
-      let imageUrls = product.images;
-      if (data.images && data.images.length > 0) {
-        // Delete old images
-        if (imageUrls.length > 0) {
-          await Promise.all(imageUrls.map((url: string) => deleteFromStorage(url)));
-        }
-        // Upload new images
-        imageUrls = await Promise.all(
-          data.images.map((file, index) =>
-            uploadToStorage(file, `sellers/${userId}/products/${data.name || product.name}-${index}-${Date.now()}`, {
-              contentType: file.type,
-              maxSize: 5 * 1024 * 1024,
-              allowedTypes: ['image/jpeg', 'image/jpg', 'image/png', 'image/webp'],
-            })
-          )
-        );
-      }
-
-      const wasOutOfStock = product.countInStock === 0;
-      const willBeOutOfStock = data.countInStock === 0;
-
-      const updateData: any = {
-        name: data.name || product.name,
-        description: data.description || product.description,
-        price: data.price !== undefined ? data.price : product.price,
-        countInStock: data.countInStock !== undefined ? data.countInStock : product.countInStock,
-        category: data.category || product.category,
-        images: imageUrls,
-        status: data.status || product.status,
-        updatedAt: new Date(),
-      };
-
-      await Product.findByIdAndUpdate(productId, { $set: updateData }, { session });
-
-      // Update seller metrics if stock status changes
-      if (wasOutOfStock && !willBeOutOfStock) {
-        await updateSellerMetrics(seller._id.toString(), {
-          action: 'product_back_in_stock',
-        }, locale);
-      } else if (!wasOutOfStock && willBeOutOfStock) {
-        await updateSellerMetrics(seller._id.toString(), {
-          action: 'product_out_of_stock',
-        }, locale);
-      }
-
-      await session.commitTransaction();
-
-      revalidatePath('/[locale]/seller/dashboard/products', 'page');
-      revalidatePath(`/[locale]/${seller.customSiteUrl}`, 'page');
-      revalidatePath(`/[locale]/products/${productId}`, 'page');
-
-      await sendNotification({
-        userId,
-        type: 'product.updated',
-        title: t('messages.productUpdatedTitle'),
-        message: t('messages.productUpdatedMessage', { productName: data.name || product.name }),
-        data: { productId, sellerId: seller._id },
-        channels: ['in_app', 'email', 'sms'],
-      });
-
-      return {
-        success: true,
-        data: {
-          ...product.toObject(),
-          ...updateData,
-        },
-      };
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
-  } catch (error) {
-    console.error('Update product error:', error);
-    return {
-      success: false,
-      error: error instanceof SellerError ? error.message : t('errors.failedToUpdateProduct'),
-      code: error instanceof SellerError ? error.code : 'UNKNOWN',
-    };
-  }
-}
-export async function deleteProduct(userId: string, productId: string, locale: string = 'en') {
-  let t;
-  try {
-    t = await getTranslations({ locale, namespace: 'api' });
-  } catch (error) {
-    console.error('Failed to load translations:', error);
-    t = (key: string) => key;
-  }
-  try {
-await connectToDatabase();
-    const session = await mongoose.startSession();
-    session.startTransaction();
-    try {
-      if (!isValidObjectId(userId) || !isValidObjectId(productId)) {
-        throw new SellerError(t('errors.invalidData'), 'INVALID_DATA');
-      }
-      const seller = await Seller.findOne({ userId }).session(session);
-      if (!seller) {
-        throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
-      }
-      const product = await Product.findById(productId).session(session);
-      if (!product || product.sellerId.toString() !== seller._id.toString()) {
-        throw new SellerError(t('errors.productNotFound'), 'PRODUCT_NOT_FOUND');
-      }
-      await Product.findByIdAndDelete(productId, { session });
-      await updateSellerMetrics(seller._id.toString(), {
-        action: 'product_deleted',
-      }, locale);
-      await session.commitTransaction();
-      revalidatePath('/[locale]/seller/dashboard/products', 'page');
-      revalidatePath(`/[locale]/${seller.customSiteUrl}`, 'page');
-      await sendNotification({
-        userId,
-        type: 'product_deleted',
-        title: t('messages.productDeletedTitle'),
-        message: t('messages.productDeletedMessage', { productName: product.name }),
-        data: { productId, sellerId: seller._id },
-        channels: ['in_app', 'email', 'sms'],
-      });
-      return {
-        success: true,
-        message: t('messages.productDeletedMessage', { productName: product.name }),
-      };
-    } catch (error) {
-      await session.abortTransaction();
-      throw error;
-    } finally {
-      session.endSession();
-    }
-  } catch (error) {
-    console.error('Delete product error:', error);
-    return {
-
-      success: false,
-      error: error instanceof SellerError ? error.message : t('errors.failedToDeleteProduct'),
-      code: error instanceof SellerError ? error.code : 'UNKNOWN',
-    };
-  }
-}
 export async function getSellerByCustomSiteUrl(customSiteUrl: string, locale: string = 'en') {
   const t = await getTranslations({ locale, namespace: 'api' });
   try {
@@ -3487,10 +3400,7 @@ await connectToDatabase();
       return { success: false, message: t('errors.sellerNotFound') };
     }
 
-    return {
-      success: true,
-      data: seller,
-    };
+  return { success: !!seller, data: seller };
   } catch (error) {
     console.error('Get seller by customSiteUrl error:', error);
     return {
@@ -3511,7 +3421,9 @@ await connectToDatabase();
     }
 
     const now = new Date();
-    if (seller.subscription.endDate < now && seller.subscription.status !== 'expired') {
+if (seller.subscription.endDate && seller.subscription.endDate < now && seller.subscription.status !== 'expired') {
+  const endDate = new Date(seller.subscription.endDate);
+
       seller.subscription.status = 'inactive';
       seller.freeTrialActive = false;
       seller.updatedAt = now;
@@ -3520,7 +3432,7 @@ await connectToDatabase();
 
       await sendNotification({
         userId,
-        type: 'subscription.expired',
+        type: 'subscription expired',
         title: t('notifications.subscriptionExpired.title'),
         message: t('notifications.subscriptionExpired.message'),
         channels: ['email', 'in_app'],
@@ -3845,7 +3757,7 @@ export async function suspendSeller(sellerId: string, reason: string, locale: st
 
       await sendNotification({
         userId: seller.userId,
-        type: 'account.suspended',
+        type: 'account suspended',
         title: t('messages.accountSuspendedTitle'),
         message: t('messages.accountSuspendedMessage', { reason }),
         data: { sellerId: seller._id, reason },

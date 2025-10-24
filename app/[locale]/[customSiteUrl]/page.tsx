@@ -1,13 +1,11 @@
 import { notFound } from 'next/navigation';
 import { getSellerByCustomSiteUrl } from '@/lib/actions/seller.actions';
-import { getProductBySlug, getRelatedProducts } from '@/lib/actions/product.actions';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import Link from 'next/link';
 import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
-import { customLogger } from '@/lib/api/services/logging';
 import { useTranslations } from 'next-intl';
 import crypto from 'crypto';
 
@@ -42,41 +40,59 @@ type Product = {
   slug: string;
 };
 
+async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
+  try {
+    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/log`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ type, message, meta }),
+    });
+  } catch (err) {
+    console.error('Failed to send log:', err);
+  }
+}
+
 async function getProductPageData({ customSiteUrl, slug, locale }: { customSiteUrl: string; slug: string; locale: string }) {
   const requestId = crypto.randomUUID();
+  const t = await useTranslations('product');
+
   try {
     const sellerResponse = await getSellerByCustomSiteUrl(customSiteUrl, locale);
     if (!sellerResponse.success || !sellerResponse.data) {
-      await customLogger.error('Seller not found for customSiteUrl', { requestId, customSiteUrl, service: 'product-page' });
+      await sendLog('error', t('Seller not found for customSiteUrl'), { requestId, customSiteUrl, service: 'product-page' });
       notFound();
     }
     const seller: Seller = sellerResponse.data;
 
-    let product: Product;
-    try {
-      product = await getProductBySlug(slug);
-    } catch (error) {
-      const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Failed to fetch product by slug', { requestId, slug, error: errorMessage, service: 'product-page' });
+    // جلب المنتج عبر API
+    const productResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?slug=${slug}&action=getProductBySlug`);
+    const productData = await productResponse.json();
+    if (!productData.success || !productData.data) {
+      await sendLog('error', t('Failed to fetch product by slug'), { requestId, slug, service: 'product-page' });
       notFound();
     }
+    const product: Product = productData.data;
 
     if (product.sellerId.toString() !== seller._id.toString()) {
-      await customLogger.error('Product does not belong to seller', { requestId, productId: product._id, sellerId: seller._id, service: 'product-page' });
+      await sendLog('error', t('Product does not belong to seller'), { requestId, productId: product._id, sellerId: seller._id, service: 'product-page' });
       notFound();
     }
 
-    const relatedProducts = await getRelatedProducts({
-      category: product.category,
-      productId: product._id,
-      limit: 4,
-    });
+    // جلب المنتجات المرتبطة عبر API
+    const relatedProductsResponse = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?category=${product.category}&productId=${product._id}&limit=4&action=getRelatedProducts`
+    );
+    const relatedProductsData = await relatedProductsResponse.json();
+    if (!relatedProductsData.success) {
+      await sendLog('error', t('Failed to fetch related products'), { requestId, category: product.category, service: 'product-page' });
+      return { seller, product, relatedProducts: [] };
+    }
 
-    await customLogger.info('Product page data fetched successfully', { requestId, customSiteUrl, slug, service: 'product-page' });
-    return { seller, product, relatedProducts };
+    await sendLog('info', t('Product page data fetched successfully'), { requestId, customSiteUrl, slug, service: 'product-page' });
+    return { seller, product, relatedProducts: relatedProductsData.data };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    await customLogger.error('Error fetching product page data', { requestId, error: errorMessage, service: 'product-page' });
+    const errorMessage = error instanceof Error ? error.message : t('Error fetching product page data');
+    await sendLog('error', t('Error fetching product page data'), { requestId, error: errorMessage, service: 'product-page' });
     throw error;
   }
 }

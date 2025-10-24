@@ -1,36 +1,57 @@
-import { Document, Model, model, models, Schema } from 'mongoose'
+// lib/db/models/support-ticket.model.ts
+import { Document, Model, model, models, Schema } from 'mongoose';
 
 export interface ISupportTicket extends Document {
-  _id: string
-  userId?: string
-  orderId?: string
-  subject: string
-  description: string
-  category: string
-  priority: 'low' | 'medium' | 'high'
-  status: 'open' | 'in_progress' | 'resolved' | 'closed'
-  assignedTo?: string
+  _id: string;
+  userId: string; // إما user ID أو email
+  email: string; // للتوافق مع الفرونت
+  role: 'user' | 'vendor'; // جديد
+  orderId?: string; // string مش ObjectId
+  integrationId?: string; // جديد
+  vendorId?: string; // جديد
+  subject: string;
+  description: string;
+  category: string;
+  priority: 'low' | 'medium' | 'high';
+  status: 'open' | 'in_progress' | 'resolved' | 'closed';
+  assignedTo?: string;
   messages: {
-    sender: string
-    message: string
-    attachments: string[]
-    createdAt: Date
-  }[]
-  createdAt: Date
-  updatedAt: Date
-  resolvedAt?: Date
+    sender: string;
+    message: string;
+    attachments: string[];
+    createdAt: Date;
+  }[];
+  createdAt: Date;
+  updatedAt: Date;
+  resolvedAt?: Date;
 }
 
 const supportTicketSchema = new Schema<ISupportTicket>(
   {
     userId: {
       type: String,
-      ref: 'user',
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ['user', 'vendor'],
       required: true,
     },
     orderId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Order',
+      type: String,
+      default: null,
+    },
+    integrationId: {
+      type: String,
+      default: null,
+    },
+    vendorId: {
+      type: String,
+      default: null,
     },
     subject: {
       type: String,
@@ -56,13 +77,12 @@ const supportTicketSchema = new Schema<ISupportTicket>(
     },
     assignedTo: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: 'User',
     },
     messages: [
       {
         sender: {
           type: String,
-          ref: 'user',
           required: true,
         },
         message: {
@@ -81,10 +101,8 @@ const supportTicketSchema = new Schema<ISupportTicket>(
   {
     timestamps: true,
   }
-)
+);
 
-const SupportTicket =
-  models.SupportTicket ?? model<ISupportTicket>('SupportTicket', supportTicketSchema)
+const SupportTicket = models.SupportTicket ?? model<ISupportTicket>('SupportTicket', supportTicketSchema);
 
-
-export default SupportTicket
+export default SupportTicket;

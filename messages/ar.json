@@ -35,20 +35,40 @@
   },
   "Home": {
     "Categories to explore": "فئات للاستكشاف",
-    "See More": "شاهد المزيد",
     "Explore New Arrivals": "اكتشف الوافدين الجدد",
-    "Flash Deals": "عروض فلاش",
-    "Discover Best Sellers": "اكتشف الأكثر مبيعًا",
-    "Featured Products": "المنتجات المميزة",
-    "View All": "عرض الكل",
-    "Shop Now": "تسوق الآن",
     "Today's Deals": "عروض اليوم",
     "Best Selling Products": "المنتجات الأكثر مبيعًا",
     "Related to items that you've viewed": "ذات صلة بالعناصر التي عرضتها",
     "Your browsing history": "سجل التصفح الخاص بك",
     "Most Popular Shoes For Sale": "الأحذية الأكثر شعبية للبيع",
     "Best Sellers in T-Shirts": "الأكثر مبيعًا في التيشيرتات",
-    "Best Deals on Wrist Watches": "أفضل العروض على ساعات المعصم"
+    "Best Deals on Wrist Watches": "أفضل العروض على ساعات المعصم",
+    "All Categories": "جميع الفئات",
+    "Popular Tags": "الوسوم الشائعة",
+    "Trending Categories": "الفئات الرائجة",
+    "Flash Deals": "عروض مؤقته",
+    "Home": "الصفحة الرئيسية",
+    "MetaDescription": "اكتشف منتجات رائعة بأسعار مميزة على MGZon.",
+    "Discover Best Sellers": "اكتشف الأكثر مبيعًا",
+    "Featured Products": "المنتجات المميزة",
+    "Latest Products": "أحدث المنتجات",
+    "Top Rated Products": "المنتجات الأعلى تقييمًا",
+    "Trending Products": "المنتجات الرائجة",
+    "Related Products": "منتجات ذات صلة",
+    "Available Now": "متوفر الآن",
+    "Seller Spotlight": "تسليط الضوء على البائع",
+    "See More": "عرض المزيد",
+    "Explore All": "استكشف الكل",
+    "View All": "عرض الكل",
+    "Shop Now": "تسوق الآن",
+    "View Seller": "عرض البائع",
+    "Best Seller": "الأكثر مبيعًا",
+    "New": "جديد",
+    "Sale": "تخفيض",
+    "Today's Deal": "عرض اليوم",
+    "In Stock": "متوفر في المعرض",
+    "Expired": "منتهي",
+    "AddedToCart": "{name} تم إضافته إلى السلة!"
   },
   "Product": {
     "Added to Cart": "أضيف إلى السلة",
@@ -101,6 +121,307 @@
     "Rating": "التقييم",
     "No reviews yet": "لا توجد مراجعات حتى الآن",
     "Submitting": "جاري الإرسال..."
+  },
+  "Account": {
+    "title": "حسابك",
+    "registerPrompt": "سجل مجانًا واحصل على صفحة ملف شخصي لإدارة مشاريعك ومهاراتك للحصول على وظائف سريعة بتوليد سيرتك الذاتية بضغطة زر واحدة.",
+    "register": "تسجيل",
+    "managePortfolio": "إدارة الملف الشخصي",
+    "managePortfolioDesc": "إدارة مشاريعك، مهاراتك، تعليقاتك، ومستودعات جيت هاب.",
+    "orders": "الطلبات",
+    "ordersDesc": "تتبع، إرجاع، إلغاء طلب، تحميل الفاتورة أو إعادة الشراء",
+    "loginSecurity": "تسجيل الدخول والأمان",
+    "loginSecurityDesc": "إدارة كلمة المرور، البريد الإلكتروني، ورقم الهاتف",
+    "addresses": "العناوين",
+    "addressesDesc": "تعديل، إزالة، أو تحديد العنوان الافتراضي",
+    "subscriptions": "الاشتراكات",
+    "subscriptionsDesc": "استكشف أو أدر اشتراكاتك",
+    "sellerDashboard": "لوحة تحكم البائع",
+    "sellerDashboardDesc": "إدارة منتجاتك، طلباتك، وتحليلاتك",
+    "startSelling": "ابدأ البيع",
+    "startSellingDesc": "جرب البيع واكسب معنا. سجل كبائع",
+    "yourRole": "دورك",
+    "loggedInAs": "أنت مسجل دخول كـ: {role}",
+    "pointsBalance": "رصيد النقاط",
+    "currentPoints": "نقاطك الحالية: {points}",
+    "pointsHistory": "سجل النقاط",
+    "points": "نقاط",
+    "on": "في",
+    "noPoints": "لا توجد معاملات نقاط بعد.",
+    "welcome": "مرحبًا بك في حسابك",
+    "welcomeBack": "مرحبًا مجددًا، {{username}}",
+    "newFrom": "اكتشف الجديد من {{siteName}}",
+    "signUp": "سجل الآن",
+    "loading": "جاري التحميل...",
+    "apiKeysAndApps": "مفاتيح API وتطبيقات OAuth",
+    "apiKeysAndAppsDesc": "إنشاء وإدارة مفاتيح API وتطبيقات OAuth للتكامل مع منصتك.",
+    "createApiKey": "إنشاء مفتاح API",
+    "redirectUriPlaceholder": "رابط إعادة التوجيه (مثل https://yourapp.com/callback)",
+    "permissions": "الأذونات و صلاحيات الوصول  ",
+    "notAuthenticated": "يجب تسجيل الدخول للوصول إلى هذه الصفحة.",
+    "apiKeyNamePlaceholder": "أدخل اسم مفتاح API",
+    "createOauthApp": "إنشاء تطبيق OAuth",
+    "appNamePlaceholder": "أدخل اسم التطبيق",
+    "scopes": "النطاقات",
+    "customScopes": "نطاقات مخصصة",
+    "customScopePlaceholder": "أدخل نطاقًا مخصصًا (مثل custom:read)",
+    "addCustomScope": "إضافة نطاق مخصص",
+    "remove": "إزالة",
+    "createApp": "إنشاء التطبيق",
+    "apiKeys": "مفاتيح API",
+    "noApiKeysFound": "لم يتم العثور على مفاتيح API",
+    "oauthApps": "تطبيقات OAuth",
+    "noAppsFound": "لم يتم العثور على تطبيقات OAuth",
+    "submitting": "جارٍ الإرسال...",
+    "existingKeys": "مفاتيح API الحالية",
+    "name": "الاسم",
+    "status": "الحالة",
+    "lastUsed": "آخر استخدام",
+    "created": "تاريخ الإنشاء",
+    "actions": "الإجراءات",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "refresh": "تحديث",
+    "refreshing": "جارٍ التحديث",
+    "noKeys": "لم يتم العثور على مفاتيح API",
+    "errors": {
+      "notAuthenticated": "يجب تسجيل الدخول للوصول إلى هذه الصفحة",
+      "nameRequired": "اسم مفتاح API مطلوب",
+      "nameAndRedirectRequired": "اسم التطبيق وعنوان URI لإعادة التوجيه مطلوبان",
+      "invalidCustomScope": "النطاق المخصص غير صالح أو مكرر",
+      "failedToFetchApiKeys": "فشل في جلب مفاتيح API",
+      "failedToFetchApps": "فشل في جلب تطبيقات OAuth",
+      "failedToCreateApiKey": "فشل في إنشاء مفتاح API",
+      "failedToCreateApp": "فشل في إنشاء تطبيق OAuth",
+      "unknown": "حدث خطأ غير معروف",
+      "fetchFailed": "فشل في جلب مفاتيح API",
+      "rotationFailed": "فشل في تدوير مفتاح API",
+      "deleteFailed": "فشل في حذف مفتاح API",
+      "userNotFound": "المستخدم غير موجود",
+      "apiKeyNotFound": "مفتاح API غير موجود",
+      "invalidPermissions": "الصلاحيات المقدمة غير صالحة",
+      "forbiddenPermissions": "غير مسموح لك بطلب هذه الصلاحيات: {permissions}"
+    },
+    "success": {
+      "created": "تم إنشاء مفتاح API",
+      "createdMessage": "تم إنشاء مفتاح API '{name}' بنجاح",
+      "keyCopied": "تم نسخ مفتاح API",
+      "keyCopiedMessage": "تم نسخ مفتاح API الجديد إلى الحافظة. احفظه بأمان!",
+      "rotated": "تم تدوير مفتاح API",
+      "rotatedMessage": "تم تدوير مفتاح API بنجاح",
+      "deleted": "تم حذف مفتاح API",
+      "deletedMessage": "تم حذف مفتاح API بنجاح",
+      "appCreated": "تم إنشاء تطبيق OAuth",
+      "appCreatedMessage": "تم إنشاء تطبيق OAuth بنجاح"
+    },
+    "confirm": {
+      "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
+      "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء."
+    },
+    "messages": {
+      "apiKeyCreated": "تم إنشاء مفتاح API بنجاح!",
+      "appCreated": "تم إنشاء تطبيق OAuth بنجاح!"
+    }
+  },
+  "SellerDashboard": {
+    "routingNumber": {
+      "label": "رقم التوجيه",
+      "placeholder": "أدخل رقم التوجيه (اختياري)",
+      "invalid": "رقم التوجيه غير صالح، يجب أن يكون 9 أرقام"
+    },
+    "notificationSettings": "إعدادات الإشعارات",
+    "notifications": {
+      "email": "البريد الإلكتروني",
+      "emailDescription": "تلقي الإشعارات عبر البريد الإلكتروني",
+      "sms": "رسائل SMS",
+      "smsDescription": "تلقي الإشعارات عبر رسائل النص القصير",
+      "orderUpdates": "تحديثات الطلبات",
+      "orderUpdatesDescription": "إشعارات تحديث حالة الطلبات",
+      "marketingEmails": "رسائل التسويق",
+      "marketingEmailsDescription": "العروض الترويجية والعروض الخاصة",
+      "pointsNotifications": "إشعارات النقاط",
+      "pointsNotificationsDescription": "تحديثات رصيد النقاط والمكافآت"
+    },
+    "bankVerification": {
+      "verified": "تم التحقق من الحساب البنكي",
+      "notVerified": "لم يتم التحقق من الحساب البنكي",
+      "verifiedMessage": "تم التحقق من حسابك البنكي بنجاح.",
+      "notVerifiedMessage": "يرجى إدخال بيانات الحساب البنكي للتحقق.",
+      "title": "التحقق من الحساب البنكي"
+    },
+    "save": "حفظ",
+    "saving": "جاري الحفظ...",
+    "updateSuccess": "تم تحديث الإعدادات بنجاح",
+    "submit": "إرسال",
+    "errors": {
+      "title": "خطأ",
+      "fetchFailed": "فشل في جلب البيانات",
+      "updateFailed": "فشل في تحديث الإعدادات",
+      "unauthenticated": "غير مصادق عليك",
+      "accessDenied": "لا يوجد صلاحية الوصول"
+    },
+    "success": {
+      "title": "نجح"
+    },
+    "retry": "إعادة المحاولة",
+    "loading": "جاري التحميل...",
+    "accountName": {
+      "label": "اسم صاحب الحساب",
+      "placeholder": "أدخل اسم صاحب الحساب",
+      "min": "اسم الحساب يجب أن يكون أكثر من حرفين",
+      "max": "اسم الحساب يجب ألا يتجاوز 100 حرف"
+    },
+    "accountNumber": {
+      "label": "رقم الحساب",
+      "placeholder": "أدخل رقم الحساب (IBAN)",
+      "min": "رقم الحساب يجب أن يكون 8 أحرف على الأقل",
+      "max": "رقم الحساب يجب ألا يتجاوز 34 حرفًا"
+    },
+    "bankName": {
+      "label": "اسم البنك",
+      "placeholder": "أدخل اسم البنك",
+      "min": "اسم البنك يجب أن يكون أكثر من حرفين",
+      "max": "اسم البنك يجب ألا يتجاوز 100 حرف"
+    },
+    "swiftCode": {
+      "label": "كود SWIFT",
+      "placeholder": "أدخل كود SWIFT",
+      "min": "كود SWIFT يجب أن يكون 8 أحرف على الأقل",
+      "max": "كود SWIFT يجب ألا يتجاوز 11 حرفًا",
+      "invalid": "كود SWIFT غير صالح"
+    },
+    "routingNumber": {
+      "label": "رقم التوجيه",
+      "placeholder": "أدخل رقم التوجيه (اختياري)",
+      "invalid": "رقم التوجيه يجب أن يكون 9 أرقام"
+    },
+    "bankDocumentUrl": {
+      "label": "رابط وثيقة البنك",
+      "placeholder": "أدخل رابط وثيقة البنك (اختياري)",
+      "invalid": "رابط وثيقة البنك غير صالح"
+    },
+    "financialProfile": "الملف المالي",
+    "verificationStatus": "حالة التحقق",
+    "bankInfoPending": "قيد الانتظار",
+    "verifyBankInfo": "التحقق من البيانات البنكية",
+    "verifying": "جاري التحقق...",
+    "messages": {
+      "bankInfoUpdated": "تم تحديث معلومات البنك بنجاح",
+      "bankInfoUpdatedMessage": "تم حفظ معلومات حسابك البنكي",
+      "bankInfoNote": "يرجى إدخال معلومات حسابك البنكي لتلقي المدفوعات",
+      "bankDetailsValid": "معلومات البنك صالحة",
+      "verificationSuccessful": "تم التحقق بنجاح",
+      "bankInfoVerified": "الحساب البنكي تم التحقق منه",
+      "verifiedBankInfo": "تم التحقق من بيانات حسابك البنكي بنجاح.",
+      "verifiedBankInfoComplete": "حسابك البنكي تم التحقق منه وجاهز للاستخدام.",
+      "pendingBankVerification": "في انتظار التحقق."
+    },
+    "errors": {
+      "invalidIBAN": "رقم الحساب (IBAN) غير صالح",
+      "invalidSwift": "كود SWIFT غير صالح",
+      "invalidRoutingNumber": "رقم التوجيه غير صالح",
+      "invalidDocumentUrl": "رابط وثيقة البنك غير صالح",
+      "verifyBankFailed": "فشل التحقق من معلومات البنك",
+      "bankInfoNote": "يرجى إدخال معلومات حسابك البنكي بدقة لتلقي المدفوعات",
+      "verifiedBankInfo": "تم التحقق من معلومات الحساب البنكي بنجاح",
+      "bankInfoVerified": "الحساب البنكي تم التحقق منه",
+      "verifiedBankInfoComplete": "حسابك البنكي تم التحقق منه وجاهز للاستخدام.",
+      "pendingBankVerification": "يتم مراجعة معلومات الحساب البنكي",
+      "bankInfoUpdated": "تم تحديث المعلومات البنكية",
+      "bankInfoUpdatedMessage": "تم حفظ معلومات الحساب البنكي بنجاح",
+      "title": "خطأ",
+      "unauthenticated": "غير مصرح لك، يرجى تسجيل الدخول.",
+      "sellerNotFound": "لم يتم العثور على حساب البائع.",
+      "fetchFailed": "فشل جلب بيانات الحساب البنكي.",
+      "failedToUpdateBankInfo": "فشل تحديث بيانات الحساب البنكي.",
+      "serverError": "حدث خطأ في السيرفر، حاول مرة أخرى لاحقًا",
+      "networkError": "حدث خطأ في الشبكة، حاول مرة أخرى.",
+      "unknown": "حدث خطأ غير معروف."
+    },
+    "bankInfoVerified": "تم التحقق من الحساب البنكي"
+  },
+  "AccountPortfolio": {
+    "title": "إدارة الملف الشخصي",
+    "projects": "المشاريع",
+    "subscribeToNotifications": "الاشتراك في الإشعارات",
+    "subscriptionSuccess": "تم الاشتراك في الإشعارات بنجاح",
+    "skills": "المهارات",
+    "comments": "التعليقات",
+    "githubRepos": "مستودعات GitHub",
+    "linkGithub": "ربط بحساب GitHub",
+    "viewOnGithub": "عرض على GitHub",
+    "fetchError": "فشل في جلب مستودعات GitHub",
+    "notifications": "الإشعارات",
+    "profilePicture": "الصورة الشخصية",
+    "education": "التعليم",
+    "contactInfo": "معلومات التواصل",
+    "projectTitle": "عنوان المشروع",
+    "projectDescription": "وصف المشروع",
+    "projectRating": "تقييم المشروع",
+    "projectStars": "نجوم المشروع (0-5)",
+    "linkOption": "اسم الرابط (مثل: Demo)",
+    "linkValue": "رابط (مثل: https://example.com)",
+    "addLink": "إضافة رابط",
+    "removeLink": "إزالة الرابط",
+    "addProject": "إضافة مشروع",
+    "updateProject": "تحديث المشروع",
+    "skillName": "اسم المهارة",
+    "skillIcon": "أيقونة المهارة",
+    "skillPercentage": "نسبة المهارة (0-100)",
+    "addSkill": "إضافة مهارة",
+    "search": "بحث",
+    "updateSkill": "تحديث المهارة",
+    "writeReply": "اكتب رد",
+    "reply": "رد",
+    "addSuccess": "تمت الإضافة بنجاح",
+    "updateSuccess": "تم التحديث بنجاح",
+    "deleteSuccess": "تم الحذف بنجاح",
+    "operationFailed": "فشلت العملية",
+    "confirmDelete": "هل أنت متأكد من الحذف؟",
+    "rating": "التقييم",
+    "stars": "نجوم",
+    "project": "المشروع",
+    "user": "المستخدم",
+    "comment": "التعليق",
+    "date": "التاريخ",
+    "replySuccess": "تم الرد بنجاح",
+    "updatePicture": "تحديث الصورة",
+    "noImageSelected": "لم يتم اختيار صورة",
+    "markRead": "وضع علامة كمقروء",
+    "markReadSuccess": "تم وضع علامة كمقروء بنجاح",
+    "degree": "الدرجة العلمية",
+    "institution": "المؤسسة",
+    "startYear": "سنة البدء",
+    "endYear": "سنة الانتهاء",
+    "educationDescription": "وصف التعليم",
+    "addEducation": "إضافة تعليم",
+    "updateEducation": "تحديث التعليم",
+    "period": "الفترة",
+    "description": "الوصف",
+    "phone": "رقم الهاتف",
+    "socialLinks": "روابط التواصل الاجتماعي",
+    "platform": "المنصة (مثل: LinkedIn)",
+    "url": "الرابط",
+    "addContactInfo": "إضافة معلومات التواصل",
+    "updateContactInfo": "تحديث معلومات التواصل",
+    "exportDocx": "تصدير السيرة الذاتية (DOCX)",
+    "aiChat": "الدردشة مع الذكاء الاصطناعي",
+    "searchUsers": "البحث عن المستخدمين",
+    "ratingText": "نص التقييم",
+    "edit": "تعديل",
+    "delete": "حذف",
+    "downloadDocx": "تحميل السيرة الذاتية (DOCX)",
+    "exportSuccess": "تم تصدير السيرة الذاتية بنجاح",
+    "notLoggedIn": "يجب تسجيل الدخول أولاً",
+    "emptyMessage": "الرسالة فارغة",
+    "typeMessage": "اكتب رسالتك",
+    "send": "إرسال",
+    "you": "أنت",
+    "assistant": "المساعد",
+    "searchPlaceholder": "ابحث عن مستخدم بالاسم أو اللقب",
+    "emptyQuery": "حقل البحث فارغ",
+    "noUsersFound": "لم يتم العثور على مستخدمين",
+    "viewProfile": "عرض الملف الشخصي"
   },
   "Cart": {
     "Shopping Cart": "عربة التسوق",
@@ -316,6 +637,120 @@
       "yes": "نعم",
       "yourCost": "تكلفتك"
     },
+    "settings": {
+      "title": "إعدادات الإدارة",
+      "generalSettings": "الإعدادات العامة",
+      "pointsSettings": "إعدادات النقاط",
+      "integrationSettings": "إعدادات التكامل",
+      "aiAssistantSettings": "إعدادات المساعد الذكي",
+      "aiAssistantEnabled": "تفعيل المساعد الذكي",
+      "aiAssistantPrice": "سعر الاشتراك الشهري",
+      "aiAssistantDescription": "وصف المساعد الذكي",
+      "aiAssistantDescriptionPlaceholder": "اكتب وصفًا للمساعد الذكي",
+      "aiAssistantImage": "رابط صورة المساعد الذكي",
+      "aiAssistantFreeLimit": "الحد المجاني (عدد الطلبات/شهر)",
+      "siteInfo": "معلومات الموقع",
+      "commonSettings": "الإعدادات العامة",
+      "carouselSettings": "إعدادات الشرائح",
+      "languageSettings": "إعدادات اللغة",
+      "currencySettings": "إعدادات العملة",
+      "paymentMethodSettings": "إعدادات طرق الدفع",
+      "deliveryDateSettings": "إعدادات تواريخ التوصيل",
+      "subscriptionSettings": "إعدادات الاشتراكات"
+    },
+    "subscriptions": {
+      "title": "إدارة خطط الاشتراك",
+      "month": "شهر",
+      "or": "أو",
+      "points": "نقاط",
+      "trialMonths": "{count, plural, one {شهر تجريبي} other {# أشهر تجريبية}}",
+      "domainStatus": "حالة النطاق",
+      "domainStatus.active": "نشط",
+      "domainStatus.expired": "منتهي الصلاحية",
+      "domainStatus.pending": "قيد الانتظار",
+      "redeemPoints": "استبدال النقاط",
+      "payWithMethod": "الدفع باستخدام {method}",
+      "features": {
+        "productsLimit": "الحد الأقصى للمنتجات: {count}",
+        "commission": "العمولة: {count}%",
+        "prioritySupport": "دعم الأولوية: {enabled}",
+        "instantPayouts": "مدفوعات فورية: {enabled}",
+        "customSections": "أقسام مخصصة: {count}",
+        "domainSupport": "دعم النطاق: {enabled}",
+        "domainRenewal": "تجديد النطاق: {enabled}"
+      },
+      "yes": "نعم",
+      "no": "لا",
+      "errors": {
+        "sellerNotFound": "لم يتم العثور على حساب بائع",
+        "registerPrompt": "يرجى التسجيل كبائع للوصول إلى الاشتراكات",
+        "bankInfoNotVerified": "معلومات البنك غير مؤكدة",
+        "verifyBankPrompt": "يرجى التحقق من معلومات البنك الخاص بك للمتابعة",
+        "subscriptionExpired": "اشتراكك منتهي الصلاحية",
+        "renewPrompt": "يرجى تجديد اشتراكك لاستعادة الوصول الكامل",
+        "domainExpired": "نطاقك منتهي الصلاحية",
+        "renewDomainPrompt": "يرجى تجديد نطاقك لاستعادة الوصول",
+        "serverError": "حدث خطأ في الخادم",
+        "tryAgain": "حاول مرة أخرى لاحقًا",
+        "fetchFailed": "فشل جلب البيانات",
+        "planNotFound": "لم يتم العثور على الخطة",
+        "pointsNotSupported": "هذه الخطة لا تدعم استبدال النقاط",
+        "insufficientPoints": "رصيد النقاط غير كافٍ",
+        "redeemFailed": "فشل استبدال النقاط",
+        "paymentMethodRequired": "طريقة الدفع مطلوبة",
+        "paymentFailed": "فشل عملية الدفع",
+        "saveFailed": "فشل في حفظ الخطة",
+        "deleteFailed": "فشل في حذف الخطة"
+      },
+      "success": {
+        "title": "نجاح",
+        "redeemSuccess": "تم استبدال النقاط بنجاح لخطة {plan}",
+        "created": "تم إنشاء الخطة بنجاح",
+        "updated": "تم تحديث الخطة بنجاح",
+        "deleted": "تم حذف الخطة بنجاح"
+      },
+      "account": {
+        "startSelling": "ابدأ البيع",
+        "verifyBank": "التحقق من الحساب البنكي"
+      },
+      "createPlan": "إنشاء خطة جديدة",
+      "editPlan": "تعديل الخطة",
+      "existingPlans": "الخطط الحالية",
+      "noPlans": "لا توجد خطط متاحة",
+      "form": {
+        "name": "اسم الخطة",
+        "price": "السعر (دولار أمريكي)",
+        "pointsCost": "تكلفة النقاط",
+        "description": "الوصف",
+        "features": "الميزات",
+        "features.productsLimit": "حد المنتجات",
+        "features.commission": "العمولة (%)",
+        "features.prioritySupport": "الدعم ذو الأولوية",
+        "features.instantPayouts": "الدفعات الفورية",
+        "features.customSectionsLimit": "حد الأقسام المخصصة",
+        "features.domainSupport": "دعم النطاق",
+        "features.domainRenewal": "تجديد النطاق",
+        "features.pointsRedeemable": "قابلية استبدال النقاط",
+        "features.dynamicPaymentGateways": "بوابات الدفع الديناميكية",
+        "features.maxApiKeys": "الحد الأقصى لمفاتيح API",
+        "isTrial": "خطة تجريبية",
+        "trialDuration": "مدة التجربة (أشهر)",
+        "isActive": "نشط",
+        "create": "إنشاء خطة",
+        "update": "تحديث الخطة",
+        "cancel": "إلغاء"
+      },
+      "errors": {}
+    },
+    "nav": {
+      "overview": "نظرة عامة",
+      "subscriptions": "الاشتراكات",
+      "users": "المستخدمون",
+      "sellers": "البائعون",
+      "products": "المنتجات",
+      "orders": "الطلبات",
+      "settings": "الإعدادات"
+    },
     "sellers": {
       "actions": "الإجراءات",
       "businessName": "اسم الشركة",
@@ -452,14 +887,13 @@
       "password": "كلمة مرور",
       "number": "رقم"
     },
-        "authorization url": "رابط التفويض",
+    "authorization url": "رابط التفويض",
     "authorization url placeholder": "أدخل رابط تفويض OAuth",
     "token url": "رابط الرمز",
     "token url placeholder": "أدخل رابط رمز OAuth",
     "oauth scopes": "نطاقات OAuth",
     "add scope": "إضافة نطاق OAuth",
     "remove scope": "إزالة النطاق",
-
     "select field type": "اختر نوع الحقل",
     "field type text": "نص",
     "field type email": "بريد إلكتروني",
@@ -569,7 +1003,6 @@
     "video url placeholder": "أدخل رابط الفيديو",
     "webhook event placeholder": "أدخل حدث الويب هوك (اضغط Enter للإضافة)",
     "webhook events": "أحداث الويب هوك",
-    
     "webhook secret": "سر Webhook",
     "webhook secret placeholder": "أدخل سر الويب هوك",
     "webhook url": "رابط Webhook",
@@ -579,51 +1012,50 @@
     "relative": "نسبي",
     "fixed": "ثابت",
     "save": "حفظ",
-
-  "title": "إضافة تكامل جديد",
-  "basic info": "المعلومات الأساسية",
-  "select integration": "اختر التكامل",
-  "select integration placeholder": "اختر تكاملًا أو أنشئ واحدًا جديدًا",
-  "new integration": "تكامل جديد",
-  "provider name": "اسم المزود",
-  "provider name placeholder": "مثال: Stripe",
-  "validation provider name min": "اسم المزود يجب أن يكون 2 أحرف على الأقل",
-  "validation provider name format": "اسم المزود يجب أن يحتوي على أحرف وأرقام ومسافات وشرطات فقط",
-  "type": "نوع التكامل",
-  "select type": "اختر نوع التكامل",
-  "types": {
-    "payment": "الدفع",
-    "warehouse": "المستودع",
-    "dropshipping": "الدروب شيبينغ",
-    "marketplace": "السوق",
-    "shipping": "الشحن",
-    "marketing": "التسويق",
-    "accounting": "المحاسبة",
-    "crm": "إدارة العملاء",
-    "analytics": "التحليلات",
-    "automation": "الأتمتة",
-    "communication": "الاتصالات",
-    "education": "التعليم",
-    "security": "الأمان",
-    "advertising": "الإعلانات",
-    "tax": "الضرائب",
-    "other": "أخرى"
-  },
-  "description": "الوصف",
-  "description placeholder": "اكتب وصفًا للتكامل",
-  "validation description max": "الوصف لا يمكن أن يتجاوز 500 حرف",
-  "logo url": "رابط الشعار",
-  "logo url placeholder": "https://example.com/logo.png",
-  "validation logo format": "رابط الشعار يجب أن يكون رابطًا صحيحًا",
-  "is active": "مفعّل",
-  "sandbox mode": "وضع التجربة",
-  "credentials": "بيانات الاعتماد",
-  "credential key": "مفتاح بيانات الاعتماد",
-  "credential value": "قيمة بيانات الاعتماد",
-  "add credential": "إضافة بيانات اعتماد",
-  "remove credential": "إزالة بيانات الاعتماد",
-  "webhook": "الويب هوك",
-      "select webhook event": "اختر حدث الويب هوك",
+    "title": "إضافة تكامل جديد",
+    "basic info": "المعلومات الأساسية",
+    "select integration": "اختر التكامل",
+    "select integration placeholder": "اختر تكاملًا أو أنشئ واحدًا جديدًا",
+    "new integration": "تكامل جديد",
+    "provider name": "اسم المزود",
+    "provider name placeholder": "مثال: Stripe",
+    "validation provider name min": "اسم المزود يجب أن يكون 2 أحرف على الأقل",
+    "validation provider name format": "اسم المزود يجب أن يحتوي على أحرف وأرقام ومسافات وشرطات فقط",
+    "type": "نوع التكامل",
+    "select type": "اختر نوع التكامل",
+    "types": {
+      "payment": "الدفع",
+      "warehouse": "المستودع",
+      "dropshipping": "الدروب شيبينغ",
+      "marketplace": "السوق",
+      "shipping": "الشحن",
+      "marketing": "التسويق",
+      "accounting": "المحاسبة",
+      "crm": "إدارة العملاء",
+      "analytics": "التحليلات",
+      "automation": "الأتمتة",
+      "communication": "الاتصالات",
+      "education": "التعليم",
+      "security": "الأمان",
+      "advertising": "الإعلانات",
+      "tax": "الضرائب",
+      "other": "أخرى"
+    },
+    "description": "الوصف",
+    "description placeholder": "اكتب وصفًا للتكامل",
+    "validation description max": "الوصف لا يمكن أن يتجاوز 500 حرف",
+    "logo url": "رابط الشعار",
+    "logo url placeholder": "https://example.com/logo.png",
+    "validation logo format": "رابط الشعار يجب أن يكون رابطًا صحيحًا",
+    "is active": "مفعّل",
+    "sandbox mode": "وضع التجربة",
+    "credentials": "بيانات الاعتماد",
+    "credential key": "مفتاح بيانات الاعتماد",
+    "credential value": "قيمة بيانات الاعتماد",
+    "add credential": "إضافة بيانات اعتماد",
+    "remove credential": "إزالة بيانات الاعتماد",
+    "webhook": "الويب هوك",
+    "select webhook event": "اختر حدث الويب هوك",
     "events": {
       "order created": "إنشاء طلب",
       "order updated": "تحديث طلب",
@@ -655,175 +1087,170 @@
       "message sent": "إرسال رسالة",
       "course updated": "تحديث دورة",
       "security alert": "تنبيه أمني"
-
-    }
-,
-
-  "enable webhook": "تفعيل الويب هوك",
-  "webhook url": "رابط الويب هوك",
-  "webhook url placeholder": "سيتم إنشاؤه تلقائيًا",
-  "webhook url description": "رابط الويب هوك سيتم إنشاؤه بناءً على اسم المزود",
-  "register this in provider settings": "قم بتسجيل هذا في إعدادات المزود",
-  "validation webhook url": "رابط الويب هوك يجب أن يكون رابطًا صحيحًا",
-  "webhook secret": "سر الويب هوك",
-  "webhook secret placeholder": "أدخل سر الويب هوك",
-  "webhook events": "أحداث الويب هوك",
-  "webhook event placeholder": "أدخل حدثًا (مثال: order.created)",
-  "add webhook event": "إضافة حدث ويب هوك",
-  "remove webhook event": "إزالة حدث ويب هوك",
-  "api endpoints": "نقاط نهاية API",
-  "endpoint key": "مفتاح نقطة النهاية",
-  "endpoint value": "قيمة نقطة النهاية",
-  "add endpoint": "إضافة نقطة نهاية",
-  "remove endpoint": "إزالة نقطة نهاية",
-  "validation endpoint value": "قيمة نقطة النهاية يجب أن تكون رابطًا صحيحًا",
-  "settings": "الإعدادات",
-  "api url": "رابط API",
-  "api url placeholder": "https://api.example.com",
-  "validation api url": "رابط API يجب أن يكون رابطًا صحيحًا",
-  "auth type": "نوع المصادقة",
-  "select auth type": "اختر نوع المصادقة",
-  "authorization url": "رابط التفويض",
-  "authorization url placeholder": "https://example.com/oauth/authorize",
-  "validation authorization url": "رابط التفويض يجب أن يكون رابطًا صحيحًا",
-  "token url": "رابط التوكن",
-  "token url placeholder": "https://example.com/oauth/token",
-  "token url placeholder": "https://example.com/oauth/token",
-  "enable oauth": "تمكين oauth",
-  "oauth scopes": "نطاقات OAuth",
-  "add scope": "إضافة نطاق",
-  "remove scope": "إزالة نطاق",
-  "redirect uri": "رابط إعادة التوجيه",
-  "redirect uri placeholder": "سيتم إنشاؤه تلقائيًا",
-  "redirect uri description": "رابط إعادة التوجيه سيتم إنشاؤه بناءً على اسم المزود",
-  "validation redirect uri": "رابط إعادة التوجيه يجب أن يكون رابطًا صحيحًا",
-  "response mapping": "تخطيط الاستجابة",
-  "mapping key": "مفتاح التخطيط",
-  "mapping path": "مسار التخطيط",
-  "remove mapping": "إزالة التخطيط",
-  "max retries": "الحد الأقصى لإعادة المحاولة",
-  "retry delay": "تأخير إعادة المحاولة",
-  "amount multiplier": "مضاعف المبلغ",
-  "supported currencies": "العملات المدعومة",
-  "add currency": "إضافة عملة",
-  "remove currency": "إزالة عملة",
-  "validation supported currencies": "العملة يجب أن تكون رمز من 3 أحرف (مثال: USD)",
-  "supported countries": "الدول المدعومة",
-  "add country": "إضافة دولة",
-  "remove country": "إزالة دولة",
-  "validation supported countries": "رمز الدولة يجب أن يكون من حرفين (مثال: US)",
-  "client id": "معرف العميل",
-  "client id placeholder": "أدخل معرف العميل",
-  "client secret": "سر العميل",
-  "client secret placeholder": "أدخل سر العميل",
-  "pricing": "التسعير",
-  "is free": "مجاني",
-  "commission rate": "نسبة العمولة",
-  "required plans": "الخطط المطلوبة",
-  "select plans": "اختر الخطط",
-  "remove plan": "إزالة الخطة",
-  "content": "المحتوى",
-  "select preset": "اختر نموذجًا",
-  "image preset 1": "نموذج صورة 1",
-  "video preset 1": "نموذج فيديو 1",
-  "article preset 1": "نموذج مقال 1",
-  "button preset 1": "نموذج زر 1",
-  "add image": "إضافة صورة",
-  "add video": "إضافة فيديو",
-  "add article": "إضافة مقال",
-  "add button": "إضافة زر",
-  "add divider": "إضافة فاصل",
-  "drag item": "سحب عنصر {{type}} رقم {{index}}",
-  "remove item": "إزالة عنصر {{type}}",
-  "image": "صورة",
-  "video": "فيديو",
-  "article": "مقال",
-  "button": "زر",
-  "divider": "فاصل",
-  "image url": "رابط الصورة",
-  "image url placeholder": "https://example.com/image.jpg",
-  "validation image url": "رابط الصورة يجب أن يكون رابطًا صحيحًا",
-  "video url": "رابط الفيديو",
-  "video url placeholder": "https://example.com/video.mp4",
-  "validation video url": "رابط الفيديو يجب أن يكون رابطًا صحيحًا",
-  "video not supported": "متصفحك لا يدعم تشغيل الفيديو",
-  "position": "الموضع",
-  "select position": "اختر الموضع",
-  "left": "يسار",
-  "center": "وسط",
-  "right": "يمين",
-  "size": "الحجم",
-  "select size": "اختر الحجم",
-  "small": "صغير",
-  "medium": "متوسط",
-  "large": "كبير",
-  "font size": "حجم الخط",
-  "font family": "نوع الخط",
-  "margin": "الهامش",
-  "padding": "الحشو",
-  "custom position": "موضع مخصص",
-  "select custom position": "اختر موضعًا مخصصًا",
-  "absolute": "مطلق",
-  "relative": "نسبي",
-  "fixed": "ثابت",
-  "top": "أعلى",
-  "left": "يسار",
-  "article title": "عنوان المقال",
-  "article title placeholder": "أدخل عنوان المقال",
-  "validation article title": "عنوان المقال يجب أن يكون 2 أحرف على الأقل",
-  "article content": "محتوى المقال",
-  "article content placeholder": "اكتب محتوى المقال",
-  "validation article content": "محتوى المقال يجب أن يكون 10 أحرف على الأقل",
-  "background color": "لون الخلفية",
-  "text color": "لون النص",
-  "button label": "تسمية الزر",
-  "button label placeholder": "أدخل تسمية الزر",
-  "validation button label": "تسمية الزر يجب أن تكون 2 أحرف على الأقل",
-  "button link": "رابط الزر",
-  "button link placeholder": "https://example.com",
-  "validation button link": "رابط الزر يجب أن يكون رابطًا صحيحًا",
-  "button type": "نوع الزر",
-  "select button type": "اختر نوع الزر",
-  "button type.primary": "أساسي",
-  "button type.secondary": "ثانوي",
-  "button type.link": "رابط",
-  "border radius": "نصف قطر الحدود",
-  "divider style": "نمط الفاصل",
-  "auto register": "التسجيل التلقائي",
-  "enable auto register": "تفعيل التسجيل التلقائي",
-  "field": "حقل",
-  "field key": "مفتاح الحقل",
-  "field key placeholder": "مثال: email",
-  "validation field key": "مفتاح الحقل مطلوب",
-  "field label": "تسمية الحقل",
-  "field label placeholder": "مثال: البريد الإلكتروني",
-  "validation field label": "تسمية الحقل مطلوبة",
-  "field type": "نوع الحقل",
-  "select field type": "اختر نوع الحقل",
-  "field typetext": "نص",
-  "field type.email": "بريد إلكتروني",
-  "field type.password": "كلمة مرور",
-  "field type.number": "رقم",
-  "field required": "الحقل مطلوب",
-  "add field": "إضافة حقل",
-  "remove field": "إزالة الحقل",
-  "preview": "معاينة",
-  "save": "حفظ",
-  "loading": "جارٍ التحميل...",
-  "success": {
-    "title": "نجاح",
-    "message": "تم إنشاء التكامل بنجاح",
-    "update": "تم تحديث التكامل بنجاح"
-  },
- "webhook events description": "اختر الأحداث التي تريد تلقي إشعارات بشأنها عبر الويب هوك",
-  "reset webhook": "إعادة تعيين خطاف الويب",
+    },
+    "enable webhook": "تفعيل الويب هوك",
+    "webhook url": "رابط الويب هوك",
+    "webhook url placeholder": "سيتم إنشاؤه تلقائيًا",
+    "webhook url description": "رابط الويب هوك سيتم إنشاؤه بناءً على اسم المزود",
+    "register this in provider settings": "قم بتسجيل هذا في إعدادات المزود",
+    "validation webhook url": "رابط الويب هوك يجب أن يكون رابطًا صحيحًا",
+    "webhook secret": "سر الويب هوك",
+    "webhook secret placeholder": "أدخل سر الويب هوك",
+    "webhook events": "أحداث الويب هوك",
+    "webhook event placeholder": "أدخل حدثًا (مثال: order.created)",
+    "add webhook event": "إضافة حدث ويب هوك",
+    "remove webhook event": "إزالة حدث ويب هوك",
+    "api endpoints": "نقاط نهاية API",
+    "endpoint key": "مفتاح نقطة النهاية",
+    "endpoint value": "قيمة نقطة النهاية",
+    "add endpoint": "إضافة نقطة نهاية",
+    "remove endpoint": "إزالة نقطة نهاية",
+    "validation endpoint value": "قيمة نقطة النهاية يجب أن تكون رابطًا صحيحًا",
+    "settings": "الإعدادات",
+    "api url": "رابط API",
+    "api url placeholder": "https://api.example.com",
+    "validation api url": "رابط API يجب أن يكون رابطًا صحيحًا",
+    "auth type": "نوع المصادقة",
+    "select auth type": "اختر نوع المصادقة",
+    "authorization url": "رابط التفويض",
+    "authorization url placeholder": "https://example.com/oauth/authorize",
+    "validation authorization url": "رابط التفويض يجب أن يكون رابطًا صحيحًا",
+    "token url": "رابط التوكن",
+    "token url placeholder": "https://example.com/oauth/token",
+    "token url placeholder": "https://example.com/oauth/token",
+    "enable oauth": "تمكين oauth",
+    "oauth scopes": "نطاقات OAuth",
+    "add scope": "إضافة نطاق",
+    "remove scope": "إزالة نطاق",
+    "redirect uri": "رابط إعادة التوجيه",
+    "redirect uri placeholder": "سيتم إنشاؤه تلقائيًا",
+    "redirect uri description": "رابط إعادة التوجيه سيتم إنشاؤه بناءً على اسم المزود",
+    "validation redirect uri": "رابط إعادة التوجيه يجب أن يكون رابطًا صحيحًا",
+    "response mapping": "تخطيط الاستجابة",
+    "mapping key": "مفتاح التخطيط",
+    "mapping path": "مسار التخطيط",
+    "remove mapping": "إزالة التخطيط",
+    "max retries": "الحد الأقصى لإعادة المحاولة",
+    "retry delay": "تأخير إعادة المحاولة",
+    "amount multiplier": "مضاعف المبلغ",
+    "supported currencies": "العملات المدعومة",
+    "add currency": "إضافة عملة",
+    "remove currency": "إزالة عملة",
+    "validation supported currencies": "العملة يجب أن تكون رمز من 3 أحرف (مثال: USD)",
+    "supported countries": "الدول المدعومة",
+    "add country": "إضافة دولة",
+    "remove country": "إزالة دولة",
+    "validation supported countries": "رمز الدولة يجب أن يكون من حرفين (مثال: US)",
+    "client id": "معرف العميل",
+    "client id placeholder": "أدخل معرف العميل",
+    "client secret": "سر العميل",
+    "client secret placeholder": "أدخل سر العميل",
+    "pricing": "التسعير",
+    "is free": "مجاني",
+    "commission rate": "نسبة العمولة",
+    "required plans": "الخطط المطلوبة",
+    "select plans": "اختر الخطط",
+    "remove plan": "إزالة الخطة",
+    "content": "المحتوى",
+    "select preset": "اختر نموذجًا",
+    "image preset 1": "نموذج صورة 1",
+    "video preset 1": "نموذج فيديو 1",
+    "article preset 1": "نموذج مقال 1",
+    "button preset 1": "نموذج زر 1",
+    "add image": "إضافة صورة",
+    "add video": "إضافة فيديو",
+    "add article": "إضافة مقال",
+    "add button": "إضافة زر",
+    "add divider": "إضافة فاصل",
+    "drag item": "سحب عنصر {{type}} رقم {{index}}",
+    "remove item": "إزالة عنصر {{type}}",
+    "image": "صورة",
+    "video": "فيديو",
+    "article": "مقال",
+    "button": "زر",
+    "divider": "فاصل",
+    "image url": "رابط الصورة",
+    "image url placeholder": "https://example.com/image.jpg",
+    "validation image url": "رابط الصورة يجب أن يكون رابطًا صحيحًا",
+    "video url": "رابط الفيديو",
+    "video url placeholder": "https://example.com/video.mp4",
+    "validation video url": "رابط الفيديو يجب أن يكون رابطًا صحيحًا",
+    "video not supported": "متصفحك لا يدعم تشغيل الفيديو",
+    "position": "الموضع",
+    "select position": "اختر الموضع",
+    "left": "يسار",
+    "center": "وسط",
+    "right": "يمين",
+    "size": "الحجم",
+    "select size": "اختر الحجم",
+    "small": "صغير",
+    "medium": "متوسط",
+    "large": "كبير",
+    "font size": "حجم الخط",
+    "font family": "نوع الخط",
+    "margin": "الهامش",
+    "padding": "الحشو",
+    "custom position": "موضع مخصص",
+    "select custom position": "اختر موضعًا مخصصًا",
+    "absolute": "مطلق",
+    "relative": "نسبي",
+    "fixed": "ثابت",
+    "top": "أعلى",
+    "left": "يسار",
+    "article title": "عنوان المقال",
+    "article title placeholder": "أدخل عنوان المقال",
+    "validation article title": "عنوان المقال يجب أن يكون 2 أحرف على الأقل",
+    "article content": "محتوى المقال",
+    "article content placeholder": "اكتب محتوى المقال",
+    "validation article content": "محتوى المقال يجب أن يكون 10 أحرف على الأقل",
+    "background color": "لون الخلفية",
+    "text color": "لون النص",
+    "button label": "تسمية الزر",
+    "button label placeholder": "أدخل تسمية الزر",
+    "validation button label": "تسمية الزر يجب أن تكون 2 أحرف على الأقل",
+    "button link": "رابط الزر",
+    "button link placeholder": "https://example.com",
+    "validation button link": "رابط الزر يجب أن يكون رابطًا صحيحًا",
+    "button type": "نوع الزر",
+    "select button type": "اختر نوع الزر",
+    "button type.primary": "أساسي",
+    "button type.secondary": "ثانوي",
+    "button type.link": "رابط",
+    "border radius": "نصف قطر الحدود",
+    "divider style": "نمط الفاصل",
+    "auto register": "التسجيل التلقائي",
+    "enable auto register": "تفعيل التسجيل التلقائي",
+    "field": "حقل",
+    "field key": "مفتاح الحقل",
+    "field key placeholder": "مثال: email",
+    "validation field key": "مفتاح الحقل مطلوب",
+    "field label": "تسمية الحقل",
+    "field label placeholder": "مثال: البريد الإلكتروني",
+    "validation field label": "تسمية الحقل مطلوبة",
+    "field type": "نوع الحقل",
+    "select field type": "اختر نوع الحقل",
+    "field typetext": "نص",
+    "field type.email": "بريد إلكتروني",
+    "field type.password": "كلمة مرور",
+    "field type.number": "رقم",
+    "field required": "الحقل مطلوب",
+    "add field": "إضافة حقل",
+    "remove field": "إزالة الحقل",
+    "preview": "معاينة",
+    "save": "حفظ",
+    "loading": "جارٍ التحميل...",
+    "success": {
+      "title": "نجاح",
+      "message": "تم إنشاء التكامل بنجاح",
+      "update": "تم تحديث التكامل بنجاح"
+    },
+    "webhook events description": "اختر الأحداث التي تريد تلقي إشعارات بشأنها عبر الويب هوك",
+    "reset webhook": "إعادة تعيين خطاف الويب",
     "custom event placeholder": "أدخل حدث مخصص (مثال: custom_event)",
     "select all events": "اختيار كل الأحداث",
     "all events selected": "تم اختيار كل الأحداث",
     "selected events preview": "معاينة الأحداث المختارة",
-
-
-  "events": {
+    "events": {
       "order created": "إنشاء طلب",
       "order updated": "تحديث طلب",
       "order fulfilled": "تنفيذ طلب",
@@ -854,11 +1281,7 @@
       "message sent": "إرسال رسالة",
       "course updated": "تحديث دورة",
       "security alert": "تنبيه أمني"
-
-  }
-
-,
-
+    },
     "events descriptions": {
       "order created": "يتم تشغيل هذا الحدث عند إنشاء طلب جديد في النظام.",
       "order updated": "يتم تشغيل هذا الحدث عند تحديث تفاصيل طلب موجود.",
@@ -891,13 +1314,13 @@
       "course updated": "يتم تشغيل هذا الحدث عند تحديث دورة تعليمية.",
       "security alert": "يتم تشغيل هذا الحدث عند اكتشاف تهديد أمني."
     },
-  "error": {
-    "title": "خطأ",
-    "message": "حدث خطأ أثناء معالجة طلبك",
-    "preview": "فشل إنشاء المعاينة",
-    "unsupported_event": "الحدث '{event}' غير مدعوم",
-    "invalid_event_type": "الحدث '{event}' غير مدعوم لنوع التكامل '{type}'."
-  }
+    "error": {
+      "title": "خطأ",
+      "message": "حدث خطأ أثناء معالجة طلبك",
+      "preview": "فشل إنشاء المعاينة",
+      "unsupported_event": "الحدث '{event}' غير مدعوم",
+      "invalid_event_type": "الحدث '{event}' غير مدعوم لنوع التكامل '{type}'."
+    }
   },
   "admin subscriptions": {
     "errors": {
@@ -948,65 +1371,6 @@
     "color": "اللون",
     "no items available": "لا توجد عناصر متاحة",
     "delivery date": "تاريخ التسليم",
-    "checkout settings": "Checkout Settings",
-    "ship to this address": "Ship to this address",
-    "choose shipping address and payment method": "Choose a shipping address and payment method to calculate shipping, handling, and tax.",
-    "order summary": "Order Summary",
-    "failed to load data": "Failed to load data",
-    "discount applied": "Discount applied: {amount}",
-    "failed to apply discount": "Failed to apply discount",
-    "place your order": "Place Your Order",
-    "choose a payment method": "Choose a payment method",
-    "review items and shipping": "Review items and shipping",
-    "shipping address": "Shipping address",
-    "payment method": "Payment Method",
-    "items and shipping": "Items and shipping",
-    "failed to place order": "Failed to place order"
-  },
-  "Settings": {
-    "settings updated successfully": "Settings updated successfully",
-    "failed to update settings": "Failed to update settings"
-  },
-  "Integrations": {
-    "integration saved successfully": "Integration saved successfully",
-    "failed to save integration": "Failed to save integration"
-  },
-  "Cart": {
-    "added to cart": "تمت الإضافة إلى السلة",
-    "color": "اللون",
-    "size": "المقاس",
-    "add": "أضف",
-    "of eligible items to your order to qualify for free shipping": "من المنتجات المؤهلة إلى طلبك للتأهل للشحن المجاني",
-    "qualifies for free shipping": "طلبك مؤهل للشحن المجاني",
-    "choose this option at checkout": "اختر هذا الخيار عند الدفع",
-    "cart subtotal": "المجموع الفرعي للسلة",
-    "proceed to checkout": "المتابعة إلى الدفع",
-    "go to cart": "الذهاب إلى السلة",
-    "items": "منتجات",
-    "quantity": "الكمية",
-    "delete": "حذف",
-    "invalid data": "بيانات غير صالحة",
-    "invalid quantity": "كمية غير صالحة",
-    "product not found": "المنتج غير موجود",
-    "insufficient stock": "المخزون غير كافٍ",
-    "color not available": "اللون غير متاح",
-    "size not available": "المقاس غير متاح",
-    "cart not found": "السلة غير موجودة",
-    "item not found": "المنتج غير موجود في السلة",
-    "cart updated title": "تم تحديث السلة",
-    "cart updated message": "تم إضافة المنتج {productName} إلى السلة",
-    "cart item removed": "تم إزالة المنتج {productName} من السلة",
-    "cart quantity updated": "تم تحديث الكمية للمنتج {productName} إلى {quantity}",
-    "add to cart failed": "فشل إضافة المنتج إلى السلة",
-    "remove from cart failed": "فشل إزالة المنتج من السلة",
-    "update cart failed": "فشل تحديث السلة",
-    "get cart failed": "فشل جلب السلة",
-    "cart already empty": "السلة فارغة بالفعل",
-    "cart cleared title": "تم تفريغ السلة",
-    "cart cleared message": "تم تفريغ سلتك",
-    "cart cleared": "تم تفريغ السلة"
-  },
-  "Checkout": {
     "order summary": "ملخص الطلب",
     "failed to load data": "فشل تحميل البيانات",
     "discount applied": "تم تطبيق الخصم: {amount}",
@@ -1058,7 +1422,55 @@
     "apply points": "تطبيق النقاط",
     "invalid shipping address": "عنوان شحن غير صالح",
     "order created": "تم إنشاء الطلب",
-    "order creation failed": "فشل إنشاء الطلب"
+    "order creation failed": "فشل إنشاء الطلب",
+    "review items and shipping": "Review items and shipping",
+    "shipping address": "Shipping address",
+    "payment method": "Payment Method",
+    "items and shipping": "Items and shipping",
+    "failed to place order": "Failed to place order"
+  },
+  "Settings": {
+    "settings updated successfully": "Settings updated successfully",
+    "failed to update settings": "Failed to update settings"
+  },
+  "Integrations": {
+    "integration saved successfully": "Integration saved successfully",
+    "failed to save integration": "Failed to save integration"
+  },
+  "Cart": {
+    "added to cart": "تمت الإضافة إلى السلة",
+    "color": "اللون",
+    "size": "المقاس",
+    "add": "أضف",
+    "of eligible items to your order to qualify for free shipping": "من المنتجات المؤهلة إلى طلبك للتأهل للشحن المجاني",
+    "qualifies for free shipping": "طلبك مؤهل للشحن المجاني",
+    "choose this option at checkout": "اختر هذا الخيار عند الدفع",
+    "cart subtotal": "المجموع الفرعي للسلة",
+    "proceed to checkout": "المتابعة إلى الدفع",
+    "go to cart": "الذهاب إلى السلة",
+    "items": "منتجات",
+    "quantity": "الكمية",
+    "delete": "حذف",
+    "invalid data": "بيانات غير صالحة",
+    "invalid quantity": "كمية غير صالحة",
+    "product not found": "المنتج غير موجود",
+    "insufficient stock": "المخزون غير كافٍ",
+    "color not available": "اللون غير متاح",
+    "size not available": "المقاس غير متاح",
+    "cart not found": "السلة غير موجودة",
+    "item not found": "المنتج غير موجود في السلة",
+    "cart updated title": "تم تحديث السلة",
+    "cart updated message": "تم إضافة المنتج {productName} إلى السلة",
+    "cart item removed": "تم إزالة المنتج {productName} من السلة",
+    "cart quantity updated": "تم تحديث الكمية للمنتج {productName} إلى {quantity}",
+    "add to cart failed": "فشل إضافة المنتج إلى السلة",
+    "remove from cart failed": "فشل إزالة المنتج من السلة",
+    "update cart failed": "فشل تحديث السلة",
+    "get cart failed": "فشل جلب السلة",
+    "cart already empty": "السلة فارغة بالفعل",
+    "cart cleared title": "تم تفريغ السلة",
+    "cart cleared message": "تم تفريغ سلتك",
+    "cart cleared": "تم تفريغ السلة"
   },
   "SellerSettings": {
     "title": "إعدادات البائع",
@@ -1402,6 +1814,416 @@
       }
     }
   },
+  "seller_integrations_provider": {
+    "Unauthorized": "الوصول غير مصرح به",
+    "Not_Found": "التكامل غير موجود",
+    "Error_Title": "خطأ",
+    "Update_Success": "تم تحديث التكامل بنجاح",
+    "Connect_Error": "فشل في ربط التكامل",
+    "Disconnect_Error": "فشل في قطع الاتصال بالتكامل"
+  },
+  "integrations_callback": {
+    "unauthorized": "الوصول غير مصرح به",
+    "invalid_callback_params": "معاملات الرد غير صالحة",
+    "invalid_state": "معامل الحالة غير صالح",
+    "integration_not_found": "التكامل غير موجود",
+    "seller_not_found": "لم يتم العثور على البائع",
+    "error_title": "خطأ",
+    "oauth_connected": "تم ربط تكامل OAuth بنجاح"
+  },
+  "seller_dashboard_integrations": {
+    "Integrations_Title": "التكاملات",
+    "Search_Placeholder": "البحث عن التكاملات...",
+    "Filter_Type": "تصفية حسب النوع",
+    "All_Types": "جميع الأنواع",
+    "Warehouse": "المستودع",
+    "Payment": "الدفع",
+    "Dropshipping": "الدروبشيبنج",
+    "marketplace": "السوق",
+    "Shipping": "الشحن",
+    "Marketing": "التسويق",
+    "Accounting": "المحاسبة",
+    "CRM": "إدارة العملاء",
+    "Advertising": "الإعلانات",
+    "tax": "الضرائب",
+    "Other": "أخرى",
+    "Environment": "البيئة",
+    "Live": "مباشر",
+    "Sandbox": "بيئة اختبار",
+    "Loading": "جاري تحميل التكاملات...",
+    "No_Description": "لا يوجد وصف متاح",
+    "Status": "الحالة",
+    "connected": "متصل",
+    "disconnected": "غير متصل",
+    "expired": "منتهي الصلاحية",
+    "needs_reauth": "يحتاج إلى إعادة التوثيق",
+    "Disconnect": "قطع الاتصال",
+    "Connect": "الاتصال",
+    "Success_Title": "نجاح",
+    "Disconnected": "تم قطع الاتصال بالتكامل بنجاح",
+    "Fetch_Error": "فشل في جلب التكاملات",
+    "Error_Title": "خطأ"
+  },
+  "SellerSettings": {
+    "title": "إعدادات البائع",
+    "trialStatus": "تنتهي الفترة التجريبية بعد {days} أيام",
+    "trialDescription": "الفترة التجريبية المجانية نشطة. قم بترقية خطتك للاستمرار في استخدام جميع الميزات.",
+    "upgradePlan": "ترقية الخطة",
+    "pointsBalance": "رصيد النقاط: {points}",
+    "pointsDescription": "استخدم نقاطك لاستبدال المكافآت أو ترقية خطتك.",
+    "submitting": "جاري الإرسال...",
+    "submit": "حفظ الإعدادات",
+    "sections": {
+      "businessInfo": "معلومات الأعمال",
+      "address": "العنوان",
+      "bankInfo": "معلومات البنك",
+      "subscription": "الاشتراك",
+      "shippingOptions": "خيارات الشحن",
+      "discountOffers": "عروض الخصم",
+      "notifications": "الإشعارات",
+      "display": "إعدادات العرض",
+      "security": "الأمان",
+      "customSite": "الموقع المخصص",
+      "taxes": "الضرائب",
+      "domains": "النطاقات",
+      "verification": "التحقق",
+      "integrations": "التكاملات"
+    },
+    "businessName": {
+      "label": "اسم الأعمال",
+      "placeholder": "أدخل اسم الأعمال",
+      "description": "اسم الأعمال كما سيظهر للعملاء."
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "أدخل البريد الإلكتروني للأعمال",
+      "description": "البريد الإلكتروني للاتصالات التجارية."
+    },
+    "description": {
+      "label": "الوصف",
+      "placeholder": "صف عملك",
+      "description": "وصف موجز لعملك."
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "placeholder": "أدخل رقم الهاتف",
+      "description": "رقم الهاتف للتواصل مع الأعمال."
+    },
+    "address": {
+      "street": {
+        "label": "الشارع",
+        "placeholder": "أدخل عنوان الشارع"
+      },
+      "city": {
+        "label": "المدينة",
+        "placeholder": "أدخل المدينة"
+      },
+      "state": {
+        "label": "الولاية",
+        "placeholder": "أدخل الولاية (اختياري)"
+      },
+      "postalCode": {
+        "label": "الرمز البريدي",
+        "placeholder": "أدخل الرمز البريدي"
+      },
+      "countryCode": {
+        "label": "رمز الدولة",
+        "placeholder": "أدخل رمز الدولة (مثل US)"
+      }
+    },
+    "bankInfo": {
+      "accountName": {
+        "label": "اسم الحساب",
+        "placeholder": "أدخل اسم الحساب"
+      },
+      "accountNumber": {
+        "label": "رقم الحساب",
+        "placeholder": "أدخل رقم الحساب"
+      },
+      "bankName": {
+        "label": "اسم البنك",
+        "placeholder": "أدخل اسم البنك"
+      },
+      "swiftCode": {
+        "label": "كود SWIFT",
+        "placeholder": "أدخل كود SWIFT",
+        "description": "كود SWIFT للمعاملات الدولية."
+      }
+    },
+    "showBankInfo": "إظهار معلومات البنك",
+    "hideBankInfo": "إخفاء معلومات البنك",
+    "subscription": {
+      "plan": {
+        "label": "خطة الاشتراك",
+        "placeholder": "اختر خطة",
+        "description": "اختر خطة الاشتراك الخاصة بك.",
+        "trial": "تجريبي",
+        "basic": "أساسي",
+        "pro": "احترافي",
+        "vip": "VIP"
+      },
+      "upgradeTo": "ترقية إلى {plan}"
+    },
+    "shippingOptions": {
+      "name": {
+        "label": "اسم خيار الشحن",
+        "placeholder": "أدخل اسم خيار الشحن"
+      },
+      "daysToDeliver": {
+        "label": "أيام التسليم",
+        "placeholder": "أدخل عدد الأيام"
+      },
+      "shippingPrice": {
+        "label": "سعر الشحن",
+        "placeholder": "أدخل سعر الشحن"
+      },
+      "freeShippingMinPrice": {
+        "label": "الحد الأدنى للشحن المجاني",
+        "placeholder": "أدخل الحد الأدنى للشحن المجاني"
+      },
+      "supportedCountries": {
+        "label": "الدول المدعومة",
+        "placeholder": "أدخل رموز الدول (مثل US,CA)",
+        "description": "قائمة رموز الدول مفصولة بفواصل."
+      },
+      "isActive": {
+        "label": "نشط",
+        "description": "تفعيل أو تعطيل خيار الشحن هذا."
+      },
+      "add": "إضافة خيار شحن",
+      "remove": "إزالة خيار الشحن"
+    },
+    "discountOffers": {
+      "code": {
+        "label": "رمز الخصم",
+        "placeholder": "أدخل رمز الخصم"
+      },
+      "description": {
+        "label": "الوصف",
+        "placeholder": "أدخل وصف الخصم"
+      },
+      "discountType": {
+        "label": "نوع الخصم",
+        "placeholder": "اختر نوع الخصم",
+        "percentage": "نسبة مئوية",
+        "fixed": "مبلغ ثابت",
+        "free_shipping": "شحن مجاني"
+      },
+      "discountValue": {
+        "label": "قيمة الخصم",
+        "placeholder": "أدخل قيمة الخصم"
+      },
+      "minPurchase": {
+        "label": "الحد الأدنى للشراء",
+        "placeholder": "أدخل الحد الأدنى للشراء"
+      },
+      "maxDiscount": {
+        "label": "الحد الأقصى للخصم",
+        "placeholder": "أدخل الحد الأقصى للخصم"
+      },
+      "validFrom": {
+        "label": "صالح من",
+        "placeholder": "اختر تاريخ البدء"
+      },
+      "validUntil": {
+        "label": "صالح حتى",
+        "placeholder": "اختر تاريخ الانتهاء"
+      },
+      "maxUses": {
+        "label": "الحد الأقصى للاستخدامات",
+        "placeholder": "أدخل الحد الأقصى للاستخدامات"
+      },
+      "isActive": {
+        "label": "نشط",
+        "description": "تفعيل أو تعطيل عرض الخصم هذا."
+      },
+      "add": "إضافة عرض خصم",
+      "remove": "إزالة عرض الخصم"
+    },
+    "notifications": {
+      "email": {
+        "label": "إشعارات البريد الإلكتروني",
+        "description": "تلقي الإشعارات عبر البريد الإلكتروني."
+      },
+      "sms": {
+        "label": "إشعارات SMS",
+        "description": "تلقي الإشعارات عبر SMS."
+      },
+      "orderUpdates": {
+        "label": "تحديثات الطلب",
+        "description": "تلقي تحديثات حول الطلبات."
+      },
+      "marketingEmails": {
+        "label": "رسائل التسويق",
+        "description": "تلقي رسائل التسويق عبر البريد الإلكتروني."
+      },
+      "pointsNotifications": {
+        "label": "إشعارات النقاط",
+        "description": "تلقي إشعارات حول رصيد النقاط."
+      }
+    },
+    "display": {
+      "showRating": {
+        "label": "إظهار التقييمات",
+        "description": "عرض التقييمات في متجرك."
+      },
+      "showContactInfo": {
+        "label": "إظهار معلومات التواصل",
+        "description": "عرض معلومات التواصل بشكل عام."
+      },
+      "showMetrics": {
+        "label": "إظهار المقاييس",
+        "description": "عرض مقاييس الأعمال على لوحة التحكم."
+      },
+      "showPointsBalance": {
+        "label": "إظهار رصيد النقاط",
+        "description": "عرض رصيد النقاط على لوحة التحكم."
+      }
+    },
+    "security": {
+      "twoFactorAuth": {
+        "label": "المصادقة الثنائية",
+        "description": "تفعيل المصادقة الثنائية لتعزيز الأمان."
+      },
+      "loginNotifications": {
+        "label": "إشعارات تسجيل الدخول",
+        "description": "تلقي إشعارات لمحاولات تسجيل الدخول."
+      }
+    },
+    "customSite": {
+      "theme": {
+        "label": "الثيم",
+        "placeholder": "اختر ثيم",
+        "default": "افتراضي",
+        "dark": "داكن",
+        "light": "فاتح",
+        "description": "اختر الثيم لموقعك المخصص."
+      },
+      "primaryColor": {
+        "label": "اللون الأساسي",
+        "description": "اختر اللون الأساسي لموقعك."
+      },
+      "logo": {
+        "label": "الشعار",
+        "description": "ارفع شعارًا لموقعك المخصص (الحد الأقصى 5 ميجابايت).",
+        "alt": "شعار الأعمال"
+      },
+      "bannerImage": {
+        "label": "صورة البانر",
+        "description": "ارفع صورة بانر لموقعك المخصص (الحد الأقصى 5 ميجابايت).",
+        "alt": "صورة البانر"
+      },
+      "seo": {
+        "metaTitle": {
+          "label": "العنوان الوصفي",
+          "placeholder": "أدخل العنوان الوصفي",
+          "description": "العنوان الوصفي لتحسين محركات البحث (الحد الأقصى 60 حرفًا)."
+        },
+        "metaDescription": {
+          "label": "الوصف الوصفي",
+          "placeholder": "أدخل الوصف الوصفي",
+          "description": "الوصف الوصفي لتحسين محركات البحث (الحد الأقصى 160 حرفًا)."
+        },
+        "keywords": {
+          "label": "الكلمات المفتاحية",
+          "placeholder": "أدخل الكلمات المفتاحية (مفصولة بفواصل)",
+          "description": "الكلمات المفتاحية لتحسين محركات البحث."
+        }
+      }
+    },
+    "taxes": {
+      "countryCode": {
+        "label": "رمز الدولة",
+        "placeholder": "أدخل رمز الدولة (مثل US)",
+        "description": "رمز الدولة لإعدادات الضرائب."
+      },
+      "taxRate": {
+        "label": "معدل الضريبة (%)",
+        "placeholder": "أدخل معدل الضريبة",
+        "description": "معدل الضريبة كنسبة مئوية."
+      },
+      "taxType": {
+        "label": "نوع الضريبة",
+        "placeholder": "اختر نوع الضريبة",
+        "vat": "ضريبة القيمة المضافة",
+        "sales_tax": "ضريبة المبيعات",
+        "none": "لا شيء"
+      },
+      "isActive": {
+        "label": "نشط",
+        "description": "تفعيل أو تعطيل إعداد الضريبة هذا."
+      },
+      "add": "إضافة إعداد ضريبة",
+      "remove": "إزالة إعداد ضريبة"
+    },
+    "domains": {
+      "domainName": {
+        "label": "اسم النطاق",
+        "placeholder": "أدخل اسم النطاق",
+        "description": "النطاق المخصص لمتجرك."
+      },
+      "isPrimary": {
+        "label": "النطاق الأساسي",
+        "description": "تعيين هذا النطاق كنطاق أساسي."
+      },
+      "dnsStatus": {
+        "label": "حالة DNS",
+        "placeholder": "اختر حالة DNS",
+        "pending": "قيد الانتظار",
+        "verified": "تم التحقق",
+        "failed": "فشل",
+        "description": "حالة التحقق من DNS للنطاق."
+      },
+      "add": "إضافة نطاق",
+      "remove": "إزالة نطاق"
+    },
+    "verification": {
+      "idDocument": {
+        "label": "وثيقة الهوية",
+        "description": "ارفع وثيقة هوية صادرة عن الحكومة."
+      },
+      "businessLicense": {
+        "label": "رخصة الأعمال",
+        "description": "ارفع رخصة أعمالك."
+      },
+      "status": {
+        "label": "حالة التحقق",
+        "placeholder": "اختر حالة التحقق",
+        "pending": "قيد الانتظار",
+        "verified": "تم التحقق",
+        "rejected": "مرفوض",
+        "description": "حالة التحقق الخاصة بك."
+      }
+    },
+    "integrations": {
+      "description": "إدارة التكاملات الخاصة بك هنا.",
+      "manage": "إدارة التكاملات"
+    },
+    "errors": {
+      "fetchTitle": "خطأ في جلب الإعدادات",
+      "fetchDescription": "فشل في جلب الإعدادات. حاول مرة أخرى.",
+      "submitTitle": "خطأ في حفظ الإعدادات",
+      "submitDescription": "فشل في حفظ الإعدادات. حاول مرة أخرى.",
+      "fileSizeTitle": "حجم الملف كبير جدًا",
+      "fileSizeDescription": "الملف المرفوع يتجاوز الحد الأقصى للحجم {size}.",
+      "fileTypeTitle": "نوع ملف غير صالح",
+      "fileTypeDescription": "نوع الملف المرفوع غير مدعوم.",
+      "fileReadTitle": "خطأ في قراءة الملف",
+      "fileReadDescription": "فشل في قراءة الملف المرفوع.",
+      "uploadTitle": "خطأ في الرفع",
+      "uploadDescription": "فشل في رفع الملف."
+    },
+    "success": {
+      "title": "تم تحديث الإعدادات",
+      "description": "تم تحديث إعداداتك بنجاح.",
+      "subscriptionUpgraded": "تم ترقية الاشتراك إلى {plan}."
+    },
+    "validation": {
+      "discountOffers": {
+        "validDates": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء."
+      }
+    }
+  },
   "Admin": {
     "API Keys": "مفاتيح API",
     "Best-Selling Categories": "الفئات الأكثر مبيعًا",
@@ -1532,6 +2354,34 @@
       "title": "إدارة البائعين",
       "updateSuccess": "تم تحديث البائع بنجاح",
       "view": "عرض التفاصيل",
+      "details": "تفاصيل البائع",
+      "businessInfo": "معلومات العمل",
+      "metrics": "الإحصائيات",
+      "subscription": "الاشتراك",
+      "adminActions": "إجراءات الإدارة",
+      "phone": "رقم الهاتف",
+      "description": "الوصف",
+      "logo": "الشعار",
+      "plan": "الخطة",
+      "expires": "ينتهي في",
+      "totalSales": "إجمالي المبيعات",
+      "yearlyRevenue": "الإيرادات السنوية",
+      "visitors": "عدد الزوار",
+      "conversionRate": "معدل التحويل",
+      "active": "نشط",
+      "suspended": "معلق",
+      "loadingMetrics": "جاري تحميل الإحصائيات...",
+      "noSellers": "لا يوجد بائعون",
+      "noSellerData": "لا توجد بيانات للبائع",
+      "backToSellers": "العودة إلى قائمة البائعين",
+      "edit": "تعديل",
+      "save": "حفظ",
+      "cancel": "إلغاء",
+      "suspend": "تعليق البائع",
+      "unsuspend": "إلغاء تعليق البائع",
+      "deleteSeller": "حذف البائع",
+      "suspendReasonPlaceholder": "أدخل سبب التعليق...",
+      "na": "غير متوفر",
       "withdrawals": {
         "errors": {
           "invalidData": "تم تقديم بيانات غير صالحة",
@@ -1579,6 +2429,426 @@
     "logoAlt": "شعار MGZON",
     "Sign in": "تسجيل الدخول"
   },
+  "Docs": {
+    "introductionDesc": "توفر وثائق OAuth لـ MGZon دليلًا شاملًا لدمج تطبيقاتك مع منصتنا باستخدام بروتوكول OAuth 2.0.",
+    "introduction": "مقدمة",
+    "login": "تسجيل الدخول",
+    "oauth": {
+      "introductionDesc": "توفر وثائق OAuth لـ MGZon دليلًا شاملًا لدمج تطبيقاتك مع منصتنا باستخدام بروتوكول OAuth 2.0.",
+      "title": "وثائق OAuth لـ MGZon",
+      "navigation": "التنقل",
+      "codeCopied": "تم نسخ الكود بنجاح!",
+      "copy": "نسخ",
+      "introductionDetails": "يتيح لك بروتوكول OAuth 2.0 المصادقة بشكل آمن والوصول إلى موارد MGZon مثل بيانات المستخدم، المنتجات، والإعلانات. هذا القسم يغطي الإعداد، النطاقات، التدفقات، وأمثلة التكامل.",
+      "setup": "الإعداد",
+      "setupDesc": "للبدء باستخدام OAuth مع MGZon، تحتاج إلى تسجيل تطبيقك للحصول على بيانات اعتماد العميل (Client Credentials).",
+      "step1": "سجّل الدخول إلى حساب MGZon الخاص بك.",
+      "step2": "انتقل إلى لوحة تحكم المطورين وقم بإنشاء تطبيق جديد.",
+      "step3": "حدد نطاقات الوصول المطلوبة (مثل profile:read، products:write).",
+      "step4": "احفظ معرف العميل (Client ID) وسر العميل (Client Secret) بأمان.",
+      "setupExample": "مثال على تسجيل تطبيق OAuth",
+      "setupResponse": "استجابة نموذجية لتسجيل التطبيق",
+      "sellerSetup": "إعداد البائع",
+      "sellerSetupDesc": "يتطلب تكامل البائع إنشاء مفاتيح API للوصول إلى موارد محددة مثل المنتجات والمخزون.",
+      "sellerStep1": "سجّل الدخول إلى حساب البائع الخاص بك.",
+      "sellerStep2": "انتقل إلى قسم مفاتيح API في لوحة تحكم البائع.",
+      "sellerStep3": "أنشئ مفتاح API جديد مع الأذونات المناسبة.",
+      "sellerStep4": "احفظ مفتاح API بأمان لاستخدامه في طلباتك.",
+      "sellerApiKeyExample": "مثال على إنشاء مفتاح API للبائع",
+      "sellerApiKeyResponse": "استجابة نموذجية لإنشاء مفتاح API",
+      "sellerApiKeyJs": "مثال JavaScript لإنشاء مفتاح API",
+      "scopes": "النطاقات",
+      "scopesDesc": "تحدد النطاقات الأذونات التي يمكن لتطبيقك الوصول إليها. اختر النطاقات بناءً على احتياجات تطبيقك.",
+      "scope": "النطاق",
+      "description": "الوصف",
+      "scopes": {
+        "title": "النطاقات",
+        "description": "تحدد النطاقات الأذونات التي يمكن لتطبيقك الوصول إليها. اختر النطاقات بناءً على احتياجات تطبيقك.",
+        "profileRead": "قراءة بيانات ملف المستخدم الأساسي (مثل الاسم والبريد الإلكتروني).",
+        "profileWrite": "تحديث بيانات ملف المستخدم.",
+        "productsRead": "قراءة بيانات المنتجات (مثل العنوان، السعر، المخزون).",
+        "productsWrite": "إنشاء أو تحديث بيانات المنتجات.",
+        "ordersRead": "قراءة بيانات الطلبات.",
+        "ordersWrite": "إنشاء أو تحديث الطلبات.",
+        "customersRead": "قراءة بيانات العملاء.",
+        "customersWrite": "إنشاء أو تحديث بيانات العملاء.",
+        "inventoryRead": "قراءة بيانات المخزون.",
+        "inventoryWrite": "تحديث بيانات المخزون.",
+        "analyticsRead": "قراءة بيانات التحليلات.",
+        "adsRead": "قراءة بيانات الإعلانات.",
+        "adsWrite": "إنشاء أو تحديث الإعلانات."
+      },
+      "scopesExample": "مثال على طلب النطاقات",
+      "sellerIntegrations": "تكاملات البائع",
+      "sellerIntegrationsDesc": "توفر تكاملات البائع أدوات لإدارة المنتجات والمخزون عبر منصات مختلفة مثل Shopify وShipBob.",
+      "importProducts": "استيراد المنتجات",
+      "importProductsDesc": "استيراد المنتجات من منصة خارجية إلى MGZon.",
+      "importProductsResponse": "استجابة نموذجية لاستيراد المنتجات",
+      "exportProducts": "تصدير المنتجات",
+      "exportProductsDesc": "تصدير المنتجات من MGZon إلى منصة خارجية.",
+      "exportProductsResponse": "استجابة نموذجية لتصدير المنتجات",
+      "syncInventory": "مزامنة المخزون",
+      "syncInventoryDesc": "مزامنة بيانات المخزون مع منصة خارجية.",
+      "syncInventoryResponse": "استجابة نموذجية لمزامنة المخزون",
+      "sellerIntegrationsJs": "مثال JavaScript لتكاملات البائع",
+      "flow": "تدفق OAuth",
+      "flowDesc": "يتبع تدفق OAuth 2.0 في MGZon نمط رمز التفويض (Authorization Code Grant) للوصول الآمن.",
+      "flowStep1": "قم بتوجيه المستخدم إلى نقطة نهاية المصادقة للحصول على رمز التفويض.",
+      "flowStep2": "يوافق المستخدم على النطاقات المطلوبة.",
+      "flowStep3": "يتم إعادة توجيه المستخدم إلى عنوان URI لإعادة التوجيه مع رمز التفويض.",
+      "flowStep4": "قم بتبادل رمز التفويض برمز وصول (Access Token) ورمز تحديث (Refresh Token).",
+      "flowStep5": "استخدم رمز الوصول للوصول إلى الموارد المحمية.",
+      "flowExample": "مثال على تدفق OAuth",
+      "endpoints": "نقاط النهاية",
+      "authEndpoint": "نقطة نهاية المصادقة",
+      "authEndpointDesc": "يتم استخدام نقطة النهاية هذه لبدء تدفق OAuth.",
+      "tokenEndpoint": "نقطة نهاية الرمز",
+      "tokenEndpointDesc": "تبادل رمز التفويض برمز وصول ورمز تحديث.",
+      "tokenResponse": "استجابة نموذجية لنقطة نهاية الرمز",
+      "userinfoEndpoint": "نقطة نهاية معلومات المستخدم",
+      "userinfoEndpointDesc": "استرجاع معلومات المستخدم باستخدام رمز الوصول.",
+      "userinfoResponse": "استجابة نموذجية لمعلومات المستخدم",
+      "refreshToken": "تحديث الرمز",
+      "refreshTokenDesc": "استخدام رمز التحديث للحصول على رمز وصول جديد.",
+      "refreshTokenResponse": "استجابة نموذجية لتحديث الرمز",
+      "errors": "الأخطاء",
+      "errorsDesc": "قد تُرجع نقاط نهاية MGZon رموز أخطاء محددة عند حدوث مشكلات.",
+      "errorCode": "رمز الخطأ",
+      "description": "الوصف",
+      "errors": {
+        "invalidRequest": "الطلب غير صالح بسبب معلمات مفقودة أو غير صحيحة.",
+        "invalidClient": "بيانات اعتماد العميل غير صالحة.",
+        "invalidGrant": "رمز التفويض أو رمز التحديث غير صالح.",
+        "unauthorizedClient": "العميل غير مصرح له باستخدام نوع المنحة هذا.",
+        "unsupportedGrantType": "نوع المنحة غير مدعوم.",
+        "integrationNotFound": "التكامل المحدد غير موجود.",
+        "integrationNotConnected": "التكامل لم يتم ربطه بحساب البائع."
+      },
+      "errorsExample": "مثال على التعامل مع الأخطاء",
+      "advertising": "الإعلانات",
+      "advertisingDesc": "يتيح لك API الإعلانات إنشاء حملات إعلانية وإدارتها على MGZon.",
+      "advertisingGetStarted": "ابدأ بحملاتك الإعلانية من خلال",
+      "advertisementsLink": "لوحة تحكم الإعلانات",
+      "createAdCampaign": "إنشاء حملة إعلانية",
+      "createAdCampaignDesc": "إنشاء حملة إعلانية جديدة باستخدام API الإعلانات.",
+      "createAdCampaignResponse": "استجابة نموذجية لإنشاء حملة إعلانية",
+      "listAdCampaigns": "سرد الحملات الإعلانية",
+      "listAdCampaignsDesc": "استرجاع قائمة بالحملات الإعلانية الحالية.",
+      "listAdCampaignsResponse": "استجابة نموذجية لسرد الحملات الإعلانية",
+      "updateAdCampaign": "تحديث حملة إعلانية",
+      "updateAdCampaignDesc": "تحديث تفاصيل حملة إعلانية موجودة.",
+      "updateAdCampaignResponse": "استجابة نموذجية لتحديث حملة إعلانية",
+      "deleteAdCampaign": "حذف حملة إعلانية",
+      "deleteAdCampaignDesc": "حذف حملة إعلانية موجودة.",
+      "deleteAdCampaignResponse": "استجابة نموذجية لحذف حملة إعلانية",
+      "syncAdMetrics": "مزامنة مقاييس الإعلانات",
+      "syncAdMetricsDesc": "مزامنة مقاييس الأداء للحملة الإعلانية.",
+      "syncAdMetricsResponse": "استجابة نموذجية لمزامنة مقاييس الإعلانات",
+      "advertisementsJs": "مثال JavaScript لإدارة الإعلانات",
+      "advertisementsJsDesc": "كود JavaScript لإنشاء وإدارة الحملات الإعلانية.",
+      "advertisementsPython": "مثال Python لإدارة الإعلانات",
+      "advertisementsPythonDesc": "كود Python لإنشاء وإدارة الحملات الإعلانية.",
+      "example": "أمثلة",
+      "exampleNode": "مثال Node.js",
+      "exampleNodeDesc": "مثال على تكامل OAuth باستخدام Node.js وPassport.",
+      "examplePython": "مثال Python",
+      "examplePythonDesc": "مثال على تكامل OAuth باستخدام Python وFlask.",
+      "exampleSellerImport": "مثال استيراد منتج للبائع",
+      "exampleSellerImportDesc": "مثال على استيراد منتج من منصة خارجية.",
+      "exampleSellerExport": "مثال تصدير منتج للبائع",
+      "exampleSellerExportDesc": "مثال على تصدير منتج إلى منصة خارجية.",
+      "developers": "المطورون",
+      "developersDesc": "توفر لوحة تحكم المطورين أدوات لإنشاء التطبيقات وإدارتها.",
+      "developersCreateApp": "إنشاء تطبيق",
+      "developersCreateAppDesc": "إنشاء تطبيق OAuth جديد باستخدام API المطورين.",
+      "developersListApps": "سرد التطبيقات",
+      "developersListAppsDesc": "استرجاع قائمة بالتطبيقات المسجلة."
+    }
+  },
+  "Chatbote": {
+    "aiChat": "دردشة الذكاء الاصطناعي",
+    "you": "أنت",
+    "assistant": "المساعد",
+    "typeMessage": "اكتب رسالتك هنا...",
+    "send": "إرسال",
+    "emptyMessage": "الرجاء إدخال رسالة قبل الإرسال.",
+    "apiError": "خطأ في الـ API",
+    "errorUnexpected": "عذرًا، حصل خطأ غير متوقع.",
+    "noClearAnswer": "لا يوجد إجابة واضحة.",
+    "unknownError": "خطأ غير معروف",
+    "oauthDocs": "وثائق OAuth",
+    "productsPage": "صفحة المنتجات",
+    "serverUnreachable": "عذرًا، لم أستطع التواصل مع الخادم.",
+    "oauth": {
+      "introductionDesc": "يوفر OAuth في MGZon طريقة آمنة وموحدة لتفويض التطبيقات للوصول إلى بيانات المستخدم وإدارة موارده دون مشاركة بيانات تسجيل الدخول. يتبع معيار OAuth 2.0، مما يتيح التكامل السلس مع منصة MGZon.",
+      "flowDesc": "يتضمن تدفق OAuth في MGZon توجيه المستخدم إلى صفحة التفويض، حيث يمنح الأذونات، ثم استبدال رمز التفويض برمز وصول، والذي يمكن استخدامه للوصول إلى الموارد المحمية.",
+      "sellerSetupDesc": "للبائعين، يوفر MGZon واجهة برمجية مبسطة لإدارة المنتجات والمخزون. يمكن إنشاء مفاتيح API للوصول المباشر دون تدفق OAuth الكامل، وهو مثالي للتكاملات الخلفية.",
+      "sellerApiKeyExample": "مثال: يمكنك إنشاء مفتاح API عبر لوحة تحكم البائع باستخدام طلب POST إلى /api/v1/keys مع تحديد الأذونات مثل products:read أو inventory:write.",
+      "scopesDesc": "تحدد النطاقات (scopes) في MGZon مستوى الوصول الممنوح للتطبيقات. تشمل الأمثلة profile:read لقراءة بيانات المستخدم، وproducts:write لإدارة المنتجات، وads:write لإنشاء الحملات الإعلانية.",
+      "advertisingDesc": "يتيح API الإعلانات في MGZon للبائعين إنشاء وإدارة الحملات الإعلانية. يمكنك دمج الإعلانات باستخدام نطاقات مثل ads:read وads:write للوصول إلى بيانات الحملة وإنشاء إعلانات جديدة."
+    },
+    "chatbotFallback": "عذرًا، لم أفهم سؤالك. حاول إعادة صياغته أو اطرح سؤالًا آخر!",
+    "missingQuestion": "الرجاء إرسال سؤال.",
+    "refineSearch": "يمكنك تحديد البحث بتحديد الفئة أو نطاق السعر.",
+    "oauthDocsInstructions": "راجع القسم المناسب في توثيق OAuth لمزيد من التفاصيل.",
+    "gptOssInstructions": "هذه إجابة عامة من نموذج GPT‑OSS‑120B.",
+    "requestProcessingError": "عذرًا، لم أستطع معالجة طلبك.",
+    "relevantLinks": "روابط ذات صلة"
+  },
+  "Premium": {
+    "title": "اشتراك المساعد الذكي المميز",
+    "description": "افتح الإمكانيات الكاملة للمساعد الذكي مع الاشتراك المميز!",
+    "feature1": "استخدام غير محدود للمساعد الذكي",
+    "feature2": "إنشاء قوالب تلقائية وتصميمات مخصصة",
+    "feature3": "تقارير ذكية عن المبيعات",
+    "feature4": "أفكار تسويقية فورية",
+    "price": "{amount} دولار/شهر",
+    "subscribeButton": "فعّل الاشتراك الآن",
+    "subscriptionStarted": "تم بدء الاشتراك بنجاح!",
+    "subscriptionError": "فشل في بدء الاشتراك"
+  },
+  "Sellerchatbote": {
+    "aiChat": "دردشة الذكاء الاصطناعي",
+    "you": "أنت",
+    "assistant": "المساعد",
+    "typeMessage": "اكتب رسالتك هنا",
+    "send": "إرسال",
+    "fetchHistoryError": "فشل في جلب سجل المحادثة",
+    "apiError": "خطأ في استدعاء واجهة برمجة التطبيقات",
+    "emptyMessage": "لا يمكن إرسال رسالة فارغة",
+    "unknownError": "خطأ غير معروف",
+    "responses": {
+      "Template \"{name}\" created successfully": "تم إنشاء القالب \"{name}\" بنجاح",
+      "Template \"{name}\" updated successfully": "تم تحديث القالب \"{name}\" بنجاح",
+      "Template \"{name}\" deleted successfully": "تم حذف القالب \"{name}\" بنجاح",
+      "Found {count} templates": "تم العثور على {count} قالب",
+      "Product \"{name}\" created successfully": "تم إنشاء المنتج \"{name}\" بنجاح",
+      "Template \"{name}\" found with ID {templateId}": "تم العثور على القالب \"{name}\" بمعرف {templateId}",
+      "Settings updated successfully": "تم تحديث الإعدادات بنجاح",
+      "Seller details: {businessName}": "تفاصيل البائع: {businessName}",
+      "Order {orderId} status updated to {status}": "تم تحديث حالة الطلب {orderId} إلى {status}",
+      "Dropshipping product \"{name}\" imported successfully": "تم استيراد منتج الدروبشيبنج \"{name}\" بنجاح"
+    },
+    "fetchAIStatusError": "فشل في استرجاع حالة المساعد الذكي",
+    "limitExceeded": "لقد وصلت إلى الحد المجاني! فعّل الاشتراك الشهري للاستمرار: <a href=\"{link}\" class=\"underline\">اشترك الآن</a>",
+    "subscribeNow": "اشترك الآن"
+  },
+  "integrations": {
+    "landing": {
+      "error_title": "خطأ",
+      "success_title": "نجاح",
+      "loading": "جارٍ التحميل...",
+      "connect_error": "فشل في تثبيت التكامل",
+      "disconnect_error": "فشل في إلغاء تثبيت التكامل",
+      "disconnected": "تم إلغاء تثبيت التكامل بنجاح",
+      "install": "تثبيت",
+      "disconnect": "إلغاء التثبيت",
+      "by": "بواسطة",
+      "no_description": "لا يوجد وصف",
+      "no_features": "لا توجد ميزات",
+      "overview": "نظرة عامة",
+      "features": "الميزات",
+      "media": "الوسائط",
+      "key_features": "الميزات الرئيسية",
+      "categories": "الفئات",
+      "commission_rate": "نسبة العمولة",
+      "installs": "عدد التثبيتات",
+      "reviews": "مراجعات",
+      "payment": "الدفع",
+      "warehouse": "المستودعات",
+      "dropshipping": "الدروبشيبينغ",
+      "marketplace": "الأسواق",
+      "shipping": "الشحن",
+      "marketing": "التسويق",
+      "accounting": "المحاسبة",
+      "crm": "إدارة العملاء",
+      "analytics": "التحليلات",
+      "automation": "الأتمتة",
+      "communication": "الاتصالات",
+      "education": "التعليم",
+      "security": "الأمان",
+      "advertising": "الإعلانات",
+      "tax": "الضرائب",
+      "other": "أخرى"
+    }
+  },
+  "seller": {
+    "clients": {
+      "unauthorized": "غير مصرح بالوصول",
+      "not_found": "التطبيق غير موجود أو غير معتمد",
+      "unknown_error": "خطأ غير معروف",
+      "failed_to_retrieve": "فشل في استرداد التطبيقات"
+    },
+    "dashboard": {
+      "integrations": {
+        "title": "متجر التكاملات",
+        "loading": "جارٍ التحميل...",
+        "no_integrations": "لم يتم العثور على تكاملات",
+        "fetch_error": "فشل في جلب التكاملات",
+        "fetch_developer_error": "فشل في جلب تطبيقات المطورين",
+        "error_title": "خطأ",
+        "success_title": "نجاح",
+        "connect_error": "فشل في تثبيت التكامل",
+        "disconnect_error": "فشل في إلغاء تثبيت التكامل",
+        "disconnected": "تم إلغاء تثبيت التكامل بنجاح",
+        "install": "تثبيت",
+        "disconnect": "إلغاء التثبيت",
+        "view_details": "عرض التفاصيل",
+        "search_placeholder": "ابحث عن تكامل...",
+        "filter_category": "تصفية حسب الفئة",
+        "filter_rating": "تصفية حسب التقييم",
+        "filter_installs": "تصفية حسب التثبيتات",
+        "sandbox_mode": "الوضع التجريبي",
+        "live_mode": "الوضع الحي",
+        "by": "بواسطة",
+        "no_description": "لا يوجد وصف",
+        "installs": "عدد التثبيتات",
+        "reviews": "مراجعات",
+        "all": "الكل",
+        "payment": "الدفع",
+        "warehouse": "المستودعات",
+        "dropshipping": "الدروبشيبينغ",
+        "marketplace": "الأسواق",
+        "shipping": "الشحن",
+        "marketing": "التسويق",
+        "accounting": "المحاسبة",
+        "crm": "إدارة العملاء",
+        "analytics": "التحليلات",
+        "automation": "الأتمتة",
+        "communication": "الاتصالات",
+        "education": "التعليم",
+        "security": "الأمان",
+        "advertising": "الإعلانات",
+        "tax": "الضرائب",
+        "other": "أخرى",
+        "4+": "4 نجوم وأكثر",
+        "3+": "3 نجوم وأكثر",
+        "2+": "2 نجوم وأكثر",
+        "1000+": "1000+ تثبيت",
+        "500+": "500+ تثبيت",
+        "100+": "100+ تثبيت"
+      }
+    }
+  },
+  "FooterDocs": {
+    "company": {
+      "title": "حول MGZon",
+      "description": "MGZon هي منصة رائدة لتمكين المطورين والشركات بأدوات وخدمات مبتكرة."
+    },
+    "rights": {
+      "title": "الحقوق",
+      "description": "جميع الحقوق محفوظة."
+    },
+    "contact": {
+      "title": "تواصل معنا",
+      "email": {
+        "title": "البريد الإلكتروني",
+        "description": "تواصل مع فريق الدعم عبر البريد الإلكتروني للاستفسارات التقنية أو الأسئلة العامة.",
+        "details": "راسلنا على support@mgzon.com. نرد خلال 24 ساعة خلال أيام العمل (الإثنين إلى الجمعة، 9 صباحًا إلى 5 مساءً بتوقيت شرق الولايات المتحدة)."
+      },
+      "phone": {
+        "title": "دعم الهاتف",
+        "description": "اتصل بنا للحصول على مساعدة فورية.",
+        "details": "رقم الاتصال: +20 1212444617، متاح من الإثنين إلى الجمعة، 9 صباحًا إلى 5 مساءً بتوقيت شرق الولايات المتحدة."
+      },
+      "hours": {
+        "title": "ساعات الدعم",
+        "description": "تحقق من توافر فريق الدعم لدينا.",
+        "details": "متاح من الإثنين إلى الجمعة، 9 صباحًا إلى 5 مساءً بتوقيت شرق الولايات المتحدة. دعم مؤسساتي على مدار الساعة عند الطلب."
+      }
+    },
+    "resources": {
+      "title": "الموارد",
+      "apiDocs": {
+        "title": "وثائق الـ API",
+        "description": "استكشف وثائق الـ API الشاملة لدمج خدمات MGZon.",
+        "details": "تتضمن أدلة المصادقة، النقاط النهائية، وأمثلة برمجية بلغات Python وJavaScript."
+      },
+      "faq": {
+        "title": "الأسئلة الشائعة",
+        "description": "اعثر على إجابات للأسئلة الشائعة حول إعداد الحساب والفوترة.",
+        "details": "يتم تحديث الأسئلة الشائعة بانتظام بناءً على تعليقات المستخدمين."
+      },
+      "docs": {
+        "title": "الوثائق",
+        "description": "تعمق في أدلتنا المفصلة حول استخدام منصة MGZon.",
+        "details": "تشمل إدارة الحساب، أفضل الممارسات، والتكوينات المتقدمة بلغات متعددة."
+      }
+    },
+    "support": {
+      "title": "الدعم",
+      "contactUs": {
+        "title": "تواصل مع الدعم",
+        "description": "تواصل مع فريقنا للحصول على مساعدة شخصية.",
+        "details": "استخدم الدردشة المباشرة، البريد الإلكتروني، أو الهاتف للردود السريعة."
+      },
+      "community": {
+        "title": "المجتمع",
+        "description": "انضم إلى منتديات المجتمع لتبادل المعرفة والتعاون.",
+        "details": "شارك في المنتديات أو ساهم في مشاريع مفتوحة المصدر على GitHub."
+      },
+      "tickets": {
+        "title": "تذاكر الدعم",
+        "description": "قدم تذكرة للحصول على مساعدة مفصلة مع المشكلات المعقدة.",
+        "details": "تتبع تذكرتك في الوقت الفعلي عبر بوابة الدعم."
+      }
+    },
+    "about": {
+      "title": "حول MGZon",
+      "mgzon": {
+        "title": "نبذة عن MGZon",
+        "description": "تعرف على منصتنا الرائدة للحلول المبتكرة.",
+        "details": "MGZon تمكن الشركات والمطورين بأدوات وخدمات متطورة."
+      },
+      "team": {
+        "title": "فريقنا",
+        "description": "تعرف على الفريق وراء MGZon.",
+        "details": "فريق من المطورين، المصممين، وأخصائيي الدعم المكرسين لنجاحك."
+      },
+      "mission": {
+        "title": "مهمتنا",
+        "description": "اكتشف مهمتنا وقيمنا.",
+        "details": "تمكين الابتكار بحلول تكنولوجية موثوقة وقابلة للتطوير."
+      }
+    },
+    "media": {
+      "title": "الإعلام",
+      "videos": {
+        "title": "الفيديوهات",
+        "description": "شاهد دروسنا وعروضنا التوضيحية للمنتجات.",
+        "details": "فيديوهات جديدة أسبوعيًا تغطي التكاملات والميزات."
+      },
+      "books": {
+        "title": "الكتب",
+        "description": "استكشف الكتب الموصى بها حول التكنولوجيا والتطوير.",
+        "details": "موارد منسقة لتكمل منصة MGZon."
+      },
+      "articles": {
+        "title": "المقالات",
+        "description": "اقرأ مقالاتنا حول اتجاهات الصناعة وتحديثات MGZon.",
+        "details": "نصائح عملية ورؤى تقنية من خبرائنا."
+      }
+    },
+    "close": {
+      "title": "إغلاق",
+      "description": "أغلق النافذة أو القسم الحالي."
+    }
+  },
+  "Consent": {
+    "title": "السماح لـ {appName} بالوصول",
+    "description": "يريد تطبيق {appName} الوصول إلى حسابك في MGZon. يرجى مراجعة الأذونات التالية والموافقة عليها.",
+    "scopes": "الأذونات المطلوبة",
+    "approve": "الموافقة",
+    "cancel": "إلغاء",
+    "errors": {
+      "missingClientId": "معرف العميل مفقود.",
+      "invalidClient": "العميل غير صالح.",
+      "missingParams": "معلمات الطلب غير كاملة.",
+      "unknown": "حدث خطأ غير معروف.",
+      "forbiddenScopes": "غير مسموح لك بمنح هذه النطاقات: {scopes}"
+
+    }
+  },
   "seller integrations": {
     "errors": {
       "unauthorized": "غير مخول للوصول إلى هذا المورد",
@@ -1591,269 +2861,214 @@
     "loading": "جاري التحميل..."
   },
   "Seller Registration": {
-    "title": "تسجيل البائع",
-    "description description": "أكمل النموذج أدناه لتصبح بائعًا على منصتنا. تأكد من إدخال جميع المعلومات بدقة.",
+    "title": "تسجيل بائع جديد",
+    "description description": "أكمل النموذج أدناه لإنشاء حساب بائع. تأكد من إدخال جميع المعلومات المطلوبة بدقة.",
     "progress": "التقدم",
-    "steps basicInfo": "المعلومات الأساسية",
-    "steps contactInfo": "معلومات التواصل",
-    "steps addressTaxInfo": "معلومات العنوان والضرائب",
-    "steps paymentTerms": "طرق الدفع والشروط",
-    "sections basicInfo": "المعلومات الأساسية",
-    "sections contactInfo": "معلومات التواصل",
-    "sections addressTaxInfo": "معلومات العنوان والضرائب",
-    "sections paymentTerms": "طرق الدفع والشروط",
-    "alert title": "معلومات مهمة",
+    "alert title": "معلومات هامة",
     "alert description": "يرجى ملء جميع الحقول المطلوبة بعناية. سيتم مراجعة طلبك بعد الإرسال.",
-    "businessName label": "اسم النشاط التجاري",
-    "businessName placeholder": "أدخل اسم نشاطك التجاري",
-    "businessName description": "هذا هو الاسم الذي سيظهر للعملاء.",
+    "steps basic info": "المعلومات الأساسية",
+    "steps contact info": "معلومات التواصل",
+    "steps address tax info": "العنوان والمعلومات الضريبية",
+    "steps terms": "الشروط والأحكام",
+    "sections basic info": "المعلومات الأساسية",
+    "sections contact info": "معلومات التواصل",
+    "sections address tax info": "العنوان والمعلومات الضريبية",
+    "sections terms": "الشروط والأحكام",
+    "logo label": "شعار العلامة التجارية",
+    "logo description": "قم برفع صورة شعار بحجم أقصى 5 ميغابايت (JPEG, PNG, WebP).",
+    "logo alt": "شعار العلامة التجارية",
+    "logo upload success": "تم رفع الشعار بنجاح!",
+    "logo clear": "إزالة الشعار",
+    "business name label": "اسم العمل التجاري",
+    "business name placeholder": "أدخل اسم العمل التجاري",
+    "business name description": "اسم الشركة أو العلامة التجارية التي ستبيع تحتها.",
     "email label": "البريد الإلكتروني",
-    "email placeholder": "أدخل بريدك الإلكتروني",
-    "email description": "سيتم استخدام هذا البريد للتواصل معك.",
+    "email placeholder": "أدخل البريد الإلكتروني",
+    "email description": "سيتم استخدام هذا البريد للتواصل وتسجيل الدخول.",
     "phone label": "رقم الهاتف",
-    "phone placeholder": "أدخل رقم هاتفك",
-    "phone description": "يرجى إدخال رقم هاتف صالح بما في ذلك رمز البلد.",
-    "description label": "وصف النشاط التجاري",
-    "description placeholder": "اكتب وصفًا موجزًا عن نشاطك التجاري",
-    "description description": "قدم وصفًا موجزًا (50-500 حرف) عن منتجاتك أو خدماتك.",
-    "businessType label": "نوع النشاط التجاري",
-    "businessType placeholder": "اختر نوع النشاط التجاري",
-    "businessType description": "حدد ما إذا كنت فردًا أو شركة.",
-    "businessType individual": "فرد",
-    "businessType company": "شركة",
+    "phone placeholder": "أدخل رقم الهاتف",
+    "phone description": "رقم هاتف صالح للتواصل معك.",
+    "description label": "الوصف",
+    "description placeholder": "اكتب وصفًا لعملك التجاري",
+    "description description": "قدم وصفًا موجزًا لعملك التجاري (10-500 حرف).",
+    "business type label": "نوع العمل التجاري",
+    "business type placeholder": "اختر نوع العمل التجاري",
+    "business type description": "حدد ما إذا كنت فردًا أو شركة.",
+    "business type individual": "فرد",
+    "business type company": "شركة",
     "address street label": "الشارع",
-    "address street placeholder": "أدخل اسم الشارع",
+    "address street placeholder": "أدخل عنوان الشارع",
     "address city label": "المدينة",
     "address city placeholder": "أدخل اسم المدينة",
     "address state label": "الولاية/المنطقة",
-    "address state placeholder": "أدخل اسم الولاية أو المنطقة",
+    "address state placeholder": "أدخل الولاية أو المنطقة",
     "address country label": "الدولة",
-    "steps": {
-      "terms": "الشروط والأحكام"
-    },
     "address country placeholder": "اختر الدولة",
-    "address postalCode label": "الرمز البريدي",
-    "address postalCode placeholder": "أدخل الرمز البريدي",
-    "taxId label": "رقم التعريف الضريبي",
-    "taxId placeholder": "أدخل رقم التعريف الضريبي",
-    "taxId description": "مطلوب للشركات فقط.",
-    "vatRegistered label": "مسجل في ضريبة القيمة المضافة",
-    "vatRegistered description": "حدد إذا كنت مسجلاً في ضريبة القيمة المضافة.",
-    "logo label": "شعار النشاط التجاري",
-    "logo description": "قم برفع شعار بحجم أقصى 5 ميجابايت (JPEG، PNG، WebP).",
-    "logo alt": "شعار النشاط التجاري",
-    "logo uploadSuccess": "تم رفع الشعار بنجاح!",
-    "logo clear": "إزالة الشعار",
-    "paymentInfo description": "حدد طريقة الدفع المفضلة لاستلام الأموال. هذا الحقل اختياري.",
-    "paymentInfo optional": "هذا الحقل اختياري.",
-    "paymentInfo type label": "نوع طريقة الدفع",
-    "paymentInfo type placeholder": "اختر طريقة الدفع",
-    "paymentInfo type paypal": "PayPal",
-    "paymentInfo type wise": "Wise",
-    "paymentInfo type other": "أخرى",
-    "paymentInfo email label": "بريد PayPal/Wise",
-    "paymentInfo email placeholder": "أدخل البريد الإلكتروني للحساب",
-    "paymentInfo otherDetails label": "تفاصيل طريقة دفع أخرى",
-    "paymentInfo otherDetails placeholder": "أدخل تفاصيل طريقة الدفع",
-    "integration type label": "نوع التكامل",
-    "integration type placeholder": "اختر نوع التكامل",
-    "integration type description": "اختر نوع التكامل الذي تريد إضافته.",
-    "integration type warehouse": "المستودع",
-    "integration type payment": "الدفع",
-    "integration type dropshipping": "الدروبشيبنج",
-    "integration type marketplace": "السوق",
-    "integration type shipping": "الشحن",
-    "integration type marketing": "التسويق",
-    "integration type accounting": "المحاسبة",
-    "integration type crm": "إدارة العملاء",
-    "integration type analytics": "التحليلات",
-    "integration type automation": "الأتمتة",
-    "integration type communication": "الاتصالات",
-    "integration type education": "التعليم",
-    "integration type security": "الأمان",
-    "integration type advertising": "الإعلانات",
-    "integration type tax": "الضرائب",
-    "integration type other": "أخرى",
-    "integration provider label": "مزود التكامل",
-    "integration provider placeholder": "اختر مزود التكامل",
-    "integration provider description": "اختر مزود التكامل المطلوب.",
-    "integration credentials label": "بيانات التكامل",
-    "integration credentials placeholder": "أدخل مفتاح API أو بيانات الاعتماد",
-    "integration credentials description": "أدخل بيانات الاعتماد المطلوبة للتكامل.",
+    "address postal code label": "الرمز البريدي",
+    "address postal code placeholder": "أدخل الرمز البريدي",
+    "tax id label": "الرقم الضريبي",
+    "tax id placeholder": "أدخل الرقم الضريبي",
+    "tax id description": "الرقم الضريبي مطلوب للشركات المسجلة.",
+    "vat registered label": "مسجل في ضريبة القيمة المضافة",
+    "vat registered description": "حدد إذا كانت شركتك مسجلة في ضريبة القيمة المضافة.",
     "terms label": "الموافقة على الشروط",
     "terms description": "أوافق على <terms>شروط الخدمة</terms> و<privacy>سياسة الخصوصية</privacy>.",
-    "preview": "معاينة",
-    "next": "التالي",
-    "previous": "السابق",
-    "reset": "إعادة تعيين",
-    "submitting": "جارٍ الإرسال",
-    "formReset": "تم إعادة تعيين النموذج بنجاح!",
-    "preview title": "معاينة طلب التسجيل",
-    "preview description": "راجع المعلومات أدناه قبل إرسال طلبك.",
-    "preview edit": "تعديل",
-    "preview submit": "إرسال",
-    "success title": "تم التسجيل بنجاح!",
-    "success description": "تم إرسال طلبك. سنراجعه ونتواصل معك قريبًا.",
-    "errors fetchIntegrationsTitle": "خطأ في جلب التكاملات",
-    "errors fetchIntegrationsDescription": "تعذر جلب قائمة التكاملات. حاول مرة أخرى لاحقًا.",
-    "errors loadFormTitle": "خطأ في تحميل النموذج",
-    "errors loadFormDescription": "تعذر تحميل بيانات النموذج المحفوظة.",
-    "errors fileSizeTitle": "حجم الملف كبير جدًا",
-    "errors fileSizeDescription": "حجم الملف يتجاوز الحد الأقصى وهو {size}.",
-    "errors fileTypeTitle": "نوع الملف غير مدعوم",
-    "errors fileTypeDescription": "يرجى رفع ملف بصيغة JPEG، PNG، أو WebP.",
-    "errors fileReadTitle": "خطأ في قراءة الملف",
-    "errors fileReadDescription": "تعذر قراءة الملف المرفوع. حاول مرة أخرى.",
-    "errors uploadTitle": "خطأ في رفع الملف",
-    "errors uploadDescription": "حدث خطأ أثناء رفع الملف. حاول مرة أخرى.",
-    "errors submissionTitle": "خطأ في الإرسال",
-    "errors submissionDescription": "تعذر إرسال النموذج. يرجى التحقق من الاتصال بالإنترنت وحاول مرة أخرى.",
-    "validation business_name min": "يجب أن يحتوي اسم النشاط التجاري على {count} أحرف على الأقل.",
-    "validation business_name max": "يجب ألا يتجاوز اسم النشاط التجاري {count} حرفًا.",
-    "validation business_name format": "يحتوي اسم النشاط التجاري على أحرف غير صالحة.",
-    "validation email invalid": "البريد الإلكتروني غير صالح.",
-    "validation email min": "يجب أن يحتوي البريد الإلكتروني على {count} أحرف على الأقل.",
-    "validation email max": "يجب ألا يتجاوز البريد الإلكتروني {count} حرفًا.",
-    "validation phone min": "يجب أن يحتوي رقم الهاتف على {count} أرقام على الأقل.",
-    "validation phone max": "يجب ألا يتجاوز رقم الهاتف {count} رقمًا.",
-    "validation phone format": "رقم الهاتف غير صالح.",
-    "validation description min": "يجب أن يحتوي الوصف على {count} أحرف على الأقل.",
-    "validation description max": "يجب ألا يتجاوز الوصف {count} حرفًا.",
-    "validation description format": "يحتوي الوصف على أحرف غير صالحة.",
-    "validation business_type required": "نوع النشاط التجاري مطلوب.",
-    "validation tax_id required": "رقم التعريف الضريبي مطلوب للشركات.",
-    "validation tax_id format": "رقم التعريف الضريبي غير صالح.",
-    "validation logo size": "حجم الشعار يتجاوز الحد الأقصى وهو {size}.",
-    "validation logo format": "يجب أن يكون الشعار بصيغة JPEG، PNG، أو WebP.",
-    "validation address street required": "اسم الشارع مطلوب.",
-    "validation address city required": "اسم المدينة مطلوب.",
-    "validation address state required": "اسم الولاية/المنطقة مطلوب.",
-    "validation address country required": "الدولة مطلوبة.",
-    "validation address postal_code required": "الرمز البريدي مطلوب.",
-    "validation address postal_code format": "الرمز البريدي غير صالح.",
-    "validation terms required": "يجب الموافقة على الشروط.",
-      "errors unauthorized": "يجب تسجيل الدخول لتنفيذ هذا الإجراء",
-      "errors invalidFormData": "تم تقديم بيانات نموذج غير صالحة",
-      "errors logoSizeExceed": "يجب ألا يتجاوز حجم ملف الشعار 5 ميجابايت",
-      "errors invalidLogoType": "نوع الملف غير صالح. يُسمح فقط بصور JPEG وPNG وWebP",
-      "errors invalidData": "تم تقديم بيانات غير صالحة",
-      "errors validation error description": "وصف خطأ التحقق",
-      "errors parseFailed": "فشل في تحليل بيانات التسجيل",
-      "errors serverError": "حدث خطأ غير متوقع في الخادم",
-      "errors updateUserRoleFailed": "فشل في تحديث دور المستخدم",
-      "errors termsNotAccepted": "يجب قبول الشروط والأحكام",
-      "errors userNotFound": "المستخدم غير موجود",
-      "errors submission title": "خطأ في إرسال النموذج",
-      "errors submission description": "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
-      "errors logoUploadFailed": "فشل رفع الشعار. يرجى التأكد من أن الملف صالح وحاول مرة أخرى.",
-
+    "trial status label": "حالة الفترة التجريبية",
+    "trial active": "نشط",
+    "trial inactive": "غير نشط",
+    "accepted": "تمت الموافقة",
+    "not accepted": "لم تتم الموافقة",
+    "not provided": "غير متوفر",
     "yes": "نعم",
     "no": "لا",
-    "notProvided": "غير مقدم",
-    "accepted": "مقبول",
-    "notAccepted": "غير مقبول",
+    "previous": "السابق",
+    "next": "التالي",
+    "preview": "معاينة",
+    "reset": "إعادة تعيين",
+    "submitting": "جارٍ الإرسال...",
+    "preview title": "معاينة البيانات",
+    "preview description": "راجع بياناتك قبل الإرسال النهائي.",
+    "preview edit": "تعديل",
+    "preview submit": "إرسال",
+    "form reset": "تم إعادة تعيين النموذج",
+    "validation business name min": "اسم العمل التجاري يجب أن يحتوي على {count} أحرف على الأقل",
+    "validation business name max": "اسم العمل التجاري يجب ألا يتجاوز {count} حرفًا",
+    "validation business name format": "اسم العمل التجاري يحتوي على أحرف غير صالحة",
+    "validation email invalid": "البريد الإلكتروني غير صالح",
+    "validation email min": "البريد الإلكتروني يجب أن يحتوي على {count} أحرف على الأقل",
+    "validation email max": "البريد الإلكتروني يجب ألا يتجاوز {count} حرفًا",
+    "validation phone min": "رقم الهاتف يجب أن يحتوي على {count} أرقام على الأقل",
+    "validation phone max": "رقم الهاتف يجب ألا يتجاوز {count} رقمًا",
+    "validation phone format": "رقم الهاتف غير صالح",
+    "validation description min": "الوصف يجب أن يحتوي على {count} أحرف على الأقل",
+    "validation description max": "الوصف يجب ألا يتجاوز {count} حرفًا",
+    "validation description format": "الوصف يحتوي على أحرف غير صالحة",
+    "validation business type required": "نوع العمل التجاري مطلوب",
+    "validation tax id required": "الرقم الضريبي مطلوب للشركات",
+    "validation tax id min": "الرقم الضريبي يجب أن يحتوي على 5 أحرف على الأقل",
+    "validation tax id format": "الرقم الضريبي غير صالح",
+    "validation address street required": "عنوان الشارع مطلوب",
+    "validation address city required": "المدينة مطلوبة",
+    "validation address state required": "الولاية/المنطقة مطلوبة",
+    "validation address country required": "الدولة مطلوبة",
+    "validation address country format": "يجب أن يكون رمز الدولة رمز ISO صالح مكون من حرفين",
+    "validation address postal code required": "الرمز البريدي مطلوب",
+    "validation address postal code format": "الرمز البريدي غير صالح",
+    "validation terms required": "يجب الموافقة على الشروط",
+    "errors unauthorized": "يجب تسجيل الدخول لتنفيذ هذا الإجراء",
+    "errors invalid form data": "تم تقديم بيانات نموذج غير صالحة",
+    "errors logo size exceed": "يجب ألا يتجاوز حجم ملف الشعار 5 ميغابايت",
+    "errors invalid logo type": "نوع الملف غير صالح. يُسمح فقط بصور JPEG وPNG وWebP",
+    "errors invalid data": "تم تقديم بيانات غير صالحة",
+    "errors parse failed": "فشل في تحليل بيانات التسجيل",
+    "errors server error": "حدث خطأ غير متوقع في الخادم",
+    "errors update user role failed": "فشل في تحديث دور المستخدم",
+    "errors terms not accepted": "يجب قبول الشروط والأحكام",
+    "errors user not found": "المستخدم غير موجود",
+    "errors logo upload failed": "فشل رفع الشعار. يرجى التأكد من أن الملف صالح وحاول مرة أخرى.",
+    "errors no file title": "لم يتم اختيار ملف",
+    "errors no file description": "يرجى اختيار ملف صورة للشعار.",
+    "errors file size title": "حجم الملف كبير جدًا",
+    "errors file size description": "حجم الملف يجب ألا يتجاوز {size}.",
+    "errors file type title": "نوع الملف غير مدعوم",
+    "errors file type description": "الصور المدعومة هي JPEG، PNG، وWebP فقط.",
+    "errors upload title": "خطأ في رفع الملف",
+    "errors upload description": "حدث خطأ أثناء رفع الشعار. حاول مرة أخرى.",
+    "errors submission title": "خطأ في الإرسال",
+    "errors submission description": "حدث خطأ أثناء إرسال النموذج. حاول مرة أخرى.",
+    "messages success": "تم التسجيل كبائع بنجاح",
+    "messages seller exists": "يوجد بالفعل ملف تعريف بائع لهذا الحساب",
+    "messages bonus points title": "تم إضافة نقاط ترحيبية",
+    "messages bonus points message": "تمت إضافة {points} نقطة إلى حسابك كمكافأة ترحيبية",
+    "messages trial active title": "الفترة التجريبية نشطة",
+    "messages trial active message": "تم تفعيل الفترة التجريبية لمدة {trialDays} أيام",
+    "notifications seller registered title": "مرحبًا بك في منصتنا!",
+    "notifications seller registered message": "تم إنشاء ملف تعريف البائع الخاص بك بنجاح",
+    "errors site settings title": "خطأ في تحميل إعدادات الموقع",
+    "errors site settings description": "حدث خطأ أثناء تحميل إعدادات الموقع. حاول مرة أخرى.",
+    "validation phone required": "رقم الهاتف مطلوب",
+    "phone format EG": "(مصر: 10-11 أرقام)",
+    "phone format US": "(أمريكا: 10 أرقام)",
+    "phone format GB": "(بريطانيا: 10-11 أرقام)",
+    "phone format default": "(6-15 أرقام)",
     "errors": {
-      "submission title": "خطأ في الإرسال",
-      "submission description": "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
-      "no file title": "لم يتم اختيار ملف",
-      "no file description": "يرجى اختيار ملف صورة للشعار.",
-      "file size title": "حجم الملف كبير جدًا",
-      "file size description": "حجم الملف يتجاوز الحد الأقصى ({size}).",
-      "file type title": "نوع الملف غير مدعوم",
-      "file type description": "يرجى اختيار ملف بصيغة JPG، PNG، أو WebP.",
-      "invalid file title": "ملف غير صالح",
-      "invalid file description": "الملف المختار غير صالح. يرجى اختيار ملف صورة صالح.",
-      "file read title": "خطأ في قراءة الملف",
-      "file read description": "حدث خطأ أثناء قراءة الملف. يرجى المحاولة مرة أخرى."
-    }
-    ,
-    "errors": {
-      "unauthorized": "يجب تسجيل الدخول لتنفيذ هذا الإجراء",
-      "invalidFormData": "تم تقديم بيانات نموذج غير صالحة",
-      "logoSizeExceed": "يجب ألا يتجاوز حجم ملف الشعار 5 ميجابايت",
-      "invalidLogoType": "نوع الملف غير صالح. يُسمح فقط بصور JPEG وPNG وWebP",
-      "invalidData": "تم تقديم بيانات غير صالحة",
-      "validation error description": "وصف خطأ التحقق",
-      "parseFailed": "فشل في تحليل بيانات التسجيل",
-      "serverError": "حدث خطأ غير متوقع في الخادم",
-      "emailNotVerified": "يرجى التحقق من بريدك الإلكتروني قبل التسجيل كبائع",
-      "updateUserRoleFailed": "فشل في تحديث دور المستخدم",
-      "termsNotAccepted": "يجب قبول الشروط والأحكام",
-      "userNotFound": "المستخدم غير موجود",
-            "logoSizeExceeds": "حجم ملف الشعار يتجاوز الحد الأقصى 5 ميجابايت.",
-      "invalidLogoType": "نوع ملف الشعار غير صالح. الأنواع المسموح بها هي JPEG، PNG، WEBP، وSVG.",
-      "sellerNotFound": "لم يتم العثور على ملف البائع.",
-      "failedToUpdateSeller": "فشل تحديث ملف البائع. يرجى المحاولة مرة أخرى.",
-      "invalid hex color": "يرجى إدخال رمز لون سداسي صالح (مثل #000000).",
-      "invalid url": "يرجى إدخال رابط صالح.",
-      "section title min": "يجب أن يكون عنوان القسم 2 حرفًا على الأقل.",
-      "section content min": "يجب أن يكون محتوى القسم 10 أحرف على الأقل.",
-
-      "submission title": "خطأ في إرسال النموذج",
-      "submission description": "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى.",
-      "logoUploadFailed": "فشل رفع الشعار. يرجى التأكد من أن الملف صالح وحاول مرة أخرى."
+      "serverError": "حدث خطأ غير متوقع في الخادم. من فضلك حاول مرة أخرى لاحقًا.",
+      "unauthorized": "يجب تسجيل الدخول للتسجيل كبائع.",
+      "invalidData": "البيانات المقدمة غير صالحة.",
+      "parseFailed": "فشل تحليل بيانات النموذج.",
+      "userNotFound": "المستخدم غير موجود.",
+      "updateUserRoleFailed": "فشل تحديث دور المستخدم.",
+      "logoUploadFailed": "فشل رفع الشعار.",
+      "invalidFormData": "بيانات النموذج غير صالحة أو مفقودة."
     },
     "messages": {
-      "success": "تم التسجيل كبائع بنجاح",
-      "sellerExists": "يوجد بالفعل ملف تعريف بائع لهذا الحساب",
-      "bonusPointsTitle": "تم إضافة نقاط ترحيبية",
-      "bonusPointsMessage": "تمت إضافة {points} نقطة إلى حسابك كمكافأة ترحيبية",
-      "trialActiveTitle": "الفترة التجريبية نشطة",
-      "trialActiveMessage": "تم تفعيل الفترة التجريبية لمدة {trialDays} أيام",
-      "profileUpdatedTitle": "تم تحديث الملف الشخصي",
-      "profileUpdatedMessage": "تم تحديث ملف البائع بنجاح."
+      "success": "تم تسجيل البائع بنجاح!",
+      "sellerExists": "أنت مسجل بالفعل كبائع.",
+      "bonusPointsTitle": "مكافأة الترحيب",
+      "bonusPointsMessage": "تم منحك {points} نقطة كمكافأة ترحيب!",
+      "trialActiveTitle": "تم تفعيل الفترة التجريبية",
+      "trialActiveMessage": "فترة التجربة لمدة {trialDays} يومًا مفعلة الآن."
     },
     "notifications": {
       "sellerRegistered": {
-        "title": "مرحبًا بك في منصتنا!",
-        "message": "تم إنشاء ملف تعريف البائع الخاص بك بنجاح"
+        "title": "مرحبًا بك في برنامج بائعي MGZon!",
+        "message": "تم إنشاء حساب البائع الخاص بك بنجاح."
+      }
+    }
+  },
+  "api": {
+    "clients": {
+      "unauthorized": "غير مصرح بالوصول",
+      "not_found": "التطبيق غير موجود أو غير معتمد",
+      "already_connected": "التطبيق متصل بالفعل",
+      "unknown_error": "خطأ غير معروف",
+      "failed_to_create": "فشل في إنشاء التطبيق",
+      "success": {
+        "created": "تم إنشاء التطبيق بنجاح",
+        "retrieved": "تم استرداد التطبيقات بنجاح"
       }
     },
-
-    "validation": {
-      "business name min": "يجب أن يكون اسم النشاط التجاري {count} أحرف على الأقل.",
-      "business name max": "لا يمكن أن يتجاوز اسم النشاط التجاري {count} أحرف.",
-      "business name format": "اسم النشاط التجاري يحتوي على أحرف غير صالحة.",
-      "email invalid": "يرجى إدخال بريد إلكتروني صالح.",
-      "email min": "يجب أن يكون البريد الإلكتروني {count} أحرف على الأقل.",
-      "email max": "لا يمكن أن يتجاوز البريد الإلكتروني {count} أحرف.",
-      "phone min": "يجب أن يكون رقم الهاتف {count} أحرف على الأقل.",
-      "phone max": "لا يمكن أن يتجاوز رقم الهاتف {count} أحرف.",
-      "phone format": "يرجى إدخال رقم هاتف صالح.",
-      "description min": "يجب أن يكون الوصف {count} أحرف على الأقل.",
-      "description max": "لا يمكن أن يتجاوز الوصف {count} أحرف.",
-      "description format": "الوصف يحتوي على أحرف غير صالحة.",
-      "business type required": "نوع النشاط التجاري مطلوب.",
-      "tax id min": "يجب أن يكون معرف الضريبة 5 أحرف على الأقل.",
-      "tax id format": "معرف الضريبة يحتوي على أحرف غير صالحة.",
-      "tax id required for company": "معرف الضريبة مطلوب لنوع النشاط التجاري 'شركة'.",
-      "address street required": "عنوان الشارع مطلوب.",
-      "address city required": "المدينة مطلوبة.",
-      "address state required": "الولاية مطلوبة.",
-      "address country required": "رمز البلد مطلوب.",
-      "address country code format": "يجب أن يكون رمز البلد رمز ISO صالح مكون من حرفين.",
-      "address postal code required": "الرمز البريدي مطلوب.",
-      "address postal code format": "الرمز البريدي يحتوي على أحرف غير صالحة.",
-      "terms required": "يجب قبول الشروط والأحكام."
-    }
-  
-
-  },
-"api": {
-    "errors": {
-      "invalidData": "البيانات المقدمة غير صالحة.",
-      "userNotFound": "المستخدم غير موجود.",
-      "termsNotAccepted": "يجب قبول الشروط والأحكام.",
-      "serverError": "حدث خطأ غير متوقع.",
-      "sellerExists": "ملف البائع موجود بالفعل."
+    "seller": {
+      "clients": {
+        "unauthorized": "غير مصرح بالوصول",
+        "not_found": "التطبيق غير موجود أو غير معتمد",
+        "unknown_error": "خطأ غير معروف",
+        "failed_to_retrieve": "فشل في استرداد التطبيقات"
+      }
     },
+    "errors": {
+      "termsNotAccepted": "يجب قبول الشروط والأحكام",
+      "updateUserRoleFailed": "فشل في تحديث دور المستخدم",
+      "serverError": "حدث خطأ غير متوقع",
+      "invalidSellerData": "بيانات البائع غير صالحة",
+      "sellerNotFound": "البائع غير موجود",
+      "userNotFound": "المستخدم غير موجود",
+      "invalidPermissions": "الصلاحيات المقدمة غير صالحة",
+      "apiKeyLimitExceeded": "تم تجاوز حد مفاتيح API (الحد الأقصى: {limit})",
+      "failedToGetApiKeys": "فشل في جلب مفاتيح API",
+      "failedToCreateApiKey": "فشل في إنشاء مفتاح API",
+      "apiKeyNotFound": "مفتاح API غير موجود",
+      "invalidData": "البيانات المقدمة غير صالحة",
+      "apiKeyRotationFailed": "فشل في تدوير مفتاح API",
+      "apiKeyDeactivationFailed": "فشل في تعطيل مفتاح API",
+      "sellerExists": "ملف البائع موجود بالفعل",
+      "unauthenticated": "You must be logged in to perform this action",
+      "invalidBankInfo": "Invalid bank information provided"
+    },
+    "bankInfoUpdated": "Bank information updated successfully",
     "messages": {
-      "success": "تمت العملية بنجاح.",
-      "sellerExists": "ملف البائع موجود بالفعل.",
+      "sellerExists": "ملف البائع موجود بالفعل",
+      "success": "تم تسجيل البائع بنجاح",
       "bonusPointsTitle": "نقاط مكافأة الترحيب",
       "bonusPointsMessage": "لقد حصلت على {points} نقطة مكافأة!",
       "trialActiveTitle": "فترة التجربة نشطة",
-      "trialActiveMessage": "فترة التجربة لمدة {trialDays} أيام نشطة الآن!"
+      "trialActiveMessage": "لديك {trialDays} يوم متبقي في الفترة التجريبية",
+      "apiKeyCreatedTitle": "تم إنشاء مفتاح API",
+      "apiKeyCreatedMessage": "تم إنشاء مفتاح API '{name}' بنجاح",
+      "apiKeyRotatedTitle": "تم تدوير مفتاح API",
+      "apiKeyRotatedMessage": "تم تدوير مفتاح API '{name}' بنجاح",
+      "apiKeyDeactivatedTitle": "تم تعطيل مفتاح API",
+      "apiKeyDeactivatedMessage": "تم تعطيل مفتاح API '{name}' بنجاح"
     },
     "notifications": {
       "sellerRegistered": {
@@ -1861,302 +3076,6 @@
         "message": "تم إنشاء ملف البائع الخاص بك بنجاح."
       }
     }
-  },
-
-
-  "Seller Registration": {
-    "title": "تسجيل البائع",
-    "description": "أكمل النموذج أدناه لتصبح بائعًا على منصتنا. تأكد من إدخال جميع المعلومات بدقة.",
-    "progress": "التقدم",
-    "steps": {
-      "basicInfo": "المعلومات الأساسية",
-      "contactInfo": "معلومات التواصل",
-      "addressTaxInfo": "معلومات العنوان والضرائب",
-      "paymentTerms": "طرق الدفع والشروط",
-      "terms": "الشروط والأحكام"
-    },
-    "sections": {
-      "basicInfo": "المعلومات الأساسية",
-      "contactInfo": "معلومات التواصل",
-      "addressTaxInfo": "معلومات العنوان والضرائب",
-      "paymentTerms": "طرق الدفع والشروط",
-      "terms": "شروط الأقسام"
-    },
-    "alert": {
-      "title": "معلومات مهمة",
-      "description": "يرجى ملء جميع الحقول المطلوبة بعناية. سيتم مراجعة طلبك بعد الإرسال."
-    },
-    "businessName": {
-      "label": "اسم النشاط التجاري",
-      "placeholder": "أدخل اسم نشاطك التجاري",
-      "description": "هذا هو الاسم الذي سيظهر للعملاء."
-    },
-    "email": {
-      "label": "البريد الإلكتروني",
-      "placeholder": "أدخل بريدك الإلكتروني",
-      "description": "سيتم استخدام هذا البريد للتواصل معك."
-    },
-    "phone": {
-      "label": "رقم الهاتف",
-      "placeholder": "أدخل رقم هاتفك",
-      "description": "يرجى إدخال رقم هاتف صالح بما في ذلك رمز البلد."
-    },
-    "description": {
-      "label": "وصف النشاط التجاري",
-      "placeholder": "اكتب وصفًا موجزًا عن نشاطك التجاري",
-      "description": "قدم وصفًا موجزًا (50-500 حرف) عن منتجاتك أو خدماتك."
-    },
-    "businessType": {
-      "label": "نوع النشاط التجاري",
-      "placeholder": "اختر نوع النشاط التجاري",
-      "description": "حدد ما إذا كنت فردًا أو شركة.",
-      "individual": "فرد",
-      "company": "شركة"
-    },
-    "address": {
-      "street": {
-        "label": "الشارع",
-        "placeholder": "أدخل اسم الشارع"
-      },
-      "city": {
-        "label": "المدينة",
-        "placeholder": "أدخل اسم المدينة"
-      },
-      "state": {
-        "label": "الولاية/المنطقة",
-        "placeholder": "أدخل اسم الولاية أو المنطقة"
-      },
-      "country": {
-        "label": "الدولة",
-        "placeholder": "اختر الدولة"
-      },
-      "postalCode": {
-        "label": "الرمز البريدي",
-        "placeholder": "أدخل الرمز البريدي"
-      }
-    },
-    "taxId": {
-      "label": "رقم التعريف الضريبي",
-      "placeholder": "أدخل رقم التعريف الضريبي",
-      "description": "مطلوب للشركات فقط."
-    },
-    "vatRegistered": {
-      "label": "مسجل في ضريبة القيمة المضافة",
-      "description": "حدد إذا كنت مسجلاً في ضريبة القيمة المضافة."
-    },
-    "logo": {
-      "label": "شعار النشاط التجاري",
-      "description": "قم برفع شعار بحجم أقصى 5 ميجابايت (JPEG، PNG، WebP).",
-      "alt": "شعار النشاط التجاري",
-      "uploadSuccess": "تم رفع الشعار بنجاح!",
-      "clear": "إزالة الشعار"
-    },
-    "paymentInfo": {
-      "description": "حدد طريقة الدفع المفضلة لاستلام الأموال. هذا الحقل اختياري.",
-      "optional": "هذا الحقل اختياري.",
-      "type": {
-        "label": "نوع طريقة الدفع",
-        "placeholder": "اختر طريقة الدفع",
-        "paypal": "PayPal",
-        "wise": "Wise",
-        "other": "أخرى"
-      },
-      "email": {
-        "label": "بريد PayPal/Wise",
-        "placeholder": "أدخل البريد الإلكتروني للحساب"
-      },
-      "otherDetails": {
-        "label": "تفاصيل طريقة دفع أخرى",
-        "placeholder": "أدخل تفاصيل طريقة الدفع"
-      }
-    },
-    "integration": {
-      "type": {
-        "label": "نوع التكامل",
-        "placeholder": "اختر نوع التكامل",
-        "description": "اختر نوع التكامل الذي تريد إضافته.",
-        "warehouse": "المستودع",
-        "payment": "الدفع",
-        "dropshipping": "الدروبشيبنج",
-        "marketplace": "السوق",
-        "shipping": "الشحن",
-        "marketing": "التسويق",
-        "accounting": "المحاسبة",
-        "crm": "إدارة العملاء",
-        "analytics": "التحليلات",
-        "automation": "الأتمتة",
-        "communication": "الاتصالات",
-        "education": "التعليم",
-        "security": "الأمان",
-        "advertising": "الإعلانات",
-        "tax": "الضرائب",
-        "other": "أخرى"
-      },
-      "provider": {
-        "label": "مزود التكامل",
-        "placeholder": "اختر مزود التكامل",
-        "description": "اختر مزود التكامل المطلوب."
-      },
-      "credentials": {
-        "label": "بيانات التكامل",
-        "placeholder": "أدخل مفتاح API أو بيانات الاعتماد",
-        "description": "أدخل بيانات الاعتماد المطلوبة للتكامل."
-      }
-    },
-    "terms": {
-      "label": "الموافقة على الشروط",
-      "description": "أوافق على <terms>شروط الخدمة</terms> و<privacy>سياسة الخصوصية</privacy>."
-    },
-    "trial": {
-      "statusLabel": "حالة الفترة التجريبية",
-      "active": "الفترة التجريبية مفعلة",
-      "inactive": "الفترة التجريبية غير مفعلة"
-    },
-    "actions": {
-      "preview": "معاينة",
-      "next": "التالي",
-      "previous": "السابق",
-      "reset": "إعادة تعيين",
-      "submitting": "جارٍ الإرسال",
-      "previewTitle": "معاينة طلب التسجيل",
-      "previewDescription": "راجع المعلومات أدناه قبل إرسال طلبك.",
-      "previewEdit": "تعديل",
-      "previewSubmit": "إرسال",
-      "formReset": "تم إعادة تعيين النموذج بنجاح!"
-    },
-    "success": {
-      "title": "تم التسجيل بنجاح!",
-      "description": "تم إرسال طلبك. سنراجعه ونتواصل معك قريبًا."
-    },
-    "messages": {
-      "success": "تم التسجيل كبائع بنجاح",
-      "sellerExists": "يوجد بالفعل ملف تعريف بائع لهذا الحساب",
-      "bonusPointsTitle": "تم إضافة نقاط ترحيبية",
-      "bonusPointsMessage": "تمت إضافة {points} نقطة إلى حسابك كمكافأة ترحيبية",
-      "trialActiveTitle": "الفترة التجريبية نشطة",
-      "trialActiveMessage": "تم تفعيل الفترة التجريبية لمدة {trialDays} أيام",
-      "profileUpdatedTitle": "تم تحديث الملف الشخصي",
-      "profileUpdatedMessage": "تم تحديث ملف البائع بنجاح."
-    },
-    "notifications": {
-      "sellerRegistered": {
-        "title": "مرحبًا بك في منصتنا!",
-        "message": "تم إنشاء ملف تعريف البائع الخاص بك بنجاح"
-      }
-    },
-    "errors": {
-      "unauthorized": "يجب تسجيل الدخول لتنفيذ هذا الإجراء",
-      "emailNotVerified": "يرجى التحقق من بريدك الإلكتروني قبل التسجيل كبائع",
-      "invalidFormData": "تم تقديم بيانات نموذج غير صالحة",
-      "logoUploadFailed": "فشل رفع الشعار. يرجى التأكد من أن الملف صالح وحاول مرة أخرى.",
-      "invalidData": "تم تقديم بيانات غير صالحة",
-      "parseFailed": "فشل في تحليل بيانات التسجيل",
-      "serverError": "حدث خطأ غير متوقع في الخادم",
-      "updateUserRoleFailed": "فشل في تحديث دور المستخدم إلى بائع",
-      "termsNotAccepted": "يجب قبول الشروط والأحكام",
-      "userNotFound": "المستخدم غير موجود",
-      "logoSizeExceed": "يجب ألا يتجاوز حجم ملف الشعار 5 ميجابايت",
-      "invalidLogoType": "نوع الملف غير صالح. يُسمح فقط بصور JPEG، PNG، وWebP",
-      "sellerNotFound": "لم يتم العثور على ملف البائع",
-      "failedToUpdateSeller": "فشل تحديث ملف البائع. يرجى المحاولة مرة أخرى",
-      "invalidHexColor": "يرجى إدخال رمز لون سداسي صالح (مثل #000000)",
-      "invalidUrl": "يرجى إدخال رابط صالح",
-      "sectionTitleMin": "يجب أن يكون عنوان القسم 2 أحرف على الأقل",
-      "sectionContentMin": "يجب أن يكون محتوى القسم 10 أحرف على الأقل",
-      "noFile": {
-        "title": "لم يتم اختيار ملف",
-        "description": "يرجى اختيار ملف صورة للشعار."
-      },
-      "fileSize": {
-        "title": "حجم الملف كبير جدًا",
-        "description": "حجم الملف يتجاوز الحد الأقصى ({size})."
-      },
-      "fileType": {
-        "title": "نوع الملف غير مدعوم",
-        "description": "يرجى رفع ملف بصيغة JPEG، PNG، أو WebP."
-      },
-      "fileRead": {
-        "title": "خطأ في قراءة الملف",
-        "description": "تعذر قراءة الملف المرفوع. حاول مرة أخرى."
-      },
-      "upload": {
-        "title": "خطأ في رفع الملف",
-        "description": "حدث خطأ أثناء رفع الملف. حاول مرة أخرى."
-      },
-      "submission": {
-        "title": "خطأ في إرسال النموذج",
-        "description": "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى."
-      },
-      "fetchIntegrations": {
-        "title": "خطأ في جلب التكاملات",
-        "description": "تعذر جلب قائمة التكاملات. حاول مرة أخرى لاحقًا."
-      },
-      "loadForm": {
-        "title": "خطأ في تحميل النموذج",
-        "description": "تعذر تحميل بيانات النموذج المحفوظة."
-      }
-    },
-    "validation": {
-      "businessName": {
-        "min": "يجب أن يكون اسم النشاط التجاري {count} أحرف على الأقل.",
-        "max": "يجب ألا يتجاوز اسم النشاط التجاري {count} حرفًا.",
-        "format": "يحتوي اسم النشاط التجاري على أحرف غير صالحة."
-      },
-      "email": {
-        "invalid": "يرجى إدخال بريد إلكتروني صالح.",
-        "min": "يجب أن يكون البريد الإلكتروني {count} أحرف على الأقل.",
-        "max": "يجب ألا يتجاوز البريد الإلكتروني {count} حرفًا."
-      },
-      "phone": {
-        "min": "يجب أن يكون رقم الهاتف {count} أرقام على الأقل.",
-        "max": "يجب ألا يتجاوز رقم الهاتف {count} رقمًا.",
-        "format": "يرجى إدخال رقم هاتف صالح."
-      },
-      "description": {
-        "min": "يجب أن يكون الوصف {count} أحرف على الأقل.",
-        "max": "يجب ألا يتجاوز الوصف {count} حرفًا.",
-        "format": "يحتوي الوصف على أحرف غير صالحة."
-      },
-      "businessType": {
-        "required": "نوع النشاط التجاري مطلوب."
-      },
-      "taxId": {
-        "required": "رقم التعريف الضريبي مطلوب للشركات.",
-        "min": "يجب أن يكون معرف الضريبة 5 أحرف على الأقل.",
-        "format": "رقم التعريف الضريبي غير صالح."
-      },
-      "logo": {
-        "size": "حجم الشعار يتجاوز الحد الأقصى وهو {size}.",
-        "format": "يجب أن يكون الشعار بصيغة JPEG، PNG، أو WebP."
-      },
-      "address": {
-        "street": {
-          "required": "اسم الشارع مطلوب."
-        },
-        "city": {
-          "required": "اسم المدينة مطلوب."
-        },
-        "state": {
-          "required": "اسم الولاية/المنطقة مطلوب."
-        },
-        "country": {
-          "required": "الدولة مطلوبة.",
-          "format": "يجب أن يكون رمز البلد رمز ISO صالح مكون من حرفين."
-        },
-        "postalCode": {
-          "required": "الرمز البريدي مطلوب.",
-          "format": "الرمز البريدي غير صالح."
-        }
-      },
-      "terms": {
-        "required": "يجب قبول الشروط والأحكام."
-      }
-    },
-    "yes": "نعم",
-    "no": "لا",
-    "notProvided": "غير مقدم",
-    "accepted": "مقبول",
-    "notAccepted": "غير مقبول"
   },
   "Dashboard": {
     "title": "لوحة تحكم البائع",
@@ -2208,15 +3127,24 @@
   "api": {
     "errors": {
       "unauthorized": "غير مصرح بالوصول",
-      "sellerNotFound": "لم يتم العثور على البائع",
       "subscriptionExpired": "الاشتراك منتهي الصلاحية",
       "internalServerError": "خطأ داخلي في الخادم",
-      "invalidData": "بيانات غير صالحة",
       "insufficientPoints": "رصيد النقاط غير كافٍ",
-      "invalidRequest": "طلب غير صالح"
+      "invalidRequest": "طلب غير صالح",
+      "unauthenticated": "غير مصرح لك بالدخول",
+      "sellerNotFound": "البائع غير موجود",
+      "invalidData": "البيانات المدخلة غير صحيحة",
+      "serverError": "خطأ في السيرفر",
+      "integrationNotFound": "التكامل غير موجود",
+      "noPaymentGateway": "لا توجد بوابة دفع مفعلة",
+      "verifyData": "فشل التحقق: {message}"
     },
     "messages": {
-      "pointsRedeemed": "تم استبدال النقاط بنجاح"
+      "pointsRedeemed": "تم استبدال النقاط بنجاح",
+      "bankInfoUpdated": "تم تحديث معلومات البنك بنجاح",
+      "bankInfoVerified": "تم التحقق من معلومات البنك بنجاح",
+      "bankDetailsValid": "معلومات البنك صالحة",
+      "verificationSuccessful": "تم التحقق بنجاح"
     }
   },
   "Seller": {
@@ -2229,7 +3157,199 @@
     "Designs": "التصاميم",
     "Points": "النقاط",
     "Integrations": "التكاملات",
-    "Settings": "الإعدادات"
+    "Settings": "الإعدادات",
+    "Unauthorized": "الوصول غير مصرح به",
+    "Seller_not_found": "لم يتم العثور على البائع",
+    "Server_error": "خطأ داخلي في الخادم",
+    "Settings_updated_successfully": "تم تحديث الإعدادات بنجاح",
+    "Invalid_settings_data": "بيانات الإعدادات غير صالحة",
+    "Failed_to_decrypt_bank_info": "فشل في فك تشفير معلومات البنك",
+    "bankInfo_requires_mgpay": "معلومات البنك تتطلب تكامل mgpay نشط",
+    "Failed_to_upload_logo": "فشل في رفع الشعار",
+    "Failed_to_upload_banner": "فشل في رفع صورة البانر",
+    "Failed_to_upload_verification_documents": "فشل في رفع وثائق التحقق",
+    "Seller_settings_fetched": "تم جلب إعدادات البائع بنجاح",
+    "Failed_to_fetch_seller_settings": "فشل في جلب إعدادات البائع",
+    "ProductForm": {
+      "createProduct": "إنشاء منتج",
+      "error": "خطأ",
+      "sessionNotFound": "الجلسة غير موجودة، يرجى تسجيل الدخول",
+      "pricingFieldsRequired": "حقول التسعير (السعر الأساسي، السعر النهائي، العملة) مطلوبة",
+      "success": "نجاح",
+      "productCreatedSuccessfully": "تم إنشاء المنتج بنجاح",
+      "productUpdatedSuccessfully": "تم تحديث المنتج بنجاح",
+      "unexpectedError": "حدث خطأ غير متوقع",
+      "environment": "البيئة",
+      "live": "مباشر",
+      "sandbox": "بيئة تجريبية",
+      "previous": "السابق",
+      "next": "التالي",
+      "submitting": "جارٍ الإرسال",
+      "submit": "إرسال",
+      "preview": "معاينة",
+      "productNamePlaceholder": "أدخل اسم المنتج",
+      "descriptionPlaceholder": "أدخل وصف المنتج",
+      "productImage": "صورة المنتج",
+      "noImage": "لا توجد صورة",
+      "price": "السعر",
+      "discount": "الخصم",
+      "noCategory": "لا توجد فئة",
+      "stock": "المخزون",
+      "basicInformation": "المعلومات الأساسية",
+      "productName": "اسم المنتج",
+      "namePlaceholder": "مثال: هاتف ذكي",
+      "slug": "الرابط (Slug)",
+      "slugPlaceholder": "مثال: smart-phone",
+      "generate": "توليد",
+      "category": "الفئة",
+      "categoryPlaceholder": "اختر فئة",
+      "brand": "العلامة التجارية",
+      "brandPlaceholder": "مثال: Samsung",
+      "description": "الوصف",
+      "featured": "مميز",
+      "isPublished": "منشور",
+      "pricing": "التسعير",
+      "basePrice": "السعر الأساسي",
+      "yourCost": "تكلفتك",
+      "commission": "العمولة",
+      "listPrice": "سعر القائمة",
+      "msrp": "السعر المقترح",
+      "suggestedMarkup": "الهامش المقترح",
+      "markup": "الهامش",
+      "finalPrice": "السعر النهائي",
+      "estProfit": "الربح المقدر",
+      "discountType": "نوع الخصم",
+      "selectDiscountType": "اختر نوع الخصم",
+      "none": "لا يوجد",
+      "percentage": "نسبة مئوية",
+      "fixed": "قيمة ثابتة",
+      "discountValue": "قيمة الخصم",
+      "enterPercentage": "أدخل النسبة المئوية",
+      "enterAmount": "أدخل المبلغ",
+      "startDate": "تاريخ البدء",
+      "endDate": "تاريخ الانتهاء",
+      "currency": "العملة",
+      "selectCurrency": "اختر العملة",
+      "warehouses": "المستودعات",
+      "loading": "جارٍ التحميل",
+      "noWarehousesActivated": "لا توجد مستودعات مفعلة",
+      "goToIntegrations": "الذهاب إلى التكاملات",
+      "selected": "تم الاختيار",
+      "select": "اختر",
+      "variants": "المتغيرات",
+      "variantSku": "رمز SKU للمتغير",
+      "skuPlaceholder": "مثال: SKU-123",
+      "barcode": "الباركود",
+      "barcodePlaceholder": "مثال: 123456789",
+      "color": "اللون",
+      "colorPlaceholder": "مثال: أزرق",
+      "size": "الحجم",
+      "sizePlaceholder": "مثال: M",
+      "priceAdjustment": "تعديل السعر",
+      "priceAdjustmentPlaceholder": "مثال: 10.00",
+      "stockPlaceholder": "مثال: 100",
+      "addVariant": "إضافة متغير",
+      "removeVariant": "إزالة المتغير",
+      "productImages": "صور المنتج",
+      "uploading": "جارٍ الرفع",
+      "noFilesSelected": "لم يتم تحديد ملفات",
+      "tooManyImages": "عدد الصور كبير جدًا",
+      "maxImages": "الحد الأقصى للصور: {max}",
+      "imagesUploaded": "تم رفع {count} صورة",
+      "imageUploadFailed": "فشل رفع الصور",
+      "confirmDeleteImage": "هل أنت متأكد من حذف هذه الصورة؟",
+      "imageDeleted": "تم حذف الصورة",
+      "imageDeleteFailed": "فشل حذف الصورة",
+      "imageRequirements": "الصور يجب أن تكون بصيغة JPEG أو PNG بحد أقصى 5 ميغابايت",
+      "dynamicSections": "الأقسام الديناميكية",
+      "dragHandle": "سحب لإعادة الترتيب",
+      "sectionContent": "محتوى القسم",
+      "imageUrl": "رابط الصورة",
+      "videoUrl": "رابط الفيديو",
+      "buttonLabel": "تسمية الزر",
+      "buttonUrl": "رابط الزر",
+      "carouselImages": "صور الكاروسيل",
+      "countdownEndDate": "تاريخ انتهاء العد التنازلي",
+      "reviewsCount": "عدد المراجعات",
+      "deleteSection": "حذف القسم",
+      "addSection": "إضافة قسم",
+      "text": "نص",
+      "image": "صورة",
+      "video": "فيديو",
+      "button": "زر",
+      "carousel": "كاروسيل",
+      "countdown": "عد تنازلي",
+      "reviews": "مراجعات",
+      "relatedProducts": "المنتجات ذات الصلة",
+      "layoutSettings": "إعدادات التخطيط",
+      "layout": "التخطيط",
+      "selectLayout": "اختر التخطيط",
+      "showVendor": "إظهار البائع",
+      "createNewTemplate": "إنشاء قالب جديد",
+      "translations": "الترجمات",
+      "locale": "اللغة",
+      "localePlaceholder": "مثال: ar",
+      "translatedName": "الاسم المترجم",
+      "translatedDescription": "الوصف المترجم",
+      "addTranslation": "إضافة ترجمة",
+      "removeTranslation": "إزالة الترجمة",
+      "importOptions": "خيارات الاستيراد",
+      "noFileSelected": "لم يتم تحديد ملف",
+      "unsupportedFileFormat": "صيغة الملف غير مدعومة",
+      "importFailed": "فشل الاستيراد",
+      "productImported": "تم استيراد المنتج: {name}",
+      "selectFile": "اختر ملف",
+      "importFile": "استيراد ملف",
+      "dropshipping": "الدروبشيبينغ",
+      "noDropshippingProviders": "لا توجد مزودات دروبشيبينغ متاحة",
+      "dropshippingProvider": "مزود الدروبشيبينغ",
+      "selectProvider": "اختر مزود",
+      "externalProductId": "معرف المنتج الخارجي",
+      "externalProductIdPlaceholder": "مثال: prod_123",
+      "externalSku": "رمز SKU الخارجي",
+      "externalSkuPlaceholder": "مثال: SKU-456",
+      "dropshippingImport": "استيراد دروبشيبينغ",
+      "missingDropshippingData": "بيانات الدروبشيبينغ مفقودة (المزود أو معرف المنتج الخارجي)",
+      "importDropshippingProduct": "استيراد منتج دروبشيبينغ",
+      "importing": "جارٍ الاستيراد",
+      "dropshippingProductImported": "تم استيراد منتج الدروبشيبينغ بنجاح",
+      "status": "الحالة",
+      "paymentMethods": "طرق الدفع",
+      "noPaymentMethods": "لا توجد طرق دفع متاحة",
+      "shippingProviders": "مزودو الشحن",
+      "noShippingProviders": "لا توجد مزودات شحن متاحة"
+    }
+  },
+  "products": {
+    "products fetched": "تم جلب المنتجات",
+    "server error": "خطأ في الخادم",
+    "Unauthorized": "غير مصرح",
+    "Seller account required": "حساب بائع مطلوب",
+    "Product not found": "المنتج غير موجود",
+    "Product fetched by slug": "تم جلب المنتج باستخدام الرابط",
+    "Related products fetched": "تم جلب المنتجات ذات الصلة",
+    "Related products by category fetched": "تم جلب المنتجات ذات الصلة حسب الفئة",
+    "Tags fetched": "تم جلب العلامات",
+    "Categories fetched": "تم جلب الفئات",
+    "Seller products fetched": "تم جلب منتجات البائع",
+    "Provider and warehouse data are required": "المزود وبيانات المستودع مطلوبة",
+    "Integration not found or inactive": "التكامل غير موجود أو غير نشط",
+    "Seller integration not found": "تكامل البائع غير موجود",
+    "Product created via external API": "تم إنشاء المنتج عبر واجهة برمجية خارجية",
+    "Server error": "خطأ في الخادم",
+    "Product created": "تم إنشاء المنتج",
+    "Failed to create product": "فشل إنشاء المنتج",
+    "Active subscription required": "اشتراك نشط مطلوب",
+    "Product limit reached": "تم الوصول إلى الحد الأقصى للمنتجات",
+    "Product limit (%s) reached for your subscription plan": "تم الوصول إلى الحد الأقصى للمنتجات (%s) لخطة الاشتراك الخاصة بك",
+    "Invalid or inactive integration": "تكامل غير صالح أو غير نشط",
+    "Invalid warehouse ID": "معرف المستودع غير صالح: %s"
+  },
+  "product": {
+    "reviews": {
+      "NewProductReview": "مراجعة منتج جديدة",
+      "ProductReviewMessage": "تمت إضافة مراجعة جديدة للمنتج: {productName}, التقييم: {rating}, التعليق: {comment}"
+    }
   },
   "Seller Dashboard": {
     "header": {
@@ -2251,9 +3371,7 @@
       "description": "انتهت صلاحية اشتراكك. يرجى تجديده للوصول إلى لوحة تحكم البائع.",
       "renewButton": "تجديد الاشتراك"
     }
-  }
-,
-
+  },
   "Seller Dashboard": {
     "unauthorized": {
       "title": "حساب البائع مطلوب",
@@ -2275,8 +3393,100 @@
       "logout": "تسجيل الخروج"
     }
   },
-  
-"Auth": {
+  "Ads": {
+    "Title": "إدارة الإعلانات",
+    "Create Campaign": "إنشاء حملة",
+    "Edit Campaign": "تعديل الحملة",
+    "Campaign Details": "تفاصيل الحملة",
+    "Error": {
+      "Integration Required": "يجب اختيار تكامل",
+      "Name Required": "اسم الحملة مطلوب",
+      "Budget Positive": "الميزانية يجب أن تكون أكبر من صفر",
+      "Currency Required": "العملة مطلوبة",
+      "Invalid Start Date": "تاريخ البدء غير صالح",
+      "Invalid Url": "رابط غير صالح",
+      "Creatives Required": "يجب إضافة مادة إعلانية واحدة على الأقل",
+      "Campaign Not Found": "الحملة غير موجودة",
+      "Message": "حدث خطأ، حاول مرة أخرى"
+    },
+    "Success": {
+      "Title": "تم بنجاح",
+      "Created": "تم إنشاء الحملة بنجاح",
+      "Updated": "تم تحديث الحملة بنجاح",
+      "Deleted": "تم حذف الحملة بنجاح",
+      "Metrics Synced": "تم مزامنة المقاييس بنجاح",
+      "ProductImported": "تم استيراد المنتج بنجاح"
+    },
+    "Loading": "جارٍ التحميل...",
+    "Search Placeholder": "ابحث عن حملة...",
+    "Filter Status": "تصفية حسب الحالة",
+    "All": "الكل",
+    "Draft": "مسودة",
+    "Active": "نشط",
+    "Paused": "متوقف",
+    "Completed": "مكتمل",
+    "Failed": "فشل",
+    "Environment": "البيئة",
+    "Live": "مباشر",
+    "Sandbox": "تجريبي",
+    "No Integrations Available": "لا توجد تكاملات متاحة",
+    "Setup Integrations": "إعداد التكاملات",
+    "Integration": "التكامل",
+    "Select Integration": "اختر تكاملًا",
+    "Name": "اسم الحملة",
+    "Name Placeholder": "أدخل اسم الحملة",
+    "Budget": "الميزانية",
+    "Budget Placeholder": "أدخل الميزانية",
+    "Currency": "العملة",
+    "Currency Placeholder": "أدخل العملة (مثل USD)",
+    "Start Date": "تاريخ البدء",
+    "End Date": "تاريخ الانتهاء",
+    "Products": "المنتجات",
+    "Add Product": "إضافة منتج",
+    "Import Product": "استيراد منتج",
+    "Product ID": "معرف المنتج",
+    "Region": "المنطقة",
+    "Global": "عالمي",
+    "North America": "أمريكا الشمالية",
+    "Europe": "أوروبا",
+    "Arabic": "العربية",
+    "Far East": "الشرق الأقصى",
+    "Import": "استيراد",
+    "Creatives": "المواد الإعلانية",
+    "Add Creative": "إضافة مادة إعلانية",
+    "Image": "صورة",
+    "Video": "فيديو",
+    "Text": "نص",
+    "Creative Url Placeholder": "أدخل رابط المادة الإعلانية",
+    "Create": "إنشاء",
+    "Update": "تحديث",
+    "Delete Campaign": "حذف الحملة",
+    "Delete Confirmation": "هل أنت متأكد من حذف الحملة {name}؟",
+    "Cancel": "إلغاء",
+    "Delete": "حذف",
+    "Provider": "المزود",
+    "Impressions": "المشاهدات",
+    "Clicks": "النقرات",
+    "Conversions": "التحويلات",
+    "Spend": "الإنفاق",
+    "Metrics Chart": "رسم بياني للمقاييس",
+    "Back to Campaigns": "العودة إلى الحملات",
+    "Back to Details": "العودة إلى التفاصيل",
+    "Edit Campaign": "تعديل الحملة",
+    "Page": "الصفحة {current} من {total}",
+    "Previous": "السابق",
+    "Next": "التالي"
+  },
+  "Sidebar": {
+    "Title": "لوحة التحكم",
+    "Dashboard": "الرئيسية",
+    "Ads": "الإعلانات",
+    "Products": "المنتجات",
+    "Settings": "الإعدادات",
+    "Notifications": "الإشعارات",
+    "No Notifications": "لا توجد إشعارات"
+  },
+  "Auth": {
     "error": "خطأ",
     "success": "نجاح",
     "verificationRequired": "التحقق مطلوب",
@@ -2338,5 +3548,1083 @@
     "EmailPlaceholder": "أدخل بريدك الإلكتروني",
     "VerificationCode": "رمز التحقق",
     "CodePlaceholder": "أدخل رمز التحقق",
-    "Verify": "تحقق"
-  }}
+    "Verify": "تحقق",
+    "loading": "جارٍ تسجيل الدخول...",
+    "errors": {
+      "oauth_failed": "فشل تسجيل الدخول عبر GitHub"
+    }
+  },
+  "CreateTicket": {
+    "title": "إنشاء تذكرة دعم",
+    "contact": "تواصل معنا عبر البريد أو واتساب، أو املأ النموذج أدناه",
+    "form": {
+      "title": "أرسل طلبك"
+    },
+    "fields": {
+      "name": {
+        "label": "الاسم",
+        "placeholder": "أحمد محمد"
+      },
+      "email": {
+        "label": "البريد الإلكتروني",
+        "placeholder": "example@domain.com"
+      },
+      "subject": {
+        "label": "الموضوع",
+        "placeholder": "مشكلة في الطلب #12345",
+        "description": "صف المشكلة باختصار"
+      },
+      "category": {
+        "label": "الفئة",
+        "placeholder": "اختر فئة",
+        "description": "اختر الفئة المناسبة"
+      },
+      "orderId": {
+        "label": "رقم الطلب",
+        "placeholder": "#12345",
+        "description": "مثال: #12345"
+      },
+      "integrationId": {
+        "label": "رقم التكامل",
+        "placeholder": "#INT-789",
+        "description": "إذا كانت المشكلة في تكامل"
+      },
+      "description": {
+        "label": "الوصف",
+        "placeholder": "اشرح مشكلتك بالتفصيل...",
+        "description": "كلما كان الوصف أوضح، كلما كان الحل أسرع"
+      }
+    },
+    "categories": {
+      "order_issue": "مشكلة في الطلب",
+      "product_question": "سؤال عن المنتج",
+      "shipping": "الشحن والتوصيل",
+      "returns": "الإرجاع والاسترداد",
+      "technical_support": "الدعم الفني",
+      "account": "الحساب والتسجيل",
+      "other": "أخرى",
+      "integrations": "التكاملات",
+      "pricing": "التسعير",
+      "create_integration": "إنشاء تكامل",
+      "subscriptions": "الاشتراكات",
+      "ads": "الإعلانات",
+      "withdrawals": "السحب",
+      "payment": "الدفع",
+      "warehouse": "المخزن",
+      "dropshipping": "الدروب شيبينج",
+      "marketplace": "السوق",
+      "marketing": "التسويق",
+      "accounting": "المحاسبة",
+      "crm": "إدارة العملاء",
+      "analytics": "التحليلات",
+      "automation": "الأتمتة",
+      "communication": "التواصل",
+      "education": "التعليم",
+      "security": "الأمان",
+      "advertising": "الإعلانات",
+      "tax": "الضرائب"
+    },
+    "cancel": "إلغاء",
+    "submit": "إرسال التذكرة",
+    "submitting": "جاري الإرسال...",
+    "success": {
+      "title": "تم الإرسال!",
+      "description": "سنرد خلال 24 ساعة"
+    },
+    "errors": {
+      "title": "فشل",
+      "submitFailed": "حاول مرة أخرى"
+    },
+    "validation": {
+      "name": {
+        "min": "الاسم يجب أن يكون {count} أحرف على الأقل"
+      },
+      "email": {
+        "invalid": "البريد غير صحيح"
+      },
+      "category": {
+        "required": "الفئة مطلوبة"
+      }
+    },
+    "supportInfo": {
+      "title": "معلومات الدعم",
+      "faq1": "كيف يمكنني تتبع طلبي؟",
+      "faq1_answer": "بعد إتمام الطلب، ستتلقى بريدًا إلكترونيًا يحتوي على رابط التتبع. يمكنك أيضًا تسجيل الدخول إلى حسابك > الطلبات > عرض التفاصيل.",
+      "faq2": "ما هي سياسة الإرجاع؟",
+      "faq2_answer": "يمكنك إرجاع المنتج خلال 14 يومًا من استلامه، بشرط أن يكون بحالته الأصلية وغير مستخدم. تواصل مع الدعم للحصول على عنوان الإرجاع.",
+      "faq3": "كيف أغير كلمة المرور؟",
+      "faq3_answer": "اذهب إلى حسابي > إعدادات الأمان > تغيير كلمة المرور. ستحتاج إلى إدخال كلمة المرور الحالية ثم الجديدة مرتين.",
+      "tipTitle": "نصيحة سريعة",
+      "tip": "تحقق من الأسئلة الشائعة قبل إرسال تذكرة، قد تجد الإجابة فورًا!"
+    },
+    "whatsapp": {
+      "title": "تواصل عبر واتساب",
+      "description": "اكتب رسالتك وسيتم إرسالها مباشرة",
+      "name": "الاسم",
+      "namePlaceholder": "أحمد محمد",
+      "email": "البريد الإلكتروني",
+      "emailPlaceholder": "example@domain.com",
+      "subject": "الموضوع",
+      "subjectPlaceholder": "مشكلة في الطلب",
+      "message": "الرسالة",
+      "messagePlaceholder": "اشرح مشكلتك بالتفصيل...",
+      "send": "إرسال عبر واتساب",
+      "greeting": "السلام عليكم"
+    }
+  },
+  "tickets": {
+    "title": "تذاكر الدعم",
+    "createButton": "إنشاء تذكرة جديدة",
+    "noTickets": "لا توجد تذاكر. أنشئ أول تذكرة!",
+    "searchPlaceholder": "ابحث في العنوان...",
+    "columns": {
+      "title": "العنوان",
+      "category": "الفئة",
+      "status": "الحالة",
+      "priority": "الأولوية",
+      "created": "تاريخ الإنشاء"
+    },
+    "status": {
+      "open": "مفتوحة",
+      "in_progress": "قيد المعالجة",
+      "resolved": "تم الحل",
+      "closed": "مغلقة"
+    },
+    "priority": {
+      "high": "عالية",
+      "medium": "متوسطة",
+      "low": "منخفضة"
+    }
+  },
+  "subscriptions": {
+    "title": "الاشتراكات",
+    "month": "شهر",
+    "or": "أو",
+    "points": "نقاط",
+    "trialMonths": "{count, plural, one {شهر تجريبي} other {# أشهر تجريبية}}",
+    "domainStatus": "حالة النطاق",
+    "domainStatus.active": "نشط",
+    "domainStatus.expired": "منتهي الصلاحية",
+    "domainStatus.pending": "قيد الانتظار",
+    "redeemPoints": "استبدال النقاط",
+    "payWithMethod": "الدفع باستخدام {method}",
+    "plan": "الخطة",
+    "pointsRequired": "النقاط المطلوبة",
+    "yourPointsBalance": "رصيد نقاطك",
+    "submitting": "جارٍ الإرسال...",
+    "Unauthorized": "الوصول غير مصرح به",
+    "Seller_not_found": "لم يتم العثور على البائع",
+    "Server_error": "خطأ داخلي في الخادم",
+    "Subscription_updated": "تم تحديث الاشتراك بنجاح",
+    "Failed_to_update_subscription": "فشل في تحديث الاشتراك",
+    "redeem": {
+      "title": "استبدال النقاط لخطة {plan}",
+      "confirm": "تأكيد الاستبدال"
+    },
+    "features": {
+      "productsLimit": "الحد الأقصى للمنتجات: {count}",
+      "commission": "العمولة: {count}%",
+      "prioritySupport": "دعم الأولوية: {enabled}",
+      "instantPayouts": "مدفوعات فورية: {enabled}",
+      "customSections": "أقسام مخصصة: {count}",
+      "domainSupport": "دعم النطاق: {enabled}",
+      "domainRenewal": "تجديد النطاق: {enabled}"
+    },
+    "yes": "نعم",
+    "no": "لا",
+    "errors": {
+      "sellerNotFound": "لم يتم العثور على حساب بائع",
+      "registerPrompt": "يرجى التسجيل كبائع للوصول إلى الاشتراكات",
+      "bankInfoNotVerified": "معلومات البنك غير مؤكدة",
+      "verifyBankPrompt": "يرجى التحقق من معلومات البنك الخاص بك للمتابعة",
+      "subscriptionExpired": "اشتراكك منتهي الصلاحية",
+      "renewPrompt": "يرجى تجديد اشتراكك لاستعادة الوصول الكامل",
+      "domainExpired": "نطاقك منتهي الصلاحية",
+      "renewDomainPrompt": "يرجى تجديد نطاقك لاستعادة الوصول",
+      "serverError": "حدث خطأ في الخادم",
+      "tryAgain": "حاول مرة أخرى لاحقًا",
+      "fetchFailed": "فشل جلب البيانات",
+      "invalidPlan": "الخطة غير صالحة",
+      "planNotFound": "لم يتم العثور على الخطة",
+      "pointsNotSupported": "هذه الخطة لا تدعم استبدال النقاط",
+      "insufficientPoints": "رصيد النقاط غير كافٍ",
+      "redeemFailed": "فشل استبدال النقاط",
+      "failedToRedeemPoints": "فشل استبدال النقاط",
+      "paymentMethodRequired": "طريقة الدفع مطلوبة",
+      "paymentFailed": "فشل عملية الدفع"
+    },
+    "success": {
+      "title": "نجاح",
+      "redeemSuccess": "تم استبدال النقاط بنجاح لخطة {plan}"
+    },
+    "account": {
+      "startSelling": "ابدأ البيع",
+      "verifyBank": "التحقق من الحساب البنكي"
+    }
+  },
+  "ChatWidget": {
+    "openChat": "فتح الدردشة",
+    "name": "اسمك",
+    "email": "بريدك الإلكتروني",
+    "message": "رسالتك",
+    "send": "إرسال"
+  },
+  "IntegrationsManager": {
+    "manageIntegrations": "إدارة التكاملات",
+    "selectType": "اختر نوع التكامل",
+    "integrationName": "اسم التكامل",
+    "keyName": "اسم المفتاح",
+    "keyValue": "قيمة المفتاح",
+    "addKey": "إضافة مفتاح",
+    "webhookEvent": "حدث الويب هوك",
+    "webhookUrl": "رابط الويب هوك",
+    "addWebhook": "إضافة ويب هوك",
+    "addIntegration": "إضافة تكامل",
+    "success": "نجاح",
+    "integrationAdded": "تم إضافة التكامل بنجاح",
+    "integrationDeleted": "تم حذف التكامل بنجاح",
+    "errors": {
+      "fetchFailed": "فشل في جلب التكاملات",
+      "addFailed": "فشل في إضافة التكامل",
+      "deleteFailed": "فشل في حذف التكامل"
+    },
+    "payment": "الدفع",
+    "warehouse": "المستودع",
+    "dropshipping": "الدروب شيبنج",
+    "marketplace": "السوق",
+    "shipping": "الشحن",
+    "marketing": "التسويق",
+    "accounting": "المحاسبة",
+    "crm": "إدارة العملاء",
+    "analytics": "التحليلات",
+    "automation": "الأتمتة",
+    "communication": "الاتصال",
+    "education": "التعليم",
+    "security": "الأمان",
+    "advertising": "الإعلانات",
+    "tax": "الضرائب",
+    "custom": "مخصص",
+    "name": "الاسم",
+    "type": "النوع",
+    "keys": "المفاتيح",
+    "webhooks": "الويب هوكس"
+  },
+  "TemplateEditor": {
+    "title": "محرر القوالب",
+    "switchToVisual": "التبديل إلى الوضع المرئي",
+    "jsEditor": "محرر جافاسكربت",
+    "switchToDeveloper": "التبديل إلى وضع المطور",
+    "desktopPreview": "معاينة سطح المكتب",
+    "mobilePreview": "معاينة الهاتف المحمول",
+    "templateName": "اسم القالب",
+    "addFaq": "إضافة سؤال شائع",
+    "chat": "الدردشة الحية",
+    "faqQuestion": "السؤال",
+    "faqAnswer": "الإجابة",
+    "primaryColor": "اللون الأساسي",
+    "secondaryColor": "اللون الثانوي",
+    "heroTitle": "عنوان الهيرو",
+    "heroSubtitle": "العنوان الفرعي للهيرو",
+    "htmlEditor": "محرر HTML للقسم: {{section}}",
+    "cssEditor": "محرر CSS",
+    "addSection": "إضافة قسم",
+    "saveTemplate": "حفظ القالب",
+    "publishTemplate": "نشر القالب",
+    "exportTemplate": "تصدير القالب",
+    "fetchTemplateFailed": "فشل في جلب القالب",
+    "saveTemplateFailed": "فشل في حفظ القالب",
+    "publishTemplateFailed": "فشل في نشر القالب",
+    "templateSaved": "تم حفظ القالب بنجاح",
+    "templatePublished": "تم نشر القالب بنجاح",
+    "templateExported": "تم تصدير القالب بنجاح",
+    "error": "خطأ",
+    "success": "نجاح",
+    "invalidJSON": "JSON غير صالح",
+    "textContent": "محتوى النص",
+    "imageUrl": "رابط الصورة",
+    "videoUrl": "رابط الفيديو",
+    "buttonLabel": "تسمية الزر",
+    "buttonUrl": "رابط الزر",
+    "headingText": "نص العنوان",
+    "dividerText": "نص الفاصل",
+    "spacerHeight": "ارتفاع الفاصل",
+    "carouselImages": "صور الشرائح",
+    "sliderImages": "صور السلايدر",
+    "galleryImages": "صور المعرض",
+    "columnsCount": "عدد الأعمدة",
+    "columnsGap": "الفجوة بين الأعمدة",
+    "columnsChildren": "محتوى الأعمدة",
+    "pricingTableContent": "محتوى جدول التسعير",
+    "ctaText": "نص دعوة لاتخاذ إجراء",
+    "buttonText": "نص الزر",
+    "accordionItems": "عناصر الأكورديون",
+    "tabsItems": "عناصر علامات التبويب",
+    "testimonialsContent": "محتوى الشهادات",
+    "testimonialCarouselContent": "محتوى دائري الشهادات",
+    "logosImages": "صور الشعارات",
+    "timelineItems": "عناصر الجدول الزمني",
+    "stepsItems": "عناصر الخطوات",
+    "animationText": "نص الرسوم المتحركة",
+    "countUpValue": "قيمة العد التصاعدي",
+    "popupContent": "محتوى النافذة المنبثقة",
+    "newsletterEndpoint": "نقطة نهاية النشرة الإخبارية",
+    "formEndpoint": "نقطة نهاية النموذج",
+    "mapEmbed": "تضمين الخريطة",
+    "productIds": "معرفات المنتجات",
+    "productImage": "صورة المنتج",
+    "productName": "اسم المنتج",
+    "productPrice": "سعر المنتج",
+    "description": "الوصف",
+    "backgroundImage": "صورة الخلفية",
+    "upsellTitle": "عنوان العرض الإضافي",
+    "upsellDescription": "وصف العرض الإضافي",
+    "reviewsContent": "محتوى المراجعات",
+    "footerText": "نص التذييل",
+    "backgroundColor": "لون الخلفية",
+    "faqContent": "محتوى الأسئلة الشائعة",
+    "navigationItems": "عناصر التنقل",
+    "blogPostsContent": "محتوى منشورات المدونة",
+    "articleContent": "محتوى المقال",
+    "breadcrumbsItems": "عناصر مسار التنقل",
+    "sidebarContent": "محتوى الشريط الجانبي",
+    "iconGridItems": "عناصر شبكة الأيقونات",
+    "imageGridImages": "صور شبكة الصور",
+    "shapeDividerText": "نص فاصل الأشكال",
+    "text": "نص",
+    "image": "صورة",
+    "video": "فيديو",
+    "button": "زر",
+    "heading": "عنوان",
+    "divider": "فاصل",
+    "spacer": "مسافة",
+    "carousel": "شرائح",
+    "slider": "سلايدر",
+    "gallery": "معرض",
+    "columns": "أعمدة",
+    "pricing-table": "جدول التسعير",
+    "cta": "دعوة لاتخاذ إجراء",
+    "accordion": "أكورديون",
+    "tabs": "علامات تبويب",
+    "testimonials": "شهادات",
+    "testimonial-carousel": "دائري الشهادات",
+    "logos": "شعارات",
+    "timeline": "جدول زمني",
+    "steps": "خطوات",
+    "animation": "رسوم متحركة",
+    "count-up": "عد تصاعدي",
+    "popup": "نافذة منبثقة",
+    "newsletter": "نشرة إخبارية",
+    "contact-form": "نموذج الاتصال",
+    "map": "خريطة",
+    "products": "منتجات",
+    "product-card": "بطاقة منتج",
+    "collection-banner": "بانر المجموعة",
+    "upsell": "عرض إضافي",
+    "related-products": "منتجات ذات صلة",
+    "quick-view": "عرض سريع",
+    "carousel-products": "منتجات دائرية",
+    "reviews": "مراجعات",
+    "hero": "هيرو",
+    "footer": "تذييل",
+    "faq": "الأسئلة الشائعة",
+    "navigation": "تنقل",
+    "blog-posts": "منشورات المدونة",
+    "article": "مقال",
+    "breadcrumbs": "مسار التنقل",
+    "sidebar": "شريط جانبي",
+    "background-video": "فيديو خلفية",
+    "icon-grid": "شبكة الأيقونات",
+    "image-grid": "شبكة الصور",
+    "shape-divider": "فاصل الأشكال"
+  },
+  "Template": {
+    "primaryColor": "اللون الأساسي",
+    "secondaryColor": "اللون الثانوي",
+    "heroTitle": "عنوان الهيرو",
+    "enterHeroTitle": "أدخل عنوان الهيرو",
+    "heroSubtitle": "العنوان الفرعي للهيرو",
+    "enterHeroSubtitle": "أدخل العنوان الفرعي للهيرو",
+    "assets": "الأصول",
+    "enterSectionName": "أدخل اسم القسم",
+    "enterSectionUrl": "أدخل رابط القسم",
+    "addSection": "إضافة قسم",
+    "save": "حفظ",
+    "saveSuccess": "تم الحفظ بنجاح",
+    "templateUpdated": "تم تحديث القالب بنجاح",
+    "templateSelected": "تم اختيار القالب",
+    "templateApplied": "تم تطبيق القالب بنجاح",
+    "templateImported": "تم استيراد القالب",
+    "errors": {
+      "saveError": "فشل في الحفظ"
+    }
+  },
+  "SitePreview": {
+    "title": "معاينة الموقع",
+    "success": "نجاح",
+    "sitePublished": "تم نشر الموقع بنجاح",
+    "error": "خطأ",
+    "publishFailed": "فشل في النشر",
+    "defaultTitle": "مرحبًا بكم في متجرك",
+    "defaultSubtitle": "اكتشف منتجاتنا المذهلة",
+    "noSections": "لا توجد أقسام لعرضها",
+    "noProducts": "لا توجد منتجات لعرضها",
+    "product": "منتج"
+  },
+  "PageManager": {
+    "managePages": "إدارة الصفحات",
+    "visualMode": "الوضع المرئي",
+    "codeMode": "وضع الكود",
+    "addPage": "إضافة صفحة",
+    "customCSS": "CSS مخصص",
+    "customHTML": "HTML مخصص",
+    "pageTitle": "عنوان الصفحة",
+    "pageSlug": "معرف الصفحة",
+    "pageContent": "محتوى الصفحة",
+    "enterPageContent": "أدخل محتوى الصفحة",
+    "productIds": "معرفات المنتجات",
+    "newTextPage": "صفحة نص جديدة",
+    "newImagePage": "صفحة صورة جديدة",
+    "newVideoPage": "صفحة فيديو جديدة",
+    "newButtonPage": "صفحة زر جديدة",
+    "newHeadingPage": "صفحة عنوان جديدة",
+    "newDividerPage": "صفحة فاصل جديدة",
+    "newSpacerPage": "صفحة مسافة جديدة",
+    "newCarouselPage": "صفحة شرائح جديدة",
+    "newSliderPage": "صفحة سلايدر جديدة",
+    "newGalleryPage": "صفحة معرض جديدة",
+    "newColumnsPage": "صفحة أعمدة جديدة",
+    "newFeaturesGridPage": "صفحة شبكة الميزات جديدة",
+    "newPricingTablePage": "صفحة جدول تسعير جديدة",
+    "newCtaPage": "صفحة دعوة لاتخاذ إجراء جديدة",
+    "newAccordionPage": "صفحة أكورديون جديدة",
+    "newTabsPage": "صفحة علامات تبويب جديدة",
+    "newTestimonialsPage": "صفحة شهادات جديدة",
+    "newTestimonialCarouselPage": "صفحة دائري شهادات جديدة",
+    "newLogosPage": "صفحة شعارات جديدة",
+    "newTimelinePage": "صفحة جدول زمني جديدة",
+    "newStepsPage": "صفحة خطوات جديدة",
+    "newAnimationPage": "صفحة رسوم متحركة جديدة",
+    "newCountUpPage": "صفحة عد تصاعدي جديدة",
+    "newPopupPage": "صفحة نافذة منبثقة جديدة",
+    "newNewsletterPage": "صفحة نشرة إخبارية جديدة",
+    "newContactFormPage": "صفحة نموذج اتصال جديدة",
+    "newMapPage": "صفحة خريطة جديدة",
+    "newProductsPage": "صفحة منتجات جديدة",
+    "newProductCardPage": "صفحة بطاقة منتج جديدة",
+    "newCollectionBannerPage": "صفحة بانر مجموعة جديدة",
+    "newUpsellPage": "صفحة عرض إضافي جديدة",
+    "newRelatedProductsPage": "صفحة منتجات ذات صلة جديدة",
+    "newQuickViewPage": "صفحة عرض سريع جديدة",
+    "newCarouselProductsPage": "صفحة منتجات دائرية جديدة",
+    "newReviewsPage": "صفحة مراجعات جديدة",
+    "newHeroPage": "صفحة هيرو جديدة",
+    "newFooterPage": "صفحة تذييل جديدة",
+    "newFaqPage": "صفحة أسئلة شائعة جديدة",
+    "newBreadcrumbsPage": "صفحة مسار تنقل جديدة",
+    "newNavigationPage": "صفحة تنقل جديدة",
+    "newSidebarPage": "صفحة شريط جانبي جديدة",
+    "newBlogPostsPage": "صفحة منشورات مدونة جديدة",
+    "newArticlePage": "صفحة مقال جديدة",
+    "newBackgroundVideoPage": "صفحة فيديو خلفية جديدة",
+    "newIconGridPage": "صفحة شبكة أيقونات جديدة",
+    "newImageGridPage": "صفحة شبكة صور جديدة",
+    "newShapeDividerPage": "صفحة فاصل أشكال جديدة",
+    "text": "نص",
+    "image": "صورة",
+    "video": "فيديو",
+    "button": "زر",
+    "heading": "عنوان",
+    "divider": "فاصل",
+    "spacer": "مسافة",
+    "carousel": "شرائح",
+    "slider": "سلايدر",
+    "gallery": "معرض",
+    "columns": "أعمدة",
+    "features-grid": "شبكة الميزات",
+    "pricing-table": "جدول التسعير",
+    "cta": "دعوة لاتخاذ إجراء",
+    "accordion": "أكورديون",
+    "tabs": "علامات تبويب",
+    "testimonials": "شهادات",
+    "testimonial-carousel": "دائري الشهادات",
+    "logos": "شعارات",
+    "timeline": "جدول زمني",
+    "steps": "خطوات",
+    "animation": "رسوم متحركة",
+    "count-up": "عد تصاعدي",
+    "popup": "نافذة منبثقة",
+    "newsletter": "نشرة إخبارية",
+    "contact-form": "نموذج الاتصال",
+    "map": "خريطة",
+    "products": "منتجات",
+    "product-card": "بطاقة منتج",
+    "collection-banner": "بانر المجموعة",
+    "upsell": "عرض إضافي",
+    "related-products": "منتجات ذات صلة",
+    "quick-view": "عرض سريع",
+    "carousel-products": "منتجات دائرية",
+    "reviews": "مراجعات",
+    "hero": "هيرو",
+    "footer": "تذييل",
+    "faq": "الأسئلة الشائعة",
+    "breadcrumbs": "مسار التنقل",
+    "navigation": "تنقل",
+    "sidebar": "شريط جانبي",
+    "blog-posts": "منشورات المدونة",
+    "article": "مقال",
+    "background-video": "فيديو خلفية",
+    "icon-grid": "شبكة الأيقونات",
+    "image-grid": "شبكة الصور",
+    "shape-divider": "فاصل الأشكال"
+  },
+  "SellerSettings": {
+    "title": "إعدادات البائع",
+    "trialStatus": "الفترة التجريبية المجانية نشطة: {days} أيام متبقية",
+    "trialDescription": "قم بترقية خطتك لفتح ميزات وفوائد إضافية.",
+    "upgradePlan": "ترقية الخطة",
+    "pointsBalance": "رصيد النقاط: {points} نقطة",
+    "pointsDescription": "استخدم النقاط لفتح ميزات مميزة أو خصومات.",
+    "submitting": "جارٍ الحفظ...",
+    "submit": "حفظ الإعدادات",
+    "sections": {
+      "businessInfo": "معلومات العمل",
+      "address": "العنوان",
+      "bankInfo": "معلومات البنك",
+      "account": "الحساب",
+      "subscription": "الاشتراك",
+      "discountOffers": "عروض الخصم",
+      "notifications": "الإشعارات",
+      "display": "إعدادات العرض",
+      "security": "الأمان",
+      "customSite": "الموقع المخصص",
+      "taxes": "الضرائب",
+      "domains": "النطاقات",
+      "verification": "التحقق",
+      "integrations": "التكاملات",
+      "paymentMethods": "طرق الدفع",
+      "shippingOptions": "خيارات الشحن",
+      "template": "القالب",
+      "templateeditor": "محرر القالب",
+      "managePages": "إدارة الصفحات",
+      "integrationsmanager": "مدير التكاملات"
+    },
+    "businessName": {
+      "label": "اسم العمل",
+      "placeholder": "أدخل اسم عملك",
+      "description": "اسم العمل كما سيظهر للعملاء."
+    },
+    "email": {
+      "label": "البريد الإلكتروني",
+      "placeholder": "أدخل بريدك الإلكتروني للعمل",
+      "description": "عنوان البريد الإلكتروني للتواصل مع العملاء."
+    },
+    "description": {
+      "label": "الوصف",
+      "placeholder": "صف عملك",
+      "description": "وصف موجز لعملك للعملاء."
+    },
+    "phone": {
+      "label": "رقم الهاتف",
+      "placeholder": "أدخل رقم هاتفك",
+      "description": "رقم الهاتف لدعم العملاء."
+    },
+    "customSiteUrl": {
+      "label": "رابط الموقع المخصص",
+      "placeholder": "أدخل رابط الموقع المخصص",
+      "description": "الرابط لواجهة متجرك المخصص."
+    },
+    "address": {
+      "street": {
+        "label": "عنوان الشارع",
+        "placeholder": "أدخل عنوان الشارع"
+      },
+      "city": {
+        "label": "المدينة",
+        "placeholder": "أدخل المدينة"
+      },
+      "state": {
+        "label": "الولاية/المحافظة",
+        "placeholder": "أدخل الولاية أو المحافظة"
+      },
+      "postalCode": {
+        "label": "الرمز البريدي",
+        "placeholder": "أدخل الرمز البريدي"
+      },
+      "countryCode": {
+        "label": "رمز الدولة",
+        "placeholder": "أدخل رمز الدولة (مثل: US، CA)"
+      }
+    },
+    "bankInfo": {
+      "accountName": {
+        "label": "اسم الحساب",
+        "placeholder": "أدخل اسم صاحب الحساب"
+      },
+      "accountNumber": {
+        "label": "رقم الحساب",
+        "placeholder": "أدخل رقم الحساب البنكي"
+      },
+      "bankName": {
+        "label": "اسم البنك",
+        "placeholder": "أدخل اسم البنك"
+      },
+      "swiftCode": {
+        "label": "رمز SWIFT",
+        "placeholder": "أدخل رمز SWIFT",
+        "description": "رمز SWIFT للمعاملات الدولية."
+      },
+      "showBankInfo": "إظهار معلومات البنك",
+      "hideBankInfo": "إخفاء معلومات البنك"
+    },
+    "subscription": {
+      "plan": {
+        "label": "خطة الاشتراك",
+        "placeholder": "اختر خطة",
+        "description": "اختر خطة اشتراكك للوصول إلى ميزات مختلفة.",
+        "trial": "تجريبي",
+        "basic": "أساسي",
+        "pro": "احترافي",
+        "vip": "VIP"
+      },
+      "upgradeTo": "الترقية إلى {plan}"
+    },
+    "discountOffers": {
+      "code": {
+        "label": "كود الخصم",
+        "placeholder": "أدخل كود الخصم"
+      },
+      "description": {
+        "label": "الوصف",
+        "placeholder": "صف عرض الخصم"
+      },
+      "discountType": {
+        "label": "نوع الخصم",
+        "placeholder": "اختر نوع الخصم",
+        "percentage": "نسبة مئوية",
+        "fixed": "مبلغ ثابت",
+        "free_shipping": "شحن مجاني"
+      },
+      "discountValue": {
+        "label": "قيمة الخصم",
+        "placeholder": "أدخل قيمة الخصم"
+      },
+      "minPurchase": {
+        "label": "الحد الأدنى للشراء",
+        "placeholder": "أدخل الحد الأدنى للشراء"
+      },
+      "maxDiscount": {
+        "label": "الحد الأقصى للخصم",
+        "placeholder": "أدخل الحد الأقصى للخصم"
+      },
+      "validFrom": {
+        "label": "صالح من",
+        "placeholder": "اختر تاريخ البدء"
+      },
+      "validUntil": {
+        "label": "صالح حتى",
+        "placeholder": "اختر تاريخ الانتهاء"
+      },
+      "maxUses": {
+        "label": "الحد الأقصى للاستخدامات",
+        "placeholder": "أدخل الحد الأقصى لعدد الاستخدامات"
+      },
+      "isActive": {
+        "label": "نشط",
+        "description": "تفعيل أو تعطيل عرض الخصم هذا."
+      },
+      "add": "إضافة خصم",
+      "remove": "إزالة الخصم"
+    },
+    "notifications": {
+      "email": {
+        "label": "إشعارات البريد الإلكتروني",
+        "description": "تلقي الإشعارات عبر البريد الإلكتروني."
+      },
+      "sms": {
+        "label": "إشعارات الرسائل النصية",
+        "description": "تلقي الإشعارات عبر الرسائل النصية."
+      },
+      "push": {
+        "label": "إشعارات الدفع",
+        "description": "تلقي إشعارات الدفع على جهازك."
+      },
+      "orderUpdates": {
+        "label": "تحديثات الطلبات",
+        "description": "تلقي تحديثات حول طلباتك."
+      },
+      "marketingEmails": {
+        "label": "رسائل التسويق",
+        "description": "تلقي رسائل بريد إلكتروني ترويجية وتسويقية."
+      },
+      "pointsNotifications": {
+        "label": "إشعارات النقاط",
+        "description": "تلقي إشعارات حول رصيد نقاطك."
+      }
+    },
+    "display": {
+      "showRating": {
+        "label": "إظهار التقييم",
+        "description": "عرض تقييم البائع على واجهة متجرك."
+      },
+      "showContactInfo": {
+        "label": "إظهار معلومات التواصل",
+        "description": "عرض معلومات التواصل على واجهة متجرك."
+      },
+      "showMetrics": {
+        "label": "إظهار المقاييس",
+        "description": "عرض مقاييس الأداء على لوحة التحكم."
+      },
+      "showPointsBalance": {
+        "label": "إظهار رصيد النقاط",
+        "description": "عرض رصيد النقاط على لوحة التحكم."
+      },
+      "welcomeSeen": {
+        "label": "تم رؤية رسالة الترحيب",
+        "description": "وضع علامة على رسالة الترحيب كمقروءة."
+      }
+    },
+    "customSite": {
+      "theme": {
+        "label": "الثيم",
+        "placeholder": "اختر ثيم",
+        "description": "اختر ثيم لموقعك المخصص.",
+        "default": "افتراضي",
+        "dark": "داكن",
+        "light": "فاتح"
+      },
+      "primaryColor": {
+        "label": "اللون الأساسي",
+        "description": "اختر اللون الأساسي لموقعك."
+      },
+      "logo": {
+        "label": "الشعار",
+        "description": "ارفع شعار واجهة متجرك.",
+        "alt": "شعار المتجر"
+      },
+      "bannerImage": {
+        "label": "صورة البانر",
+        "description": "ارفع صورة بانر لواجهة متجرك.",
+        "alt": "بانر المتجر"
+      },
+      "seo": {
+        "metaTitle": {
+          "label": "العنوان التعريفي",
+          "placeholder": "أدخل العنوان التعريفي",
+          "description": "العنوان لتحسين محركات البحث (بحد أقصى 60 حرفًا)."
+        },
+        "metaDescription": {
+          "label": "الوصف التعريفي",
+          "placeholder": "أدخل الوصف التعريفي",
+          "description": "الوصف لتحسين محركات البحث (بحد أقصى 160 حرفًا)."
+        },
+        "keywords": {
+          "label": "الكلمات المفتاحية",
+          "placeholder": "أدخل الكلمات المفتاحية (مفصولة بفواصل)",
+          "description": "الكلمات المفتاحية لتحسين محركات البحث."
+        }
+      }
+    },
+    "taxes": {
+      "taxRate": {
+        "label": "معدل الضريبة",
+        "placeholder": "أدخل معدل الضريبة (%)"
+      },
+      "taxType": {
+        "label": "نوع الضريبة",
+        "placeholder": "اختر نوع الضريبة",
+        "vat": "ضريبة القيمة المضافة",
+        "sales_tax": "ضريبة المبيعات",
+        "none": "لا شيء"
+      },
+      "taxService": {
+        "label": "خدمة الضرائب",
+        "placeholder": "اختر خدمة الضرائب",
+        "avalara": "Avalara",
+        "taxjar": "TaxJar",
+        "none": "لا شيء"
+      }
+    },
+    "domains": {
+      "domainName": {
+        "label": "اسم النطاق",
+        "placeholder": "أدخل اسم النطاق (مثل: example.com)",
+        "description": "النطاق المخصص لواجهة متجرك."
+      },
+      "isPrimary": {
+        "label": "النطاق الأساسي",
+        "description": "اجعل هذا النطاق هو النطاق الأساسي لمتجرك."
+      },
+      "dnsStatus": {
+        "label": "حالة DNS",
+        "placeholder": "اختر حالة DNS",
+        "pending": "قيد الانتظار",
+        "verified": "تم التحقق",
+        "failed": "فشل",
+        "description": "حالة تكوين DNS لنطاقك."
+      },
+      "add": "إضافة نطاق",
+      "remove": "إزالة النطاق"
+    },
+    "verification": {
+      "documentType": {
+        "label": "نوع الوثيقة",
+        "placeholder": "اختر نوع الوثيقة",
+        "id": "بطاقة الهوية",
+        "business_license": "رخصة الأعمال",
+        "tax_document": "وثيقة ضريبية",
+        "other": "أخرى"
+      },
+      "document": {
+        "label": "رفع وثيقة",
+        "description": "ارفع وثيقة للتحقق."
+      },
+      "addDocument": "إضافة وثيقة",
+      "removeDocument": "إزالة الوثيقة"
+    },
+    "integrations": {
+      "description": "إدارة تكاملات الدفع والشحن الخاصة بك.",
+      "payment": "مزودو الدفع",
+      "shipping": "مزودو الشحن",
+      "noPaymentProviders": "لا يوجد مزودو دفع متصلون.",
+      "noShippingProviders": "لا يوجد مزودو شحن متصلون.",
+      "manage": "إدارة التكاملات"
+    },
+    "success": {
+      "title": "تم حفظ الإعدادات",
+      "description": "تم تحديث إعداداتك بنجاح.",
+      "subscriptionUpgraded": "تم الترقية بنجاح إلى خطة {plan}."
+    },
+    "errors": {
+      "fetchTitle": "خطأ في جلب الإعدادات",
+      "fetchDescription": "فشل في جلب الإعدادات. حاول مرة أخرى.",
+      "fetchFailed": "فشل في جلب التكاملات.",
+      "submitTitle": "خطأ في حفظ الإعدادات",
+      "submitDescription": "فشل في حفظ الإعدادات. حاول مرة أخرى.",
+      "saveError": "فشل في حفظ إعدادات المتجر.",
+      "fileSizeTitle": "الملف كبير جدًا",
+      "fileSizeDescription": "حجم الملف يتجاوز الحد {size}.",
+      "fileTypeTitle": "نوع الملف غير صالح",
+      "fileTypeDescription": "يُسمح فقط بملفات JPEG وPNG وWebP.",
+      "fileReadTitle": "خطأ في قراءة الملف",
+      "fileReadDescription": "فشل في قراءة الملف المرفوع.",
+      "uploadTitle": "خطأ في الرفع",
+      "uploadDescription": "فشل في رفع الملف. حاول مرة أخرى."
+    },
+    "validation": {
+      "discountOffers": {
+        "validDates": "يجب أن يكون تاريخ الانتهاء بعد تاريخ البدء."
+      }
+    },
+    "preview": "معاينة الموقع"
+  },
+  "DomainManager": {
+    "manageDomains": "إدارة النطاقات",
+    "enterCustomDomain": "أدخل نطاقك المخصص (مثل: example.com)",
+    "success": "تمت إضافة النطاق بنجاح",
+    "domainAdded": "تمت إضافة نطاقك المخصص. اتبع تعليمات DNS لإكمال الإعداد.",
+    "addDomain": "إضافة نطاق",
+    "dnsInstructions": "تعليمات إعداد DNS",
+    "noDomains": "لا توجد نطاقات مضافة بعد",
+    "primary": "النطاق الأساسي",
+    "setAsPrimary": "تعيين كالنطاق الأساسي",
+    "errors": {
+      "fetchDomainsFailed": "فشل جلب النطاقات",
+      "addDomainFailed": "فشل إضافة النطاق",
+      "setPrimaryFailed": "فشل تعيين النطاق كأساسي"
+    }
+  },
+  "Developer": {
+    "developerApplications": "تطبيقات المطور",
+    "createNewApp": "إنشاء تطبيق جديد",
+    "appName": "اسم التطبيق",
+    "appNamePlaceholder": "أدخل اسم التطبيق",
+    "slug": "المعرف (Slug)",
+    "slugPlaceholder": "أدخل معرف التطبيق (مثال: my-app)",
+    "redirectUri": "عناوين إعادة التوجيه",
+    "redirectUriPlaceholder": "أدخل عنوان إعادة توجيه (مثال: https://example.com/callback)",
+    "scopes": "النطاقات",
+    "description": "الوصف",
+    "descriptionPlaceholder": "أدخل وصف التطبيق (اختياري)",
+    "logoUrl": "رابط الشعار",
+    "logoUrlPlaceholder": "أدخل رابط شعار التطبيق (اختياري)",
+    "images": "الصور",
+    "imageUrlPlaceholder": "أدخل رابط الصورة",
+    "videos": "الفيديوهات",
+    "videoUrlPlaceholder": "أدخل رابط الفيديو",
+    "buttons": "الأزرار",
+    "buttonLabelPlaceholder": "أدخل نص الزر",
+    "buttonLinkPlaceholder": "أدخل رابط الزر",
+    "features": "الميزات",
+    "featurePlaceholder": "أدخل ميزة",
+    "categories": "الفئات",
+    "selectPosition": "اختر الموقع",
+    "selectSize": "اختر الحجم",
+    "selectButtonType": "اختر نوع الزر",
+    "left": "يسار",
+    "center": "وسط",
+    "right": "يمين",
+    "small": "صغير",
+    "medium": "متوسط",
+    "large": "كبير",
+    "primary": "أساسي",
+    "secondary": "ثانوي",
+    "link": "رابط",
+    "remove": "إزالة",
+    "addImage": "إضافة صورة",
+    "addVideo": "إضافة فيديو",
+    "addButton": "إضافة زر",
+    "addFeature": "إضافة ميزة",
+    "loading": "جارٍ التحميل...",
+    "noAppsFound": "لم يتم العثور على تطبيقات",
+    "createFirstApp": "قم بإنشاء تطبيقك الأول الآن!",
+    "status": "الحالة",
+    "pending": "قيد الانتظار",
+    "approved": "معتمد",
+    "rejected": "مرفوض",
+    "noDescription": "لا يوجد وصف",
+    "rating": "التقييم",
+    "reviews": "مراجعات",
+    "installs": "التثبيتات",
+    "creating": "جارٍ الإنشاء...",
+    "createApp": "إنشاء التطبيق",
+    "messages": {
+      "appCreatedPending": "تم إنشاء التطبيق بنجاح! في انتظار الموافقة.",
+      "failedToFetchApps": "فشل في جلب التطبيقات",
+      "failedToCreateApp": "فشل في إنشاء التطبيق",
+      "unknown": "خطأ غير معروف"
+    },
+    "errors": {
+      "failedToFetchApps": "فشل في جلب التطبيقات",
+      "failedToCreateApp": "فشل في إنشاء التطبيق",
+      "unknown": "خطأ غير معروف"
+    }
+  },
+  "PageManager": {
+    "managePages": "إدارة الصفحات",
+    "addPage": "إضافة صفحة جديدة",
+    "pageTitle": "عنوان الصفحة",
+    "pageSlug": "رابط الصفحة",
+    "pageContent": "محتوى الصفحة",
+    "enterPageContent": "أدخل محتوى الصفحة",
+    "productIds": "أدخل معرفات المنتجات (مفصولة بفواصل)",
+    "customCSS": "CSS مخصص",
+    "customHTML": "HTML مخصص",
+    "visualMode": "التبديل إلى الوضع المرئي",
+    "codeMode": "التبديل إلى وضع الكود",
+    "newCustomPage": "صفحة مخصصة جديدة",
+    "newHeroPage": "صفحة هيرو جديدة",
+    "newProductsPage": "صفحة منتجات جديدة",
+    "newTestimonialsPage": "صفحة شهادات جديدة",
+    "newFaqPage": "صفحة أسئلة شائعة جديدة",
+    "text": "نص",
+    "image": "صورة",
+    "video": "فيديو",
+    "button": "زر",
+    "heading": "عنوان",
+    "divider": "فاصل",
+    "spacer": "مسافة",
+    "carousel": "دائري",
+    "slider": "شريط تمرير",
+    "gallery": "معرض",
+    "columns": "أعمدة",
+    "features-grid": "شبكة الميزات",
+    "pricing-table": "جدول التسعير",
+    "cta": "دعوة لاتخاذ إجراء",
+    "accordion": "أكورديون",
+    "tabs": "تبويبات",
+    "testimonials": "شهادات",
+    "testimonial-carousel": "دائري الشهادات",
+    "logos": "شعارات",
+    "timeline": "الجدول الزمني",
+    "steps": "خطوات",
+    "animation": "رسوم متحركة",
+    "count-up": "العد التصاعدي",
+    "popup": "نافذة منبثقة",
+    "newsletter": "نشرة إخبارية",
+    "contact-form": "نموذج الاتصال",
+    "map": "خريطة",
+    "products": "منتجات",
+    "product-card": "بطاقة المنتج",
+    "collection-banner": "بانر المجموعة",
+    "upsell": "بيع إضافي",
+    "related-products": "منتجات ذات صلة",
+    "quick-view": "عرض سريع",
+    "carousel-products": "دائري المنتجات",
+    "reviews": "مراجعات",
+    "hero": "هيرو",
+    "footer": "تذييل",
+    "faq": "الأسئلة الشائعة",
+    "breadcrumbs": "مسارات التنقل",
+    "navigation": "التنقل",
+    "sidebar": "الشريط الجانبي",
+    "blog-posts": "منشورات المدونة",
+    "article": "مقال",
+    "background-video": "فيديو الخلفية",
+    "icon-grid": "شبكة الأيقونات",
+    "image-grid": "شبكة الصور",
+    "shape-divider": "فاصل الأشكال"
+  },
+  "securityapiKeys": {
+    "title": "إعدادات الأمان",
+    "apiKeys": "مفاتيح API",
+    "createNewKey": "إنشاء مفتاح API جديد",
+    "namePlaceholder": "أدخل اسم مفتاح API",
+    "createKey": "إنشاء مفتاح API",
+    "creating": "جارٍ الإنشاء...",
+    "existingKeys": "مفاتيح API الحالية",
+    "refresh": "تحديث",
+    "refreshing": "جارٍ التحديث...",
+    "loading": "جارٍ التحميل...",
+    "noKeys": "لم يتم العثور على مفاتيح API",
+    "name": "الاسم",
+    "permissions": "الصلاحيات",
+    "status": "الحالة",
+    "lastUsed": "آخر استخدام",
+    "created": "تاريخ الإنشاء",
+    "actions": "الإجراءات",
+    "active": "نشط",
+    "inactive": "غير نشط",
+    "errors": {
+      "fetchFailed": "فشل في جلب مفاتيح API",
+      "nameRequired": "اسم مفتاح API مطلوب",
+      "createFailed": "فشل في إنشاء مفتاح API",
+      "rotationFailed": "فشل في تدوير مفتاح API",
+      "deleteFailed": "فشل في حذف مفتاح API"
+    },
+    "success": {
+      "created": "تم إنشاء مفتاح API",
+      "createdMessage": "تم إنشاء مفتاح API '{name}' بنجاح",
+      "keyCopied": "تم نسخ مفتاح API",
+      "keyCopiedMessage": "تم نسخ مفتاح API الجديد إلى الحافظة. احفظه بأمان!",
+      "rotated": "تم تدوير مفتاح API",
+      "rotatedMessage": "تم تدوير مفتاح API بنجاح",
+      "deleted": "تم حذف مفتاح API",
+      "deletedMessage": "تم حذف مفتاح API بنجاح"
+    },
+    "confirm": {
+      "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
+      "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء."
+    }
+  },
+  "Template": {
+    "primaryColor": "اللون الأساسي",
+    "secondaryColor": "اللون الثانوي",
+    "heroTitle": "عنوان الهيرو",
+    "heroSubtitle": "العنوان الفرعي للهيرو",
+    "enterHeroTitle": "أدخل عنوان الهيرو",
+    "enterHeroSubtitle": "أدخل العنوان الفرعي للهيرو",
+    "assets": "الأصول",
+    "enterSectionName": "أدخل اسم القسم",
+    "enterSectionUrl": "أدخل رابط القسم",
+    "addSection": "إضافة قسم",
+    "save": "حفظ القالب",
+    "saveSuccess": "تم حفظ القالب",
+    "templateUpdated": "تم تحديث القالب بنجاح.",
+    "templateSelected": "تم اختيار القالب",
+    "templateApplied": "تم تطبيق القالب المختار.",
+    "templateImported": "تم استيراد القالب",
+    "errors": {
+      "saveError": "فشل في حفظ القالب"
+    }
+  }
+}

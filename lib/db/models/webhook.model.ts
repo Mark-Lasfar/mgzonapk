@@ -1,5 +1,5 @@
 import mongoose, { Schema, model, Document, Model } from 'mongoose';
-import { WebhookConfig, WebhookEvent } from '@/lib/api/types';
+import { WebhookConfig, WebhookEvent } from '@/lib/types';
 import { encrypt, decrypt } from '@/lib/utils/encryption';
 import crypto from 'crypto';
 

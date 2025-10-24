@@ -1,3 +1,4 @@
+// /app/[locale]/(auth)/register/page.tsx
 'use client';
 
 import { useState } from 'react';
@@ -9,8 +10,7 @@ import { Label } from '@/components/ui/label';
 import { useTranslations, useLocale } from 'next-intl';
 import { useToast } from '@/components/ui/toast';
 import { generateVerificationCode } from '@/lib/utils/verification';
-import { connectToDatabase } from '@/lib/db';
-import VerificationCode from '@/lib/db/models/verification-code.model';
+// import { storeVerificationCode } from '@/lib/actions/verification.actions';
 
 interface FormData {
   name: string;
@@ -39,20 +39,6 @@ export default function RegisterPage() {
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
-
-  const storeVerificationCode = async (userId: string, email: string, code: string) => {
-    await connectToDatabase();
-    const expiryMs = parseInt(process.env.VERIFICATION_CODE_EXPIRY || '600000'); // default to 10 mins
-    const expiresAt = new Date(Date.now() + expiryMs);
-
-    await VerificationCode.create({
-      userId,
-      email,
-      code,
-      type: 'EMAIL_VERIFICATION',
-      expiresAt,
-    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -89,9 +75,17 @@ export default function RegisterPage() {
         const verificationCode = generateVerificationCode();
         const channels = formData.whatsapp ? ['email', 'whatsapp'] : ['email'];
 
-        // Store verification code
-        await storeVerificationCode(data.userId, formData.email, verificationCode);
+        // Store verification code using Server Action
+const verificationRes = await fetch('/api/verification/store', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ userId: data.userId, email: formData.email, code: verificationCode }),
+});
 
+const verificationData = await verificationRes.json();
+if (!verificationData.success) {
+  throw new Error(verificationData.error || t('VerificationCodeFailed'));
+}
         // Send notification via API route
         const notificationRes = await fetch('/api/notifications/send', {
           method: 'POST',

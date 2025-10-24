@@ -16,41 +16,50 @@ import { useToast } from '@/hooks/use-toast';
 import { Loader2 } from 'lucide-react';
 import { isValidIBAN, isValidBIC } from 'ibantools';
 
+interface Transaction {
+  description: string;
+  amount: number;
+  date: string;
+}
+
 interface PaymentMethod {
-  type: 'bank_transfer' | 'paypal' | 'wise' | 'other';
-  accountDetails: {
-    accountName?: string;
-    accountNumber?: string;
-    bankName?: string;
-    swiftCode?: string;
-    email?: string;
-    routingNumber?: string;
-  };
+  type: string;
+  label: string;
+  fields: Array<{
+    key: string;
+    label: string;
+    type: 'text' | 'password' | 'email' | 'number';
+    required: boolean;
+  }>;
   verified: boolean;
+  accountDetails?: Record<string, string>;
 }
 
 const SellerEarningsDashboard = () => {
   const t = useTranslations('SellerEarnings');
   const { toast } = useToast();
-  const [balance, setBalance] = useState(0);
-  const [earnings, setEarnings] = useState(0);
-  const [transactions, setTransactions] = useState([]);
-  const [withdrawAmount, setWithdrawAmount] = useState('');
-  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod | null>(null);
+  const [balance, setBalance] = useState<number>(0);
+  const [earnings, setEarnings] = useState<number>(0);
+  const [transactions, setTransactions] = useState<Transaction[]>([]);
+  const [withdrawAmount, setWithdrawAmount] = useState<string>('');
+  const [paymentMethods, setPaymentMethods] = useState<PaymentMethod[]>([]);
   const [selectedMethod, setSelectedMethod] = useState<string>('');
-  const [loading, setLoading] = useState(false);
+  const [accountDetails, setAccountDetails] = useState<Record<string, string>>({});
+  const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const response = await fetch('/api/seller/earnings');
         const data = await response.json();
-        if (response.ok) {
-          setBalance(data.balance);
-          setEarnings(data.totalEarnings);
-          setTransactions(data.transactions);
-          setPaymentMethod(data.paymentMethod || null);
-          setSelectedMethod(data.paymentMethod?.type || '');
+        if (response.ok && data.success) {
+          setBalance(data.data.balance);
+          setEarnings(data.data.totalEarnings);
+          setTransactions(data.data.transactions || []);
+          setPaymentMethods(data.data.paymentMethods || []);
+          if (data.data.paymentMethods?.length > 0) {
+            setSelectedMethod(data.data.paymentMethods[0].type);
+          }
         } else {
           toast({
             title: t('errors.fetchFailedTitle'),
@@ -70,25 +79,26 @@ const SellerEarningsDashboard = () => {
     fetchDashboardData();
   }, [t]);
 
-  const validatePaymentMethod = (method: PaymentMethod) => {
-    if (method.type === 'bank_transfer') {
-      const { accountNumber, swiftCode, accountName, bankName } = method.accountDetails;
-      if (!accountName || !accountNumber || !bankName) {
-        return t('errors.missingBankDetails');
+  const handleAccountDetailChange = (key: string, value: string) => {
+    setAccountDetails((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const validatePaymentMethod = (method: PaymentMethod): string | null => {
+    const details = accountDetails;
+    const requiredFields = method.fields.filter((field) => field.required);
+
+    for (const field of requiredFields) {
+      if (!details[field.key] || details[field.key].trim() === '') {
+        return t('errors.missingField', { field: field.label });
       }
-      if (!isValidIBAN(accountNumber)) {
+      if (field.type === 'email' && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(details[field.key])) {
+        return t('errors.invalidEmail', { field: field.label });
+      }
+      if (field.key.toLowerCase().includes('iban') && !isValidIBAN(details[field.key])) {
         return t('errors.invalidIBAN');
       }
-      if (swiftCode && !isValidBIC(swiftCode)) {
+      if (field.key.toLowerCase().includes('swift') && !isValidBIC(details[field.key])) {
         return t('errors.invalidSWIFT');
-      }
-    } else if (method.type === 'paypal' || method.type === 'wise') {
-      if (!method.accountDetails.email) {
-        return t('errors.missingEmail');
-      }
-    } else if (method.type === 'other') {
-      if (!method.accountDetails.accountName) {
-        return t('errors.missingOtherDetails');
       }
     }
     return null;
@@ -113,7 +123,7 @@ const SellerEarningsDashboard = () => {
       return;
     }
 
-    if (!paymentMethod || !selectedMethod) {
+    if (!selectedMethod || paymentMethods.length === 0) {
       toast({
         title: t('errors.noPaymentMethodTitle'),
         description: t('errors.noPaymentMethodDescription'),
@@ -122,7 +132,17 @@ const SellerEarningsDashboard = () => {
       return;
     }
 
-    const validationError = validatePaymentMethod(paymentMethod);
+    const selectedPaymentMethod = paymentMethods.find((m) => m.type === selectedMethod);
+    if (!selectedPaymentMethod) {
+      toast({
+        title: t('errors.noPaymentMethodTitle'),
+        description: t('errors.noPaymentMethodDescription'),
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    const validationError = validatePaymentMethod(selectedPaymentMethod);
     if (validationError) {
       toast({
         title: t('errors.invalidPaymentMethodTitle'),
@@ -141,7 +161,7 @@ const SellerEarningsDashboard = () => {
           amount: parseFloat(withdrawAmount),
           paymentMethod: {
             type: selectedMethod,
-            accountDetails: paymentMethod.accountDetails,
+            accountDetails,
           },
         }),
       });
@@ -198,50 +218,78 @@ const SellerEarningsDashboard = () => {
 
           <div>
             <h3>{t('requestWithdrawal')}</h3>
-            <Select
-              value={selectedMethod}
-              onValueChange={setSelectedMethod}
-              disabled={loading}
-            >
-              <SelectTrigger>
-                <SelectValue placeholder={t('selectPaymentMethod')} />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="bank_transfer">{t('paymentMethods.bank_transfer')}</SelectItem>
-                <SelectItem value="paypal">{t('paymentMethods.paypal')}</SelectItem>
-                <SelectItem value="wise">{t('paymentMethods.wise')}</SelectItem>
-                <SelectItem value="other">{t('paymentMethods.other')}</SelectItem>
-              </SelectContent>
-            </Select>
-            <Input
-              type="number"
-              placeholder={t('enterAmount')}
-              value={withdrawAmount}
-              onChange={(e) => setWithdrawAmount(e.target.value)}
-              className="my-4"
-              disabled={loading}
-            />
-            <Button
-              onClick={handleWithdrawRequest}
-              disabled={loading}
-              className="w-full"
-            >
-              {loading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  {t('submitting')}
-                </>
-              ) : (
-                t('requestWithdrawal')
-              )}
-            </Button>
+            {paymentMethods.length > 0 ? (
+              <>
+                <Select
+                  value={selectedMethod}
+                  onValueChange={setSelectedMethod}
+                  disabled={loading}
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder={t('selectPaymentMethod')} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {paymentMethods.map((method) => (
+                      <SelectItem key={method.type} value={method.type}>
+                        {method.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+
+                {selectedMethod && (
+                  <div className="mt-4 space-y-2">
+                    {paymentMethods
+                      .find((m) => m.type === selectedMethod)
+                      ?.fields.map((field) => (
+                        <div key={field.key}>
+                          <label className="block text-sm font-medium">{field.label}</label>
+                          <Input
+                            type={field.type}
+                            placeholder={field.label}
+                            value={accountDetails[field.key] || ''}
+                            onChange={(e) => handleAccountDetailChange(field.key, e.target.value)}
+                            disabled={loading}
+                            required={field.required}
+                          />
+                        </div>
+                      ))}
+                  </div>
+                )}
+
+                <Input
+                  type="number"
+                  placeholder={t('enterAmount')}
+                  value={withdrawAmount}
+                  onChange={(e) => setWithdrawAmount(e.target.value)}
+                  className="my-4"
+                  disabled={loading}
+                />
+                <Button
+                  onClick={handleWithdrawRequest}
+                  disabled={loading}
+                  className="w-full"
+                >
+                  {loading ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t('submitting')}
+                    </>
+                  ) : (
+                    t('requestWithdrawal')
+                  )}
+                </Button>
+              </>
+            ) : (
+              <p>{t('noPaymentMethodsAvailable')}</p>
+            )}
           </div>
 
           <div>
             <h3>{t('transactionHistory')}</h3>
             <ul className="space-y-2">
               {transactions.length > 0 ? (
-                transactions.map((txn: any, index: number) => (
+                transactions.map((txn, index) => (
                   <li key={index} className="border p-2 rounded">
                     <p>{txn.description}</p>
                     <p>

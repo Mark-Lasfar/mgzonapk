@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { auth } from '@/auth';
 import { ApiKeyService } from '@/lib/api/services/api-key.service';
-import { ApiKeyRequest } from '@/lib/api/types';
+import { ApiKeyRequest } from '@/lib/types';
 import ApiKey from '@/lib/db/models/api-key.model';
 
 export async function POST(request: NextRequest) {
@@ -12,12 +12,6 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
-      );
-    }
-    if (!['Admin', 'SELLER'].includes(session.user.role)) {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden' },
-        { status: 403 }
       );
     }
 
@@ -55,12 +49,6 @@ export async function GET(request: NextRequest) {
       return NextResponse.json(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
-      );
-    }
-    if (!['Admin', 'SELLER'].includes(session.user.role)) {
-      return NextResponse.json(
-        { success: false, error: 'Forbidden' },
-        { status: 403 }
       );
     }
 

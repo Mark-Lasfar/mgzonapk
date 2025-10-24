@@ -19,16 +19,26 @@ interface XMLCreateOptions {
   declaration?: boolean;
 }
 
-export async function readXMLFile<T>(filePath: string, options: XMLParseOptions = {}): Promise<T[]> {
+export async function readXMLFile<T>(input: File | string, options: XMLParseOptions = {}): Promise<T[]> {
   const requestId = crypto.randomUUID();
   try {
-    const content = readFileSync(filePath, 'utf-8');
+    let content: string;
+    if (typeof input === 'string') {
+      content = readFileSync(input, 'utf-8');
+    } else {
+      content = await new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result as string);
+        reader.onerror = () => reject(new Error('Failed to read XML file'));
+        reader.readAsText(input);
+      });
+    }
     return parseXML<T>(content, options);
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
     await customLogger.error('Failed to read XML file', {
       requestId,
-      filePath,
+      input: typeof input === 'string' ? input : input.name,
       error: errorMessage,
       service: 'xml-utils',
     });

@@ -30,7 +30,7 @@ export default async function AuthLayout({
         <div className="flex justify-center space-x-4">
           <Link href="/page/conditions-of-use">Conditions of Use</Link>
           <Link href="/page/privacy-policy"> Privacy Notice</Link>
-          <Link href="/docs/support"> Help </Link>
+          <Link href="/support/tickets/create"> Help </Link>
         </div>
         <div>
           <p className="text-gray-400">{site.copyright}</p>

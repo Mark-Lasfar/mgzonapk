@@ -10,8 +10,8 @@ export default function CheckoutFooter() {
   return (
     <div className="border-t-2 space-y-2 my-4 py-4">
       <p>
-        Need help? Check our <Link href="/docs/support">Help Center</Link> or{' '}
-        <Link href="/page/contact-us">Contact Us</Link>{' '}
+        Need help? Check our <Link href="/support/tickets/create">Help Center</Link> or{' '}
+        <Link href="/support/tickets/create">Contact Us</Link>{' '}
       </p>
       <p>
         For an item ordered from {site.name}: When you click the &apos;Place

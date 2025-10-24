@@ -1,6 +1,6 @@
 import { logger } from '@/lib/api/services/logging';
 import Stripe from 'stripe';
-import Integration from '../db/models/integration.model';
+import Integration from '@/lib/db/models/integration.model';
 
 export async function validateIntegrationCredentials({
   providerName,

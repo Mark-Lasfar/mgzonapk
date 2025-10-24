@@ -1,3 +1,4 @@
+// /app/api/integrations/[id]/callback/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { auth } from '@/auth';
@@ -10,6 +11,7 @@ import axios from 'axios';
 import { decrypt, encrypt } from '@/lib/utils/encryption';
 import { getTranslations } from 'next-intl/server';
 import mongoose from 'mongoose';
+import Seller from '@/lib/db/models/seller.model';
 
 interface TokenResponse {
   access_token: string;
@@ -19,7 +21,7 @@ interface TokenResponse {
 
 export async function GET(req: NextRequest, { params }: { params: { id: string } }) {
   const requestId = uuidv4();
-  const t = await getTranslations('integrations callback');
+  const t = await getTranslations('integrations.callback');
   const session = await mongoose.startSession();
 
   try {
@@ -33,23 +35,22 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     const { searchParams } = new URL(req.url);
     const code = searchParams.get('code');
     const state = searchParams.get('state');
-    const sandbox = searchParams.get('sandbox') === 'true';
 
     if (!code || !state) {
-      return NextResponse.json({ error: t('invalid callback params') }, { status: 400 });
+      return NextResponse.json({ error: t('invalid_callback_params') }, { status: 400 });
     }
 
-    await connectToDatabase(sandbox ? 'sandbox' : 'live');
+    await connectToDatabase(); // إزالة الساندبوكس
 
     // التحقق من صحة state
-    const oauthState = await OAuthState.findOne({ state, providerId: id, sandbox }).session(session);
+    const oauthState = await OAuthState.findOne({ state, providerId: id }).session(session);
     if (!oauthState) {
-      return NextResponse.json({ error: t('invalid state') }, { status: 400 });
+      return NextResponse.json({ error: t('invalid_state') }, { status: 400 });
     }
 
-    const integration = await Integration.findById(id).session(session);
+    const integration = await Integration.findOne({ providerName: id }).session(session);
     if (!integration || !integration.oauth.enabled) {
-      return NextResponse.json({ error: t('integration not found') }, { status: 404 });
+      return NextResponse.json({ error: t('integration_not_found') }, { status: 404 });
     }
 
     const tokenResponse = await axios.post<TokenResponse>(
@@ -57,7 +58,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
       {
         grant_type: 'authorization_code',
         code,
-        redirect_uri: `${process.env.NEXT_PUBLIC_BASE_URL}/api/integrations/${id}/callback?sandbox=${sandbox}`,
+        redirect_uri: `${process.env.NEXT_PUBLIC_APP_URL}/api/integrations/${id}/callback`,
         client_id: integration.credentials.get('clientId'),
         client_secret: decrypt(integration.credentials.get('clientSecret') || ''),
       },
@@ -67,13 +68,16 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     );
 
     const { access_token, refresh_token, expires_in } = tokenResponse.data;
+    const seller = await Seller.findOne({ userId: authSession.user.id }).session(session);
+    if (!seller) {
+      return NextResponse.json({ error: t('seller_not_found') }, { status: 404 });
+    }
 
     const sellerIntegration = await SellerIntegration.findOneAndUpdate(
       {
-        integrationId: id,
-        sellerId: authSession.user.storeId,
+        integrationId: integration._id,
+        sellerId: seller._id,
         connectionType: 'oauth',
-        sandbox,
       },
       {
         accessToken: encrypt(access_token),
@@ -88,7 +92,7 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
           {
             event: 'connected',
             date: new Date(),
-            message: t('oauth connected'),
+            message: t('oauth_connected'),
           },
         ],
       },
@@ -96,24 +100,23 @@ export async function GET(req: NextRequest, { params }: { params: { id: string }
     );
 
     // حذف state بعد الاستخدام
-    await OAuthState.deleteOne({ state, providerId: id, sandbox }).session(session);
+    await OAuthState.deleteOne({ state, providerId: id }).session(session);
 
     logger.info('OAuth callback processed successfully', {
       requestId,
       integrationId: id,
-      sellerId: authSession.user.storeId,
-      sandbox,
+      sellerId: seller._id,
     });
 
     await session.commitTransaction();
     return NextResponse.redirect(
-      `${process.env.NEXT_PUBLIC_BASE_URL}/seller/integrations?success=true&sandbox=${sandbox}`
+      `${process.env.NEXT_PUBLIC_APP_URL}/seller/integrations?success=true`
     );
   } catch (error) {
     await session.abortTransaction();
     const errorMessage = error instanceof Error ? error.message : String(error);
     logger.error('OAuth callback failed', { requestId, integrationId: params.id, error: errorMessage });
-    return NextResponse.json({ error: `${t('error title')}: ${errorMessage}` }, { status: 500 });
+    return NextResponse.json({ error: `${t('error_title')}: ${errorMessage}` }, { status: 500 });
   } finally {
     session.endSession();
   }

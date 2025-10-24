@@ -1,9 +1,9 @@
-'use client'
+'use client';
 
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useForm } from 'react-hook-form'
-import { z } from 'zod'
-import { Button } from '@/components/ui/button'
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, UseFormReturn } from 'react-hook-form';
+import { z } from 'zod';
+import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
@@ -11,13 +11,12 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { getSetting, updateSetting } from '@/lib/actions/setting.actions'
-import { useToast } from '@/components/ui/toast'
-
-
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { updateSetting } from '@/lib/actions/setting.actions';
+import { useToast } from '@/components/ui/toast';
+import { ISettingInput, IPointsSettings } from '@/types';
 
 // تعريف schema الخاص بـ Zod
 const pointsFormSchema = z.object({
@@ -30,15 +29,20 @@ const pointsFormSchema = z.object({
     }),
     sellerPointsPerSale: z.number().min(0, 'Seller points per sale must be non-negative'),
   }),
-})
+});
 
-type PointsFormValues = z.infer<typeof pointsFormSchema>
+type PointsFormValues = z.infer<typeof pointsFormSchema>;
 
-// تعريف props المتوقعة
-export default function PointsForm({ points }: { points: any }) {
-  const { toast } = useToast()
+interface PointsFormProps {
+  id: string;
+  form: UseFormReturn<ISettingInput>;
+  points: IPointsSettings;
+}
 
-  const form = useForm<PointsFormValues>({
+export default function PointsForm({ id, form, points }: PointsFormProps) {
+  const { toast } = useToast();
+
+  const pointsForm = useForm<PointsFormValues>({
     resolver: zodResolver(pointsFormSchema),
     defaultValues: {
       points: {
@@ -51,38 +55,38 @@ export default function PointsForm({ points }: { points: any }) {
         sellerPointsPerSale: points?.sellerPointsPerSale || 10,
       },
     },
-  })
+  });
 
   const onSubmit = async (data: PointsFormValues) => {
     try {
-      // Get current settings and merge with points data
-      const currentSettings = await getSetting();
-      const response = await updateSetting({ 
-        ...currentSettings,
-        ...data.points
-      })
-  
+      // تحديث إعدادات النقاط فقط
+      const response = await updateSetting({
+        ...form.getValues(),
+        points: data.points,
+      });
+
       if (response.success) {
         toast({
           title: 'Success',
           description: 'Points settings updated successfully',
-        })
+        });
+        // تحديث قيم النموذج الأصلي
+        form.setValue('points', data.points);
       } else {
         toast({
           title: 'Error',
-          description: response.error,
+          description: response.message,
           variant: 'destructive',
-        })
+        });
       }
     } catch (error) {
       toast({
         title: 'Error',
         description: 'Failed to update points settings',
         variant: 'destructive',
-      })
+      });
     }
-  }
-  
+  };
 
   return (
     <Card className="mt-8">
@@ -90,14 +94,14 @@ export default function PointsForm({ points }: { points: any }) {
         <CardTitle>Points Settings</CardTitle>
       </CardHeader>
       <CardContent>
-        <Form {...form}>
+        <Form {...pointsForm}>
           <form
-            id="points-settings"
-            onSubmit={form.handleSubmit(onSubmit)}
+            id={id}
+            onSubmit={pointsForm.handleSubmit(onSubmit)}
             className="space-y-6"
           >
             <FormField
-              control={form.control}
+              control={pointsForm.control}
               name="points.earnRate"
               render={({ field }) => (
                 <FormItem>
@@ -116,7 +120,7 @@ export default function PointsForm({ points }: { points: any }) {
             />
 
             <FormField
-              control={form.control}
+              control={pointsForm.control}
               name="points.redeemValue"
               render={({ field }) => (
                 <FormItem>
@@ -135,7 +139,7 @@ export default function PointsForm({ points }: { points: any }) {
             />
 
             <FormField
-              control={form.control}
+              control={pointsForm.control}
               name="points.registrationBonus.buyer"
               render={({ field }) => (
                 <FormItem>
@@ -153,7 +157,7 @@ export default function PointsForm({ points }: { points: any }) {
             />
 
             <FormField
-              control={form.control}
+              control={pointsForm.control}
               name="points.registrationBonus.seller"
               render={({ field }) => (
                 <FormItem>
@@ -171,7 +175,7 @@ export default function PointsForm({ points }: { points: any }) {
             />
 
             <FormField
-              control={form.control}
+              control={pointsForm.control}
               name="points.sellerPointsPerSale"
               render={({ field }) => (
                 <FormItem>
@@ -193,5 +197,5 @@ export default function PointsForm({ points }: { points: any }) {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }

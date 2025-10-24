@@ -1,5 +1,5 @@
+// /home/mark/Music/my-nextjs-project-clean/lib/api/services/product-import.ts
 import { z } from 'zod';
-import { customLogger } from '@/lib/api/services/logging';
 import Product from '@/lib/db/models/product.model';
 import Seller from '@/lib/db/models/seller.model';
 import Integration, { IIntegration } from '@/lib/db/models/integration.model';
@@ -9,6 +9,26 @@ import { DynamicIntegrationService } from '@/lib/services/integrations';
 import { MarketplaceProduct } from '@/lib/types/marketplace';
 import { ProductImportSchema, validateProductImport } from '@/lib/validator/product.validator';
 import crypto from 'crypto';
+
+// دالة مساعدة لتسجيل الـ logs عبر API
+async function logToApi(type: 'info' | 'error' | 'warn', message: string, meta: any, error?: string) {
+  try {
+    await fetch('/api/log', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        type,
+        message,
+        error,
+        meta,
+      }),
+    });
+  } catch (err) {
+    console.error('Failed to send log to /api/log:', err);
+  }
+}
 
 export class ProductImportService {
   private async getIntegrationAndSellerIntegration(
@@ -20,13 +40,13 @@ export class ProductImportService {
 
     const seller = await Seller.findById(sellerId);
     if (!seller) {
-      await customLogger.error('Seller not found', { requestId, sellerId, service: 'product-import' });
+      await logToApi('error', 'Seller not found', { requestId, sellerId, service: 'product-import' });
       throw new SellerError('SELLER_NOT_FOUND', 'Seller not found');
     }
 
     const integration = await Integration.findOne({ _id: providerId, type, isActive: true });
     if (!integration) {
-      await customLogger.error('Integration not found', { requestId, providerId, sellerId, service: 'product-import' });
+      await logToApi('error', 'Integration not found', { requestId, providerId, sellerId, service: 'product-import' });
       throw new SellerError('INTEGRATION_NOT_FOUND', `Integration not found: ${providerId}`);
     }
 
@@ -36,7 +56,7 @@ export class ProductImportService {
       isActive: true,
     });
     if (!sellerIntegration) {
-      await customLogger.error('Seller integration not connected', { requestId, providerId, sellerId, service: 'product-import' });
+      await logToApi('error', 'Seller integration not connected', { requestId, providerId, sellerId, service: 'product-import' });
       throw new SellerError('INTEGRATION_NOT_CONNECTED', `${integration.providerName} integration not connected`);
     }
 
@@ -57,41 +77,39 @@ export class ProductImportService {
         {
           _id: integration._id.toString(),
           type: integration.type,
-          status: integration.status,
+          status: sellerIntegration.status ?? 'connected', // Default to 'connected' if undefined
           providerName: integration.providerName,
           settings: integration.settings,
           logoUrl: integration.logoUrl,
-          webhook: integration.webhook,
+          webhook: sellerIntegration.webhook,
         },
         sellerIntegration
       );
 
-      const response = await service.importProduct(`/products/${productId}?region=${region}`);
+      const response = await service.importProduct(productId, sellerId, region);
 
       const validation = validateProductImport({
         productId: response.sourceId,
         title: response.name,
         description: response.description,
         price: response.price,
-        images: response.images,
+        images: response.images || [],
         sku: response.sku || `SKU-${response.sourceId}`,
         quantity: response.countInStock,
-        source: response.source,
         sourceId: response.sourceId,
-        sourceStoreId: response.sourceStoreId,
         currency: response.currency,
         availability: response.availability,
-        categories: response.categories,
+        categories: response.category ? [response.category] : ['Uncategorized'],
         region,
       });
 
       if (!validation.success) {
-        const errorMessage = validation.error.errors.map((e) => e.message).join(', ');
-        await customLogger.error('Invalid product data', {
+        const errorMessage = validation.error.issues.map((e) => e.message).join(', ');
+        await logToApi('error', 'Invalid product data', {
           requestId,
           productId,
           sellerId,
-          errors: validation.error.errors,
+          errors: validation.error.issues,
           service: 'product-import',
         });
         throw new SellerError('INVALID_PRODUCT_DATA', errorMessage);
@@ -103,28 +121,25 @@ export class ProductImportService {
         title: externalProduct.title,
         description: externalProduct.description || 'No description provided',
         price: externalProduct.price,
-        images: externalProduct.images.map((url) => ({ url })),
+        images: externalProduct.images?.map((url) => ({ url })) || [], // Handle undefined images
         sku: externalProduct.sku,
         quantity: externalProduct.quantity,
-        source: externalProduct.source,
         sourceId: externalProduct.sourceId,
-        sourceStoreId: externalProduct.sourceStoreId,
-        sellerId,
+        createdBy: sellerId, // Use createdBy instead of sellerId
         status: 'pending',
         currency: externalProduct.currency,
         availability: externalProduct.availability,
         categories: externalProduct.categories,
         region: externalProduct.region,
-        createdBy: sellerId,
         createdAt: new Date(),
       };
 
       const product = await Product.create(productData);
 
       // إرسال Webhook إذا كان مفعلاً
-      if (integration.webhook?.enabled && integration.webhook.url) {
+      if (sellerIntegration.webhook?.enabled && sellerIntegration.webhook.url) {
         await service.callApi({
-          endpoint: integration.webhook.url,
+          endpoint: sellerIntegration.webhook.url,
           method: 'POST',
           body: {
             event: 'product.created',
@@ -134,7 +149,7 @@ export class ProductImportService {
         });
       }
 
-      await customLogger.info('Product imported', {
+      await logToApi('info', 'Product imported', {
         requestId,
         productId: product._id,
         sellerId,
@@ -147,7 +162,7 @@ export class ProductImportService {
       return product;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Failed to import product', {
+      await logToApi('error', 'Failed to import product', {
         requestId,
         error: errorMessage,
         productId,
@@ -174,47 +189,45 @@ export class ProductImportService {
         {
           _id: integration._id.toString(),
           type: integration.type,
-          status: integration.status,
+          status: sellerIntegration.status ?? 'connected', // Default to 'connected' if undefined
           providerName: integration.providerName,
           settings: integration.settings,
           logoUrl: integration.logoUrl,
-          webhook: integration.webhook,
+          webhook: sellerIntegration.webhook,
         },
         sellerIntegration
       );
 
       const product = await Product.findOne({ sourceId: productId, sellerId });
       if (!product) {
-        await customLogger.error('Product not found in database', { requestId, productId, sellerId, service: 'product-import' });
+        await logToApi('error', 'Product not found in database', { requestId, productId, sellerId, service: 'product-import' });
         throw new SellerError('PRODUCT_NOT_FOUND', `Product with sourceId ${productId} not found`);
       }
 
-      const response = await service.importProduct(`/products/${productId}?region=${region}`);
+      const response = await service.importProduct(productId, sellerId, region);
 
       const validation = validateProductImport({
         productId: response.sourceId,
         title: response.name,
         description: response.description,
         price: response.price,
-        images: response.images,
+        images: response.images || [],
         sku: response.sku || `SKU-${response.sourceId}`,
         quantity: response.countInStock,
-        source: response.source,
         sourceId: response.sourceId,
-        sourceStoreId: response.sourceStoreId,
         currency: response.currency,
         availability: response.availability,
-        categories: response.categories,
+        categories: response.category ? [response.category] : ['Uncategorized'],
         region,
       });
 
       if (!validation.success) {
-        const errorMessage = validation.error.errors.map((e) => e.message).join(', ');
-        await customLogger.error('Invalid product data', {
+        const errorMessage = validation.error.issues.map((e) => e.message).join(', ');
+        await logToApi('error', 'Invalid product data', {
           requestId,
           productId,
           sellerId,
-          errors: validation.error.errors,
+          errors: validation.error.issues,
           service: 'product-import',
         });
         throw new SellerError('INVALID_PRODUCT_DATA', errorMessage);
@@ -225,7 +238,7 @@ export class ProductImportService {
       product.title = externalProduct.title;
       product.description = externalProduct.description || 'No description provided';
       product.price = externalProduct.price;
-      product.images = externalProduct.images.map((url) => ({ url }));
+      product.images = externalProduct.images?.map((url) => ({ url })) || []; // Handle undefined images
       product.sku = externalProduct.sku;
       product.quantity = externalProduct.quantity;
       product.currency = externalProduct.currency;
@@ -238,9 +251,9 @@ export class ProductImportService {
       await product.save();
 
       // إرسال Webhook إذا كان مفعلاً
-      if (integration.webhook?.enabled && integration.webhook.url) {
+      if (sellerIntegration.webhook?.enabled && sellerIntegration.webhook.url) {
         await service.callApi({
-          endpoint: integration.webhook.url,
+          endpoint: sellerIntegration.webhook.url,
           method: 'POST',
           body: {
             event: 'product.updated',
@@ -257,7 +270,7 @@ export class ProductImportService {
         });
       }
 
-      await customLogger.info('Product updated', {
+      await logToApi('info', 'Product updated', {
         requestId,
         productId: product._id,
         sellerId,
@@ -270,7 +283,7 @@ export class ProductImportService {
       return product;
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Failed to update product', {
+      await logToApi('error', 'Failed to update product', {
         requestId,
         error: errorMessage,
         productId,
@@ -301,11 +314,11 @@ export class ProductImportService {
         {
           _id: integration._id.toString(),
           type: integration.type,
-          status: integration.status,
+          status: sellerIntegration.status ?? 'connected', // Default to 'connected' if undefined
           providerName: integration.providerName,
           settings: integration.settings,
           logoUrl: integration.logoUrl,
-          webhook: integration.webhook,
+          webhook: sellerIntegration.webhook,
         },
         sellerIntegration
       );
@@ -332,9 +345,9 @@ export class ProductImportService {
       });
 
       // إرسال Webhook إذا كان مفعلاً
-      if (integration.webhook?.enabled && integration.webhook.url) {
+      if (sellerIntegration.webhook?.enabled && sellerIntegration.webhook.url) {
         await service.callApi({
-          endpoint: integration.webhook.url,
+          endpoint: sellerIntegration.webhook.url,
           method: 'POST',
           body: {
             event: 'payment.succeeded',
@@ -350,7 +363,7 @@ export class ProductImportService {
         });
       }
 
-      await customLogger.info('Payment processed successfully', {
+      await logToApi('info', 'Payment processed successfully', {
         requestId,
         productId,
         paymentId: response.paymentId,
@@ -361,7 +374,7 @@ export class ProductImportService {
       return { success: true, status: response.status, paymentId: response.paymentId };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Failed to process payment', {
+      await logToApi('error', 'Failed to process payment', {
         requestId,
         error: errorMessage,
         productId,
@@ -372,7 +385,7 @@ export class ProductImportService {
     }
   }
 
-  async syncInventory(productId: string, sellerId: string, providerId: string) {
+  async syncInventory(productId: string, sellerId: string, providerId: string, region: string = 'global') {
     const requestId = crypto.randomUUID();
     try {
       const { integration, sellerIntegration } = await this.getIntegrationAndSellerIntegration(providerId, sellerId);
@@ -381,16 +394,16 @@ export class ProductImportService {
         {
           _id: integration._id.toString(),
           type: integration.type,
-          status: integration.status,
+          status: sellerIntegration.status ?? 'connected', // Default to 'connected' if undefined
           providerName: integration.providerName,
           settings: integration.settings,
           logoUrl: integration.logoUrl,
-          webhook: integration.webhook,
+          webhook: sellerIntegration.webhook,
         },
         sellerIntegration
       );
 
-      const response = await service.syncInventory(productId);
+      const response = await service.syncInventory(productId, sellerId);
 
       const product = await Product.findOne({ sourceId: productId, sellerId });
       if (product) {
@@ -399,7 +412,7 @@ export class ProductImportService {
         product.lastSyncedAt = new Date();
         await product.save();
       } else {
-        await customLogger.warn('Product not found in database for inventory sync', {
+        await logToApi('warn', 'Product not found in database for inventory sync', {
           requestId,
           productId,
           sellerId,
@@ -408,9 +421,9 @@ export class ProductImportService {
       }
 
       // إرسال Webhook إذا كان مفعلاً
-      if (integration.webhook?.enabled && integration.webhook.url) {
+      if (sellerIntegration.webhook?.enabled && sellerIntegration.webhook.url) {
         await service.callApi({
-          endpoint: integration.webhook.url,
+          endpoint: sellerIntegration.webhook.url,
           method: 'POST',
           body: {
             event: 'inventory.updated',
@@ -425,7 +438,7 @@ export class ProductImportService {
         });
       }
 
-      await customLogger.info('Inventory synced', {
+      await logToApi('info', 'Inventory synced', {
         requestId,
         productId,
         sellerId,
@@ -438,7 +451,7 @@ export class ProductImportService {
       return { success: true, quantity: response.quantity, availability: response.availability };
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : String(error);
-      await customLogger.error('Failed to sync inventory', {
+      await logToApi('error', 'Failed to sync inventory', {
         requestId,
         error: errorMessage,
         productId,

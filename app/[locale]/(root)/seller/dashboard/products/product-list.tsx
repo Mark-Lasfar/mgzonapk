@@ -1,6 +1,6 @@
-'use client'
+'use client';
 
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   Table,
   TableBody,
@@ -8,59 +8,46 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table'
-// import { useToast } from '@/hooks/use-toast'
-import { formatCurrency } from '@/lib/utils'
-// import { syncProductInventory } from '@/lib/actions/warehouse.actions'
-import Link from 'next/link'
-import { useState } from 'react'
-import { useToast } from '@/components/ui/toast'
-import { syncProductInventory } from '@/lib/actions/product.actions'
-
-interface Warehouse {
-  provider: string
-  location: string
-  availableQuantity: number
-  lastSync?: string
-}
-
-interface Product {
-  _id: string
-  name: string
-  price: number
-  warehouse: Warehouse
-}
+} from '@/components/ui/table';
+import { formatCurrency } from '@/lib/utils.client';
+import Link from 'next/link';
+import { useState } from 'react';
+import { useToast } from '@/components/ui/toast';
+import { syncProductInventory } from '@/lib/actions/product.actions';
+import { IProduct } from '@/lib/db/models/product.model';
 
 interface ProductListProps {
-  products?: Product[]
-  isLoading?: boolean
+  initialData: IProduct[];
+  isLoading?: boolean;
 }
 
-export default function ProductList({ products = [], isLoading = false }: ProductListProps) {
-  const { toast } = useToast()
-  const [syncingProducts, setSyncingProducts] = useState<string[]>([])
+export default function ProductList({ initialData = [], isLoading = false }: ProductListProps) {
+  const { toast } = useToast();
+  const [syncingProducts, setSyncingProducts] = useState<string[]>([]);
 
-  const handleSync = async (productId: string) => {
-    setSyncingProducts((prev) => [...prev, productId])
-    
+  const handleSync = async (productId: string, providerId?: string) => {
+    setSyncingProducts((prev) => [...prev, productId]);
+
     try {
-      const response = await syncProductInventory(productId)
-      if (!response.success) throw new Error(response.error)
-      
+      const response = await syncProductInventory(productId, providerId);
+      if (!response.success) {
+        throw new Error(response.message || 'Failed to sync product');
+      }
+
       toast({
         title: 'Success',
         description: 'Product inventory synced successfully',
-      })
+      });
     } catch (error) {
       toast({
         title: 'Error',
         description: error instanceof Error ? error.message : 'Failed to sync product',
         variant: 'destructive',
-      })
+      });
     } finally {
-      setSyncingProducts((prev) => prev.filter(id => id !== productId))
+      setSyncingProducts((prev) => prev.filter((id) => id !== productId));
     }
-  }
+  };
 
   if (isLoading) {
     return (
@@ -72,7 +59,7 @@ export default function ProductList({ products = [], isLoading = false }: Produc
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   return (
@@ -90,23 +77,31 @@ export default function ProductList({ products = [], isLoading = false }: Produc
               <TableHead>Name</TableHead>
               <TableHead>Price</TableHead>
               <TableHead>Stock</TableHead>
+              <TableHead>Category</TableHead>
+              <TableHead>Status</TableHead>
               <TableHead>Warehouse</TableHead>
               <TableHead>Last Sync</TableHead>
               <TableHead>Actions</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
-            {products?.length > 0 ? (
-              products.map((product) => (
-                <TableRow key={product._id}>
+            {initialData.length > 0 ? (
+              initialData.map((product) => (
+                <TableRow key={product._id.toString()}>
                   <TableCell>{product.name}</TableCell>
-                  <TableCell>{formatCurrency(product.price)}</TableCell>
-                  <TableCell>{product.warehouse.availableQuantity}</TableCell>
                   <TableCell>
-                    {product.warehouse.provider} - {product.warehouse.location}
+                    {formatCurrency(product.pricing?.finalPrice ?? product.price)}
+                  </TableCell>
+                  <TableCell>{product.countInStock ?? 'N/A'}</TableCell>
+                  <TableCell>{product.category ?? 'N/A'}</TableCell>
+                  <TableCell>{product.status ?? 'N/A'}</TableCell>
+                  <TableCell>
+                    {product.warehouse?.provider
+                      ? `${product.warehouse.provider} - ${product.warehouse.location || 'N/A'}`
+                      : 'N/A'}
                   </TableCell>
                   <TableCell>
-                    {product.warehouse.lastSync
+                    {product.warehouse?.lastSync
                       ? new Date(product.warehouse.lastSync).toLocaleString()
                       : 'Never'}
                   </TableCell>
@@ -115,13 +110,20 @@ export default function ProductList({ products = [], isLoading = false }: Produc
                       <Button
                         variant="outline"
                         size="sm"
-                        disabled={syncingProducts.includes(product._id)}
-                        onClick={() => handleSync(product._id)}
+                        disabled={syncingProducts.includes(product._id.toString())}
+                        onClick={() =>
+                          handleSync(
+                            product._id.toString(),
+                            product.source?.providerId?.toString()
+                          )
+                        }
                       >
-                        {syncingProducts.includes(product._id) ? 'Syncing...' : 'Sync'}
+                        {syncingProducts.includes(product._id.toString())
+                          ? 'Syncing...'
+                          : 'Sync'}
                       </Button>
                       <Button asChild variant="outline" size="sm">
-                        <Link href={`/seller/dashboard/products/${product._id}`}>
+                        <Link href={`/seller/dashboard/products/${product._id.toString()}`}>
                           Edit
                         </Link>
                       </Button>
@@ -131,7 +133,7 @@ export default function ProductList({ products = [], isLoading = false }: Produc
               ))
             ) : (
               <TableRow>
-                <TableCell colSpan={6} className="h-24 text-center">
+                <TableCell colSpan={8} className="h-24 text-center">
                   No products found. Add your first product to get started.
                 </TableCell>
               </TableRow>
@@ -140,5 +142,5 @@ export default function ProductList({ products = [], isLoading = false }: Produc
         </Table>
       </div>
     </div>
-  )
+  );
 }

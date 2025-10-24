@@ -1,0 +1,888 @@
+# =====================================================
+# SELLER ADMIN OPERATIONS
+# =====================================================
+
+type Seller {
+  _id: ID!
+  userId: ID!
+  businessName: String!
+  email: String!
+  phone: String!
+  description: String
+  logo: String
+  subscription: SellerSubscription
+  status: String!
+  suspended: Boolean!
+  suspendReason: String
+  metrics: SellerMetrics!
+  createdAt: String!
+  updatedAt: String!
+}
+
+type SellerMetrics {
+  totalSales: Float!
+  totalOrders: Int!
+  revenue: Revenue!
+  analytics: Analytics!
+}
+
+type Revenue {
+  monthly: Float!
+  yearly: Float!
+}
+
+type Analytics {
+  visitorsCount: Int!
+  pageViews: Int!
+}
+
+input SellerInput {
+  businessName: String!
+  email: String!
+  phone: String!
+  description: String
+  logo: String
+}
+
+input SuspendSellerInput {
+  sellerId: ID!
+  reason: String!
+}
+
+input DeleteSellerInput {
+  sellerId: ID!
+}
+
+type SellerResponse {
+  success: Boolean!
+  message: String!
+  data: Seller
+  error: String
+}
+
+type SellersListResponse {
+  success: Boolean!
+  message: String!
+  data: SellersList!
+  error: String
+}
+
+type SellersList {
+  sellers: [Seller!]!
+  pagination: Pagination!
+}
+
+type Pagination {
+  total: Int!
+  pages: Int!
+  current: Int!
+  pageSize: Int!
+}
+
+# =====================================================
+# QUERIES - ADD TO EXISTING Query TYPE
+# =====================================================
+
+
+
+# =====================================================
+# MUTATIONS - ADD TO EXISTING Mutation TYPE
+# =====================================================
+
+
+# =====================================================
+# GRAPHQL SCHEMA - ECOMMERCE PLATFORM
+# Version: 2.0 - Complete & Organized
+# =====================================================
+
+# =====================================================
+# SCALARS
+# =====================================================
+scalar JSON
+scalar Upload
+
+# =====================================================
+# CORE ENTITIES
+# =====================================================
+
+## PRODUCTS
+type Product {
+  _id: ID!
+  name: String!
+  slug: String!
+  description: String!
+  price: Float!
+  listPrice: Float!
+  countInStock: Int!
+  category: String!
+  brand: String!
+  featured: Boolean!
+  availability: String!
+  isPublished: Boolean!
+  pricing: Pricing!
+  warehouseData: [WarehouseData!]
+  images: [String!]!
+  relatedProducts: [Product!]
+  dropshipping: Dropshipping
+  translations: [Translation!]!
+  sections: [Section!]!
+  layout: String!
+  tags: [String!]!
+  sellerId: ID!
+  createdAt: String!
+  updatedAt: String!
+}
+
+## PRICING & DISCOUNTS
+type Pricing {
+  basePrice: Float!
+  markup: Float
+  profit: Float
+  commission: Float
+  finalPrice: Float!
+  currency: String!
+  discount: Discount
+}
+
+type Discount {
+  type: String!
+  value: Float
+  startDate: String
+  endDate: String
+}
+
+## WAREHOUSE & VARIANTS
+type WarehouseData {
+  warehouseId: ID!
+  provider: String!
+  location: String!
+  sku: String!
+  quantity: Int!
+  minimumStock: Int!
+  reorderPoint: Int!
+  variants: [Variant!]!
+}
+
+type Variant {
+  id: ID!
+  sku: String!
+  barcode: String!
+  attributes: VariantAttributes!
+  priceAdjustment: Float!
+  stock: Int!
+}
+
+type VariantAttributes {
+  color: String!
+  size: String!
+}
+
+## DROPSHIPPING
+type Dropshipping {
+  provider: String
+  externalProductId: String
+  externalSku: String
+  supplierId: ID
+  purchasePrice: Float
+  estimatedDeliveryTime: Int
+  supplyType: String
+  supplyNotes: String
+}
+
+## TRANSLATIONS
+type Translation {
+  locale: String!
+  name: String!
+  description: String!
+}
+
+## SECTIONS & REVIEWS
+type Section {
+  id: ID!
+  type: String!
+  content: SectionContent!
+  position: Int!
+}
+
+type SectionContent {
+  text: String
+  url: String
+  label: String
+  endDate: String
+  images: [String!]
+  reviews: [Review!]
+}
+
+type Review {
+  id: ID!
+  rating: Int!
+  comment: String!
+}
+
+# =====================================================
+# SUBSCRIPTIONS
+# =====================================================
+
+type SubscriptionPlan {
+  id: ID!
+  name: String!
+  price: Float!
+  pointsCost: Int!
+  currency: String!
+  description: String!
+  features: SubscriptionFeatures!
+  isTrial: Boolean!
+  trialDuration: Int
+  isActive: Boolean!
+}
+
+type SubscriptionFeatures {
+  productsLimit: Int!
+  commission: Float!
+  prioritySupport: Boolean!
+  instantPayouts: Boolean!
+  customSectionsLimit: Int!
+  domainSupport: Boolean!
+  domainRenewal: Boolean!
+  pointsRedeemable: Boolean!
+  dynamicPaymentGateways: Boolean!
+  maxApiKeys: Int!
+  analyticsAccess: Boolean!
+  abTesting: Boolean!
+}
+
+type SellerSubscription {
+  planId: ID!
+  status: String!
+  startDate: String!
+  endDate: String!
+  pointsBalance: Int!
+}
+
+# =====================================================
+# SETTINGS
+# =====================================================
+
+type Settings {
+  site: SiteSettings!
+  common: CommonSettings!
+  points: PointsSettings!
+  subscriptions: SubscriptionSettings!
+  availableLanguages: [Language!]!
+  defaultLanguage: String!
+  availableCurrencies: [Currency!]!
+  defaultCurrency: String!
+  availablePaymentMethods: [PaymentMethod!]!
+  defaultPaymentMethod: String!
+  availableDeliveryDates: [DeliveryDate!]!
+  defaultDeliveryDate: String!
+}
+
+type SiteSettings {
+  name: String!
+  slogan: String!
+  description: String!
+  url: String!
+  email: String!
+  address: String!
+  phone: String!
+  logo: String!
+  keywords: String!
+  author: String!
+  copyright: String!
+}
+
+type CommonSettings {
+  pageSize: Int!
+  isMaintenanceMode: Boolean!
+  freeShippingMinPrice: Float!
+  defaultTheme: String!
+  defaultColor: String!
+  featuredCategories: [String!]!
+}
+
+type PointsSettings {
+  earnRate: Float!
+  redeemValue: Float!
+  registrationBonus: RegistrationBonus!
+  sellerPointsPerSale: Int!
+  enabled: Boolean!
+  rate: Float!
+}
+
+type SubscriptionSettings {
+  points: PointsSettings!
+}
+
+type RegistrationBonus {
+  buyer: Int!
+  seller: Int!
+}
+
+type Language {
+  name: String!
+  code: String!
+}
+
+type Currency {
+  name: String!
+  code: String!
+  symbol: String!
+  convertRate: Float!
+}
+
+type PaymentMethod {
+  name: String!
+  commission: Float!
+}
+
+type DeliveryDate {
+  name: String!
+  daysToDeliver: Int!
+  shippingPrice: Float!
+  freeShippingMinPrice: Float!
+}
+
+# =====================================================
+# SELLER CONFIGURATIONS
+# =====================================================
+
+type SellerConfigurations {
+  warehouses: [Integration!]!
+  paymentMethods: [PaymentMethod!]!
+  shippingProviders: [ShippingProvider!]!
+  dropshippingProviders: [Integration!]!
+}
+
+type Integration {
+  id: ID!
+  name: String!
+  provider: String!
+  location: String
+  logoUrl: String
+  type: String!
+  status: String!
+  webhook: Webhook
+}
+
+type Webhook {
+  enabled: Boolean!
+  url: String
+  events: [String!]
+}
+
+type ShippingProvider {
+  id: ID!
+  name: String!
+}
+
+# =====================================================
+# SUPPLIERS & ORDERS
+# =====================================================
+
+type Supplier {
+  id: ID!
+  name: String!
+  address: Address!
+  contact: Contact!
+  agreements: [Agreement!]!
+  type: String!
+  status: String!
+  estimatedDeliveryTime: Int!
+}
+
+type Address {
+  street: String!
+  city: String!
+  state: String
+  countryCode: String!
+  postalCode: String!
+}
+
+type Contact {
+  email: String!
+  phone: String
+}
+
+type Agreement {
+  terms: String!
+  signedAt: String!
+}
+
+type Order {
+  id: ID!
+  productId: ID!
+  status: String!
+  trackingNumber: String
+  trackingUrl: String
+  supplierId: ID
+  purchasePrice: Float
+  commission: Float
+  createdAt: String!
+}
+
+# =====================================================
+# BANKING
+# =====================================================
+
+type BankInfo {
+  accountName: String!
+  accountNumber: String!
+  bankName: String!
+  swiftCode: String!
+  routingNumber: String
+  bankDocumentUrl: String
+  isVerified: Boolean!
+}
+
+# =====================================================
+# ADVERTISING
+# =====================================================
+
+type AdCampaign {
+  _id: ID!
+  providerName: String!
+  name: String!
+  status: String!
+  budget: Budget!
+  schedule: Schedule!
+  metrics: Metrics!
+  targeting: JSON
+  creatives: [Creative!]!
+  integrationId: ID!
+  products: [ID!]
+}
+
+type Budget {
+  amount: Float!
+  currency: String!
+}
+
+type Schedule {
+  startDate: String!
+  endDate: String
+}
+
+type Metrics {
+  impressions: Int!
+  clicks: Int!
+  conversions: Int!
+  spend: Float!
+}
+
+type Creative {
+  type: String!
+  url: String!
+  metadata: JSON
+}
+
+# =====================================================
+# NOTIFICATIONS
+# =====================================================
+
+type Notification {
+  _id: ID!
+  message: String!
+  read: Boolean!
+  createdAt: String!
+}
+
+# =====================================================
+# INPUTS
+# =====================================================
+
+## PRODUCT INPUTS
+input ProductInput {
+  name: String!
+  availability: String!
+  slug: String!
+  description: String!
+  price: Float!
+  listPrice: Float!
+  countInStock: Int!
+  category: String!
+  brand: String!
+  featured: Boolean!
+  isPublished: Boolean!
+  pricing: PricingInput!
+  warehouseData: [WarehouseDataInput!]
+  images: [String!]!
+  relatedProducts: [ID!]
+  dropshipping: DropshippingInput
+  translations: [TranslationInput!]!
+  sections: [SectionInput!]!
+  layout: String!
+  tags: [String!]!
+  sellerId: ID!
+  metadata: JSON
+}
+
+input PricingInput {
+  basePrice: Float!
+  markup: Float
+  profit: Float
+  commission: Float
+  finalPrice: Float!
+  currency: String!
+  discount: DiscountInput
+}
+
+input DiscountInput {
+  type: String!
+  value: Float
+  startDate: String
+  endDate: String
+}
+
+input WarehouseDataInput {
+  warehouseId: ID!
+  provider: String!
+  location: String!
+  sku: String!
+  quantity: Int!
+  minimumStock: Int!
+  reorderPoint: Int!
+  variants: [VariantInput!]!
+}
+
+input VariantInput {
+  id: ID!
+  sku: String!
+  barcode: String!
+  attributes: VariantAttributesInput!
+  priceAdjustment: Float!
+  stock: Int!
+}
+
+input VariantAttributesInput {
+  color: String!
+  size: String!
+}
+
+input DropshippingInput {
+  provider: String
+  externalProductId: String
+  externalSku: String
+  supplierId: ID
+  purchasePrice: Float
+  estimatedDeliveryTime: Int
+  supplyType: String
+  supplyNotes: String
+}
+
+input TranslationInput {
+  locale: String!
+  name: String!
+  description: String!
+}
+
+input SectionInput {
+  id: ID!
+  type: String!
+  content: SectionContentInput!
+  position: Int!
+}
+
+input SectionContentInput {
+  text: String
+  url: String
+  label: String
+  endDate: String
+  images: [String!]
+  reviews: [ReviewInput!]
+}
+
+input ReviewInput {
+  id: ID!
+  rating: Int!
+  comment: String!
+}
+
+## UPLOAD INPUT
+input UploadImageInput {
+  file: Upload!
+  folder: String!
+}
+
+## SUBSCRIPTION INPUTS
+input SubscriptionPlanInput {
+  id: ID
+  name: String!
+  price: Float!
+  pointsCost: Int!
+  currency: String!
+  description: String!
+  features: SubscriptionFeaturesInput!
+  isTrial: Boolean!
+  trialDuration: Int
+  isActive: Boolean!
+}
+
+input SubscriptionFeaturesInput {
+  productsLimit: Int!
+  commission: Float!
+  prioritySupport: Boolean!
+  instantPayouts: Boolean!
+  customSectionsLimit: Int!
+  domainSupport: Boolean!
+  domainRenewal: Boolean!
+  pointsRedeemable: Boolean!
+  dynamicPaymentGateways: Boolean!
+  maxApiKeys: Int!
+  analyticsAccess: Boolean!
+  abTesting: Boolean!
+}
+
+input SubscriptionInput {
+  planId: ID!
+  pointsToRedeem: Int
+  paymentMethodId: String
+  paymentDetails: PaymentDetailsInput
+  dropshippingIntegrations: [ID!]
+}
+
+input PaymentDetailsInput {
+  cardNumber: String
+  expiry: String
+  cvc: String
+  paypalEmail: String
+  token: String
+}
+
+## SETTINGS INPUTS
+input SettingsInput {
+  site: SiteSettingsInput!
+  common: CommonSettingsInput!
+  points: PointsSettingsInput!
+  subscriptions: SubscriptionSettingsInput!
+  availableLanguages: [LanguageInput!]!
+  defaultLanguage: String!
+  availableCurrencies: [CurrencyInput!]!
+  defaultCurrency: String!
+  availablePaymentMethods: [PaymentMethodInput!]!
+  defaultPaymentMethod: String!
+  availableDeliveryDates: [DeliveryDateInput!]!
+  defaultDeliveryDate: String!
+}
+
+input SiteSettingsInput {
+  name: String!
+  slogan: String!
+  description: String!
+  url: String!
+  email: String!
+  address: String!
+  phone: String!
+  logo: String!
+  keywords: String!
+  author: String!
+  copyright: String!
+}
+
+input CommonSettingsInput {
+  pageSize: Int!
+  isMaintenanceMode: Boolean!
+  freeShippingMinPrice: Float!
+  defaultTheme: String!
+  defaultColor: String!
+  featuredCategories: [String!]!
+}
+
+input PointsSettingsInput {
+  earnRate: Float!
+  redeemValue: Float!
+  registrationBonus: RegistrationBonusInput!
+  sellerPointsPerSale: Int!
+  enabled: Boolean!
+  rate: Float!
+}
+
+input SubscriptionSettingsInput {
+  points: PointsSettingsInput!
+}
+
+input RegistrationBonusInput {
+  buyer: Int!
+  seller: Int!
+}
+
+input LanguageInput {
+  name: String!
+  code: String!
+}
+
+input CurrencyInput {
+  name: String!
+  code: String!
+  symbol: String!
+  convertRate: Float!
+}
+
+input PaymentMethodInput {
+  name: String!
+  commission: Float!
+}
+
+input DeliveryDateInput {
+  name: String!
+  daysToDeliver: Int!
+  shippingPrice: Float!
+  freeShippingMinPrice: Float!
+}
+
+## BANK INPUT
+input BankInfoInput {
+  accountName: String!
+  accountNumber: String!
+  bankName: String!
+  swiftCode: String!
+  routingNumber: String
+  bankDocumentUrl: String
+}
+
+## CAMPAIGN INPUTS
+input CampaignInput {
+  integrationId: ID!
+  name: String!
+  budget: BudgetInput!
+  schedule: ScheduleInput!
+  targeting: JSON
+  creatives: [CreativeInput!]!
+  products: [ID!]
+}
+
+input BudgetInput {
+  amount: Float!
+  currency: String!
+}
+
+input ScheduleInput {
+  startDate: String!
+  endDate: String
+}
+
+input CreativeInput {
+  type: String!
+  url: String!
+  metadata: JSON
+}
+
+# =====================================================
+# RESPONSES
+# =====================================================
+
+type UploadImageResponse {
+  url: String!
+  publicId: String!
+}
+
+type SubscriptionPlanResponse {
+  success: Boolean!
+  message: String
+  data: SubscriptionPlan
+}
+
+type SubscriptionResponse {
+  success: Boolean!
+  message: String
+  data: SellerSubscription
+}
+
+type SettingsResponse {
+  success: Boolean!
+  message: String!
+  data: Settings
+}
+
+type ImportDropshippingProductResponse {
+  name: String!
+  description: String!
+  price: Float!
+  images: [String!]!
+  sku: String!
+  currency: String!
+  region: String
+  availability: String!
+}
+
+# =====================================================
+# QUERIES
+# =====================================================
+
+type Query {
+  # Products
+  products(sellerId: ID!, excludeProductId: ID): [Product!]!
+  
+  # Subscriptions
+  subscriptionPlans: [SubscriptionPlan!]!
+  sellerSubscription(userId: ID!): SellerSubscription!
+  
+  # Settings
+  settings: Settings!
+  
+  # Seller Configurations
+  sellerConfigurations(sellerId: ID!): SellerConfigurations!
+  integrations(sellerId: ID!, sandboxMode: Boolean!): [Integration!]!
+  paymentMethods(userId: ID!): [PaymentMethod!]!
+  
+  # Suppliers & Orders
+  suppliers(sellerId: ID!): [Supplier!]!
+  orders(sellerId: ID!): [Order!]!
+  
+  # Banking
+  getBankInfo(sellerId: ID!): BankInfo!
+  getBankVerificationStatus(sellerId: ID!): Boolean!
+  
+  # Advertising
+  campaign(id: ID!): AdCampaign
+  
+  # Notifications
+  notifications(limit: Int!): [Notification!]!
+
+    # Seller Admin
+  seller(sellerId: ID!): Seller!
+  sellers(page: Int!, limit: Int!, search: String): SellersList!
+  sellerMetrics(sellerId: ID!): SellerMetrics!
+
+}
+
+# =====================================================
+# MUTATIONS
+# =====================================================
+
+type Mutation {
+  # Products
+  createProduct(input: ProductInput!): Product!
+  updateProduct(id: ID!, input: ProductInput!): Product!
+  uploadImage(input: UploadImageInput!): UploadImageResponse!
+  deleteImage(publicId: String!): Boolean!
+  importDropshippingProduct(providerId: ID!, externalProductId: String!): ImportDropshippingProductResponse!
+  
+  # Orders
+  updateOrderStatus(orderId: ID!, status: String!): Order!
+  
+  # Subscriptions
+  createSubscriptionPlan(input: SubscriptionPlanInput!): SubscriptionPlanResponse!
+  updateSubscriptionPlan(input: SubscriptionPlanInput!): SubscriptionPlanResponse!
+  deleteSubscriptionPlan(id: ID!): SubscriptionPlanResponse!
+  redeemSubscriptionPoints(input: SubscriptionInput!): SubscriptionResponse!
+  updateSubscription(input: SubscriptionInput!): SubscriptionResponse!
+  
+  # Settings
+  updateSettings(input: SettingsInput!): SettingsResponse!
+  
+  # Banking
+  updateBankInfo(input: BankInfoInput!): BankInfo!
+  
+  # Advertising
+  createCampaign(input: CampaignInput!): AdCampaign!
+  updateCampaign(id: ID!, input: CampaignInput!): AdCampaign!
+  syncCampaignMetrics(campaignId: ID!, sandbox: Boolean!): AdCampaign!
+  deleteCampaign(campaignId: ID!, sandbox: Boolean!): Boolean!
+
+  updateSeller(sellerId: ID!, input: SellerInput!): SellerResponse!
+  suspendSeller(input: SuspendSellerInput!): SellerResponse!
+  deleteSeller(input: DeleteSellerInput!): SellerResponse!
+  unsuspendSeller(sellerId: ID!): SellerResponse!
+
+}

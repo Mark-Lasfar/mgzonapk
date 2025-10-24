@@ -33,7 +33,6 @@ export async function uploadToStorage(
     let allowedMimeTypes: string[] = [];
     let maxSize = options.maxSize || storageConfig.image.maxFileSize;
 
-    // تعيين القيم الافتراضية بناءً على نوع المورد
     switch (resourceType) {
       case 'image':
         allowedFormats = ['png', 'jpg', 'jpeg', 'webp'];
@@ -62,23 +61,15 @@ export async function uploadToStorage(
         maxSize = maxSize || storageConfig.image.maxFileSize;
     }
 
-    // التحقق من حجم الملف
     if (buffer.length > maxSize) {
       throw new Error(`File size exceeds ${(maxSize / (1024 * 1024)).toFixed(2)}MB limit`);
     }
 
-    // التحقق من نوع الملف
     if (file instanceof File) {
-      console.log('Uploading file:', {
-        name: file.name,
-        type: file.type,
-        size: file.size,
-      });
       if (!file.type) {
         throw new Error('File type is undefined');
       }
       if (!allowedMimeTypes.includes(file.type)) {
-        console.error('Invalid file type:', file.type);
         throw new Error(`Invalid file type. Allowed types: ${allowedMimeTypes.join(', ')}`);
       }
     }
@@ -88,7 +79,7 @@ export async function uploadToStorage(
       public_id: options.public_id || `${Date.now()}-${path}`,
       resource_type: resourceType,
       overwrite: options.overwrite ?? true,
-      allowed_formats: allowedFormats, // Cloudinary يحتاج الامتدادات وليس MIME types
+      allowed_formats: allowedFormats,
       transformation:
         resourceType === 'image'
           ? [
@@ -107,17 +98,8 @@ export async function uploadToStorage(
     const uploadResult = await new Promise((resolve, reject) => {
       const uploadStream = cloudinary.uploader.upload_stream(uploadOptions, (error, result) => {
         if (error) {
-          console.error('Cloudinary upload error:', {
-            message: error.message,
-            name: error.name,
-            http_code: error.http_code,
-          });
           reject(new Error(`Cloudinary upload failed: ${error.message}`));
         } else {
-          console.log('Cloudinary upload success:', {
-            secure_url: result?.secure_url,
-            public_id: result?.public_id,
-          });
           resolve(result);
         }
       });
@@ -133,13 +115,8 @@ export async function uploadToStorage(
       throw new Error('Invalid upload response from Cloudinary');
     }
 
-    console.log(`Uploaded file to Cloudinary: ${secureUrl}`);
     return { secureUrl, publicId };
   } catch (error) {
-    console.error('Upload error:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-    });
     throw new Error(error instanceof Error ? error.message : 'Failed to upload file');
   }
 }
@@ -147,12 +124,7 @@ export async function uploadToStorage(
 export async function deleteFromStorage(publicId: string): Promise<void> {
   try {
     await cloudinary.uploader.destroy(publicId, { invalidate: true });
-    console.log(`Deleted file from Cloudinary: ${publicId}`);
   } catch (error) {
-    console.error('Delete error:', {
-      message: error instanceof Error ? error.message : 'Unknown error',
-      stack: error instanceof Error ? error.stack : undefined,
-    });
     throw new Error(error instanceof Error ? error.message : 'Failed to delete file');
   }
 }
@@ -164,8 +136,14 @@ export function getPublicIdFromUrl(url: string): string {
   return `${folderPath}/${filename}`;
 }
 
+// Alias for compatibility with ImagesSection.tsx
+export const uploadFile = uploadToStorage;
+export const deleteFile = deleteFromStorage;
+
 export const StorageUtils = {
   uploadToStorage,
   deleteFromStorage,
   getPublicIdFromUrl,
+  uploadFile,
+  deleteFile,
 };

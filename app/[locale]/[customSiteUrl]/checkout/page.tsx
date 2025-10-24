@@ -4,11 +4,34 @@ import { redirect } from 'next/navigation';
 import { connectToDatabase } from '@/lib/db';
 import Store from '@/lib/db/models/store.model';
 import SellerIntegration from '@/lib/db/models/seller-integration.model';
+import Seller from '@/lib/db/models/seller.model';
 import SellerCheckoutForm from './seller-checkout-form';
 
-export const metadata: Metadata = {
-  title: 'Seller Checkout',
-};
+export async function generateMetadata({ params }: { params: { customSiteUrl: string; locale: string } }): Promise<Metadata> {
+  try {
+    await connectToDatabase();
+    const store = await Store.findOne({ name: params.customSiteUrl, isActive: true }).catch((err) => {
+      console.error('Error fetching store:', err);
+      return null;
+    });
+
+    if (!store) {
+      return { title: 'Store Not Found' };
+    }
+
+    const seller = await Seller.findById(store.sellerId).catch((err) => {
+      console.error('Error fetching seller:', err);
+      return null;
+    });
+
+    return {
+      title: `${seller?.businessName || 'Seller'} Checkout`,
+    };
+  } catch (err) {
+    console.error('Error generating metadata:', err);
+    return { title: 'Store Not Found' };
+  }
+}
 
 export default async function SellerCheckoutPage({ params }: { params: { customSiteUrl: string; locale: string } }) {
   const session = await auth();
@@ -18,20 +41,25 @@ export default async function SellerCheckoutPage({ params }: { params: { customS
 
   await connectToDatabase();
 
-  const store = await Store.findOne({ name: params.customSiteUrl, isActive: true });
+  const store = await Store.findOne({ name: params.customSiteUrl, isActive: true }).catch((err) => {
+    console.error('Error fetching store:', err);
+    return null;
+  });
+
   if (!store) {
     redirect(`/${params.locale}/404`);
   }
 
-  // Check if the seller has customized payment settings
   const paymentIntegration = await SellerIntegration.findOne({
     sellerId: store.sellerId,
     type: 'payment',
     status: 'connected',
     isActive: true,
+  }).catch((err) => {
+    console.error('Error fetching payment integration:', err);
+    return null;
   });
 
-  // If no custom payment integration, redirect to platform's checkout
   if (!paymentIntegration) {
     redirect(`/${params.locale}/checkout`);
   }

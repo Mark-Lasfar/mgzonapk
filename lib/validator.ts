@@ -1,13 +1,12 @@
-import { z } from 'zod'
-import { formatNumberWithDecimal } from './utils'
-
+import { z } from 'zod';
+import { formatNumberWithDecimal } from './utils';
 
 // ============================================
 // Common Validators
 // ============================================
 const MongoId = z
   .string()
-  .regex(/^[0-9a-fA-F]{24}$/, { message: 'Invalid MongoDB ID' })
+  .regex(/^[0-9a-fA-F]{24}$/, { message: 'Invalid MongoDB ID' });
 
 const Price = (field: string) =>
   z.coerce
@@ -15,7 +14,7 @@ const Price = (field: string) =>
     .refine(
       (value) => /^\d+(\.\d{2})?$/.test(formatNumberWithDecimal(value)),
       `${field} must have exactly two decimal places (e.g., 49.99)`
-    )
+    );
 
 // ============================================
 // User Related Schemas
@@ -23,11 +22,16 @@ const Price = (field: string) =>
 const UserName = z
   .string()
   .min(2, { message: 'Username must be at least 2 characters' })
-  .max(50, { message: 'Username must be at most 30 characters' })
+  .max(50, { message: 'Username must be at most 50 characters' });
 
-const Email = z.string().min(1, 'Email is required').email('Email is invalid')
-const Password = z.string().min(3, 'Password must be at least 3 characters')
-const UserRole = z.string().min(1, 'role is required')
+const Email = z.string().min(1, 'Email is required').email('Email is invalid');
+const Password = z.string().min(3, 'Password must be at least 3 characters');
+const UserRole = z.enum(['user', 'Admin', 'SELLER']).refine(
+  (value) => ['user', 'Admin', 'SELLER'].includes(value),
+  {
+    message: 'Role must be one of: user, Admin, SELLER',
+  }
+);
 
 export const UserInputSchema = z.object({
   name: UserName,
@@ -46,6 +50,28 @@ export const UserInputSchema = z.object({
     country: z.string().min(1, 'Country is required'),
     phone: z.string().min(1, 'Phone number is required'),
   }),
+});
+
+
+
+export const NewsArticleInputSchema = z.object({
+  title: z.string().min(5, 'Title must be at least 5 characters').max(255, 'Title must not exceed 255 characters'),
+  slug: z.string().min(3, 'Slug must be at least 3 characters').max(255, 'Slug must not exceed 255 characters').regex(/^[a-z0-9-]+$/,'Slug must contain only lowercase letters, numbers, and hyphens'),
+  excerpt: z.string().min(10, 'Excerpt must be at least 10 characters').max(160, 'Excerpt must not exceed 160 characters'),
+  content: z.string().min(100, 'Content must be at least 100 characters'),
+  tags: z.array(z.string()).min(1, 'At least one tag is required'),
+  metaTitle: z.string().min(5, 'Meta title must be at least 5 characters').max(60, 'Meta title must not exceed 60 characters'),
+  metaDescription: z.string().min(10, 'Meta description must be at least 10 characters').max(160, 'Meta description must not exceed 160 characters'),
+  image: z.string().url('Invalid image URL').optional().default('https://mark-elasfar.web.app/assets/img/default-article.jpg'),
+  isPublished: z.boolean(),
+  isFeatured: z.boolean(),
+  authorId: z.string().min(1, 'Author ID is required'),
+  likes: z.number().optional().default(0),
+  views: z.number().optional().default(0),
+})
+
+export const NewsArticleUpdateSchema = NewsArticleInputSchema.extend({
+  _id: z.string().min(1, 'Article ID is required'),
 })
 
 export const UserUpdateSchema = z.object({
@@ -53,12 +79,12 @@ export const UserUpdateSchema = z.object({
   name: UserName,
   email: Email,
   role: UserRole,
-})
+});
 
 export const UserSignInSchema = z.object({
   email: Email,
   password: Password,
-})
+});
 
 export const UserSignUpSchema = UserSignInSchema.extend({
   name: UserName,
@@ -71,7 +97,7 @@ export const UserSignUpSchema = UserSignInSchema.extend({
 
 export const UserNameSchema = z.object({
   name: UserName,
-})
+});
 
 // ============================================
 // Product Related Schemas
@@ -87,7 +113,7 @@ export const ReviewInputSchema = z.object({
     .int()
     .min(1, 'Rating must be at least 1')
     .max(5, 'Rating must be at most 5'),
-})
+});
 
 export const ProductInputSchema = z.object({
   name: z.string().min(3, 'Name must be at least 3 characters'),
@@ -121,11 +147,11 @@ export const ProductInputSchema = z.object({
     .number()
     .int()
     .nonnegative('Number of sales must be a non-negative number'),
-})
+});
 
 export const ProductUpdateSchema = ProductInputSchema.extend({
   _id: z.string(),
-})
+});
 
 // ============================================
 // Order Related Schemas
@@ -147,9 +173,15 @@ export const OrderItemSchema = z.object({
   image: z.string().min(1, 'Image is required'),
   price: Price('Price'),
   size: z.string().optional(),
-  color: z.string().optional(),
-  
-})
+  color: z.union([
+    z.string(),
+    z.object({
+      name: z.string().min(1, 'Color name is required'),
+    }),
+  ]).optional(),
+  pointsUsed: z.number().default(0).optional(),
+  pointsDiscount: z.number().default(0).optional(),
+});
 
 export const ShippingAddressSchema = z.object({
   fullName: z.string().min(1, 'Full name is required'),
@@ -159,7 +191,7 @@ export const ShippingAddressSchema = z.object({
   province: z.string().min(1, 'Province is required'),
   phone: z.string().min(1, 'Phone number is required'),
   country: z.string().min(1, 'Country is required'),
-})
+});
 
 export const OrderInputSchema = z.object({
   user: z.union([
@@ -194,9 +226,25 @@ export const OrderInputSchema = z.object({
     ),
   isDelivered: z.boolean().default(false),
   deliveredAt: z.date().optional(),
+  createdAt: z.date().optional(),
   isPaid: z.boolean().default(false),
   paidAt: z.date().optional(),
-})
+});
+
+export const subscriptionUpdateSchema = z.object({
+  // plan: z.string().min(1, 'Plan is required'),
+  // pointsToRedeem: z.number().min(0, 'Points to redeem must be non-negative'),
+  // paymentMethod: z.string().optional(),
+  // currency: z.string().optional(),
+  // market: z.string().optional(),
+  // paymentGatewayId: z.string().optional(),
+  plan: z.string().min(1, 'planRequired'),
+  pointsToRedeem: z.number().min(0).optional(),
+  paymentMethod: z.string().optional(),
+  currency: z.string().optional(),
+  market: z.string().optional(),
+  trialMonthsUsed: z.number().optional(),
+});
 
 // ============================================
 // Cart Schema
@@ -213,7 +261,7 @@ export const CartSchema = z.object({
   shippingAddress: z.optional(ShippingAddressSchema),
   deliveryDateIndex: z.optional(z.number()),
   expectedDeliveryDate: z.optional(z.date()),
-})
+});
 
 // ============================================
 // Website Related Schemas
@@ -223,11 +271,11 @@ export const WebPageInputSchema = z.object({
   slug: z.string().min(3, 'Slug must be at least 3 characters'),
   content: z.string().min(1, 'Content is required'),
   isPublished: z.boolean(),
-})
+});
 
 export const WebPageUpdateSchema = WebPageInputSchema.extend({
   _id: z.string(),
-})
+});
 
 // ============================================
 // Settings Related Schemas
@@ -235,26 +283,27 @@ export const WebPageUpdateSchema = WebPageInputSchema.extend({
 export const SiteLanguageSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   code: z.string().min(1, 'Code is required'),
-})
+});
 
 export const CarouselSchema = z.object({
   title: z.string().min(1, 'title is required'),
   url: z.string().min(1, 'url is required'),
   image: z.string().min(1, 'image is required'),
   buttonCaption: z.string().min(1, 'buttonCaption is required'),
-})
+  isPublished: z.boolean(),
+});
 
 export const SiteCurrencySchema = z.object({
   name: z.string().min(1, 'Name is required'),
   code: z.string().min(1, 'Code is required'),
   convertRate: z.coerce.number().min(0, 'Convert rate must be at least 0'),
   symbol: z.string().min(1, 'Symbol is required'),
-})
+});
 
 export const PaymentMethodSchema = z.object({
   name: z.string().min(1, 'Name is required'),
   commission: z.coerce.number().min(0, 'Commission must be at least 0'),
-})
+});
 
 export const DeliveryDateSchema = z.object({
   name: z.string().min(1, 'Name is required'),
@@ -270,7 +319,7 @@ export const DeliveryDateSchema = z.object({
   freeShippingMinPrice: z.coerce
     .number()
     .min(0, 'Free shipping min amount must be at least 0'),
-})
+});
 
 export const SettingInputSchema = z.object({
   common: z.object({
@@ -324,4 +373,35 @@ export const SettingInputSchema = z.object({
     .array(DeliveryDateSchema)
     .min(1, 'At least one delivery date is required'),
   defaultDeliveryDate: z.string().min(1, 'Delivery date is required'),
-})
+  integrations: z
+    .array(
+      z.object({
+        provider: z.string().min(1, 'Provider is required'),
+        apiKey: z.string().optional(),
+        secretKey: z.string().optional(),
+        token: z.string().optional(),
+        refreshToken: z.string().optional(),
+        expiresAt: z.date().optional(),
+        metadata: z.record(z.string(), z.any()).optional(),
+      })
+    )
+    .optional(),
+  aiAssistant: z.object({
+    price: z.number().min(0),
+    description: z.string().min(1),
+    image: z.string().url(),
+    enabled: z.boolean(),
+    freeLimit: z.number().min(0),
+  }),
+  points: z
+    .object({
+      earnRate: z.number().min(0, 'Earn rate must be non-negative'),
+      redeemValue: z.number().min(0, 'Redeem value must be non-negative'),
+      registrationBonus: z.object({
+        buyer: z.number().min(0, 'Buyer bonus must be non-negative'),
+        seller: z.number().min(0, 'Seller bonus must be non-negative'),
+      }),
+      sellerPointsPerSale: z.number().min(0, 'Seller points per sale must be non-negative'),
+    })
+    .optional(),
+});

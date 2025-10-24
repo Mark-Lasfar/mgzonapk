@@ -1,10 +1,11 @@
+// /home/mark/Music/my-nextjs-project-clean/app/[locale]/(auth)/sign-up/signup-form.tsx
+
 'use client';
 import { useState, useEffect } from 'react';
 import { redirect, useSearchParams } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import Link from 'next/link';
-// import useSettingStore from '@/hooks/use-setting-store';
 import {
   Form,
   FormControl,
@@ -16,15 +17,12 @@ import {
 import { useForm } from 'react-hook-form';
 import { IUserSignUp } from '@/types';
 import { registerUser, signInWithCredentials, verifyEmail } from '@/lib/actions/user.actions';
-// import { toast } from '@/hooks/use-toast';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { UserSignUpSchema } from '@/lib/validator';
 import { Separator } from '@/components/ui/separator';
 import { isRedirectError } from 'next/dist/client/components/redirect-error';
 import useSettingStore from '../../../../hooks/use-setting-store';
-// import { Toast } from '@/components/ui/toast';
 import { toast } from '../../../../hooks/use-toast';
-import { Toast } from '@/components/ui/toast';
 
 const signUpDefaultValues =
   process.env.NODE_ENV === 'development'
@@ -49,7 +47,7 @@ export default function SignUpForm() {
   const [userEmail, setUserEmail] = useState('');
   const [userData, setUserData] = useState<IUserSignUp | null>(null);
   const [isResending, setIsResending] = useState(false);
-  
+
   const {
     setting: { site },
   } = useSettingStore();
@@ -75,9 +73,13 @@ export default function SignUpForm() {
 
   const onSubmit = async (data: IUserSignUp) => {
     try {
+      console.log('SignUpForm: Submitting registration for email:', data.email);
       const res = await registerUser(data);
+      console.log('SignUpForm: Registration response:', res);
+
       if (!res.success) {
-        Toast({
+        console.log('SignUpForm: Registration failed:', res.error);
+        toast({
           title: 'Error',
           description: res.error,
           variant: 'destructive',
@@ -88,18 +90,18 @@ export default function SignUpForm() {
       setIsVerifying(true);
       setUserEmail(data.email);
       setUserData(data);
-      
-      // Store registration data in session storage
+
       sessionStorage.setItem('pendingRegistration', JSON.stringify({
         email: data.email,
-        data: data
+        data: data,
       }));
-      
+
       toast({
         title: 'Verification Required',
         description: 'Please check your email for the verification code',
       });
     } catch (error) {
+      console.error('SignUpForm: Registration error:', error);
       if (isRedirectError(error)) {
         throw error;
       }
@@ -113,8 +115,12 @@ export default function SignUpForm() {
 
   const handleVerification = async () => {
     try {
+      console.log('SignUpForm: Verifying email:', userEmail, 'with code:', verificationCode);
       const res = await verifyEmail(userEmail, verificationCode);
+      console.log('SignUpForm: Verification response:', res);
+
       if (!res.success) {
+        console.log('SignUpForm: Verification failed:', res.error);
         toast({
           title: 'Error',
           description: res.error || 'Verification failed',
@@ -128,38 +134,40 @@ export default function SignUpForm() {
         description: 'Email verified successfully',
       });
 
-      // Get stored registration data
       const pendingRegistration = sessionStorage.getItem('pendingRegistration');
       if (!pendingRegistration) {
+        console.log('SignUpForm: No pending registration data found');
         redirect('/sign-in');
         return;
       }
 
       const { data } = JSON.parse(pendingRegistration);
-      
-      // Clean up stored data
       sessionStorage.removeItem('pendingRegistration');
 
-      // Sign in automatically
+      console.log('SignUpForm: Attempting auto-login for email:', data.email);
       const signInRes = await signInWithCredentials({
         email: data.email,
-        password: data.password
+        password: data.password,
       });
+      console.log('SignUpForm: Auto-login response:', signInRes);
 
       if (signInRes.success) {
         toast({
           title: 'Success',
           description: 'Email verified successfully. Signing you in...',
         });
-        redirect(callbackUrl);
+        redirect(signInRes.redirect || callbackUrl);
       } else {
+        console.log('SignUpForm: Auto-login failed:', signInRes.error);
         toast({
           title: 'Error',
           description: signInRes.error || 'Please sign in manually',
+          variant: 'destructive',
         });
         redirect('/sign-in');
       }
     } catch (error) {
+      console.error('SignUpForm: Verification error:', error);
       toast({
         title: 'Error',
         description: 'Verification failed. Please try again.',
@@ -173,13 +181,16 @@ export default function SignUpForm() {
 
     setIsResending(true);
     try {
+      console.log('SignUpForm: Resending verification code for email:', userData.email);
       const res = await registerUser(userData);
+      console.log('SignUpForm: Resend code response:', res);
       if (res.success) {
         toast({
           title: 'Code Resent',
           description: 'Please check your email for the new verification code',
         });
       } else {
+        console.log('SignUpForm: Resend code failed:', res.error);
         toast({
           title: 'Error',
           description: res.error || 'Failed to resend code',
@@ -187,6 +198,7 @@ export default function SignUpForm() {
         });
       }
     } catch (error) {
+      console.error('SignUpForm: Resend code error:', error);
       toast({
         title: 'Error',
         description: 'Failed to resend code',
@@ -214,8 +226,8 @@ export default function SignUpForm() {
             className="text-center text-lg tracking-wider"
             maxLength={8}
           />
-          <Button 
-            onClick={handleVerification} 
+          <Button
+            onClick={handleVerification}
             className="w-full"
             disabled={!verificationCode || verificationCode.length !== 8}
           >

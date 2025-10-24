@@ -5,7 +5,7 @@ import crypto from 'crypto';
 // import Webhook, { WebhookConfig } from '@/lib/db/models/webhook.model';
 import Queue from '@/lib/db/models/queue.model';
 import Webhook from '@/lib/db/models/webhook.model';
-import { WebhookConfig } from '@/lib/api/types';
+import { WebhookConfig } from '@/lib/types';
 
 export class WebhookDispatcher {
   private static redis: Redis | null = null;

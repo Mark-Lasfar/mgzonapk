@@ -1,17 +1,17 @@
+'use server';
+
 import { connectToDatabase } from '@/lib/db';
 import Seller from '@/lib/db/models/seller.model';
 import SubscriptionOrder from '@/lib/db/models/subscription-order.model';
-// import Order from '@/lib/db/models/order.model';
-import { emailService } from '@/lib/services/email/mailer';
 import { getSubscriptionPlans } from '@/lib/constants';
-import { PaymentService, PaymentRequest, PaymentResponse } from '../api/services/payment';
+import { initiatePayment, PaymentRequest, PaymentResponse, createPaymentService } from '@/lib/api/services/payment';
+import { GenericIntegrationService } from '@/lib/api/services/generic-integration';
 import Integration from '@/lib/db/models/integration.model';
 import SellerIntegration from '@/lib/db/models/seller-integration.model';
 import { customLogger } from '@/lib/services/logging';
-import { randomUUID } from 'crypto';
-import { Order } from '../db/models/order.model';
+import { Order } from '@/lib/db/models/order.model';
 
-interface paymentGatewayId {
+interface PaymentGatewayId {
   userId: string;
   planId?: string;
   orderId?: string;
@@ -19,9 +19,50 @@ interface paymentGatewayId {
   currency: string;
   method: string;
   domainRenewal?: boolean;
-  paymentGatewayId: string;
+  paymentGatewayId?: string;
   shippingOptionId?: string;
   discountCode?: string;
+}
+
+async function initializePayPalPayment(
+  integration: any,
+  sellerIntegration: any,
+  paymentRequest: PaymentRequest
+): Promise<PaymentResponse> {
+  const paymentService = new GenericIntegrationService(integration, sellerIntegration);
+  const response = await paymentService.callApi({
+    endpoint: `${process.env.PAYPAL_API_URL}/v2/checkout/orders`,
+    method: 'POST',
+    headers: {
+      Authorization: `Basic ${Buffer.from(`${process.env.PAYPAL_CLIENT_ID}:${process.env.PAYPAL_CLIENT_SECRET}`).toString('base64')}`,
+    },
+    body: {
+      intent: 'CAPTURE',
+      purchase_units: [
+        {
+          amount: {
+            currency_code: paymentRequest.currency,
+            value: paymentRequest.amount.toString(),
+          },
+          description: paymentRequest.description || 'Subscription payment',
+        },
+      ],
+      payer: {
+        email_address: paymentRequest.customer.email,
+        name: { given_name: paymentRequest.customer.name },
+      },
+    },
+  });
+
+  if (!response.success || !response.data.links) {
+    throw new Error('Failed to initialize PayPal payment');
+  }
+
+  const approvalUrl = response.data.links.find((link: any) => link.rel === 'approve')?.href;
+  return {
+    transactionId: response.data.id,
+    paymentUrl: approvalUrl,
+  };
 }
 
 export async function createPaymentSession({
@@ -35,7 +76,7 @@ export async function createPaymentSession({
   paymentGatewayId,
   shippingOptionId,
   discountCode,
-}: paymentGatewayId): Promise<string> {
+}: PaymentGatewayId): Promise<string> {
   await connectToDatabase();
 
   try {
@@ -43,35 +84,59 @@ export async function createPaymentSession({
     if (!seller) {
       throw new Error('Seller not found');
     }
-    if (!seller.bankInfo?.verified && method !== 'points') {
-      throw new Error('Bank information not verified');
+
+    let integration = null;
+    let sellerIntegration = null;
+
+    // Check if a specific payment gateway is provided
+    if (paymentGatewayId && method !== 'points') {
+      const result = await createPaymentService(seller._id.toString(), paymentGatewayId);
+      integration = result.integration;
+      sellerIntegration = result.sellerIntegration;
+    } else if (method === 'stripe') {
+      // Default to Stripe if no gateway is specified
+      integration = { providerName: 'stripe', settings: { endpoints: { createPayment: '/v1/payment_intents' } } };
+      sellerIntegration = { status: 'connected', isActive: true };
+    } else if (method === 'paypal') {
+      // Default to PayPal if no gateway is specified
+      integration = { providerName: 'paypal', settings: { endpoints: { createPayment: '/v2/checkout/orders' } } };
+      sellerIntegration = { status: 'connected', isActive: true };
+    } else {
+      // Fallback to Stripe if no valid method is provided
+      integration = { providerName: 'stripe', settings: { endpoints: { createPayment: '/v1/payment_intents' } } };
+      sellerIntegration = { status: 'connected', isActive: true };
+    }
+
+    // Verify bank account only for mgpay
+    if (integration.providerName === 'mgpay' && !seller.bankInfo?.verified && method !== 'points') {
+      throw new Error('Bank information not verified for mgpay');
     }
 
     let finalAmount = amount;
 
-    // التحقق من الطلب (إذا كان دفعًا لطلب عادي وليس اشتراكًا)
+    // Handle order payment (non-subscription)
     if (orderId) {
       const order = await Order.findById(orderId);
       if (!order) {
         throw new Error('Order not found');
       }
 
-      // تطبيق تكلفة الشحن
+      // Apply shipping cost
       if (shippingOptionId) {
-        const shippingOption = seller.shippingOptions.find((opt: any) => opt._id.toString() === shippingOptionId);
+        const shippingOption = seller.shippingOptions.find((opt: any) => opt.id === shippingOptionId);
         if (!shippingOption) {
           throw new Error('Invalid shipping option');
         }
-        finalAmount += shippingOption.cost;
+        finalAmount += shippingOption.shippingPrice;
       }
 
-      // تطبيق الخصم
+      // Apply discount
       if (discountCode) {
         const discount = seller.discountOffers.find((offer: any) => offer.code === discountCode && offer.isActive);
         if (!discount) {
           throw new Error('Invalid or inactive discount code');
         }
-        if (discount.minOrderValue && amount < discount.minOrderValue) {
+        if (discount.minPurchase && amount < discount.minPurchase) {
           throw new Error('Order amount below minimum for discount');
         }
         if (discount.discountType === 'percentage') {
@@ -82,7 +147,7 @@ export async function createPaymentSession({
       }
     }
 
-    // التحقق من الاشتراك (إذا كان دفعًا لاشتراك)
+    // Handle subscription payment
     if (planId) {
       const currentDate = new Date();
       if (
@@ -123,27 +188,6 @@ export async function createPaymentSession({
       }
     }
 
-    const integration = await Integration.findOne({
-      _id: paymentGatewayId,
-      enabledBySellers: userId,
-      type: 'payment',
-      isActive: true,
-      status: 'connected',
-    });
-    if (!integration) {
-      throw new Error('Invalid or inactive payment integration');
-    }
-
-    const sellerIntegration = await SellerIntegration.findOne({
-      sellerId: seller._id,
-      integrationId: paymentGatewayId,
-      status: 'connected',
-      isActive: true,
-    });
-    if (!sellerIntegration) {
-      throw new Error('No connected seller integration found');
-    }
-
     const order = orderId
       ? await Order.findByIdAndUpdate(orderId, { paymentGatewayId, amount: finalAmount }, { new: true })
       : await SubscriptionOrder.create({
@@ -156,7 +200,6 @@ export async function createPaymentSession({
           isPaid: false,
         });
 
-    const paymentService = new PaymentService(integration, sellerIntegration);
     const paymentRequest: PaymentRequest = {
       amount: finalAmount,
       currency,
@@ -175,7 +218,13 @@ export async function createPaymentSession({
       },
     };
 
-    const paymentResponse: PaymentResponse = await paymentService.initiatePayment(paymentRequest);
+    let paymentResponse: PaymentResponse;
+    if (method === 'paypal' && !paymentGatewayId) {
+      paymentResponse = await initializePayPalPayment(integration, sellerIntegration, paymentRequest);
+    } else {
+      paymentResponse = await initiatePayment(seller._id.toString(), integration.providerName, paymentRequest);
+    }
+
     if (!paymentResponse.paymentUrl) {
       throw new Error('No payment URL returned from payment service');
     }
@@ -238,7 +287,7 @@ export async function handlePaymentSuccess(orderId: string): Promise<{
       throw new Error('Seller not found');
     }
 
-    // التحقق من الدفع للاشتراكات
+    // Handle subscription payment
     if (order.planId) {
       const plans = await getSubscriptionPlans();
       const plan = plans.find((p) => p.id === order.planId);
@@ -256,8 +305,8 @@ export async function handlePaymentSuccess(orderId: string): Promise<{
           throw new Error('Payment integration not found');
         }
 
-        const paymentService = new PaymentService(integration, sellerIntegration);
-        const verification = await paymentService.verifyPayment(order.paymentResult?.id);
+        const { integration: paymentIntegration, sellerIntegration: paymentSellerIntegration, requestId } = await createPaymentService(seller._id.toString(), integration.providerName);
+        const verification = await verifyPayment(paymentIntegration, paymentSellerIntegration, order.paymentResult?.id, requestId);
         if (verification.status !== 'completed') {
           throw new Error(`Payment verification failed: ${verification.status}`);
         }
@@ -298,17 +347,29 @@ export async function handlePaymentSuccess(orderId: string): Promise<{
 
       await seller.save();
 
-      // إرسال إشعار نجاح الاشتراك
-      await emailService.send({
-        to: seller.email,
-        template: 'subscription_updated',
-        data: {
-          businessName: seller.businessName,
-          planName: plan.name,
-          startDate: startDate.toISOString(),
-          endDate: endDate.toISOString(),
-        },
+      // Send subscription confirmation email via API Route
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/email/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'subscription',
+          to: seller.email,
+          name: seller.businessName,
+          plan: plan.id,
+          amount: order.amount,
+          currency: order.currency,
+          email: seller.email,
+        }),
       });
+
+      if (!emailResponse.ok) {
+        await customLogger.error('Failed to send subscription confirmation email', {
+          userId: seller.userId,
+          orderId,
+          error: await emailResponse.text(),
+        });
+        // Don't fail the transaction if email fails
+      }
 
       await customLogger.info('Subscription payment processed', {
         userId: seller.userId,
@@ -317,21 +378,34 @@ export async function handlePaymentSuccess(orderId: string): Promise<{
         transactionId: order.paymentResult?.id,
       });
     } else {
-      // تحديث حالة الطلب العادي
+      // Handle regular order payment
       order.status = 'paid';
       await order.save();
 
-      // إرسال إشعار نجاح الدفع
-      await emailService.send({
-        to: seller.email,
-        template: 'payment_success',
-        data: {
-          businessName: seller.businessName,
-          orderId,
-          amount: order.amount,
-          currency: order.currency,
-        },
+      // Send order payment confirmation email via API Route
+      const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/email/send`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          type: 'order',
+          to: seller.email,
+          name: seller.businessName,
+          order: {
+            _id: order._id.toString(),
+            items: order.items || [],
+            totalPrice: order.amount,
+          },
+        }),
       });
+
+      if (!emailResponse.ok) {
+        await customLogger.error('Failed to send order confirmation email', {
+          userId: seller.userId,
+          orderId,
+          error: await emailResponse.text(),
+        });
+        // Don't fail the transaction if email fails
+      }
 
       await customLogger.info('Order payment processed', {
         userId: seller.userId,
@@ -340,7 +414,7 @@ export async function handlePaymentSuccess(orderId: string): Promise<{
       });
     }
 
-    // تحديث الطلب كمدفوع
+    // Update order as paid
     order.isPaid = true;
     order.paidAt = new Date();
     await order.save();
@@ -381,21 +455,34 @@ export async function handlePaymentFailure(orderId: string): Promise<{
       throw new Error('Seller not found');
     }
 
-    // تحديث حالة الطلب إلى فشل
+    // Update order status to failed
     order.status = 'failed';
     await order.save();
 
-    // إرسال إشعار فشل الدفع
-    await emailService.send({
-      to: seller.email,
-      template: 'payment_failed',
-      data: {
-        businessName: seller.businessName,
-        orderId,
-        amount: order.amount,
-        currency: order.currency,
-      },
+    // Send payment failure email via API Route
+    const emailResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/email/send`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        type: 'payment_failed',
+        to: seller.email,
+        name: seller.businessName,
+        order: {
+          _id: order._id.toString(),
+          items: order.items || [],
+          totalPrice: order.amount,
+        },
+      }),
     });
+
+    if (!emailResponse.ok) {
+      await customLogger.error('Failed to send payment failure email', {
+        userId: seller.userId,
+        orderId,
+        error: await emailResponse.text(),
+      });
+      // Don't fail the transaction if email fails
+    }
 
     await customLogger.error('Payment failed', {
       userId: seller.userId,

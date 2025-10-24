@@ -5,6 +5,8 @@ import { connectToDatabase } from '@/lib/db';
 import Product from '@/lib/db/models/product.model';
 import Review from '@/lib/db/models/review.model'; // افترض إن عندك موديل Review
 import { sendNotification } from '@/lib/utils/notification';
+// import { sendNotification } from '@/lib/actions/notification.actions';
+
 import { useTranslations } from 'next-intl';
 
 export async function POST(req: NextRequest) {

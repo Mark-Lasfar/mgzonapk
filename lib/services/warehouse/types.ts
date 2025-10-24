@@ -159,6 +159,7 @@ export interface MarketplaceProvider {
 export interface ImportOptions {
   source: string;
   file?: File;
+  productId?: string;
   url?: string;
   manual?: boolean;
 }
