@@ -33,6 +33,181 @@
     "Subtotal": "المجموع الفرعي",
     "Go to cart": "اذهب إلى السلة"
   },
+  "schemas": {
+    "MongoId": {
+      "Invalid MongoDB ID": "معرف MongoDB غير صالح"
+    },
+    "Price": {
+      "Price must have exactly two decimal places": "السعر يجب أن يحتوي على منزلين عشريين بالضبط (مثل 49.99)",
+      "List price must have exactly two decimal places": "سعر القائمة يجب أن يحتوي على منزلين عشريين بالضبط (مثل 49.99)",
+      "Items price must have exactly two decimal places": "سعر العناصر يجب أن يحتوي على منزلين عشريين بالضبط (مثل 49.99)",
+      "Shipping price must have exactly two decimal places": "سعر الشحن يجب أن يحتوي على منزلين عشريين بالضبط (مثل 49.99)",
+      "Tax price must have exactly two decimal places": "سعر الضريبة يجب أن يحتوي على منزلين عشريين بالضبط (مثل 49.99)",
+      "Total price must have exactly two decimal places": "السعر الإجمالي يجب أن يحتوي على منزلين عشريين بالضبط (مثل 49.99)"
+    },
+    "UserName": {
+      "Username must be at least 2 characters": "اسم المستخدم يجب أن يكون 2 حرفًا على الأقل",
+      "Username must be at most 50 characters": "اسم المستخدم يجب ألا يتجاوز 50 حرفًا"
+    },
+    "Email": {
+      "Email is required": "البريد الإلكتروني مطلوب",
+      "Email is invalid": "البريد الإلكتروني غير صالح"
+    },
+    "Password": {
+      "Password must be at least 3 characters": "كلمة المرور يجب أن تكون 3 أحرف على الأقل"
+    },
+    "UserRole": {
+      "Role must be one of: user, Admin, SELLER": "الدور يجب أن يكون واحدًا من: user, Admin, SELLER"
+    },
+    "UserInputSchema": {
+      "Payment method is required": "طريقة الدفع مطلوبة",
+      "Full name is required": "الاسم الكامل مطلوب",
+      "Street is required": "الشارع مطلوب",
+      "City is required": "المدينة مطلوبة",
+      "Province is required": "المحافظة مطلوبة",
+      "Postal code is required": "الرمز البريدي مطلوب",
+      "Country is required": "الدولة مطلوبة",
+      "Phone number is required": "رقم الهاتف مطلوب"
+    },
+    "NewsArticleInputSchema": {
+      "Title must be at least 5 characters": "العنوان يجب أن يكون 5 أحرف على الأقل",
+      "Title must not exceed 255 characters": "العنوان يجب ألا يتجاوز 255 حرفًا",
+      "Slug must be at least 3 characters": "الرابط يجب أن يكون 3 أحرف على الأقل",
+      "Slug must not exceed 255 characters": "الرابط يجب ألا يتجاوز 255 حرفًا",
+      "Slug must contain only lowercase letters, numbers, and hyphens": "الرابط يجب أن يحتوي فقط على أحرف صغيرة، أرقام، وواصلات",
+      "Excerpt must be at least 10 characters": "المقتطف يجب أن يكون 10 أحرف على الأقل",
+      "Excerpt must not exceed 160 characters": "المقتطف يجب ألا يتجاوز 160 حرفًا",
+      "Content must be at least 100 characters": "المحتوى يجب أن يكون 100 حرف على الأقل",
+      "At least one tag is required": "مطلوب وسم واحد على الأقل",
+      "Meta title must be at least 5 characters": "عنوان الميتا يجب أن يكون 5 أحرف على الأقل",
+      "Meta title must not exceed 60 characters": "عنوان الميتا يجب ألا يتجاوز 60 حرفًا",
+      "Meta description must be at least 10 characters": "وصف الميتا يجب أن يكون 10 أحرف على الأقل",
+      "Meta description must not exceed 160 characters": "وصف الميتا يجب ألا يتجاوز 160 حرفًا",
+      "Invalid image URL": "رابط الصورة غير صالح",
+      "Author ID is required": "معرف المؤلف مطلوب"
+    },
+    "NewsArticleUpdateSchema": {
+      "Article ID is required": "معرف المقال مطلوب"
+    },
+    "UserSignUpSchema": {
+      "Phone number is required": "رقم الهاتف مطلوب",
+      "Phone number must be valid": "رقم الهاتف يجب أن يكون صالحًا",
+      "Passwords don't match": "كلمات المرور غير متطابقة"
+    },
+    "ReviewInputSchema": {
+      "Title is required": "العنوان مطلوب",
+      "Comment is required": "التعليق مطلوب",
+      "Rating must be at least 1": "التقييم يجب أن يكون 1 على الأقل",
+      "Rating must be at most 5": "التقييم يجب ألا يتجاوز 5"
+    },
+    "ProductInputSchema": {
+      "Name must be at least 3 characters": "الاسم يجب أن يكون 3 أحرف على الأقل",
+      "Slug must be at least 3 characters": "الرابط يجب أن يكون 3 أحرف على الأقل",
+      "Category is required": "الفئة مطلوبة",
+      "Product must have at least one image": "المنتج يجب أن يحتوي على صورة واحدة على الأقل",
+      "Brand is required": "العلامة التجارية مطلوبة",
+      "Description is required": "الوصف مطلوب",
+      "count in stock must be a non-negative number": "الكمية في المخزون يجب أن تكون رقمًا غير سالب",
+      "Average rating must be at least 0": "متوسط التقييم يجب أن يكون 0 على الأقل",
+      "Average rating must be at most 5": "متوسط التقييم يجب ألا يتجاوز 5",
+      "Number of reviews must be a non-negative number": "عدد المراجعات يجب أن يكون رقمًا غير سالب",
+      "Number of sales must be a non-negative number": "عدد المبيعات يجب أن يكون رقمًا غير سالب"
+    },
+    "OrderItemSchema": {
+      "clientId is required": "معرف العميل مطلوب",
+      "Product is required": "المنتج مطلوب",
+      "Name is required": "الاسم مطلوب",
+      "Slug is required": "الرابط مطلوب",
+      "Category is required": "الفئة مطلوبة",
+      "Quantity must be a non-negative number": "الكمية يجب أن تكون رقمًا غير سالب",
+      "Image is required": "الصورة مطلوبة",
+      "Color name is required": "اسم اللون مطلوب"
+    },
+    "ShippingAddressSchema": {
+      "Full name is required": "الاسم الكامل مطلوب",
+      "Address is required": "العنوان مطلوب",
+      "City is required": "المدينة مطلوبة",
+      "Postal code is required": "الرمز البريدي مطلوب",
+      "Province is required": "المحافظة مطلوبة",
+      "Phone number is required": "رقم الهاتف مطلوب",
+      "Country is required": "الدولة مطلوبة"
+    },
+    "OrderInputSchema": {
+      "Order must contain at least one item": "الطلب يجب أن يحتوي على عنصر واحد على الأقل",
+      "Payment method is required": "طريقة الدفع مطلوبة",
+      "Expected delivery date must be in the future": "تاريخ التسليم المتوقع يجب أن يكون في المستقبل"
+    },
+    "subscriptionUpdateSchema": {
+      "planRequired": "الخطة مطلوبة"
+    },
+    "CartSchema": {
+      "Order must contain at least one item": "الطلب يجب أن يحتوي على عنصر واحد على الأقل"
+    },
+    "WebPageInputSchema": {
+      "Title must be at least 3 characters": "العنوان يجب أن يكون 3 أحرف على الأقل",
+      "Slug must be at least 3 characters": "الرابط يجب أن يكون 3 أحرف على الأقل",
+      "Content is required": "المحتوى مطلوب"
+    },
+    "SiteLanguageSchema": {
+      "Name is required": "الاسم مطلوب",
+      "Code is required": "الكود مطلوب"
+    },
+    "CarouselSchema": {
+      "title is required": "العنوان مطلوب",
+      "url is required": "الرابط مطلوب",
+      "image is required": "الصورة مطلوبة",
+      "buttonCaption is required": "نص الزر مطلوب"
+    },
+    "SiteCurrencySchema": {
+      "Name is required": "الاسم مطلوب",
+      "Code is required": "الكود مطلوب",
+      "Convert rate must be at least 0": "معدل التحويل يجب أن يكون 0 على الأقل",
+      "Symbol is required": "الرمز مطلوب"
+    },
+    "PaymentMethodSchema": {
+      "Name is required": "الاسم مطلوب",
+      "Commission must be at least 0": "العمولة يجب أن تكون 0 على الأقل"
+    },
+    "DeliveryDateSchema": {
+      "Name is required": "الاسم مطلوب",
+      "Days to deliver must be at least 0": "أيام التسليم يجب أن تكون 0 على الأقل",
+      "Shipping price must be at least 0": "سعر الشحن يجب أن يكون 0 على الأقل",
+      "Validator must be a valid date format (YYYY-MM-DD)": "المدقق يجب أن يكون بتنسيق تاريخ صالح (YYYY-MM-DD)",
+      "Free shipping min amount must be at least 0": "الحد الأدنى للشحن المجاني يجب أن يكون 0 على الأقل"
+    },
+    "SettingInputSchema": {
+      "Page size must be at least 1": "حجم الصفحة يجب أن يكون 1 على الأقل",
+      "Free shipping min price must be at least 0": "الحد الأدنى للشحن المجاني يجب أن يكون 0 على الأقل",
+      "Default theme is required": "الثيم الافتراضي مطلوب",
+      "Default color is required": "اللون الافتراضي مطلوب",
+      "Name is required": "الاسم مطلوب",
+      "logo is required": "الشعار مطلوب",
+      "Slogan is required": "الشعار النصي مطلوب",
+      "Description is required": "الوصف مطلوب",
+      "Keywords is required": "الكلمات المفتاحية مطلوبة",
+      "Url is required": "الرابط مطلوب",
+      "Email is required": "البريد الإلكتروني مطلوب",
+      "Phone is required": "رقم الهاتف مطلوب",
+      "Author is required": "المؤلف مطلوب",
+      "Copyright is required": "حقوق النشر مطلوبة",
+      "Address is required": "العنوان مطلوب",
+      "At least one language is required": "مطلوب لغة واحدة على الأقل",
+      "At least one carousel is required": "مطلوب كارسول واحد على الأقل",
+      "Language is required": "اللغة مطلوبة",
+      "At least one currency is required": "مطلوب عملة واحدة على الأقل",
+      "Currency is required": "العملة مطلوبة",
+      "At least one payment method is required": "مطلوب طريقة دفع واحدة على الأقل",
+      "Payment method is required": "طريقة الدفع مطلوبة",
+      "At least one delivery date is required": "مطلوب تاريخ تسليم واحد على الأقل",
+      "Delivery date is required": "تاريخ التسليم مطلوب",
+      "Provider is required": "المزود مطلوب",
+      "Earn rate must be non-negative": "معدل الكسب يجب أن يكون غير سالب",
+      "Redeem value must be non-negative": "قيمة الاسترداد يجب أن تكون غير سالبة",
+      "Buyer bonus must be non-negative": "مكافأة المشتري يجب أن تكون غير سالبة",
+      "Seller bonus must be non-negative": "مكافأة البائع يجب أن تكون غير سالبة",
+      "Seller points per sale must be non-negative": "نقاط البائع لكل عملية بيع يجب أن تكون غير سالبة"
+    }
+  },
   "Home": {
     "Categories to explore": "فئات للاستكشاف",
     "Explore New Arrivals": "اكتشف الوافدين الجدد",
@@ -68,7 +243,19 @@
     "Today's Deal": "عرض اليوم",
     "In Stock": "متوفر في المعرض",
     "Expired": "منتهي",
-    "AddedToCart": "{name} تم إضافته إلى السلة!"
+    "AddedToCart": "{name} تم إضافته إلى السلة!",
+    "carousel1": {
+      "title": "اكتشف مجموعتنا الأحدث",
+      "buttonCaption": "تسوق الآن"
+    },
+    "carousel2": {
+      "title": "عروض حصرية لك",
+      "buttonCaption": "استكشف العروض"
+    },
+    "carousel3": {
+      "title": "وصول جديد كل أسبوع",
+      "buttonCaption": "شاهد الجديد"
+    }
   },
   "Product": {
     "Added to Cart": "أضيف إلى السلة",
@@ -182,6 +369,16 @@
     "active": "نشط",
     "inactive": "غير نشط",
     "refresh": "تحديث",
+    "regenerateSecret": "إعادة إنشاء المفتاح السري",
+    "descriptionPlaceholder": "أدخل وصف التطبيق (اختياري)",
+    "logoUrlPlaceholder": "أدخل رابط الشعار (اختياري)",
+    "publishToMarketplace": "إدراج في السوق",
+    "marketplaceLink": "سوق MGZON",
+    "copyKey": "نسخ المفتاح",
+    "rotateKey": "تدوير المفتاح",
+    "deleteKey": "حذف المفتاح",
+    "copied": "تم النسخ",
+    "creating": "جارٍ الإنشاء",
     "refreshing": "جارٍ التحديث",
     "noKeys": "لم يتم العثور على مفاتيح API",
     "errors": {
@@ -200,7 +397,32 @@
       "userNotFound": "المستخدم غير موجود",
       "apiKeyNotFound": "مفتاح API غير موجود",
       "invalidPermissions": "الصلاحيات المقدمة غير صالحة",
-      "forbiddenPermissions": "غير مسموح لك بطلب هذه الصلاحيات: {permissions}"
+      "forbiddenPermissions": "غير مسموح لك بطلب هذه الصلاحيات: {permissions}",
+      "copyFailed": "فشل النسخ",
+      "copyFailedMessage": "حدث خطأ أثناء نسخ المفتاح إلى الحافظة",
+      "copyRequiresHttps": "النسخ يتطلب تشغيل التطبيق عبر HTTPS",
+      "clipboardNotSupported": "الحافظة غير مدعومة",
+      "fetchClientsFailed": "فشل جلب التطبيقات",
+      "deleteAppFailed": "فشل حذف التطبيق",
+      "regenerateSecretFailed": "فشل إعادة إنشاء السر",
+      "publishFailed": "فشل طلب النشر",
+      "invalidRedirectUri": "رابط إعادة التوجيه غير صالح"
+    },
+    "api": {
+      "errors": {
+        "userNotFound": "لم يتم العثور على المستخدم",
+        "apiKeyNotFound": "لم يتم العثور على مفتاح API",
+        "forbiddenPermissions": "الصلاحيات غير مسموح بها: {permissions}",
+        "invalidPermissions": "الصلاحيات غير صالحة"
+      },
+      "clients": {
+        "alreadyInMarketplace": "التطبيق مدرج بالفعل في السوق أو قيد المراجعة",
+        "tokenIdRequired": "معرّف الـ Token مطلوب.",
+        "tokenNotFound": "لم يتم العثور على الـ Token.",
+        "unauthorized": "غير مصرح لك بالوصول.",
+        "clientNotFound": "لم يتم العثور على التطبيق.",
+        "unknown_error": "حدث خطأ غير معروف."
+      }
     },
     "success": {
       "created": "تم إنشاء مفتاح API",
@@ -212,16 +434,141 @@
       "deleted": "تم حذف مفتاح API",
       "deletedMessage": "تم حذف مفتاح API بنجاح",
       "appCreated": "تم إنشاء تطبيق OAuth",
-      "appCreatedMessage": "تم إنشاء تطبيق OAuth بنجاح"
+      "appCreatedMessage": "تم إنشاء تطبيق OAuth بنجاح",
+      "appCreatedPending": "تم إرسال التطبيق للمراجعة في السوق",
+      "appDeleted": "تم حذف التطبيق",
+      "appDeletedMessage": "تم حذف التطبيق بنجاح",
+      "secretRegenerated": "تم إعادة إنشاء السر",
+      "secretRegeneratedMessage": "تم إعادة إنشاء سر العميل بنجاح",
+      "publishRequested": "تم طلب النشر",
+      "publishRequestedMessage": "تم إرسال التطبيق للمراجعة في السوق"
     },
     "confirm": {
       "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
-      "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء."
+      "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+      "deleteApp": "هل أنت متأكد أنك تريد حذف التطبيق؟ لا يمكن التراجع عن هذا الإجراء.",
+      "regenerateClientSecret": "هل أنت متأكد أنك تريد إعادة إنشاء سر العميل؟ سيتم تعطيل السر الحالي.",
+      "publishToMarketplace": "هل أنت متأكد أنك تريد نشر التطبيق في السوق؟ سيتم إرساله للمراجعة."
     },
     "messages": {
       "apiKeyCreated": "تم إنشاء مفتاح API بنجاح!",
       "appCreated": "تم إنشاء تطبيق OAuth بنجاح!"
+    },
+    "clientId": "معرف العميل",
+    "clientSecret": "سر العميل",
+    "noDescription": "لا يوجد وصف",
+    "status": {
+      "pending": "قيد الانتظار",
+      "approved": "تمت الموافقة",
+      "rejected": "مرفوض"
     }
+  },
+  "notifications": {
+    "email": "البريد الإلكتروني",
+    "Unauthorized": "الوصول غير مصرح به",
+    "Invalid action": "إجراء غير صالح",
+    "Server error": "خطأ في الخادم",
+    "Invalid notification data": "بيانات الإشعار غير صالحة",
+    "Unauthorized access to notifications": "الوصول غير مصرح به للإشعارات",
+    "Fetched unread notifications count": "تم جلب عدد الإشعارات غير المقروءة",
+    "Fetched user notifications": "تم جلب إشعارات المستخدم",
+    "Unauthorized access to clear notifications": "الوصول غير مصرح به لمسح الإشعارات",
+    "Unauthorized access to mark all notifications as read": "الوصول غير مصرح به لوضع علامة مقروء على جميع الإشعارات",
+    "Failed to process notification request": "فشل في معالجة طلب الإشعار",
+    "Notification sent via API": "تم إرسال الإشعار عبر واجهة برمجة التطبيقات",
+    "emailDescription": "تلقي الإشعارات عبر البريد الإلكتروني",
+    "sms": "رسائل SMS",
+    "smsDescription": "تلقي الإشعارات عبر رسائل النص القصير",
+    "orderUpdates": "تحديثات الطلبات",
+    "orderUpdatesDescription": "إشعارات تحديث حالة الطلبات",
+    "marketingEmails": "رسائل التسويق",
+    "marketingEmailsDescription": "العروض الترويجية والعروض الخاصة",
+    "pointsNotifications": "إشعارات النقاط",
+    "pointsNotificationsDescription": "تحديثات رصيد النقاط والمكافآت",
+    "User not found": "المستخدم غير موجود",
+    "No allowed channels": "لا توجد قنوات إشعارات مسموح بها لهذا المستخدم",
+    "Email rate limit initialized": "تم تهيئة حد إرسال البريد الإلكتروني للمفتاح {key}",
+    "Email rate limit incremented": "تم زيادة حد إرسال البريد الإلكتروني للمفتاح {key}، العدد: {count}",
+    "Email rate limit exceeded": "تم تجاوز حد إرسال البريد الإلكتروني للمفتاح {key}، العدد: {count}",
+    "Email rate limit exceeded, notification queued": "تم تجاوز حد إرسال البريد الإلكتروني، الإشعار {notificationId} في قائمة الانتظار",
+    "Rate limit check error": "فشل في التحقق من حد الإرسال",
+    "User email fetched": "تم جلب البريد الإلكتروني للمستخدم {userId} بنجاح",
+    "Failed to fetch user email": "فشل في جلب البريد الإلكتروني للمستخدم {userId}",
+    "User phone fetched": "تم جلب رقم الهاتف للمستخدم {userId} بنجاح",
+    "Failed to fetch user phone": "فشل في جلب رقم الهاتف للمستخدم {userId}",
+    "User push token fetched": "تم جلب رمز الإشعارات الفورية للمستخدم {userId} بنجاح",
+    "Failed to fetch user push token": "فشل في جلب رمز الإشعارات الفورية للمستخدم {userId}",
+    "Email notification sent": "تم إرسال إشعار البريد الإلكتروني بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "Push notification sent": "تم إرسال الإشعار الفوري بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "SMS notification sent": "تم إرسال إشعار الرسائل القصيرة بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "WhatsApp notification sent": "تم إرسال إشعار واتساب بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "In-app notification saved": "تم حفظ الإشعار داخل التطبيق بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "Notification sent successfully": "تم إرسال الإشعار بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "Notification error": "فشل في إرسال الإشعار",
+    "email notification error": "فشل في إرسال إشعار البريد الإلكتروني للمستخدم {userId}، الإشعار {notificationId}",
+    "push notification error": "فشل في إرسال الإشعار الفوري للمستخدم {userId}، الإشعار {notificationId}",
+    "sms notification error": "فشل في إرسال إشعار الرسائل القصيرة للمستخدم {userId}، الإشعار {notificationId}",
+    "whatsapp notification error": "فشل في إرسال إشعار واتساب للمستخدم {userId}، الإشعار {notificationId}",
+    "in_app notification error": "فشل في حفظ الإشعار داخل التطبيق للمستخدم {userId}، الإشعار {notificationId}",
+    "No push token provided": "لم يتم توفير رمز إشعارات فورية لإرسال الإشعار",
+    "Failed to send push notification": "فشل في إرسال الإشعار الفوري",
+    "Textlocal API key not configured": "مفتاح واجهة برمجة تطبيقات Textlocal غير مُهيأ",
+    "Textlocal API error": "خطأ في واجهة برمجة تطبيقات Textlocal: {message}",
+    "Failed to send SMS": "فشل في إرسال الرسالة القصيرة",
+    "SMS sent": "تم إرسال الرسالة القصيرة بنجاح إلى {to}",
+    "Wasender API key not configured": "مفتاح واجهة برمجة تطبيقات Wasender غير مُهيأ",
+    "Wasender WhatsApp API error": "خطأ في واجهة برمجة تطبيقات واتساب Wasender: {message}",
+    "Failed to send WhatsApp message": "فشل في إرسال رسالة واتساب",
+    "WhatsApp message sent": "تم إرسال رسالة واتساب بنجاح إلى {to}، معرف الرسالة: {msgId}",
+    "WhatsApp rate limit initialized": "تم تهيئة حد إرسال واتساب للمفتاح {key}",
+    "WhatsApp rate limit incremented": "تم زيادة حد إرسال واتساب للمفتاح {key}، العدد: {count}",
+    "WhatsApp rate limit exceeded": "تم تجاوز حد إرسال واتساب للمفتاح {key}، العدد: {count}",
+    "WhatsApp rate limit exceeded, notification queued": "تم تجاوز حد إرسال واتساب، الإشعار {notificationId} في قائمة الانتظار",
+    "Notification marked as read": "تم وضع علامة مقروء على الإشعار {notificationId}",
+    "Notification not found": "الإشعار {notificationId} غير موجود",
+    "Failed to mark notification as read": "فشل في وضع علامة مقروء على الإشعار {notificationId}",
+    "Unread notifications count fetched": "تم جلب عدد الإشعارات غير المقروءة للمستخدم {userId}، العدد: {count}",
+    "Failed to fetch unread count": "فشل في جلب عدد الإشعارات غير المقروءة للمستخدم {userId}",
+    "User notifications fetched": "تم جلب إشعارات المستخدم بنجاح للمستخدم {userId}، الحد: {limit}، التخطي: {skip}، العدد: {count}",
+    "Failed to fetch notifications": "فشل في جلب إشعارات المستخدم {userId}",
+    "Notification deleted": "تم حذف الإشعار {notificationId} بنجاح",
+    "Failed to delete notification": "فشل في حذف الإشعار {notificationId}",
+    "All notifications cleared": "تم مسح جميع الإشعارات للمستخدم {userId}",
+    "Failed to clear notifications": "فشل في مسح جميع الإشعارات للمستخدم {userId}",
+    "All notifications marked as read": "تم وضع علامة مقروء على جميع الإشعارات للمستخدم {userId}",
+    "Failed to mark all notifications as read": "فشل في وضع علامة مقروء على جميع الإشعارات للمستخدم {userId}"
+  },
+  "Withdrawals": {
+    "title": "السحب",
+    "balance": "الرصيد الحالي",
+    "points": "نقاط",
+    "transactionTrend": "اتجاه المعاملات",
+    "amountPlaceholder": "أدخل المبلغ المراد سحبه",
+    "requestWithdrawal": "طلب السحب",
+    "transactionHistory": "سجل المعاملات",
+    "noTransactions": "لا توجد معاملات متاحة",
+    "loading": "جارٍ التحميل...",
+    "errors": {
+      "fetchFailed": "فشل في جلب بيانات الرصيد",
+      "serverError": "حدث خطأ غير متوقع في الخادم",
+      "invalidAmount": "يجب أن يكون مبلغ السحب 10 على الأقل",
+      "insufficientBalance": "الرصيد غير كافٍ للسحب",
+      "withdrawalFailed": "فشل في معالجة طلب السحب"
+    },
+    "success": {
+      "withdrawalSubmitted": "تم إرسال طلب السحب بنجاح"
+    },
+    "Unauthorized": "الوصول غير مصرح به",
+    "Invalid request data": "بيانات الطلب غير صالحة",
+    "Seller not found": "البائع غير موجود",
+    "Cannot withdraw while there are late payments": "لا يمكن السحب بسبب وجود مدفوعات متأخرة",
+    "Cannot withdraw while there are pending orders": "لا يمكن السحب بسبب وجود طلبات معلقة",
+    "Bank account not verified. Please complete your financial profile.": "الحساب البنكي غير موثق. يرجى استكمال ملفك المالي.",
+    "Payment method not configured": "طريقة الدفع غير مكونة",
+    "Payment integration not connected": "تكامل الدفع غير متصل",
+    "Failed to create mgpay account": "فشل في إنشاء حساب mgpay",
+    "Insufficient points balance": "رصيد النقاط غير كافٍ",
+    "Server error": "خطأ في الخادم"
   },
   "SellerDashboard": {
     "routingNumber": {
@@ -232,6 +579,17 @@
     "notificationSettings": "إعدادات الإشعارات",
     "notifications": {
       "email": "البريد الإلكتروني",
+      "Unauthorized": "الوصول غير مصرح به",
+      "Invalid action": "إجراء غير صالح",
+      "Server error": "خطأ في الخادم",
+      "Invalid notification data": "بيانات الإشعار غير صالحة",
+      "Unauthorized access to notifications": "الوصول غير مصرح به للإشعارات",
+      "Fetched unread notifications count": "تم جلب عدد الإشعارات غير المقروءة",
+      "Fetched user notifications": "تم جلب إشعارات المستخدم",
+      "Unauthorized access to clear notifications": "الوصول غير مصرح به لمسح الإشعارات",
+      "Unauthorized access to mark all notifications as read": "الوصول غير مصرح به لوضع علامة مقروء على جميع الإشعارات",
+      "Failed to process notification request": "فشل في معالجة طلب الإشعار",
+      "Notification sent via API": "تم إرسال الإشعار عبر واجهة برمجة التطبيقات",
       "emailDescription": "تلقي الإشعارات عبر البريد الإلكتروني",
       "sms": "رسائل SMS",
       "smsDescription": "تلقي الإشعارات عبر رسائل النص القصير",
@@ -240,7 +598,59 @@
       "marketingEmails": "رسائل التسويق",
       "marketingEmailsDescription": "العروض الترويجية والعروض الخاصة",
       "pointsNotifications": "إشعارات النقاط",
-      "pointsNotificationsDescription": "تحديثات رصيد النقاط والمكافآت"
+      "pointsNotificationsDescription": "تحديثات رصيد النقاط والمكافآت",
+      "User not found": "المستخدم غير موجود",
+      "No allowed channels": "لا توجد قنوات إشعارات مسموح بها لهذا المستخدم",
+      "Email rate limit initialized": "تم تهيئة حد إرسال البريد الإلكتروني للمفتاح {key}",
+      "Email rate limit incremented": "تم زيادة حد إرسال البريد الإلكتروني للمفتاح {key}، العدد: {count}",
+      "Email rate limit exceeded": "تم تجاوز حد إرسال البريد الإلكتروني للمفتاح {key}، العدد: {count}",
+      "Email rate limit exceeded, notification queued": "تم تجاوز حد إرسال البريد الإلكتروني، الإشعار {notificationId} في قائمة الانتظار",
+      "Rate limit check error": "فشل في التحقق من حد الإرسال",
+      "User email fetched": "تم جلب البريد الإلكتروني للمستخدم {userId} بنجاح",
+      "Failed to fetch user email": "فشل في جلب البريد الإلكتروني للمستخدم {userId}",
+      "User phone fetched": "تم جلب رقم الهاتف للمستخدم {userId} بنجاح",
+      "Failed to fetch user phone": "فشل في جلب رقم الهاتف للمستخدم {userId}",
+      "User push token fetched": "تم جلب رمز الإشعارات الفورية للمستخدم {userId} بنجاح",
+      "Failed to fetch user push token": "فشل في جلب رمز الإشعارات الفورية للمستخدم {userId}",
+      "Email notification sent": "تم إرسال إشعار البريد الإلكتروني بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+      "Push notification sent": "تم إرسال الإشعار الفوري بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+      "SMS notification sent": "تم إرسال إشعار الرسائل القصيرة بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+      "WhatsApp notification sent": "تم إرسال إشعار واتساب بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+      "In-app notification saved": "تم حفظ الإشعار داخل التطبيق بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+      "Notification sent successfully": "تم إرسال الإشعار بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+      "Notification error": "فشل في إرسال الإشعار",
+      "email notification error": "فشل في إرسال إشعار البريد الإلكتروني للمستخدم {userId}، الإشعار {notificationId}",
+      "push notification error": "فشل في إرسال الإشعار الفوري للمستخدم {userId}، الإشعار {notificationId}",
+      "sms notification error": "فشل في إرسال إشعار الرسائل القصيرة للمستخدم {userId}، الإشعار {notificationId}",
+      "whatsapp notification error": "فشل في إرسال إشعار واتساب للمستخدم {userId}، الإشعار {notificationId}",
+      "in_app notification error": "فشل في حفظ الإشعار داخل التطبيق للمستخدم {userId}، الإشعار {notificationId}",
+      "No push token provided": "لم يتم توفير رمز إشعارات فورية لإرسال الإشعار",
+      "Failed to send push notification": "فشل في إرسال الإشعار الفوري",
+      "Textlocal API key not configured": "مفتاح واجهة برمجة تطبيقات Textlocal غير مُهيأ",
+      "Textlocal API error": "خطأ في واجهة برمجة تطبيقات Textlocal: {message}",
+      "Failed to send SMS": "فشل في إرسال الرسالة القصيرة",
+      "SMS sent": "تم إرسال الرسالة القصيرة بنجاح إلى {to}",
+      "Wasender API key not configured": "مفتاح واجهة برمجة تطبيقات Wasender غير مُهيأ",
+      "Wasender WhatsApp API error": "خطأ في واجهة برمجة تطبيقات واتساب Wasender: {message}",
+      "Failed to send WhatsApp message": "فشل في إرسال رسالة واتساب",
+      "WhatsApp message sent": "تم إرسال رسالة واتساب بنجاح إلى {to}، معرف الرسالة: {msgId}",
+      "WhatsApp rate limit initialized": "تم تهيئة حد إرسال واتساب للمفتاح {key}",
+      "WhatsApp rate limit incremented": "تم زيادة حد إرسال واتساب للمفتاح {key}، العدد: {count}",
+      "WhatsApp rate limit exceeded": "تم تجاوز حد إرسال واتساب للمفتاح {key}، العدد: {count}",
+      "WhatsApp rate limit exceeded, notification queued": "تم تجاوز حد إرسال واتساب، الإشعار {notificationId} في قائمة الانتظار",
+      "Notification marked as read": "تم وضع علامة مقروء على الإشعار {notificationId}",
+      "Notification not found": "الإشعار {notificationId} غير موجود",
+      "Failed to mark notification as read": "فشل في وضع علامة مقروء على الإشعار {notificationId}",
+      "Unread notifications count fetched": "تم جلب عدد الإشعارات غير المقروءة للمستخدم {userId}، العدد: {count}",
+      "Failed to fetch unread count": "فشل في جلب عدد الإشعارات غير المقروءة للمستخدم {userId}",
+      "User notifications fetched": "تم جلب إشعارات المستخدم بنجاح للمستخدم {userId}، الحد: {limit}، التخطي: {skip}، العدد: {count}",
+      "Failed to fetch notifications": "فشل في جلب إشعارات المستخدم {userId}",
+      "Notification deleted": "تم حذف الإشعار {notificationId} بنجاح",
+      "Failed to delete notification": "فشل في حذف الإشعار {notificationId}",
+      "All notifications cleared": "تم مسح جميع الإشعارات للمستخدم {userId}",
+      "Failed to clear notifications": "فشل في مسح جميع الإشعارات للمستخدم {userId}",
+      "All notifications marked as read": "تم وضع علامة مقروء على جميع الإشعارات للمستخدم {userId}",
+      "Failed to mark all notifications as read": "فشل في وضع علامة مقروء على جميع الإشعارات للمستخدم {userId}"
     },
     "bankVerification": {
       "verified": "تم التحقق من الحساب البنكي",
@@ -664,10 +1074,12 @@
       "or": "أو",
       "points": "نقاط",
       "trialMonths": "{count, plural, one {شهر تجريبي} other {# أشهر تجريبية}}",
-      "domainStatus": "حالة النطاق",
-      "domainStatus.active": "نشط",
-      "domainStatus.expired": "منتهي الصلاحية",
-      "domainStatus.pending": "قيد الانتظار",
+      "domainStatus": {
+        "label": "حالة النطاق",
+        "active": "نشط",
+        "expired": "منتهي الصلاحية",
+        "pending": "قيد الانتظار"
+      },
       "redeemPoints": "استبدال النقاط",
       "payWithMethod": "الدفع باستخدام {method}",
       "features": {
@@ -864,8 +1276,6 @@
     "video height": "الارتفاع الفيديو",
     "image top position": "الموضع العلوي للصورة",
     "video top position": "الموضع العلوي للفديو",
-    "endpoint key": "مفتاح نقطة النهاية",
-    "endpoint value": "قيمة نقطة النهاية",
     "error.message": "فشل في إضافة التكامل",
     "error.preview": "فشل في إنشاء المعاينة",
     "redirect uri": "إعادة توجيه URI",
@@ -1435,7 +1845,51 @@
   },
   "Integrations": {
     "integration saved successfully": "Integration saved successfully",
-    "failed to save integration": "Failed to save integration"
+    "failed to save integration": "Failed to save integration",
+    "title": "سوق MGZON",
+    "no_description": "لا يوجد وصف",
+    "reviews": "تقييمات",
+    "viewDetails": "عرض التفاصيل",
+    "loading": "جار التحميل...",
+    "edit": {
+      "title": "تعديل تطبيق {name}",
+      "name": "اسم التطبيق",
+      "description": "الوصف",
+      "logoUrl": "رابط الشعار",
+      "save": "حفظ التغييرات",
+      "loading": "جار التحميل...",
+      "tokens": "التوكنات",
+      "accessToken": "توكن الوصول",
+      "expiresAt": "ينتهي في",
+      "noTokens": "لا توجد توكنات",
+      "revoke": "إبطال",
+      "publishToMarketplace": "نشر في السوق",
+      "marketplaceLink": "عرض السوق",
+      "actions": "الإجراءات",
+      "redirectUris": "روابط إعادة التوجيه",
+      "addRedirectUri": "أدخل رابط إعادة توجيه",
+      "scopes": "النطاقات",
+      "customScopes": "نطاقات مخصصة",
+      "addCustomScope": "أدخل نطاق مخصص",
+      "features": "الميزات",
+      "addFeature": "أدخل ميزة",
+      "categories": "الفئات",
+      "add": "إضافة"
+    },
+    "success": {
+      "title": "تم التعديل",
+      "tokenRevoked": "تم إبطال التوكن بنجاح",
+      "updated": "تم تحديث التطبيق بنجاح"
+    },
+    "confirm": {
+      "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
+      "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+      "revokeToken": "هل أنت متأكد من إبطال هذا التوكن؟"
+    },
+    "error": {
+      "title": "خطأ",
+      "clientNotFound": "التطبيق غير موجود"
+    }
   },
   "Cart": {
     "added to cart": "تمت الإضافة إلى السلة",
@@ -2634,7 +3088,39 @@
     "subscribeNow": "اشترك الآن"
   },
   "integrations": {
+    "title": "التكاملات",
+    "noIntegrationsFound": "لم يتم العثور على تكاملات",
+    "no_description": "لا يوجد وصف",
+    "reviews": "مراجعات",
+    "installs": "التثبيتات",
+    "viewDetails": "عرض التفاصيل",
+    "error": {
+      "title": "خطأ",
+      "clientNotFound": "لم يتم العثور على التطبيق",
+      "fetchFailed": "فشل جلب البيانات"
+    },
+    "payment": "الدفع",
+    "warehouse": "المستودع",
+    "dropshipping": "الدروب شيبينغ",
+    "marketplace": "السوق",
+    "shipping": "الشحن",
+    "marketing": "التسويق",
+    "accounting": "المحاسبة",
+    "crm": "إدارة العلاقات مع العملاء",
+    "analytics": "التحليلات",
+    "automation": "الأتمتة",
+    "communication": "الاتصالات",
+    "education": "التعليم",
+    "security": "الأمان",
+    "advertising": "الإعلانات",
+    "tax": "الضرائب",
+    "other": "أخرى",
     "landing": {
+      "connecting": "جاري الاتصال",
+      "sandbox_mode": "وضع التجربة",
+      "connected": "تم الاتصال بنجاح",
+      "pending_approval": "قيد المراجعة",
+      "app_not_approved": "التطبيق لم يتم الموافقة عليه بعد",
       "error_title": "خطأ",
       "success_title": "نجاح",
       "loading": "جارٍ التحميل...",
@@ -2670,6 +3156,104 @@
       "advertising": "الإعلانات",
       "tax": "الضرائب",
       "other": "أخرى"
+    },
+    "edit": {
+      "title": "تعديل تطبيق {name}",
+      "name": "اسم التطبيق",
+      "description": "الوصف",
+      "logoUrl": "رابط الشعار",
+      "save": "حفظ التغييرات",
+      "loading": "جار التحميل...",
+      "tokens": "التوكنات",
+      "accessToken": "توكن الوصول",
+      "expiresAt": "ينتهي في",
+      "noTokens": "لا توجد توكنات",
+      "revoke": "إبطال",
+      "publishToMarketplace": "نشر في السوق",
+      "marketplaceLink": "عرض السوق",
+      "actions": "الإجراءات",
+      "redirectUris": "روابط إعادة التوجيه",
+      "addRedirectUri": "أدخل رابط إعادة توجيه",
+      "scopes": "النطاقات",
+      "customScopes": "نطاقات مخصصة",
+      "addCustomScope": "أدخل نطاق مخصص",
+      "features": "الميزات",
+      "addFeature": "أدخل ميزة",
+      "categories": "الفئات",
+      "add": "إضافة",
+      "errors": {
+        "title": "خطأ",
+        "fetchFailed": "فشل جلب بيانات التطبيق",
+        "fetchTokensFailed": "فشل جلب الرموز",
+        "updateFailed": "فشل تحديث التطبيق",
+        "publishFailed": "فشل طلب النشر",
+        "revokeTokenFailed": "فشل إلغاء الرمز",
+        "clientNotFound": "لم يتم العثور على التطبيق",
+        "nameMinLength": "الاسم يجب أن يكون 2 أحرف على الأقل",
+        "nameMaxLength": "الاسم لا يمكن أن يتجاوز 100 حرف",
+        "invalidRedirectUri": "رابط إعادة التوجيه غير صالح",
+        "redirectUrisRequired": "مطلوب رابط إعادة توجيه واحد على الأقل",
+        "invalidLogoUrl": "رابط الشعار غير صالح",
+        "descriptionMaxLength": "الوصف لا يمكن أن يتجاوز 500 حرف",
+        "scopesRequired": "مطلوب نطاق واحد على الأقل",
+        "featureMaxLength": "الميزة لا يمكن أن تتجاوز 200 حرف",
+        "invalidCustomScope": "تنسيق النطاق المخصص غير صالح"
+      },
+      "success": {
+        "title": "تم التعديل",
+        "tokenRevoked": "تم إبطال التوكن بنجاح",
+        "updated": "تم تحديث التطبيق بنجاح",
+        "publishRequested": "تم طلب النشر",
+        "publishRequestedMessage": "تم إرسال التطبيق للمراجعة في السوق"
+      },
+      "confirm": {
+        "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
+        "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+        "publishToMarketplace": "هل أنت متأكد أنك تريد نشر التطبيق في السوق؟ سيتم إرساله للمراجعة.",
+        "revokeToken": "هل أنت متأكد أنك تريد إلغاء هذا الرمز؟ لا يمكن التراجع عن هذا الإجراء."
+      }
+    },
+    "success": {
+      "title": "تم التعديل",
+      "tokenRevoked": "تم إبطال التوكن بنجاح",
+      "updated": "تم تحديث التطبيق بنجاح",
+      "publishRequested": "تم طلب النشر",
+      "publishRequestedMessage": "تم إرسال التطبيق للمراجعة في السوق"
+    },
+    "confirm": {
+      "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
+      "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء.",
+      "publishToMarketplace": "هل أنت متأكد أنك تريد نشر التطبيق في السوق؟ سيتم إرساله للمراجعة.",
+      "revokeToken": "هل أنت متأكد أنك تريد إلغاء هذا الرمز؟ لا يمكن التراجع عن هذا الإجراء."
+    }
+  },
+  "AdminClients": {
+    "title": "مراجعة التطبيقات",
+    "pendingClients": "التطبيقات قيد الانتظار",
+    "noClientsFound": "لم يتم العثور على تطبيقات قيد الانتظار",
+    "description": "الوصف",
+    "clientId": "معرف العميل",
+    "redirectUris": "روابط إعادة التوجيه",
+    "scopes": "النطاقات",
+    "customScopes": "نطاقات مخصصة",
+    "features": "الميزات",
+    "categories": "الفئات",
+    "status": "الحالة",
+    "created": "تاريخ الإنشاء",
+    "approve": "الموافقة",
+    "reject": "الرفض",
+    "viewDetails": "عرض التفاصيل",
+    "refresh": "تحديث",
+    "noDescription": "لا يوجد وصف",
+    "errors": {
+      "unauthorized": "غير مصرح",
+      "fetchFailed": "فشل جلب التطبيقات",
+      "reviewFailed": "فشل مراجعة التطبيق"
+    },
+    "success": {
+      "reviewed": "تمت مراجعة التطبيق",
+      "approved": "تمت الموافقة على التطبيق بنجاح",
+      "rejected": "تم رفض التطبيق بنجاح"
     }
   },
   "seller": {
@@ -2846,7 +3430,6 @@
       "missingParams": "معلمات الطلب غير كاملة.",
       "unknown": "حدث خطأ غير معروف.",
       "forbiddenScopes": "غير مسموح لك بمنح هذه النطاقات: {scopes}"
-
     }
   },
   "seller integrations": {
@@ -2855,12 +3438,21 @@
       "title": "خطأ",
       "submission title": "خطأ في الإرسال",
       "submission description": "حدث خطأ أثناء إرسال النموذج. يرجى المحاولة مرة أخرى."
-    }
+    },
+    "Unauthorized": "الوصول غير المصرح به إلى التكاملات",
+    "Error Title": "خطأ"
   },
   "Loading": {
     "loading": "جاري التحميل..."
   },
   "Seller Registration": {
+    "subscriptions": {
+      "domainStatus": {
+        "active": "Active",
+        "expired": "Expired",
+        "pending": "Pending"
+      }
+    },
     "title": "تسجيل بائع جديد",
     "description description": "أكمل النموذج أدناه لإنشاء حساب بائع. تأكد من إدخال جميع المعلومات المطلوبة بدقة.",
     "progress": "التقدم",
@@ -3001,6 +3593,57 @@
       "logoUploadFailed": "فشل رفع الشعار.",
       "invalidFormData": "بيانات النموذج غير صالحة أو مفقودة."
     },
+    "validation": {
+      "businessName": {
+        "min": "اسم النشاط التجاري يجب أن يكون على الأقل حرفين",
+        "max": "اسم النشاط التجاري يجب ألا يتجاوز 100 حرف",
+        "format": "اسم النشاط التجاري يحتوي على أحرف غير صالحة"
+      },
+      "email": {
+        "invalid": "البريد الإلكتروني غير صالح",
+        "min": "البريد الإلكتروني قصير جدًا",
+        "max": "البريد الإلكتروني طويل جدًا"
+      },
+      "phone": {
+        "min": "رقم الهاتف قصير جدًا",
+        "max": "رقم الهاتف طويل جدًا",
+        "format": "رقم الهاتف غير صالح"
+      },
+      "description": {
+        "min": "الوصف قصير جدًا",
+        "max": "الوصف طويل جدًا",
+        "format": "الوصف يحتوي على أحرف غير صالحة"
+      },
+      "businessType": {
+        "required": "نوع النشاط التجاري مطلوب"
+      },
+      "taxId": {
+        "min": "رقم التعريف الضريبي غير صالح",
+        "required": "رقم التعريف الضريبي مطلوب للشركات"
+      },
+      "address": {
+        "street": {
+          "required": "الشارع مطلوب"
+        },
+        "city": {
+          "required": "المدينة مطلوبة"
+        },
+        "state": {
+          "required": "الولاية مطلوبة"
+        },
+        "country": {
+          "required": "رمز الدولة مطلوب",
+          "format": "رمز الدولة غير صالح"
+        },
+        "postalCode": {
+          "required": "الرمز البريدي مطلوب",
+          "format": "الرمز البريدي غير صالح"
+        }
+      },
+      "terms": {
+        "required": "يجب قبول الشروط والأحكام"
+      }
+    },
     "messages": {
       "success": "تم تسجيل البائع بنجاح!",
       "sellerExists": "أنت مسجل بالفعل كبائع.",
@@ -3012,20 +3655,106 @@
     "notifications": {
       "sellerRegistered": {
         "title": "مرحبًا بك في برنامج بائعي MGZon!",
-        "message": "تم إنشاء حساب البائع الخاص بك بنجاح."
-      }
+        "message": "تم إنشاء حساب البائع الخاص بك بنجاح.",
+        "email notification error": "فشل إرسال إشعار البريد الإلكتروني"
+      },
+      "email notification error": "فشل إرسال إشعار البريد الإلكتروني"
+    }
+  },
+  "analytics": {
+    "Analytics Title": "لوحة تحليلات البيانات",
+    "Metric Type": "اختر نوع المقياس",
+    "Sales": "المبيعات",
+    "Views": "المشاهدات",
+    "Conversions": "التحويلات",
+    "Returns": "المرتجعات",
+    "Start Date": "تاريخ البداية",
+    "End Date": "تاريخ النهاية",
+    "Fetch Metrics": "جلب المقاييس",
+    "Loading": "جارٍ التحميل...",
+    "Fetch Error": "فشل في جلب بيانات التحليلات",
+    "Error Title": "خطأ",
+    "Date Required": "تاريخ البداية والنهاية مطلوبان",
+    "sales Chart": "مخطط المبيعات",
+    "views Chart": "مخطط المشاهدات",
+    "conversions Chart": "مخطط التحويلات",
+    "returns Chart": "مخطط المرتجعات",
+    "Unauthorized": "الوصول غير مصرح به",
+    "Missing Parameters": "المعلمات المطلوبة غير موجودة",
+    "No Analytics Integration": "لا يوجد تكامل تحليلات متاح"
+  },
+  "createCoupon": {
+    "title": "إنشاء كوبون تخفيض",
+    "code": "رمز الكوبون",
+    "description": "الوصف",
+    "discountType": "نوع الخصم",
+    "discountValue": "قيمة الخصم",
+    "minPurchase": "الحد الأدنى للشراء",
+    "validUntil": "صالح حتى",
+    "submit": "إنشاء الكوبون",
+    "success": "تم إنشاء الكوبون بنجاح",
+    "percentage": "نسبة مئوية",
+    "fixed": "مبلغ ثابت",
+    "errors": {
+      "codeRequired": "رمز الكوبون مطلوب",
+      "codeMinLength": "رمز الكوبون يجب أن يكون 3 أحرف على الأقل",
+      "descriptionRequired": "الوصف مطلوب",
+      "discountTypeRequired": "نوع الخصم مطلوب",
+      "discountValueRequired": "قيمة الخصم مطلوبة",
+      "discountValueMin": "قيمة الخصم يجب أن تكون أكبر من 0",
+      "minPurchaseMin": "الحد الأدنى للشراء يجب أن يكون 0 أو أكثر",
+      "createFailed": "فشل في إنشاء الكوبون"
+    }
+  },
+  "points": {
+    "apply": {
+      "Unauthorized": "غير مصرح",
+      "Server error": "خطأ في الخادم"
+    }
+  },
+  "sellerPointsDashboard": {
+    "title": "لوحة تحكم النقاط",
+    "unauthorized": "غير مصرح",
+    "pointsBalance": "رصيد النقاط",
+    "transactionTrend": "اتجاه المعاملات",
+    "totalEarned": "إجمالي النقاط المكتسبة",
+    "totalRedeemed": "إجمالي النقاط المستردة",
+    "recentTransactions": "المعاملات الأخيرة",
+    "noRecentTransactions": "لا توجد معاملات حديثة",
+    "points": "نقطة",
+    "table": {
+      "date": "التاريخ",
+      "type": "النوع",
+      "amount": "الكمية",
+      "description": "الوصف",
+      "earned": "مكتسبة",
+      "redeemed": "مستردة"
+    },
+    "loading": "جارٍ التحميل...",
+    "errors": {
+      "fetchMetricsFailed": "فشل في جلب بيانات النقاط"
+    },
+    "createCoupon": {
+      "title": "إنشاء كوبون تخفيض"
     }
   },
   "api": {
     "clients": {
       "unauthorized": "غير مصرح بالوصول",
       "not_found": "التطبيق غير موجود أو غير معتمد",
+      "tokenIdRequired": "معرف التوكن مطلوب",
+      "tokenNotFound": "التوكن غير موجود",
       "already_connected": "التطبيق متصل بالفعل",
       "unknown_error": "خطأ غير معروف",
       "failed_to_create": "فشل في إنشاء التطبيق",
+      "alreadyInMarketplace": "التطبيق مدرج بالفعل في السوق أو قيد المراجعة.",
+      "clientNotFound": "لم يتم العثور على التطبيق.",
       "success": {
         "created": "تم إنشاء التطبيق بنجاح",
         "retrieved": "تم استرداد التطبيقات بنجاح"
+      },
+      "clients": {
+        "alreadyInMarketplace": "التطبيق مدرج بالفعل في السوق أو قيد المراجعة"
       }
     },
     "seller": {
@@ -3033,14 +3762,14 @@
         "unauthorized": "غير مصرح بالوصول",
         "not_found": "التطبيق غير موجود أو غير معتمد",
         "unknown_error": "خطأ غير معروف",
-        "failed_to_retrieve": "فشل في استرداد التطبيقات"
+        "failed_to_retrieve": "فشل في استرداد التطبيقات",
+        "Error Title": "خطأ"
       }
     },
     "errors": {
       "termsNotAccepted": "يجب قبول الشروط والأحكام",
       "updateUserRoleFailed": "فشل في تحديث دور المستخدم",
       "serverError": "حدث خطأ غير متوقع",
-      "invalidSellerData": "بيانات البائع غير صالحة",
       "sellerNotFound": "البائع غير موجود",
       "userNotFound": "المستخدم غير موجود",
       "invalidPermissions": "الصلاحيات المقدمة غير صالحة",
@@ -3052,8 +3781,19 @@
       "apiKeyRotationFailed": "فشل في تدوير مفتاح API",
       "apiKeyDeactivationFailed": "فشل في تعطيل مفتاح API",
       "sellerExists": "ملف البائع موجود بالفعل",
-      "unauthenticated": "You must be logged in to perform this action",
-      "invalidBankInfo": "Invalid bank information provided"
+      "invalidBankInfo": "Invalid bank information provided",
+      "failedToFetchSeller": "فشل في جلب بيانات البائع",
+      "failedToAwardPoints": "فشل في منح النقاط",
+      "failedToFetchMetrics": "فشل في جلب المقاييس",
+      "failedToGetSeller": "فشل في جلب بيانات البائع",
+      "failedToGetProducts": "فشل في جلب المنتجات",
+      "failedToCheckSubscription": "فشل في التحقق من حالة الاشتراك",
+      "unauthenticated": "غير مصرح لك بالوصول",
+      "unauthorized": "غير مصرح لك بالوصول إلى هذا المورد",
+      "invalidSellerData": "بيانات البائع غير صالحة",
+      "invalidAmount": "المبلغ غير صالح",
+      "internalServerError": "خطأ داخلي في الخادم",
+      "subscriptionExpired": "انتهت صلاحية الاشتراك"
     },
     "bankInfoUpdated": "Bank information updated successfully",
     "messages": {
@@ -3068,7 +3808,9 @@
       "apiKeyRotatedTitle": "تم تدوير مفتاح API",
       "apiKeyRotatedMessage": "تم تدوير مفتاح API '{name}' بنجاح",
       "apiKeyDeactivatedTitle": "تم تعطيل مفتاح API",
-      "apiKeyDeactivatedMessage": "تم تعطيل مفتاح API '{name}' بنجاح"
+      "apiKeyDeactivatedMessage": "تم تعطيل مفتاح API '{name}' بنجاح",
+      "pointsEarnedTitle": "تم منح النقاط!",
+      "pointsEarnedMessage": "لقد حصلت على {points} نقطة بسبب {description}"
     },
     "notifications": {
       "sellerRegistered": {
@@ -3139,6 +3881,14 @@
       "noPaymentGateway": "لا توجد بوابة دفع مفعلة",
       "verifyData": "فشل التحقق: {message}"
     },
+    "clients": {
+      "alreadyInMarketplace": "التطبيق مدرج بالفعل في السوق أو قيد المراجعة",
+      "tokenIdRequired": "معرّف الـ Token مطلوب.",
+      "tokenNotFound": "لم يتم العثور على الـ Token.",
+      "unauthorized": "غير مصرح لك بالوصول.",
+      "clientNotFound": "لم يتم العثور على التطبيق.",
+      "unknown_error": "حدث خطأ غير معروف."
+    },
     "messages": {
       "pointsRedeemed": "تم استبدال النقاط بنجاح",
       "bankInfoUpdated": "تم تحديث معلومات البنك بنجاح",
@@ -3148,6 +3898,39 @@
     }
   },
   "Seller": {
+    "All Products": "جميع المنتجات",
+    "Add Product": "إضافة منتج",
+    "Create Product": "إضافة منتج",
+    "Ads": "الإعلانات",
+    "Transfer Products": "نقل المنتجات",
+    "Audit Logs": "سجل التدقيق",
+    "Campaigns": "الحملات",
+    "Create Ad": "إنشاء إعلان",
+    "All Orders": "جميع الطلبات",
+    "Pending": "قيد الانتظار",
+    "Shipped": "تم الشحن",
+    "Business Info": "معلومات العمل",
+    "Address": "العنوان",
+    "Bank Info": "معلومات البنك",
+    "Account": "الحساب",
+    "Subscription": "الاشتراك",
+    "Discounts": "العروض",
+    "Notifications": "الإشعارات",
+    "Display": "العرض",
+    "Security": "الأمان",
+    "Custom Site": "الموقع المخصص",
+    "Taxes": "الضرائب",
+    "Domains": "النطاقات",
+    "Verification": "التحقق",
+    "Payment Methods": "طرق الدفع",
+    "Delivery Dates": "مواعيد التوصيل",
+    "Template": "القالب",
+    "Template Editor": "محرر القالب",
+    "Manage Pages": "إدارة الصفحات",
+    "Messages": "الرسائل",
+    "item": {
+      "title": "لوحة تحكم {businessName}"
+    },
     "Overview": "نظرة عامة",
     "Products": "المنتجات",
     "ads": "الإعلانات",
@@ -3702,10 +4485,12 @@
     "or": "أو",
     "points": "نقاط",
     "trialMonths": "{count, plural, one {شهر تجريبي} other {# أشهر تجريبية}}",
-    "domainStatus": "حالة النطاق",
-    "domainStatus.active": "نشط",
-    "domainStatus.expired": "منتهي الصلاحية",
-    "domainStatus.pending": "قيد الانتظار",
+    "domainStatus": {
+      "label": "حالة النطاق",
+      "active": "نشط",
+      "expired": "منتهي الصلاحية",
+      "pending": "قيد الانتظار"
+    },
     "redeemPoints": "استبدال النقاط",
     "payWithMethod": "الدفع باستخدام {method}",
     "plan": "الخطة",
@@ -4082,6 +4867,7 @@
     "trialStatus": "الفترة التجريبية المجانية نشطة: {days} أيام متبقية",
     "trialDescription": "قم بترقية خطتك لفتح ميزات وفوائد إضافية.",
     "upgradePlan": "ترقية الخطة",
+    "loading": "جار التحميل...",
     "pointsBalance": "رصيد النقاط: {points} نقطة",
     "pointsDescription": "استخدم النقاط لفتح ميزات مميزة أو خصومات.",
     "submitting": "جارٍ الحفظ...",
@@ -4434,6 +5220,24 @@
     }
   },
   "Developer": {
+    "listApps": "قائمة التطبيقات",
+    "yourApps": "تطبيقاتك",
+    "payment": "الدفع",
+    "warehouse": "المستودع",
+    "dropshipping": "الدروبشيبنج",
+    "marketplace": "السوق",
+    "shipping": "الشحن",
+    "marketing": "التسويق",
+    "accounting": "المحاسبة",
+    "crm": "إدارة العملاء",
+    "analytics": "التحليلات",
+    "automation": "الأتمتة",
+    "communication": "الاتصالات",
+    "education": "التعليم",
+    "security": "الأمان",
+    "advertising": "الإعلانات",
+    "tax": "الضرائب",
+    "other": "أخرى",
     "developerApplications": "تطبيقات المطور",
     "createNewApp": "إنشاء تطبيق جديد",
     "appName": "اسم التطبيق",
@@ -4487,6 +5291,19 @@
     "installs": "التثبيتات",
     "creating": "جارٍ الإنشاء...",
     "createApp": "إنشاء التطبيق",
+    "pricing": "التسعيرة",
+    "selectPricingModel": "اختر نموذج التسعيرة",
+    "free": "مجاني",
+    "oneTime": "دفعة واحدة",
+    "subscription": "اشتراك",
+    "amount": "المبلغ",
+    "amountPlaceholder": "أدخل المبلغ (مثال: 10.99)",
+    "currency": "العملة",
+    "selectCurrency": "اختر العملة",
+    "interval": "الفترة",
+    "selectInterval": "اختر فترة الاشتراك",
+    "monthly": "شهري",
+    "yearly": "سنوي",
     "messages": {
       "appCreatedPending": "تم إنشاء التطبيق بنجاح! في انتظار الموافقة.",
       "failedToFetchApps": "فشل في جلب التطبيقات",
@@ -4496,6 +5313,8 @@
     "errors": {
       "failedToFetchApps": "فشل في جلب التطبيقات",
       "failedToCreateApp": "فشل في إنشاء التطبيق",
+      "unauthorized": "غير مصرح",
+      "pleaseSignIn": "يرجى تسجيل الدخول",
       "unknown": "خطأ غير معروف"
     }
   },
@@ -4605,6 +5424,73 @@
       "rotate": "هل أنت متأكد من تدوير مفتاح API هذا؟ المفتاح القديم سيصبح غير صالح.",
       "delete": "هل أنت متأكد من حذف مفتاح API هذا؟ لا يمكن التراجع عن هذا الإجراء."
     }
+  },
+  "notifications": {
+    "email": "البريد الإلكتروني",
+    "emailDescription": "تلقي الإشعارات عبر البريد الإلكتروني",
+    "sms": "رسائل SMS",
+    "smsDescription": "تلقي الإشعارات عبر رسائل النص القصير",
+    "orderUpdates": "تحديثات الطلبات",
+    "orderUpdatesDescription": "إشعارات تحديث حالة الطلبات",
+    "marketingEmails": "رسائل التسويق",
+    "marketingEmailsDescription": "العروض الترويجية والعروض الخاصة",
+    "pointsNotifications": "إشعارات النقاط",
+    "pointsNotificationsDescription": "تحديثات رصيد النقاط والمكافآت",
+    "Push notification error": "خطأ في الإشعار الفوري",
+    "Textlocal WhatsApp API error": "خطأ في API واتساب Textlocal",
+    "Failed to send verification email": "فشل في إرسال بريد التحقق",
+    "User not found": "المستخدم غير موجود",
+    "No allowed channels": "لا توجد قنوات إشعارات مسموح بها لهذا المستخدم",
+    "Email rate limit initialized": "تم تهيئة حد إرسال البريد الإلكتروني للمفتاح {key}",
+    "Email rate limit incremented": "تم زيادة حد إرسال البريد الإلكتروني للمفتاح {key}، العدد: {count}",
+    "Email rate limit exceeded": "تم تجاوز حد إرسال البريد الإلكتروني للمفتاح {key}، العدد: {count}",
+    "Email rate limit exceeded, notification queued": "تم تجاوز حد إرسال البريد الإلكتروني، الإشعار {notificationId} في قائمة الانتظار",
+    "Rate limit check error": "فشل في التحقق من حد الإرسال",
+    "User email fetched": "تم جلب البريد الإلكتروني للمستخدم {userId} بنجاح",
+    "Failed to fetch user email": "فشل في جلب البريد الإلكتروني للمستخدم {userId}",
+    "User phone fetched": "تم جلب رقم الهاتف للمستخدم {userId} بنجاح",
+    "Failed to fetch user phone": "فشل في جلب رقم الهاتف للمستخدم {userId}",
+    "User push token fetched": "تم جلب رمز الإشعارات الفورية للمستخدم {userId} بنجاح",
+    "Failed to fetch user push token": "فشل في جلب رمز الإشعارات الفورية للمستخدم {userId}",
+    "Email notification sent": "تم إرسال إشعار البريد الإلكتروني بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "Push notification sent": "تم إرسال الإشعار الفوري بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "SMS notification sent": "تم إرسال إشعار الرسائل القصيرة بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "WhatsApp notification sent": "تم إرسال إشعار واتساب بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "In-app notification saved": "تم حفظ الإشعار داخل التطبيق بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "Notification sent successfully": "تم إرسال الإشعار بنجاح للمستخدم {userId}، الإشعار {notificationId}",
+    "Notification error": "فشل في إرسال الإشعار",
+    "email notification error": "فشل في إرسال إشعار البريد الإلكتروني للمستخدم {userId}، الإشعار {notificationId}",
+    "push notification error": "فشل في إرسال الإشعار الفوري للمستخدم {userId}، الإشعار {notificationId}",
+    "sms notification error": "فشل في إرسال إشعار الرسائل القصيرة للمستخدم {userId}، الإشعار {notificationId}",
+    "whatsapp notification error": "فشل في إرسال إشعار واتساب للمستخدم {userId}، الإشعار {notificationId}",
+    "in_app notification error": "فشل في حفظ الإشعار داخل التطبيق للمستخدم {userId}، الإشعار {notificationId}",
+    "No push token provided": "لم يتم توفير رمز إشعارات فورية لإرسال الإشعار",
+    "Failed to send push notification": "فشل في إرسال الإشعار الفوري",
+    "Textlocal API key not configured": "مفتاح واجهة برمجة تطبيقات Textlocal غير مُهيأ",
+    "Textlocal API error": "خطأ في واجهة برمجة تطبيقات Textlocal: {message}",
+    "Failed to send SMS": "فشل في إرسال الرسالة القصيرة",
+    "SMS sent": "تم إرسال الرسالة القصيرة بنجاح إلى {to}",
+    "Wasender API key not configured": "مفتاح واجهة برمجة تطبيقات Wasender غير مُهيأ",
+    "Wasender WhatsApp API error": "خطأ في واجهة برمجة تطبيقات واتساب Wasender: {message}",
+    "Failed to send WhatsApp message": "فشل في إرسال رسالة واتساب",
+    "WhatsApp message sent": "تم إرسال رسالة واتساب بنجاح إلى {to}، معرف الرسالة: {msgId}",
+    "WhatsApp rate limit initialized": "تم تهيئة حد إرسال واتساب للمفتاح {key}",
+    "WhatsApp rate limit incremented": "تم زيادة حد إرسال واتساب للمفتاح {key}، العدد: {count}",
+    "WhatsApp rate limit exceeded": "تم تجاوز حد إرسال واتساب للمفتاح {key}، العدد: {count}",
+    "WhatsApp rate limit exceeded, notification queued": "تم تجاوز حد إرسال واتساب، الإشعار {notificationId} في قائمة الانتظار",
+    "Notification marked as read": "تم وضع علامة مقروء على الإشعار {notificationId}",
+    "Notification not found": "الإشعار {notificationId} غير موجود",
+    "Failed to mark notification as read": "فشل في وضع علامة مقروء على الإشعار {notificationId}",
+    "Unread notifications count fetched": "تم جلب عدد الإشعارات غير المقروءة للمستخدم {userId}، العدد: {count}",
+    "Failed to fetch unread count": "فشل في جلب عدد الإشعارات غير المقروءة للمستخدم {userId}",
+    "User notifications fetched": "تم جلب إشعارات المستخدم بنجاح للمستخدم {userId}، الحد: {limit}، التخطي: {skip}، العدد: {count}",
+    "Failed to fetch notifications": "فشل في جلب إشعارات المستخدم {userId}",
+    "Notification deleted": "تم حذف الإشعار {notificationId} بنجاح",
+    "Failed to delete notification": "فشل في حذف الإشعار {notificationId}",
+    "All notifications cleared": "تم مسح جميع الإشعارات للمستخدم {userId}",
+    "Failed to clear notifications": "فشل في مسح جميع الإشعارات للمستخدم {userId}",
+    "All notifications marked as read": "تم وضع علامة مقروء على جميع الإشعارات للمستخدم {userId}",
+    "Failed to mark all notifications as read": "فشل في وضع علامة مقروء على جميع الإشعارات للمستخدم {userId}"
   },
   "Template": {
     "primaryColor": "اللون الأساسي",

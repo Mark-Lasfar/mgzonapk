@@ -14,12 +14,12 @@ export class ApiKeyService {
 
   private static async getRedisClient(): Promise<Redis> {
     if (!this.redis) {
-      if (!process.env.UPSTASH_REDIS_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      if (!process.env.UPSTASH_REDIS_URL || !process.env.UPSTASH_REDIS_TOKEN) {
         throw new Error('Redis configuration is missing');
       }
       this.redis = new Redis({
         url: process.env.UPSTASH_REDIS_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        token: process.env.UPSTASH_REDIS_TOKEN,
       });
     }
     return this.redis;

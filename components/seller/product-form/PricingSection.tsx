@@ -1,10 +1,15 @@
-// /home/mark/Music/my-nextjs-project-clean/components/seller/product-form/PricingSection.tsx
+'use client';
+
 import { useTranslations } from 'next-intl';
+import { useMutation } from '@apollo/client/react';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { State, Action } from '@/lib/types';
-import { calculatePricing } from '@/lib/utils';
+import { useToast } from '@/components/ui/toast';
+import { CALCULATE_PRICING } from '@/graphql/product/queries';
+import React from 'react';
+
 
 interface PricingSectionProps {
   state: State;
@@ -13,13 +18,51 @@ interface PricingSectionProps {
 
 export default function PricingSection({ state, dispatch }: PricingSectionProps) {
   const t = useTranslations('Seller.ProductForm');
-  const pricing = calculatePricing(
-    Number(state.formValues.price) || 0,
-    Number(state.formValues.listPrice) || 0,
-    Number(state.formValues.pricing?.markup) || 30,
-    state.formValues.pricing?.discount,
-    state.currency
-  );
+  const { toast } = useToast();
+  const [calculatePricing, { loading, error }] = useMutation(CALCULATE_PRICING);
+
+  const handleCalculatePricing = async () => {
+    try {
+      const { data } = await calculatePricing({
+        variables: {
+          basePrice: Number(state.formValues.price) || 0,
+          listPrice: Number(state.formValues.listPrice) || 0,
+          markup: Number(state.formValues.pricing?.markup) || 30,
+          discount: state.formValues.pricing?.discount,
+          currency: state.currency,
+        },
+      });
+      return data.calculatePricing;
+    } catch (err) {
+      toast({
+        variant: 'destructive',
+        title: t('error'),
+        description: t('pricingCalculationFailed'),
+      });
+      return null;
+    }
+  };
+
+  // نستخدم useEffect لتحديث الأسعار تلقائيًا عند تغيير المدخلات
+  React.useEffect(() => {
+    handleCalculatePricing().then((pricing) => {
+      if (pricing) {
+        dispatch({
+          type: 'SET_FORM_VALUES',
+          payload: {
+            ...state.formValues,
+            pricing: {
+              ...state.formValues.pricing,
+              commission: pricing.commission,
+              finalPrice: pricing.finalPrice,
+              profit: pricing.profit,
+              suggestedMarkup: pricing.suggestedMarkup,
+            },
+          },
+        });
+      }
+    });
+  }, [state.formValues.price, state.formValues.listPrice, state.formValues.pricing?.markup, state.formValues.pricing?.discount, state.currency]);
 
   return (
     <Card>
@@ -46,11 +89,12 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
               });
             }}
             aria-label={t('basePrice')}
+            disabled={loading}
           />
           <p className="text-sm text-muted-foreground">
-            {t('yourCost')}: {pricing.currency} {Number(state.formValues.price).toFixed(2)}
+            {t('yourCost')}: {state.currency} {Number(state.formValues.price).toFixed(2)}
             <br />
-            <small>{t('commission')}: {pricing.currency} {pricing.commission}</small>
+            <small>{t('commission')}: {state.currency} {state.formValues.pricing?.commission?.toFixed(2) || '0.00'}</small>
           </p>
         </div>
         <div>
@@ -75,11 +119,12 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
               });
             }}
             aria-label={t('listPrice')}
+            disabled={loading}
           />
           <p className="text-sm text-muted-foreground">
-            {t('msrp')}: {pricing.currency} {Number(state.formValues.listPrice).toFixed(2)}
+            {t('msrp')}: {state.currency} {Number(state.formValues.listPrice).toFixed(2)}
             <br />
-            <small>{t('suggestedMarkup')}: {pricing.suggestedMarkup}%</small>
+            <small>{t('suggestedMarkup')}: {state.formValues.pricing?.suggestedMarkup?.toFixed(2) || '30.00'}%</small>
           </p>
         </div>
         <div>
@@ -89,7 +134,7 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
             step="0.1"
             min="0"
             max="100"
-            value={state.formValues.pricing?.markup || pricing.suggestedMarkup}
+            value={state.formValues.pricing?.markup || '30'}
             onChange={(e) => {
               const value = parseFloat(e.target.value) || 30;
               dispatch({
@@ -98,11 +143,12 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
               });
             }}
             aria-label={t('markup')}
+            disabled={loading}
           />
           <p className="text-sm text-muted-foreground">
-            {t('finalPrice')}: {pricing.currency} {pricing.finalPrice}
+            {t('finalPrice')}: {state.currency} {state.formValues.pricing?.finalPrice?.toFixed(2) || '0.00'}
             <br />
-            <small>{t('estProfit')}: {pricing.currency} {pricing.profit}</small>
+            <small>{t('estProfit')}: {state.currency} {state.formValues.pricing?.profit?.toFixed(2) || '0.00'}</small>
           </p>
         </div>
         <div>
@@ -118,6 +164,7 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
                 },
               })
             }
+            disabled={loading}
           >
             <SelectTrigger>
               <SelectValue placeholder={t('selectDiscountType')} />
@@ -152,6 +199,7 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
                   });
                 }}
                 aria-label={t('discountValue')}
+                disabled={loading}
               />
               <p className="text-sm text-muted-foreground">
                 {state.formValues.pricing?.discount?.type === 'percentage' ? t('enterPercentage') : t('enterAmount')}
@@ -172,6 +220,7 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
                   })
                 }
                 aria-label={t('startDate')}
+                disabled={loading}
               />
             </div>
             <div>
@@ -189,6 +238,7 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
                   })
                 }
                 aria-label={t('endDate')}
+                disabled={loading}
               />
             </div>
           </>
@@ -198,6 +248,7 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
           <Select
             value={state.currency}
             onValueChange={(value) => dispatch({ type: 'SET_CURRENCY', payload: value })}
+            disabled={loading}
           >
             <SelectTrigger>
               <SelectValue placeholder={t('selectCurrency')} />
@@ -212,6 +263,9 @@ export default function PricingSection({ state, dispatch }: PricingSectionProps)
           </Select>
         </div>
       </CardContent>
+      {error && (
+        <p className="text-red-500 text-sm mt-2">{t('pricingCalculationFailed')}</p>
+      )}
     </Card>
   );
 }

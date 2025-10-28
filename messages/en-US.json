@@ -109,7 +109,19 @@
     "All Categories": "All Categories",
     "Popular Tags": "Popular Tags",
     "Trending Categories": "Trending Categories",
-    "Related Products": "Related Products"
+    "Related Products": "Related Products",
+    "carousel1": {
+      "title": "Discover Our Latest Collection",
+      "buttonCaption": "Shop Now"
+    },
+    "carousel2": {
+      "title": "Exclusive Deals Just for You",
+      "buttonCaption": "Explore Offers"
+    },
+    "carousel3": {
+      "title": "New Arrivals Every Week",
+      "buttonCaption": "See What's New"
+    }
   },
   "Product": {
     "Added To Cart": "Added to Cart",
@@ -774,6 +786,41 @@
       }
     }
   },
+  "Withdrawals": {
+    "title": "Withdrawals",
+    "balance": "Current Balance",
+    "points": "Points",
+    "amountPlaceholder": "Enter amount to withdraw",
+    "requestWithdrawal": "Request Withdrawal",
+    "transactionHistory": "Transaction History",
+    "noTransactions": "No transactions available",
+    "loading": "Loading...",
+    "errors": {
+      "fetchFailed": "Failed to fetch balance data",
+      "serverError": "An unexpected server error occurred",
+      "invalidAmount": "Withdrawal amount must be at least 10",
+      "insufficientBalance": "Insufficient balance for withdrawal",
+      "withdrawalFailed": "Failed to process withdrawal request"
+    },
+    "success": {
+      "withdrawalSubmitted": "Withdrawal request submitted successfully"
+    },
+    "Unauthorized": "Unauthorized access",
+    "Invalid request data": "Invalid request data",
+    "Seller not found": "Seller not found",
+    "Cannot withdraw while there are late payments": "Cannot withdraw while there are late payments",
+    "Cannot withdraw while there are pending orders": "Cannot withdraw while there are pending orders",
+    "Bank account not verified. Please complete your financial profile.": "Bank account not verified. Please complete your financial profile.",
+    "Payment method not configured": "Payment method not configured",
+    "Payment integration not connected": "Payment integration not connected",
+    "Failed to create mgpay account": "Failed to create mgpay account",
+    "Insufficient points balance": "Insufficient points balance",
+    "Server error": "Server error"
+  },
+  "seller integrations": {
+    "Unauthorized": "Unauthorized access to integrations",
+    "Error Title": "Error"
+  },
   "Seller Registration": {
     "Title": "Seller Registration",
     "Description": "Fill Out the Form to Register as a Seller on Our Platform.",
@@ -781,6 +828,13 @@
     "Alert": {
       "Title": "Important",
       "Description": "Please Provide Accurate Information. You Can Save and Continue Later."
+    },
+    "subscriptions": {
+      "domainStatus": {
+        "active": "Active",
+        "expired": "Expired",
+        "pending": "Pending"
+      }
     },
     "Steps": {
       "Basic Info": "Basic Information",
@@ -1077,8 +1131,61 @@
     "notifications": {
       "sellerRegistered": {
         "title": "Welcome to MGZon Seller Program!",
-        "message": "Your seller account has been successfully created."
-      }
+        "message": "Your seller account has been successfully created.",
+        "email notification error": "Failed to send email notification"
+      },
+      "User not found": "User not found",
+      "No allowed channels": "No notification channels are allowed for this user",
+      "Email rate limit initialized": "Email rate limit initialized for key {key}",
+      "Email rate limit incremented": "Email rate limit incremented for key {key}, count: {count}",
+      "Email rate limit exceeded": "Email rate limit exceeded for key {key}, count: {count}",
+      "Email rate limit exceeded, notification queued": "Email rate limit exceeded, notification {notificationId} queued",
+      "Rate limit check error": "Failed to check rate limit",
+      "User email fetched": "User email fetched successfully for user {userId}",
+      "Failed to fetch user email": "Failed to fetch user email for user {userId}",
+      "User phone fetched": "User phone fetched successfully for user {userId}",
+      "Failed to fetch user phone": "Failed to fetch user phone for user {userId}",
+      "User push token fetched": "User push token fetched successfully for user {userId}",
+      "Failed to fetch user push token": "Failed to fetch user push token for user {userId}",
+      "Email notification sent": "Email notification sent successfully for user {userId}, notification {notificationId}",
+      "Push notification sent": "Push notification sent successfully for user {userId}, notification {notificationId}",
+      "SMS notification sent": "SMS notification sent successfully for user {userId}, notification {notificationId}",
+      "WhatsApp notification sent": "WhatsApp notification sent successfully for user {userId}, notification {notificationId}",
+      "In-app notification saved": "In-app notification saved successfully for user {userId}, notification {notificationId}",
+      "Notification sent successfully": "Notification sent successfully for user {userId}, notification {notificationId}",
+      "Notification error": "Failed to send notification",
+      "email notification error": "Failed to send email notification for user {userId}, notification {notificationId}",
+      "push notification error": "Failed to send push notification for user {userId}, notification {notificationId}",
+      "sms notification error": "Failed to send SMS notification for user {userId}, notification {notificationId}",
+      "whatsapp notification error": "Failed to send WhatsApp notification for user {userId}, notification {notificationId}",
+      "in_app notification error": "Failed to save in-app notification for user {userId}, notification {notificationId}",
+      "No push token provided": "No push token provided for sending push notification",
+      "Failed to send push notification": "Failed to send push notification",
+      "Textlocal API key not configured": "Textlocal API key is not configured",
+      "Textlocal API error": "Textlocal API error: {message}",
+      "Failed to send SMS": "Failed to send SMS",
+      "SMS sent": "SMS sent successfully to {to}",
+      "Wasender API key not configured": "Wasender API key is not configured",
+      "Wasender WhatsApp API error": "Wasender WhatsApp API error: {message}",
+      "Failed to send WhatsApp message": "Failed to send WhatsApp message",
+      "WhatsApp message sent": "WhatsApp message sent successfully to {to}, message ID: {msgId}",
+      "WhatsApp rate limit initialized": "WhatsApp rate limit initialized for key {key}",
+      "WhatsApp rate limit incremented": "WhatsApp rate limit incremented for key {key}, count: {count}",
+      "WhatsApp rate limit exceeded": "WhatsApp rate limit exceeded for key {key}, count: {count}",
+      "WhatsApp rate limit exceeded, notification queued": "WhatsApp rate limit exceeded, notification {notificationId} queued",
+      "Notification marked as read": "Notification {notificationId} marked as read",
+      "Notification not found": "Notification {notificationId} not found",
+      "Failed to mark notification as read": "Failed to mark notification {notificationId} as read",
+      "Unread notifications count fetched": "Unread notifications count fetched for user {userId}, count: {count}",
+      "Failed to fetch unread count": "Failed to fetch unread notifications count for user {userId}",
+      "User notifications fetched": "User notifications fetched successfully for user {userId}, limit: {limit}, skip: {skip}, count: {count}",
+      "Failed to fetch notifications": "Failed to fetch notifications for user {userId}",
+      "Notification deleted": "Notification {notificationId} deleted successfully",
+      "Failed to delete notification": "Failed to delete notification {notificationId}",
+      "All notifications cleared": "All notifications cleared for user {userId}",
+      "Failed to clear notifications": "Failed to clear notifications for user {userId}",
+      "All notifications marked as read": "All notifications marked as read for user {userId}",
+      "Failed to mark all notifications as read": "Failed to mark all notifications as read for user {userId}"
     }
   },
   "api": {
@@ -1086,7 +1193,18 @@
       "unauthorized": "Unauthorized access",
       "unknown_error": "An unknown error occurred",
       "failedToFetchApps": "Failed to fetch applications",
-      "failedToCreateApp": "Failed to create application"
+      "failedToCreateApp": "Failed to create application",
+      "alreadyInMarketplace": "التطبيق مدرج بالفعل في السوق أو قيد المراجعة",
+      "tokenIdRequired": "Token ID is required.",
+      "tokenNotFound": "Token not found.",
+      "clientNotFound": "Client not found."
+    },
+    "seller": {
+      "clients": {
+        "unauthorized": "Unauthorized access to developer clients",
+        "unknown_error": "An unknown error occurred",
+        "Error Title": "Error"
+      }
     },
     "errors": {
       "invalidData": "Invalid data provided",
@@ -1108,7 +1226,17 @@
       "failedToCreateApiKey": "Failed to create API key",
       "apiKeyNotFound": "API key not found",
       "apiKeyRotationFailed": "Failed to rotate API key",
-      "apiKeyDeactivationFailed": "Failed to deactivate API key"
+      "apiKeyDeactivationFailed": "Failed to deactivate API key",
+      "failedToFetchSeller": "Failed to fetch seller data",
+      "failedToAwardPoints": "Failed to award points",
+      "failedToFetchMetrics": "Failed to fetch metrics",
+      "failedToGetSeller": "Failed to retrieve seller",
+      "failedToGetProducts": "Failed to retrieve products",
+      "failedToCheckSubscription": "Failed to check subscription status",
+      "unauthorized": "Unauthorized access to this resource",
+      "invalidAmount": "Invalid amount",
+      "internalServerError": "Internal server error",
+      "subscriptionExpired": "Subscription has expired"
     },
     "bankInfoUpdated": "Bank information updated successfully",
     "messages": {
@@ -1127,13 +1255,121 @@
       "apiKeyRotatedTitle": "API Key Rotated",
       "apiKeyRotatedMessage": "API key {name} has been rotated successfully",
       "apiKeyDeactivatedTitle": "API Key Deactivated",
-      "apiKeyDeactivatedMessage": "API key {name} has been deactivated successfully"
+      "apiKeyDeactivatedMessage": "API key {name} has been deactivated successfully",
+      "pointsEarnedTitle": "Points Earned!",
+      "pointsEarnedMessage": "You have earned {points} points for {description}"
     },
     "notifications": {
       "sellerRegistered": {
         "title": "Welcome to the seller platform!",
         "message": "Your seller account has been created successfully."
-      }
+      },
+      "User not found": "User not found",
+      "No allowed channels": "No notification channels are allowed for this user",
+      "Email rate limit initialized": "Email rate limit initialized for key {key}",
+      "Email rate limit incremented": "Email rate limit incremented for key {key}, count: {count}",
+      "Email rate limit exceeded": "Email rate limit exceeded for key {key}, count: {count}",
+      "Email rate limit exceeded, notification queued": "Email rate limit exceeded, notification {notificationId} queued",
+      "Rate limit check error": "Failed to check rate limit",
+      "User email fetched": "User email fetched successfully for user {userId}",
+      "Failed to fetch user email": "Failed to fetch user email for user {userId}",
+      "User phone fetched": "User phone fetched successfully for user {userId}",
+      "Failed to fetch user phone": "Failed to fetch user phone for user {userId}",
+      "User push token fetched": "User push token fetched successfully for user {userId}",
+      "Failed to fetch user push token": "Failed to fetch user push token for user {userId}",
+      "Email notification sent": "Email notification sent successfully for user {userId}, notification {notificationId}",
+      "Push notification sent": "Push notification sent successfully for user {userId}, notification {notificationId}",
+      "SMS notification sent": "SMS notification sent successfully for user {userId}, notification {notificationId}",
+      "WhatsApp notification sent": "WhatsApp notification sent successfully for user {userId}, notification {notificationId}",
+      "In-app notification saved": "In-app notification saved successfully for user {userId}, notification {notificationId}",
+      "Notification sent successfully": "Notification sent successfully for user {userId}, notification {notificationId}",
+      "Notification error": "Failed to send notification",
+      "email notification error": "Failed to send email notification for user {userId}, notification {notificationId}",
+      "push notification error": "Failed to send push notification for user {userId}, notification {notificationId}",
+      "sms notification error": "Failed to send SMS notification for user {userId}, notification {notificationId}",
+      "whatsapp notification error": "Failed to send WhatsApp notification for user {userId}, notification {notificationId}",
+      "in_app notification error": "Failed to save in-app notification for user {userId}, notification {notificationId}",
+      "No push token provided": "No push token provided for sending push notification",
+      "Failed to send push notification": "Failed to send push notification",
+      "Textlocal API key not configured": "Textlocal API key is not configured",
+      "Textlocal API error": "Textlocal API error: {message}",
+      "Failed to send SMS": "Failed to send SMS",
+      "SMS sent": "SMS sent successfully to {to}",
+      "Wasender API key not configured": "Wasender API key is not configured",
+      "Wasender WhatsApp API error": "Wasender WhatsApp API error: {message}",
+      "Failed to send WhatsApp message": "Failed to send WhatsApp message",
+      "WhatsApp message sent": "WhatsApp message sent successfully to {to}, message ID: {msgId}",
+      "WhatsApp rate limit initialized": "WhatsApp rate limit initialized for key {key}",
+      "WhatsApp rate limit incremented": "WhatsApp rate limit incremented for key {key}, count: {count}",
+      "WhatsApp rate limit exceeded": "WhatsApp rate limit exceeded for key {key}, count: {count}",
+      "WhatsApp rate limit exceeded, notification queued": "WhatsApp rate limit exceeded, notification {notificationId} queued",
+      "Notification marked as read": "Notification {notificationId} marked as read",
+      "Notification not found": "Notification {notificationId} not found",
+      "Failed to mark notification as read": "Failed to mark notification {notificationId} as read",
+      "Unread notifications count fetched": "Unread notifications count fetched for user {userId}, count: {count}",
+      "Failed to fetch unread count": "Failed to fetch unread notifications count for user {userId}",
+      "User notifications fetched": "User notifications fetched successfully for user {userId}, limit: {limit}, skip: {skip}, count: {count}",
+      "Failed to fetch notifications": "Failed to fetch notifications for user {userId}",
+      "Notification deleted": "Notification {notificationId} deleted successfully",
+      "Failed to delete notification": "Failed to delete notification {notificationId}",
+      "All notifications cleared": "All notifications cleared for user {userId}",
+      "Failed to clear notifications": "Failed to clear notifications for user {userId}",
+      "All notifications marked as read": "All notifications marked as read for user {userId}",
+      "Failed to mark all notifications as read": "Failed to mark all notifications as read for user {userId}"
+    }
+  },
+  "sellerPointsDashboard": {
+    "title": "Points Dashboard",
+    "unauthorized": "Unauthorized",
+    "pointsBalance": "Points Balance",
+    "totalEarned": "Total Earned",
+    "totalRedeemed": "Total Redeemed",
+    "recentTransactions": "Recent Transactions",
+    "noRecentTransactions": "No recent transactions",
+    "points": "points",
+    "table": {
+      "date": "Date",
+      "type": "Type",
+      "amount": "Amount",
+      "description": "Description",
+      "earned": "Earned",
+      "redeemed": "Redeemed"
+    },
+    "loading": "Loading...",
+    "errors": {
+      "fetchMetricsFailed": "Failed to fetch points data"
+    },
+    "createCoupon": {
+      "title": "Create Discount Coupon"
+    }
+  },
+  "createCoupon": {
+    "title": "Create Discount Coupon",
+    "code": "Coupon Code",
+    "description": "Description",
+    "discountType": "Discount Type",
+    "discountValue": "Discount Value",
+    "minPurchase": "Minimum Purchase",
+    "validUntil": "Valid Until",
+    "submit": "Create Coupon",
+    "success": "Coupon created successfully",
+    "percentage": "Percentage",
+    "fixed": "Fixed Amount",
+    "errors": {
+      "codeRequired": "Coupon code is required",
+      "codeMinLength": "Coupon code must be at least 3 characters",
+      "descriptionRequired": "Description is required",
+      "discountTypeRequired": "Discount type is required",
+      "discountValueRequired": "Discount value is required",
+      "discountValueMin": "Discount value must be greater than 0",
+      "minPurchaseMin": "Minimum purchase must be 0 or more",
+      "createFailed": "Failed to create coupon"
+    }
+  },
+  "points": {
+    "apply": {
+      "Unauthorized": "Unauthorized",
+      "Server error": "Server error"
     }
   },
   "Seller Earnings": {
@@ -1177,7 +1413,32 @@
       "Withdrawal Failed Description": "Failed to Process Withdrawal Request. Please Try Again."
     }
   },
+  "analytics": {
+    "Analytics Title": "Analytics Dashboard",
+    "Metric Type": "Select Metric Type",
+    "Sales": "Sales",
+    "Views": "Views",
+    "Conversions": "Conversions",
+    "Returns": "Returns",
+    "Start Date": "Start Date",
+    "End Date": "End Date",
+    "Fetch Metrics": "Fetch Metrics",
+    "Loading": "Loading...",
+    "Fetch Error": "Failed to fetch analytics data",
+    "Error Title": "Error",
+    "Date Required": "Start and end dates are required",
+    "sales Chart": "Sales Chart",
+    "views Chart": "Views Chart",
+    "conversions Chart": "Conversions Chart",
+    "returns Chart": "Returns Chart",
+    "Unauthorized": "Unauthorized access",
+    "Missing Parameters": "Missing required parameters",
+    "No Analytics Integration": "No analytics integration available"
+  },
   "Seller": {
+    "item": {
+      "title": "Manage Dashboard {businessName}"
+    },
     "Dashboard": {
       "Title": "Seller Dashboard",
       "Welcome": "Welcome, {user}",
@@ -1546,6 +1807,181 @@
       "noShippingProviders": "No shipping providers available"
     }
   },
+  "schemas": {
+    "MongoId": {
+      "Invalid MongoDB ID": "Invalid MongoDB ID"
+    },
+    "Price": {
+      "Price must have exactly two decimal places": "Price must have exactly two decimal places (e.g., 49.99)",
+      "List price must have exactly two decimal places": "List price must have exactly two decimal places (e.g., 49.99)",
+      "Items price must have exactly two decimal places": "Items price must have exactly two decimal places (e.g., 49.99)",
+      "Shipping price must have exactly two decimal places": "Shipping price must have exactly two decimal places (e.g., 49.99)",
+      "Tax price must have exactly two decimal places": "Tax price must have exactly two decimal places (e.g., 49.99)",
+      "Total price must have exactly two decimal places": "Total price must have exactly two decimal places (e.g., 49.99)"
+    },
+    "UserName": {
+      "Username must be at least 2 characters": "Username must be at least 2 characters",
+      "Username must be at most 50 characters": "Username must be at most 50 characters"
+    },
+    "Email": {
+      "Email is required": "Email is required",
+      "Email is invalid": "Email is invalid"
+    },
+    "Password": {
+      "Password must be at least 3 characters": "Password must be at least 3 characters"
+    },
+    "UserRole": {
+      "Role must be one of: user, Admin, SELLER": "Role must be one of: user, Admin, SELLER"
+    },
+    "UserInputSchema": {
+      "Payment method is required": "Payment method is required",
+      "Full name is required": "Full name is required",
+      "Street is required": "Street is required",
+      "City is required": "City is required",
+      "Province is required": "Province is required",
+      "Postal code is required": "Postal code is required",
+      "Country is required": "Country is required",
+      "Phone number is required": "Phone number is required"
+    },
+    "NewsArticleInputSchema": {
+      "Title must be at least 5 characters": "Title must be at least 5 characters",
+      "Title must not exceed 255 characters": "Title must not exceed 255 characters",
+      "Slug must be at least 3 characters": "Slug must be at least 3 characters",
+      "Slug must not exceed 255 characters": "Slug must not exceed 255 characters",
+      "Slug must contain only lowercase letters, numbers, and hyphens": "Slug must contain only lowercase letters, numbers, and hyphens",
+      "Excerpt must be at least 10 characters": "Excerpt must be at least 10 characters",
+      "Excerpt must not exceed 160 characters": "Excerpt must not exceed 160 characters",
+      "Content must be at least 100 characters": "Content must be at least 100 characters",
+      "At least one tag is required": "At least one tag is required",
+      "Meta title must be at least 5 characters": "Meta title must be at least 5 characters",
+      "Meta title must not exceed 60 characters": "Meta title must not exceed 60 characters",
+      "Meta description must be at least 10 characters": "Meta description must be at least 10 characters",
+      "Meta description must not exceed 160 characters": "Meta description must not exceed 160 characters",
+      "Invalid image URL": "Invalid image URL",
+      "Author ID is required": "Author ID is required"
+    },
+    "NewsArticleUpdateSchema": {
+      "Article ID is required": "Article ID is required"
+    },
+    "UserSignUpSchema": {
+      "Phone number is required": "Phone number is required",
+      "Phone number must be valid": "Phone number must be valid",
+      "Passwords don't match": "Passwords don't match"
+    },
+    "ReviewInputSchema": {
+      "Title is required": "Title is required",
+      "Comment is required": "Comment is required",
+      "Rating must be at least 1": "Rating must be at least 1",
+      "Rating must be at most 5": "Rating must be at most 5"
+    },
+    "ProductInputSchema": {
+      "Name must be at least 3 characters": "Name must be at least 3 characters",
+      "Slug must be at least 3 characters": "Slug must be at least 3 characters",
+      "Category is required": "Category is required",
+      "Product must have at least one image": "Product must have at least one image",
+      "Brand is required": "Brand is required",
+      "Description is required": "Description is required",
+      "count in stock must be a non-negative number": "Count in stock must be a non-negative number",
+      "Average rating must be at least 0": "Average rating must be at least 0",
+      "Average rating must be at most 5": "Average rating must be at most 5",
+      "Number of reviews must be a non-negative number": "Number of reviews must be a non-negative number",
+      "Number of sales must be a non-negative number": "Number of sales must be a non-negative number"
+    },
+    "OrderItemSchema": {
+      "clientId is required": "Client ID is required",
+      "Product is required": "Product is required",
+      "Name is required": "Name is required",
+      "Slug is required": "Slug is required",
+      "Category is required": "Category is required",
+      "Quantity must be a non-negative number": "Quantity must be a non-negative number",
+      "Image is required": "Image is required",
+      "Color name is required": "Color name is required"
+    },
+    "ShippingAddressSchema": {
+      "Full name is required": "Full name is required",
+      "Address is required": "Address is required",
+      "City is required": "City is required",
+      "Postal code is required": "Postal code is required",
+      "Province is required": "Province is required",
+      "Phone number is required": "Phone number is required",
+      "Country is required": "Country is required"
+    },
+    "OrderInputSchema": {
+      "Order must contain at least one item": "Order must contain at least one item",
+      "Payment method is required": "Payment method is required",
+      "Expected delivery date must be in the future": "Expected delivery date must be in the future"
+    },
+    "subscriptionUpdateSchema": {
+      "planRequired": "Plan is required"
+    },
+    "CartSchema": {
+      "Order must contain at least one item": "Order must contain at least one item"
+    },
+    "WebPageInputSchema": {
+      "Title must be at least 3 characters": "Title must be at least 3 characters",
+      "Slug must be at least 3 characters": "Slug must be at least 3 characters",
+      "Content is required": "Content is required"
+    },
+    "SiteLanguageSchema": {
+      "Name is required": "Name is required",
+      "Code is required": "Code is required"
+    },
+    "CarouselSchema": {
+      "title is required": "Title is required",
+      "url is required": "URL is required",
+      "image is required": "Image is required",
+      "buttonCaption is required": "Button caption is required"
+    },
+    "SiteCurrencySchema": {
+      "Name is required": "Name is required",
+      "Code is required": "Code is required",
+      "Convert rate must be at least 0": "Convert rate must be at least 0",
+      "Symbol is required": "Symbol is required"
+    },
+    "PaymentMethodSchema": {
+      "Name is required": "Name is required",
+      "Commission must be at least 0": "Commission must be at least 0"
+    },
+    "DeliveryDateSchema": {
+      "Name is required": "Name is required",
+      "Days to deliver must be at least 0": "Days to deliver must be at least 0",
+      "Shipping price must be at least 0": "Shipping price must be at least 0",
+      "Validator must be a valid date format (YYYY-MM-DD)": "Validator must be a valid date format (YYYY-MM-DD)",
+      "Free shipping min amount must be at least 0": "Free shipping min amount must be at least 0"
+    },
+    "SettingInputSchema": {
+      "Page size must be at least 1": "Page size must be at least 1",
+      "Free shipping min price must be at least 0": "Free shipping min price must be at least 0",
+      "Default theme is required": "Default theme is required",
+      "Default color is required": "Default color is required",
+      "Name is required": "Name is required",
+      "logo is required": "Logo is required",
+      "Slogan is required": "Slogan is required",
+      "Description is required": "Description is required",
+      "Keywords is required": "Keywords is required",
+      "Url is required": "URL is required",
+      "Email is required": "Email is required",
+      "Phone is required": "Phone is required",
+      "Author is required": "Author is required",
+      "Copyright is required": "Copyright is required",
+      "Address is required": "Address is required",
+      "At least one language is required": "At least one language is required",
+      "At least one carousel is required": "At least one carousel is required",
+      "Language is required": "Language is required",
+      "At least one currency is required": "At least one currency is required",
+      "Currency is required": "Currency is required",
+      "At least one payment method is required": "At least one payment method is required",
+      "Payment method is required": "Payment method is required",
+      "At least one delivery date is required": "At least one delivery date is required",
+      "Delivery date is required": "Delivery date is required",
+      "Provider is required": "Provider is required",
+      "Earn rate must be non-negative": "Earn rate must be non-negative",
+      "Redeem value must be non-negative": "Redeem value must be non-negative",
+      "Buyer bonus must be non-negative": "Buyer bonus must be non-negative",
+      "Seller bonus must be non-negative": "Seller bonus must be non-negative",
+      "Seller points per sale must be non-negative": "Seller points per sale must be non-negative"
+    }
+  },
   "products": {
     "products fetched": "Products fetched",
     "server error": "Server error",
@@ -1632,6 +2068,7 @@
     "trialStatus": "Trial ends in {days} days",
     "trialDescription": "Your free trial is active. Upgrade your plan to continue using all features.",
     "upgradePlan": "Upgrade Plan",
+    "loading": "Loading...",
     "pointsBalance": "Points Balance: {points}",
     "pointsDescription": "Use your points to redeem rewards or upgrade your plan.",
     "submitting": "Submitting...",
@@ -2938,10 +3375,9 @@
       "rotated": "API Key Rotated",
       "rotatedMessage": "API key has been rotated successfully",
       "deleted": "API Key Deleted",
-    "deletedMessage": "The API key has been deleted successfully",
-    "appCreated": "OAuth Application Created",
-    "appCreatedMessage": "The OAuth application has been created successfully"
-
+      "deletedMessage": "The API key has been deleted successfully",
+      "appCreated": "OAuth Application Created",
+      "appCreatedMessage": "The OAuth application has been created successfully"
     },
     "confirm": {
       "rotate": "Are you sure you want to rotate this API key? The old key will become invalid.",
@@ -3107,7 +3543,7 @@
       "contact": "For further assistance, contact us:"
     }
   },
-    "Consent": {
+  "Consent": {
     "title": "Authorize {appName}",
     "description": "{appName} requests access to your account. Please review the permissions below.",
     "scopes": "Requested Permissions",
@@ -3121,942 +3557,1010 @@
       "forbiddenScopes": "You are not allowed to grant these scopes: {scopes}"
     }
   },
-"SellerDashboard": {
-  "routingNumber": {
-    "label": "Routing Number",
-    "placeholder": "Enter routing number (optional)",
-    "invalid": "Routing number is invalid, must be 9 digits"
-  },
-  "accountName": {
-    "label": "Account Holder Name",
-    "placeholder": "Enter account holder name",
-    "min": "Account name must be at least 2 characters",
-    "max": "Account name must not exceed 100 characters"
-  },
-  "accountNumber": {
-    "label": "Account Number",
-    "placeholder": "Enter account number (IBAN)",
-    "min": "Account number must be at least 8 characters",
-    "max": "Account number must not exceed 34 characters"
-  },
-  "bankName": {
-    "label": "Bank Name",
-    "placeholder": "Enter bank name",
-    "min": "Bank name must be at least 2 characters",
-    "max": "Bank name must not exceed 100 characters"
-  },
-  "swiftCode": {
-    "label": "SWIFT Code",
-    "placeholder": "Enter SWIFT code",
-    "min": "SWIFT code must be at least 8 characters",
-    "max": "SWIFT code must not exceed 11 characters",
-    "invalid": "SWIFT code is invalid"
-  },
-  "messages": {
-    "bankInfoUpdated": "Bank information updated successfully",
-    "bankInfoUpdatedMessage": "Your bank account details have been saved",
-    "bankInfoNote": "Please enter your bank account details to receive payments",
-    "bankDetailsValid": "Bank details are valid",
-    "verificationSuccessful": "Verification successful"
-  },
-  "errors": {
-    "failedToUpdateBankInfo": "Failed to update bank information",
-    "invalidIBAN": "Invalid IBAN",
-    "invalidSwift": "Invalid SWIFT code",
-    "invalidRoutingNumber": "Invalid routing number",
-    "invalidDocumentUrl": "Invalid bank document URL",
-    "verifyBankFailed": "Failed to verify bank information"
-  },
-  "bankInfoVerified": "Bank account verified",
-  "submit": "Submit"
-},
-"subscriptions": {
-  "title": "Subscriptions",
-  "month": "month",
-  "or": "or",
-  "points": "points",
-  "trialMonths": "{count, plural, one {trial month} other {# trial months}}",
-  "domainStatus": "Domain Status",
-  "domainStatus.active": "Active",
-  "domainStatus.expired": "Expired",
-  "domainStatus.pending": "Pending",
-  "redeemPoints": "Redeem Points",
-  "payWithMethod": "Pay with {method}",
-  "plan": "Plan",
-  "pointsRequired": "Points Required",
-  "yourPointsBalance": "Your Points Balance",
-  "submitting": "Submitting...",
-  "redeem": {
-    "title": "Redeem Points for {plan} Plan",
-    "confirm": "Confirm Redemption"
-  },
-  "features": {
-    "productsLimit": "Products Limit: {count}",
-    "commission": "Commission: {count}%",
-    "prioritySupport": "Priority Support: {enabled}",
-    "instantPayouts": "Instant Payouts: {enabled}",
-    "customSections": "Custom Sections: {count}",
-    "domainSupport": "Domain Support: {enabled}",
-    "domainRenewal": "Domain Renewal: {enabled}"
-  },
-  "yes": "Yes",
-  "no": "No",
-  "errors": {
-    "sellerNotFound": "Seller account not found",
-    "registerPrompt": "Please register as a seller to access subscriptions",
-    "bankInfoNotVerified": "Bank information not verified",
-    "verifyBankPrompt": "Please verify your bank information to proceed",
-    "subscriptionExpired": "Your subscription has expired",
-    "renewPrompt": "Please renew your subscription to restore full access",
-    "domainExpired": "Your domain has expired",
-    "renewDomainPrompt": "Please renew your domain to restore access",
-    "serverError": "A server error occurred",
-    "tryAgain": "Please try again later",
-    "fetchFailed": "Failed to fetch data",
-    "invalidPlan": "Invalid plan",
-    "planNotFound": "Plan not found",
-    "pointsNotSupported": "This plan does not support points redemption",
-    "insufficientPoints": "Insufficient points balance",
-    "redeemFailed": "Failed to redeem points",
-    "failedToRedeemPoints": "Failed to redeem points",
-    "paymentMethodRequired": "Payment method is required",
-    "paymentFailed": "Payment processing failed"
-  },
-  "success": {
-    "title": "Success",
-    "redeemSuccess": "Points redeemed successfully for {plan} plan"
-  },
-  "account": {
-    "startSelling": "Start Selling",
-    "verifyBank": "Verify Bank Account"
-  }
-},
-"ChatWidget": {
-  "openChat": "Open Chat",
-  "name": "Your Name",
-  "email": "Your Email",
-  "message": "Your Message",
-  "send": "Send"
-},
-"TemplateEditor": {
-  "title": "Template Editor",
-  "switchToVisual": "Switch to Visual Mode",
-  "switchToDeveloper": "Switch to Developer Mode",
-  "jsEditor": "JavaScript Editor",
-  "addFaq": "Add FAQ",
-  "chat": "Live Chat",
-  "faqQuestion": "Question",
-  "faqAnswer": "Answer",
-  "desktopPreview": "Desktop Preview",
-  "mobilePreview": "Mobile Preview",
-  "templateName": "Template Name",
-  "primaryColor": "Primary Color",
-  "secondaryColor": "Secondary Color",
-  "heroTitle": "Hero Title",
-  "heroSubtitle": "Hero Subtitle",
-  "htmlEditor": "HTML Editor for Section: {{section}}",
-  "cssEditor": "CSS Editor",
-  "addSection": "Add Section",
-  "saveTemplate": "Save Template",
-  "publishTemplate": "Publish Template",
-  "exportTemplate": "Export Template",
-  "fetchTemplateFailed": "Failed to fetch template",
-  "saveTemplateFailed": "Failed to save template",
-  "publishTemplateFailed": "Failed to publish template",
-  "templateSaved": "Template saved successfully",
-  "templatePublished": "Template published successfully",
-  "templateExported": "Template exported successfully",
-  "error": "Error",
-  "success": "Success",
-  "invalidJSON": "Invalid JSON",
-  "textContent": "Enter text content",
-  "imageUrl": "Enter image URL",
-  "videoUrl": "Enter video URL",
-  "buttonLabel": "Button Label",
-  "buttonUrl": "Button URL",
-  "headingText": "Heading Text",
-  "dividerText": "Divider Text",
-  "spacerHeight": "Spacer Height",
-  "carouselImages": "Enter carousel images (comma-separated)",
-  "sliderImages": "Slider Images",
-  "galleryImages": "Gallery Images",
-  "columnsCount": "Columns Count",
-  "columnsGap": "Columns Gap",
-  "columnsChildren": "Columns Content",
-  "pricingTableContent": "Pricing Table Content",
-  "ctaText": "CTA Text",
-  "buttonText": "Button Text",
-  "accordionItems": "Accordion Items",
-  "tabsItems": "Tabs Items",
-  "testimonialsContent": "Testimonials Content",
-  "testimonialCarouselContent": "Testimonial Carousel Content",
-  "logosImages": "Logos Images",
-  "timelineItems": "Timeline Items",
-  "stepsItems": "Steps Items",
-  "animationText": "Animation Text",
-  "countUpValue": "Count Up Value",
-  "popupContent": "Popup Content",
-  "newsletterEndpoint": "Newsletter Endpoint",
-  "formEndpoint": "Form Endpoint",
-  "mapEmbed": "Map Embed",
-  "productIds": "Enter product IDs (comma-separated)",
-  "productImage": "Product Image",
-  "productName": "Product Name",
-  "productPrice": "Product Price",
-  "description": "Description",
-  "backgroundImage": "Background Image",
-  "upsellTitle": "Upsell Title",
-  "upsellDescription": "Upsell Description",
-  "reviewsContent": "Reviews Content",
-  "footerText": "Footer Text",
-  "backgroundColor": "Background Color",
-  "faqContent": "Enter FAQ content",
-  "navigationItems": "Navigation Items",
-  "blogPostsContent": "Blog Posts Content",
-  "articleContent": "Article Content",
-  "breadcrumbsItems": "Breadcrumbs Items",
-  "sidebarContent": "Sidebar Content",
-  "iconGridItems": "Icon Grid Items",
-  "imageGridImages": "Image Grid Images",
-  "shapeDividerText": "Shape Divider Text",
-  "countdownEndDate": "Select end date",
-  "reviewsCount": "Number of reviews",
-  "testimonialsCount": "Number of testimonials",
-  "text": "Text",
-  "image": "Image",
-  "video": "Video",
-  "button": "Button",
-  "heading": "Heading",
-  "divider": "Divider",
-  "spacer": "Spacer",
-  "carousel": "Carousel",
-  "slider": "Slider",
-  "gallery": "Gallery",
-  "columns": "Columns",
-  "pricing-table": "Pricing Table",
-  "cta": "Call to Action",
-  "accordion": "Accordion",
-  "tabs": "Tabs",
-  "testimonials": "Testimonials",
-  "testimonial-carousel": "Testimonial Carousel",
-  "logos": "Logos",
-  "timeline": "Timeline",
-  "steps": "Steps",
-  "animation": "Animation",
-  "count-up": "Count Up",
-  "popup": "Popup",
-  "newsletter": "Newsletter",
-  "contact-form": "Contact Form",
-  "map": "Map",
-  "products": "Products",
-  "product-card": "Product Card",
-  "collection-banner": "Collection Banner",
-  "upsell": "Upsell",
-  "related-products": "Related Products",
-  "quick-view": "Quick View",
-  "carousel-products": "Carousel Products",
-  "reviews": "Reviews",
-  "hero": "Hero",
-  "footer": "Footer",
-  "faq": "FAQ",
-  "navigation": "Navigation",
-  "blog-posts": "Blog Posts",
-  "article": "Article",
-  "breadcrumbs": "Breadcrumbs",
-  "sidebar": "Sidebar",
-  "background-video": "Background Video",
-  "icon-grid": "Icon Grid",
-  "image-grid": "Image Grid",
-  "shape-divider": "Shape Divider"
-},
-"Template": {
-  "title": "Template Settings",
-  "primaryColor": "Primary Color",
-  "secondaryColor": "Secondary Color",
-  "heroTitle": "Hero Title",
-  "heroSubtitle": "Hero Subtitle",
-  "layout": "Layout",
-  "enterHeroTitle": "Enter hero title",
-  "enterHeroSubtitle": "Enter hero subtitle",
-  "assets": "Assets",
-  "enterSectionName": "Enter section name",
-  "enterSectionUrl": "Enter section URL",
-  "addSection": "Add Section",
-  "save": "Save",
-  "saveSuccess": "Template saved successfully",
-  "templateUpdated": "Template settings updated successfully",
-  "templateSelected": "Template Selected",
-  "templateApplied": "Template applied successfully",
-  "templateImported": "Template Imported",
-  "errors": {
-    "unauthorized": "Unauthorized access",
-    "storeNotFound": "Store not found",
-    "fetchError": "Failed to fetch template",
-    "saveError": "Failed to save template"
-  }
-},
-"SitePreview": {
-  "title": "Site Preview",
-  "success": "Success",
-  "sitePublished": "Site Published Successfully",
-  "error": "Error",
-  "publishFailed": "Failed to Publish",
-  "defaultTitle": "Welcome to Your Store",
-  "defaultSubtitle": "Discover Our Amazing Products",
-  "noSections": "No Sections to Display",
-  "noProducts": "No Products to Display",
-  "product": "Product"
-},
-"PageManager": {
-  "managePages": "Manage Pages",
-  "visualMode": "Visual Mode",
-  "codeMode": "Code Mode",
-  "addPage": "Add Page",
-  "customCSS": "Custom CSS",
-  "customHTML": "Custom HTML",
-  "pageTitle": "Page Title",
-  "pageSlug": "Page Slug",
-  "pageContent": "Page Content",
-  "enterPageContent": "Enter Page Content",
-  "productIds": "Product IDs",
-  "newTextPage": "New Text Page",
-  "newImagePage": "New Image Page",
-  "newVideoPage": "New Video Page",
-  "newButtonPage": "New Button Page",
-  "newHeadingPage": "New Heading Page",
-  "newDividerPage": "New Divider Page",
-  "newSpacerPage": "New Spacer Page",
-  "newCarouselPage": "New Carousel Page",
-  "newSliderPage": "New Slider Page",
-  "newGalleryPage": "New Gallery Page",
-  "newColumnsPage": "New Columns Page",
-  "newFeaturesGridPage": "New Features Grid Page",
-  "newPricingTablePage": "New Pricing Table Page",
-  "newCtaPage": "New Call to Action Page",
-  "newAccordionPage": "New Accordion Page",
-  "newTabsPage": "New Tabs Page",
-  "newTestimonialsPage": "New Testimonials Page",
-  "newTestimonialCarouselPage": "New Testimonial Carousel Page",
-  "newLogosPage": "New Logos Page",
-  "newTimelinePage": "New Timeline Page",
-  "newStepsPage": "New Steps Page",
-  "newAnimationPage": "New Animation Page",
-  "newCountUpPage": "New Count Up Page",
-  "newPopupPage": "New Popup Page",
-  "newNewsletterPage": "New Newsletter Page",
-  "newContactFormPage": "New Contact Form Page",
-  "newMapPage": "New Map Page",
-  "newProductsPage": "New Products Page",
-  "newProductCardPage": "New Product Card Page",
-  "newCollectionBannerPage": "New Collection Banner Page",
-  "newUpsellPage": "New Upsell Page",
-  "newRelatedProductsPage": "New Related Products Page",
-  "newQuickViewPage": "New Quick View Page",
-  "newCarouselProductsPage": "New Carousel Products Page",
-  "newReviewsPage": "New Reviews Page",
-  "newHeroPage": "New Hero Page",
-  "newFooterPage": "New Footer Page",
-  "newFaqPage": "New FAQ Page",
-  "newBreadcrumbsPage": "New Breadcrumbs Page",
-  "newNavigationPage": "New Navigation Page",
-  "newSidebarPage": "New Sidebar Page",
-  "newBlogPostsPage": "New Blog Posts Page",
-  "newArticlePage": "New Article Page",
-  "newBackgroundVideoPage": "New Background Video Page",
-  "newIconGridPage": "New Icon Grid Page",
-  "newImageGridPage": "New Image Grid Page",
-  "newShapeDividerPage": "New Shape Divider Page",
-  "text": "Text",
-  "image": "Image",
-  "video": "Video",
-  "button": "Button",
-  "heading": "Heading",
-  "divider": "Divider",
-  "spacer": "Spacer",
-  "carousel": "Carousel",
-  "slider": "Slider",
-  "gallery": "Gallery",
-  "columns": "Columns",
-  "features-grid": "Features Grid",
-  "pricing-table": "Pricing Table",
-  "cta": "Call to Action",
-  "accordion": "Accordion",
-  "tabs": "Tabs",
-  "testimonials": "Testimonials",
-  "testimonial-carousel": "Testimonial Carousel",
-  "logos": "Logos",
-  "timeline": "Timeline",
-  "steps": "Steps",
-  "animation": "Animation",
-  "count-up": "Count Up",
-  "popup": "Popup",
-  "newsletter": "Newsletter",
-  "contact-form": "Contact Form",
-  "map": "Map",
-  "products": "Products",
-  "product-card": "Product Card",
-  "collection-banner": "Collection Banner",
-  "upsell": "Upsell",
-  "related-products": "Related Products",
-  "quick-view": "Quick View",
-  "carousel-products": "Carousel Products",
-  "reviews": "Reviews",
-  "hero": "Hero",
-  "footer": "Footer",
-  "faq": "FAQ",
-  "breadcrumbs": "Breadcrumbs",
-  "navigation": "Navigation",
-  "sidebar": "Sidebar",
-  "blog-posts": "Blog Posts",
-  "article": "Article",
-  "background-video": "Background Video",
-  "icon-grid": "Icon Grid",
-  "image-grid": "Image Grid",
-  "shape-divider": "Shape Divider"
-},
-"SellerSettings": {
-  "title": "Seller Settings",
-  "trialStatus": "Free trial active: {days} days remaining",
-  "trialDescription": "Upgrade your plan to unlock additional features and benefits.",
-  "upgradePlan": "Upgrade Plan",
-  "pointsBalance": "Points Balance: {points} points",
-  "pointsDescription": "Use points to unlock premium features or discounts.",
-  "submitting": "Saving...",
-  "submit": "Save Settings",
-  "sections": {
-    "businessInfo": "Business Information",
-    "address": "Address",
-    "bankInfo": "Bank Information",
-    "account": "Account",
-    "subscription": "Subscription",
-    "discountOffers": "Discount Offers",
-    "notifications": "Notifications",
-    "display": "Display Settings",
-    "security": "Security",
-    "customSite": "Custom Site",
-    "taxes": "Taxes",
-    "domains": "Domains",
-    "verification": "Verification",
-    "integrations": "Integrations",
-    "paymentMethods": "Payment Methods",
-    "shippingOptions": "Shipping Options",
-    "template": "Template",
-    "templateeditor": "Template Editor",
-    "managePages": "Manage Pages",
-    "integrationsmanager": "Integrations Manager"
-  },
-  "businessName": {
-    "label": "Business Name",
-    "placeholder": "Enter your business name",
-    "description": "The name of your business as it will appear to customers."
-  },
-  "email": {
-    "label": "Email",
-    "placeholder": "Enter your business email",
-    "description": "The email address for customer communication."
-  },
-  "description": {
-    "label": "Description",
-    "placeholder": "Describe your business",
-    "description": "A brief description of your business for customers."
-  },
-  "phone": {
-    "label": "Phone Number",
-    "placeholder": "Enter your phone number",
-    "description": "The phone number for customer support."
-  },
-  "customSiteUrl": {
-    "label": "Custom Site URL",
-    "placeholder": "Enter your custom site URL",
-    "description": "The URL for your custom storefront."
-  },
-  "address": {
-    "street": {
-      "label": "Street Address",
-      "placeholder": "Enter street address"
+  "SellerDashboard": {
+    "routingNumber": {
+      "label": "Routing Number",
+      "placeholder": "Enter routing number (optional)",
+      "invalid": "Routing number is invalid, must be 9 digits"
     },
-    "city": {
-      "label": "City",
-      "placeholder": "Enter city"
-    },
-    "state": {
-      "label": "State/Province",
-      "placeholder": "Enter state or province"
-    },
-    "postalCode": {
-      "label": "Postal Code",
-      "placeholder": "Enter postal code"
-    },
-    "countryCode": {
-      "label": "Country Code",
-      "placeholder": "Enter country code (e.g., US, CA)"
-    }
-  },
-  "bankInfo": {
     "accountName": {
-      "label": "Account Name",
-      "placeholder": "Enter account holder name"
+      "label": "Account Holder Name",
+      "placeholder": "Enter account holder name",
+      "min": "Account name must be at least 2 characters",
+      "max": "Account name must not exceed 100 characters"
     },
     "accountNumber": {
       "label": "Account Number",
-      "placeholder": "Enter bank account number"
+      "placeholder": "Enter account number (IBAN)",
+      "min": "Account number must be at least 8 characters",
+      "max": "Account number must not exceed 34 characters"
     },
     "bankName": {
       "label": "Bank Name",
-      "placeholder": "Enter bank name"
+      "placeholder": "Enter bank name",
+      "min": "Bank name must be at least 2 characters",
+      "max": "Bank name must not exceed 100 characters"
     },
     "swiftCode": {
       "label": "SWIFT Code",
       "placeholder": "Enter SWIFT code",
-      "description": "The SWIFT code for international transactions."
+      "min": "SWIFT code must be at least 8 characters",
+      "max": "SWIFT code must not exceed 11 characters",
+      "invalid": "SWIFT code is invalid"
     },
-    "showBankInfo": "Show Bank Information",
-    "hideBankInfo": "Hide Bank Information"
-  },
-  "subscription": {
-    "plan": {
-      "label": "Subscription Plan",
-      "placeholder": "Select a plan",
-      "description": "Choose your subscription plan to access different features.",
-      "trial": "Trial",
-      "basic": "Basic",
-      "pro": "Pro",
-      "vip": "VIP"
+    "messages": {
+      "bankInfoUpdated": "Bank information updated successfully",
+      "bankInfoUpdatedMessage": "Your bank account details have been saved",
+      "bankInfoNote": "Please enter your bank account details to receive payments",
+      "bankDetailsValid": "Bank details are valid",
+      "verificationSuccessful": "Verification successful"
     },
-    "upgradeTo": "Upgrade to {plan}"
+    "errors": {
+      "failedToUpdateBankInfo": "Failed to update bank information",
+      "invalidIBAN": "Invalid IBAN",
+      "invalidSwift": "Invalid SWIFT code",
+      "invalidRoutingNumber": "Invalid routing number",
+      "invalidDocumentUrl": "Invalid bank document URL",
+      "verifyBankFailed": "Failed to verify bank information"
+    },
+    "bankInfoVerified": "Bank account verified",
+    "submit": "Submit"
   },
-  "discountOffers": {
-    "code": {
-      "label": "Discount Code",
-      "placeholder": "Enter discount code"
+  "subscriptions": {
+    "title": "Subscriptions",
+    "month": "month",
+    "or": "or",
+    "points": "points",
+    "trialMonths": "{count, plural, one {trial month} other {# trial months}}",
+    "domainStatus": {
+      "label": "Domain Status",
+      "active": "Active",
+      "expired": "Expired",
+      "pending": "Pending"
+    },
+    "redeemPoints": "Redeem Points",
+    "payWithMethod": "Pay with {method}",
+    "plan": "Plan",
+    "pointsRequired": "Points Required",
+    "yourPointsBalance": "Your Points Balance",
+    "submitting": "Submitting...",
+    "redeem": {
+      "title": "Redeem Points for {plan} Plan",
+      "confirm": "Confirm Redemption"
+    },
+    "features": {
+      "productsLimit": "Products Limit: {count}",
+      "commission": "Commission: {count}%",
+      "prioritySupport": "Priority Support: {enabled}",
+      "instantPayouts": "Instant Payouts: {enabled}",
+      "customSections": "Custom Sections: {count}",
+      "domainSupport": "Domain Support: {enabled}",
+      "domainRenewal": "Domain Renewal: {enabled}"
+    },
+    "yes": "Yes",
+    "no": "No",
+    "errors": {
+      "sellerNotFound": "Seller account not found",
+      "registerPrompt": "Please register as a seller to access subscriptions",
+      "bankInfoNotVerified": "Bank information not verified",
+      "verifyBankPrompt": "Please verify your bank information to proceed",
+      "subscriptionExpired": "Your subscription has expired",
+      "renewPrompt": "Please renew your subscription to restore full access",
+      "domainExpired": "Your domain has expired",
+      "renewDomainPrompt": "Please renew your domain to restore access",
+      "serverError": "A server error occurred",
+      "tryAgain": "Please try again later",
+      "fetchFailed": "Failed to fetch data",
+      "invalidPlan": "Invalid plan",
+      "planNotFound": "Plan not found",
+      "pointsNotSupported": "This plan does not support points redemption",
+      "insufficientPoints": "Insufficient points balance",
+      "redeemFailed": "Failed to redeem points",
+      "failedToRedeemPoints": "Failed to redeem points",
+      "paymentMethodRequired": "Payment method is required",
+      "paymentFailed": "Payment processing failed"
+    },
+    "success": {
+      "title": "Success",
+      "redeemSuccess": "Points redeemed successfully for {plan} plan"
+    },
+    "account": {
+      "startSelling": "Start Selling",
+      "verifyBank": "Verify Bank Account"
+    }
+  },
+  "ChatWidget": {
+    "openChat": "Open Chat",
+    "name": "Your Name",
+    "email": "Your Email",
+    "message": "Your Message",
+    "send": "Send"
+  },
+  "notifications": {
+    "User not found": "User not found",
+    "No allowed channels": "No notification channels are allowed for this user",
+    "Email rate limit initialized": "Email rate limit initialized for key {key}",
+    "Email rate limit incremented": "Email rate limit incremented for key {key}, count: {count}",
+    "Email rate limit exceeded": "Email rate limit exceeded for key {key}, count: {count}",
+    "Email rate limit exceeded, notification queued": "Email rate limit exceeded, notification {notificationId} queued",
+    "Rate limit check error": "Failed to check rate limit",
+    "User email fetched": "User email fetched successfully for user {userId}",
+    "Failed to fetch user email": "Failed to fetch user email for user {userId}",
+    "User phone fetched": "User phone fetched successfully for user {userId}",
+    "Failed to fetch user phone": "Failed to fetch user phone for user {userId}",
+    "User push token fetched": "User push token fetched successfully for user {userId}",
+    "Failed to fetch user push token": "Failed to fetch user push token for user {userId}",
+    "Email notification sent": "Email notification sent successfully for user {userId}, notification {notificationId}",
+    "Push notification sent": "Push notification sent successfully for user {userId}, notification {notificationId}",
+    "SMS notification sent": "SMS notification sent successfully for user {userId}, notification {notificationId}",
+    "WhatsApp notification sent": "WhatsApp notification sent successfully for user {userId}, notification {notificationId}",
+    "In-app notification saved": "In-app notification saved successfully for user {userId}, notification {notificationId}",
+    "Notification sent successfully": "Notification sent successfully for user {userId}, notification {notificationId}",
+    "Notification error": "Failed to send notification",
+    "email notification error": "Failed to send email notification for user {userId}, notification {notificationId}",
+    "push notification error": "Failed to send push notification for user {userId}, notification {notificationId}",
+    "sms notification error": "Failed to send SMS notification for user {userId}, notification {notificationId}",
+    "whatsapp notification error": "Failed to send WhatsApp notification for user {userId}, notification {notificationId}",
+    "in_app notification error": "Failed to save in-app notification for user {userId}, notification {notificationId}",
+    "No push token provided": "No push token provided for sending push notification",
+    "Failed to send push notification": "Failed to send push notification",
+    "Textlocal API key not configured": "Textlocal API key is not configured",
+    "Textlocal API error": "Textlocal API error: {message}",
+    "Failed to send SMS": "Failed to send SMS",
+    "SMS sent": "SMS sent successfully to {to}",
+    "Wasender API key not configured": "Wasender API key is not configured",
+    "Wasender WhatsApp API error": "Wasender WhatsApp API error: {message}",
+    "Failed to send WhatsApp message": "Failed to send WhatsApp message",
+    "WhatsApp message sent": "WhatsApp message sent successfully to {to}, message ID: {msgId}",
+    "WhatsApp rate limit initialized": "WhatsApp rate limit initialized for key {key}",
+    "WhatsApp rate limit incremented": "WhatsApp rate limit incremented for key {key}, count: {count}",
+    "WhatsApp rate limit exceeded": "WhatsApp rate limit exceeded for key {key}, count: {count}",
+    "WhatsApp rate limit exceeded, notification queued": "WhatsApp rate limit exceeded, notification {notificationId} queued",
+    "Notification marked as read": "Notification {notificationId} marked as read",
+    "Notification not found": "Notification {notificationId} not found",
+    "Failed to mark notification as read": "Failed to mark notification {notificationId} as read",
+    "Unread notifications count fetched": "Unread notifications count fetched for user {userId}, count: {count}",
+    "Failed to fetch unread count": "Failed to fetch unread notifications count for user {userId}",
+    "User notifications fetched": "User notifications fetched successfully for user {userId}, limit: {limit}, skip: {skip}, count: {count}",
+    "Failed to fetch notifications": "Failed to fetch notifications for user {userId}",
+    "Notification deleted": "Notification {notificationId} deleted successfully",
+    "Failed to delete notification": "Failed to delete notification {notificationId}",
+    "All notifications cleared": "All notifications cleared for user {userId}",
+    "Failed to clear notifications": "Failed to clear notifications for user {userId}",
+    "All notifications marked as read": "All notifications marked as read for user {userId}",
+    "Failed to mark all notifications as read": "Failed to mark all notifications as read for user {userId}",
+    "Unauthorized": "Unauthorized access",
+    "Invalid action": "Invalid action",
+    "Server error": "Server error",
+    "Invalid notification data": "Invalid notification data",
+    "Unauthorized access to notifications": "Unauthorized access to notifications",
+    "Fetched unread notifications count": "Fetched unread notifications count",
+    "Fetched user notifications": "Fetched user notifications",
+    "Unauthorized access to clear notifications": "Unauthorized access to clear notifications",
+    "Unauthorized access to mark all notifications as read": "Unauthorized access to mark all notifications as read",
+    "Failed to process notification request": "Failed to process notification request",
+    "Notification sent via API": "Notification sent via API"
+  },
+  "TemplateEditor": {
+    "title": "Template Editor",
+    "switchToVisual": "Switch to Visual Mode",
+    "switchToDeveloper": "Switch to Developer Mode",
+    "jsEditor": "JavaScript Editor",
+    "addFaq": "Add FAQ",
+    "chat": "Live Chat",
+    "faqQuestion": "Question",
+    "faqAnswer": "Answer",
+    "desktopPreview": "Desktop Preview",
+    "mobilePreview": "Mobile Preview",
+    "templateName": "Template Name",
+    "primaryColor": "Primary Color",
+    "secondaryColor": "Secondary Color",
+    "heroTitle": "Hero Title",
+    "heroSubtitle": "Hero Subtitle",
+    "htmlEditor": "HTML Editor for Section: {{section}}",
+    "cssEditor": "CSS Editor",
+    "addSection": "Add Section",
+    "saveTemplate": "Save Template",
+    "publishTemplate": "Publish Template",
+    "exportTemplate": "Export Template",
+    "fetchTemplateFailed": "Failed to fetch template",
+    "saveTemplateFailed": "Failed to save template",
+    "publishTemplateFailed": "Failed to publish template",
+    "templateSaved": "Template saved successfully",
+    "templatePublished": "Template published successfully",
+    "templateExported": "Template exported successfully",
+    "error": "Error",
+    "success": "Success",
+    "invalidJSON": "Invalid JSON",
+    "textContent": "Enter text content",
+    "imageUrl": "Enter image URL",
+    "videoUrl": "Enter video URL",
+    "buttonLabel": "Button Label",
+    "buttonUrl": "Button URL",
+    "headingText": "Heading Text",
+    "dividerText": "Divider Text",
+    "spacerHeight": "Spacer Height",
+    "carouselImages": "Enter carousel images (comma-separated)",
+    "sliderImages": "Slider Images",
+    "galleryImages": "Gallery Images",
+    "columnsCount": "Columns Count",
+    "columnsGap": "Columns Gap",
+    "columnsChildren": "Columns Content",
+    "pricingTableContent": "Pricing Table Content",
+    "ctaText": "CTA Text",
+    "buttonText": "Button Text",
+    "accordionItems": "Accordion Items",
+    "tabsItems": "Tabs Items",
+    "testimonialsContent": "Testimonials Content",
+    "testimonialCarouselContent": "Testimonial Carousel Content",
+    "logosImages": "Logos Images",
+    "timelineItems": "Timeline Items",
+    "stepsItems": "Steps Items",
+    "animationText": "Animation Text",
+    "countUpValue": "Count Up Value",
+    "popupContent": "Popup Content",
+    "newsletterEndpoint": "Newsletter Endpoint",
+    "formEndpoint": "Form Endpoint",
+    "mapEmbed": "Map Embed",
+    "productIds": "Enter product IDs (comma-separated)",
+    "productImage": "Product Image",
+    "productName": "Product Name",
+    "productPrice": "Product Price",
+    "description": "Description",
+    "backgroundImage": "Background Image",
+    "upsellTitle": "Upsell Title",
+    "upsellDescription": "Upsell Description",
+    "reviewsContent": "Reviews Content",
+    "footerText": "Footer Text",
+    "backgroundColor": "Background Color",
+    "faqContent": "Enter FAQ content",
+    "navigationItems": "Navigation Items",
+    "blogPostsContent": "Blog Posts Content",
+    "articleContent": "Article Content",
+    "breadcrumbsItems": "Breadcrumbs Items",
+    "sidebarContent": "Sidebar Content",
+    "iconGridItems": "Icon Grid Items",
+    "imageGridImages": "Image Grid Images",
+    "shapeDividerText": "Shape Divider Text",
+    "countdownEndDate": "Select end date",
+    "reviewsCount": "Number of reviews",
+    "testimonialsCount": "Number of testimonials",
+    "text": "Text",
+    "image": "Image",
+    "video": "Video",
+    "button": "Button",
+    "heading": "Heading",
+    "divider": "Divider",
+    "spacer": "Spacer",
+    "carousel": "Carousel",
+    "slider": "Slider",
+    "gallery": "Gallery",
+    "columns": "Columns",
+    "pricing-table": "Pricing Table",
+    "cta": "Call to Action",
+    "accordion": "Accordion",
+    "tabs": "Tabs",
+    "testimonials": "Testimonials",
+    "testimonial-carousel": "Testimonial Carousel",
+    "logos": "Logos",
+    "timeline": "Timeline",
+    "steps": "Steps",
+    "animation": "Animation",
+    "count-up": "Count Up",
+    "popup": "Popup",
+    "newsletter": "Newsletter",
+    "contact-form": "Contact Form",
+    "map": "Map",
+    "products": "Products",
+    "product-card": "Product Card",
+    "collection-banner": "Collection Banner",
+    "upsell": "Upsell",
+    "related-products": "Related Products",
+    "quick-view": "Quick View",
+    "carousel-products": "Carousel Products",
+    "reviews": "Reviews",
+    "hero": "Hero",
+    "footer": "Footer",
+    "faq": "FAQ",
+    "navigation": "Navigation",
+    "blog-posts": "Blog Posts",
+    "article": "Article",
+    "breadcrumbs": "Breadcrumbs",
+    "sidebar": "Sidebar",
+    "background-video": "Background Video",
+    "icon-grid": "Icon Grid",
+    "image-grid": "Image Grid",
+    "shape-divider": "Shape Divider"
+  },
+  "Template": {
+    "title": "Template Settings",
+    "primaryColor": "Primary Color",
+    "secondaryColor": "Secondary Color",
+    "heroTitle": "Hero Title",
+    "heroSubtitle": "Hero Subtitle",
+    "layout": "Layout",
+    "enterHeroTitle": "Enter hero title",
+    "enterHeroSubtitle": "Enter hero subtitle",
+    "assets": "Assets",
+    "enterSectionName": "Enter section name",
+    "enterSectionUrl": "Enter section URL",
+    "addSection": "Add Section",
+    "save": "Save",
+    "saveSuccess": "Template saved successfully",
+    "templateUpdated": "Template settings updated successfully",
+    "templateSelected": "Template Selected",
+    "templateApplied": "Template applied successfully",
+    "templateImported": "Template Imported",
+    "errors": {
+      "unauthorized": "Unauthorized access",
+      "storeNotFound": "Store not found",
+      "fetchError": "Failed to fetch template",
+      "saveError": "Failed to save template"
+    }
+  },
+  "SitePreview": {
+    "title": "Site Preview",
+    "success": "Success",
+    "sitePublished": "Site Published Successfully",
+    "error": "Error",
+    "publishFailed": "Failed to Publish",
+    "defaultTitle": "Welcome to Your Store",
+    "defaultSubtitle": "Discover Our Amazing Products",
+    "noSections": "No Sections to Display",
+    "noProducts": "No Products to Display",
+    "product": "Product"
+  },
+  "PageManager": {
+    "managePages": "Manage Pages",
+    "visualMode": "Visual Mode",
+    "codeMode": "Code Mode",
+    "addPage": "Add Page",
+    "customCSS": "Custom CSS",
+    "customHTML": "Custom HTML",
+    "pageTitle": "Page Title",
+    "pageSlug": "Page Slug",
+    "pageContent": "Page Content",
+    "enterPageContent": "Enter Page Content",
+    "productIds": "Product IDs",
+    "newTextPage": "New Text Page",
+    "newImagePage": "New Image Page",
+    "newVideoPage": "New Video Page",
+    "newButtonPage": "New Button Page",
+    "newHeadingPage": "New Heading Page",
+    "newDividerPage": "New Divider Page",
+    "newSpacerPage": "New Spacer Page",
+    "newCarouselPage": "New Carousel Page",
+    "newSliderPage": "New Slider Page",
+    "newGalleryPage": "New Gallery Page",
+    "newColumnsPage": "New Columns Page",
+    "newFeaturesGridPage": "New Features Grid Page",
+    "newPricingTablePage": "New Pricing Table Page",
+    "newCtaPage": "New Call to Action Page",
+    "newAccordionPage": "New Accordion Page",
+    "newTabsPage": "New Tabs Page",
+    "newTestimonialsPage": "New Testimonials Page",
+    "newTestimonialCarouselPage": "New Testimonial Carousel Page",
+    "newLogosPage": "New Logos Page",
+    "newTimelinePage": "New Timeline Page",
+    "newStepsPage": "New Steps Page",
+    "newAnimationPage": "New Animation Page",
+    "newCountUpPage": "New Count Up Page",
+    "newPopupPage": "New Popup Page",
+    "newNewsletterPage": "New Newsletter Page",
+    "newContactFormPage": "New Contact Form Page",
+    "newMapPage": "New Map Page",
+    "newProductsPage": "New Products Page",
+    "newProductCardPage": "New Product Card Page",
+    "newCollectionBannerPage": "New Collection Banner Page",
+    "newUpsellPage": "New Upsell Page",
+    "newRelatedProductsPage": "New Related Products Page",
+    "newQuickViewPage": "New Quick View Page",
+    "newCarouselProductsPage": "New Carousel Products Page",
+    "newReviewsPage": "New Reviews Page",
+    "newHeroPage": "New Hero Page",
+    "newFooterPage": "New Footer Page",
+    "newFaqPage": "New FAQ Page",
+    "newBreadcrumbsPage": "New Breadcrumbs Page",
+    "newNavigationPage": "New Navigation Page",
+    "newSidebarPage": "New Sidebar Page",
+    "newBlogPostsPage": "New Blog Posts Page",
+    "newArticlePage": "New Article Page",
+    "newBackgroundVideoPage": "New Background Video Page",
+    "newIconGridPage": "New Icon Grid Page",
+    "newImageGridPage": "New Image Grid Page",
+    "newShapeDividerPage": "New Shape Divider Page",
+    "text": "Text",
+    "image": "Image",
+    "video": "Video",
+    "button": "Button",
+    "heading": "Heading",
+    "divider": "Divider",
+    "spacer": "Spacer",
+    "carousel": "Carousel",
+    "slider": "Slider",
+    "gallery": "Gallery",
+    "columns": "Columns",
+    "features-grid": "Features Grid",
+    "pricing-table": "Pricing Table",
+    "cta": "Call to Action",
+    "accordion": "Accordion",
+    "tabs": "Tabs",
+    "testimonials": "Testimonials",
+    "testimonial-carousel": "Testimonial Carousel",
+    "logos": "Logos",
+    "timeline": "Timeline",
+    "steps": "Steps",
+    "animation": "Animation",
+    "count-up": "Count Up",
+    "popup": "Popup",
+    "newsletter": "Newsletter",
+    "contact-form": "Contact Form",
+    "map": "Map",
+    "products": "Products",
+    "product-card": "Product Card",
+    "collection-banner": "Collection Banner",
+    "upsell": "Upsell",
+    "related-products": "Related Products",
+    "quick-view": "Quick View",
+    "carousel-products": "Carousel Products",
+    "reviews": "Reviews",
+    "hero": "Hero",
+    "footer": "Footer",
+    "faq": "FAQ",
+    "breadcrumbs": "Breadcrumbs",
+    "navigation": "Navigation",
+    "sidebar": "Sidebar",
+    "blog-posts": "Blog Posts",
+    "article": "Article",
+    "background-video": "Background Video",
+    "icon-grid": "Icon Grid",
+    "image-grid": "Image Grid",
+    "shape-divider": "Shape Divider"
+  },
+  "SellerSettings": {
+    "title": "Seller Settings",
+    "trialStatus": "Free trial active: {days} days remaining",
+    "loading": "Loading...",
+    "trialDescription": "Upgrade your plan to unlock additional features and benefits.",
+    "upgradePlan": "Upgrade Plan",
+    "pointsBalance": "Points Balance: {points} points",
+    "pointsDescription": "Use points to unlock premium features or discounts.",
+    "submitting": "Saving...",
+    "submit": "Save Settings",
+    "sections": {
+      "businessInfo": "Business Information",
+      "address": "Address",
+      "bankInfo": "Bank Information",
+      "account": "Account",
+      "subscription": "Subscription",
+      "discountOffers": "Discount Offers",
+      "notifications": "Notifications",
+      "display": "Display Settings",
+      "security": "Security",
+      "customSite": "Custom Site",
+      "taxes": "Taxes",
+      "domains": "Domains",
+      "verification": "Verification",
+      "integrations": "Integrations",
+      "paymentMethods": "Payment Methods",
+      "shippingOptions": "Shipping Options",
+      "template": "Template",
+      "templateeditor": "Template Editor",
+      "managePages": "Manage Pages",
+      "integrationsmanager": "Integrations Manager"
+    },
+    "businessName": {
+      "label": "Business Name",
+      "placeholder": "Enter your business name",
+      "description": "The name of your business as it will appear to customers."
+    },
+    "email": {
+      "label": "Email",
+      "placeholder": "Enter your business email",
+      "description": "The email address for customer communication."
     },
     "description": {
       "label": "Description",
-      "placeholder": "Describe the discount"
+      "placeholder": "Describe your business",
+      "description": "A brief description of your business for customers."
     },
-    "discountType": {
-      "label": "Discount Type",
-      "placeholder": "Select discount type",
-      "percentage": "Percentage",
-      "fixed": "Fixed Amount",
-      "free_shipping": "Free Shipping"
+    "phone": {
+      "label": "Phone Number",
+      "placeholder": "Enter your phone number",
+      "description": "The phone number for customer support."
     },
-    "discountValue": {
-      "label": "Discount Value",
-      "placeholder": "Enter discount value"
+    "customSiteUrl": {
+      "label": "Custom Site URL",
+      "placeholder": "Enter your custom site URL",
+      "description": "The URL for your custom storefront."
     },
-    "minPurchase": {
-      "label": "Minimum Purchase",
-      "placeholder": "Enter minimum purchase amount"
-    },
-    "maxDiscount": {
-      "label": "Maximum Discount",
-      "placeholder": "Enter maximum discount amount"
-    },
-    "validFrom": {
-      "label": "Valid From",
-      "placeholder": "Select start date"
-    },
-    "validUntil": {
-      "label": "Valid Until",
-      "placeholder": "Select end date"
-    },
-    "maxUses": {
-      "label": "Maximum Uses",
-      "placeholder": "Enter maximum number of uses"
-    },
-    "isActive": {
-      "label": "Active",
-      "description": "Enable or disable this discount offer."
-    },
-    "add": "Add Discount",
-    "remove": "Remove Discount"
-  },
-  "notifications": {
-    "email": {
-      "label": "Email Notifications",
-      "description": "Receive notifications via email."
-    },
-    "sms": {
-      "label": "SMS Notifications",
-      "description": "Receive notifications via SMS."
-    },
-    "push": {
-      "label": "Push Notifications",
-      "description": "Receive push notifications on your device."
-    },
-    "orderUpdates": {
-      "label": "Order Updates",
-      "description": "Receive updates about your orders."
-    },
-    "marketingEmails": {
-      "label": "Marketing Emails",
-      "description": "Receive promotional and marketing emails."
-    },
-    "pointsNotifications": {
-      "label": "Points Notifications",
-      "description": "Receive notifications about your points balance."
-    }
-  },
-  "display": {
-    "showRating": {
-      "label": "Show Rating",
-      "description": "Display your seller rating on your storefront."
-    },
-    "showContactInfo": {
-      "label": "Show Contact Information",
-      "description": "Display your contact information on your storefront."
-    },
-    "showMetrics": {
-      "label": "Show Metrics",
-      "description": "Display performance metrics on your dashboard."
-    },
-    "showPointsBalance": {
-      "label": "Show Points Balance",
-      "description": "Display your points balance on your dashboard."
-    },
-    "welcomeSeen": {
-      "label": "Welcome Message Seen",
-      "description": "Mark the welcome message as seen."
-    }
-  },
-  "customSite": {
-    "theme": {
-      "label": "Theme",
-      "placeholder": "Select a theme",
-      "description": "Choose a theme for your custom site.",
-      "default": "Default",
-      "dark": "Dark",
-      "light": "Light"
-    },
-    "primaryColor": {
-      "label": "Primary Color",
-      "description": "Select the primary color for your site."
-    },
-    "logo": {
-      "label": "Logo",
-      "description": "Upload a logo for your storefront.",
-      "alt": "Store Logo"
-    },
-    "bannerImage": {
-      "label": "Banner Image",
-      "description": "Upload a banner image for your storefront.",
-      "alt": "Store Banner"
-    },
-    "seo": {
-      "metaTitle": {
-        "label": "Meta Title",
-        "placeholder": "Enter meta title",
-        "description": "The title for search engine optimization (max 60 characters)."
+    "address": {
+      "street": {
+        "label": "Street Address",
+        "placeholder": "Enter street address"
       },
-      "metaDescription": {
-        "label": "Meta Description",
-        "placeholder": "Enter meta description",
-        "description": "The description for search engine optimization (max 160 characters)."
+      "city": {
+        "label": "City",
+        "placeholder": "Enter city"
       },
-      "keywords": {
-        "label": "Keywords",
-        "placeholder": "Enter keywords (comma-separated)",
-        "description": "Keywords for search engine optimization."
+      "state": {
+        "label": "State/Province",
+        "placeholder": "Enter state or province"
+      },
+      "postalCode": {
+        "label": "Postal Code",
+        "placeholder": "Enter postal code"
+      },
+      "countryCode": {
+        "label": "Country Code",
+        "placeholder": "Enter country code (e.g., US, CA)"
       }
-    }
-  },
-  "taxes": {
-    "taxRate": {
-      "label": "Tax Rate",
-      "placeholder": "Enter tax rate (%)"
     },
-    "taxType": {
-      "label": "Tax Type",
-      "placeholder": "Select tax type",
-      "vat": "VAT",
-      "sales_tax": "Sales Tax",
-      "none": "None"
+    "bankInfo": {
+      "accountName": {
+        "label": "Account Name",
+        "placeholder": "Enter account holder name"
+      },
+      "accountNumber": {
+        "label": "Account Number",
+        "placeholder": "Enter bank account number"
+      },
+      "bankName": {
+        "label": "Bank Name",
+        "placeholder": "Enter bank name"
+      },
+      "swiftCode": {
+        "label": "SWIFT Code",
+        "placeholder": "Enter SWIFT code",
+        "description": "The SWIFT code for international transactions."
+      },
+      "showBankInfo": "Show Bank Information",
+      "hideBankInfo": "Hide Bank Information"
     },
-    "taxService": {
-      "label": "Tax Service",
-      "placeholder": "Select tax service",
-      "avalara": "Avalara",
-      "taxjar": "TaxJar",
-      "none": "None"
-    }
-  },
-  "domains": {
-    "domainName": {
-      "label": "Domain Name",
-      "placeholder": "Enter domain name (e.g., example.com)",
-      "description": "The custom domain for your storefront."
+    "subscription": {
+      "plan": {
+        "label": "Subscription Plan",
+        "placeholder": "Select a plan",
+        "description": "Choose your subscription plan to access different features.",
+        "trial": "Trial",
+        "basic": "Basic",
+        "pro": "Pro",
+        "vip": "VIP"
+      },
+      "upgradeTo": "Upgrade to {plan}"
     },
-    "isPrimary": {
-      "label": "Primary Domain",
-      "description": "Set this domain as the primary domain for your store."
-    },
-    "dnsStatus": {
-      "label": "DNS Status",
-      "placeholder": "Select DNS status",
-      "pending": "Pending",
-      "verified": "Verified",
-      "failed": "Failed",
-      "description": "The status of your domain's DNS configuration."
-    },
-    "add": "Add Domain",
-    "remove": "Remove Domain"
-  },
-  "verification": {
-    "documentType": {
-      "label": "Document Type",
-      "placeholder": "Select document type",
-      "id": "ID",
-      "business_license": "Business License",
-      "tax_document": "Tax Document",
-      "other": "Other"
-    },
-    "document": {
-      "label": "Upload Document",
-      "description": "Upload a document for verification."
-    },
-    "addDocument": "Add Document",
-    "removeDocument": "Remove Document"
-  },
-  "integrations": {
-    "description": "Manage your payment and shipping integrations.",
-    "payment": "Payment Providers",
-    "shipping": "Shipping Providers",
-    "noPaymentProviders": "No payment providers connected.",
-    "noShippingProviders": "No shipping providers connected.",
-    "manage": "Manage Integrations"
-  },
-  "success": {
-    "title": "Settings Saved",
-    "description": "Your settings have been successfully updated.",
-    "subscriptionUpgraded": "Successfully upgraded to {plan} plan."
-  },
-  "errors": {
-    "fetchTitle": "Error Fetching Settings",
-    "fetchDescription": "Failed to fetch settings. Please try again.",
-    "fetchFailed": "Failed to fetch integrations.",
-    "submitTitle": "Error Saving Settings",
-    "submitDescription": "Failed to save settings. Please try again.",
-    "saveError": "Failed to save store settings.",
-    "fileSizeTitle": "File Too Large",
-    "fileSizeDescription": "File size exceeds {size} limit.",
-    "fileTypeTitle": "Invalid File Type",
-    "fileTypeDescription": "Only JPEG, PNG, and WebP files are allowed.",
-    "fileReadTitle": "Error Reading File",
-    "fileReadDescription": "Failed to read the uploaded file.",
-    "uploadTitle": "Upload Error",
-    "uploadDescription": "Failed to upload the file. Please try again."
-  },
-  "validation": {
     "discountOffers": {
-      "validDates": "The end date must be after the start date."
+      "code": {
+        "label": "Discount Code",
+        "placeholder": "Enter discount code"
+      },
+      "description": {
+        "label": "Description",
+        "placeholder": "Describe the discount"
+      },
+      "discountType": {
+        "label": "Discount Type",
+        "placeholder": "Select discount type",
+        "percentage": "Percentage",
+        "fixed": "Fixed Amount",
+        "free_shipping": "Free Shipping"
+      },
+      "discountValue": {
+        "label": "Discount Value",
+        "placeholder": "Enter discount value"
+      },
+      "minPurchase": {
+        "label": "Minimum Purchase",
+        "placeholder": "Enter minimum purchase amount"
+      },
+      "maxDiscount": {
+        "label": "Maximum Discount",
+        "placeholder": "Enter maximum discount amount"
+      },
+      "validFrom": {
+        "label": "Valid From",
+        "placeholder": "Select start date"
+      },
+      "validUntil": {
+        "label": "Valid Until",
+        "placeholder": "Select end date"
+      },
+      "maxUses": {
+        "label": "Maximum Uses",
+        "placeholder": "Enter maximum number of uses"
+      },
+      "isActive": {
+        "label": "Active",
+        "description": "Enable or disable this discount offer."
+      },
+      "add": "Add Discount",
+      "remove": "Remove Discount"
+    },
+    "notifications": {
+      "email": {
+        "label": "Email Notifications",
+        "description": "Receive notifications via email."
+      },
+      "sms": {
+        "label": "SMS Notifications",
+        "description": "Receive notifications via SMS."
+      },
+      "push": {
+        "label": "Push Notifications",
+        "description": "Receive push notifications on your device."
+      },
+      "orderUpdates": {
+        "label": "Order Updates",
+        "description": "Receive updates about your orders."
+      },
+      "marketingEmails": {
+        "label": "Marketing Emails",
+        "description": "Receive promotional and marketing emails."
+      },
+      "pointsNotifications": {
+        "label": "Points Notifications",
+        "description": "Receive notifications about your points balance."
+      }
+    },
+    "display": {
+      "showRating": {
+        "label": "Show Rating",
+        "description": "Display your seller rating on your storefront."
+      },
+      "showContactInfo": {
+        "label": "Show Contact Information",
+        "description": "Display your contact information on your storefront."
+      },
+      "showMetrics": {
+        "label": "Show Metrics",
+        "description": "Display performance metrics on your dashboard."
+      },
+      "showPointsBalance": {
+        "label": "Show Points Balance",
+        "description": "Display your points balance on your dashboard."
+      },
+      "welcomeSeen": {
+        "label": "Welcome Message Seen",
+        "description": "Mark the welcome message as seen."
+      }
+    },
+    "customSite": {
+      "theme": {
+        "label": "Theme",
+        "placeholder": "Select a theme",
+        "description": "Choose a theme for your custom site.",
+        "default": "Default",
+        "dark": "Dark",
+        "light": "Light"
+      },
+      "primaryColor": {
+        "label": "Primary Color",
+        "description": "Select the primary color for your site."
+      },
+      "logo": {
+        "label": "Logo",
+        "description": "Upload a logo for your storefront.",
+        "alt": "Store Logo"
+      },
+      "bannerImage": {
+        "label": "Banner Image",
+        "description": "Upload a banner image for your storefront.",
+        "alt": "Store Banner"
+      },
+      "seo": {
+        "metaTitle": {
+          "label": "Meta Title",
+          "placeholder": "Enter meta title",
+          "description": "The title for search engine optimization (max 60 characters)."
+        },
+        "metaDescription": {
+          "label": "Meta Description",
+          "placeholder": "Enter meta description",
+          "description": "The description for search engine optimization (max 160 characters)."
+        },
+        "keywords": {
+          "label": "Keywords",
+          "placeholder": "Enter keywords (comma-separated)",
+          "description": "Keywords for search engine optimization."
+        }
+      }
+    },
+    "taxes": {
+      "taxRate": {
+        "label": "Tax Rate",
+        "placeholder": "Enter tax rate (%)"
+      },
+      "taxType": {
+        "label": "Tax Type",
+        "placeholder": "Select tax type",
+        "vat": "VAT",
+        "sales_tax": "Sales Tax",
+        "none": "None"
+      },
+      "taxService": {
+        "label": "Tax Service",
+        "placeholder": "Select tax service",
+        "avalara": "Avalara",
+        "taxjar": "TaxJar",
+        "none": "None"
+      }
+    },
+    "domains": {
+      "domainName": {
+        "label": "Domain Name",
+        "placeholder": "Enter domain name (e.g., example.com)",
+        "description": "The custom domain for your storefront."
+      },
+      "isPrimary": {
+        "label": "Primary Domain",
+        "description": "Set this domain as the primary domain for your store."
+      },
+      "dnsStatus": {
+        "label": "DNS Status",
+        "placeholder": "Select DNS status",
+        "pending": "Pending",
+        "verified": "Verified",
+        "failed": "Failed",
+        "description": "The status of your domain's DNS configuration."
+      },
+      "add": "Add Domain",
+      "remove": "Remove Domain"
+    },
+    "verification": {
+      "documentType": {
+        "label": "Document Type",
+        "placeholder": "Select document type",
+        "id": "ID",
+        "business_license": "Business License",
+        "tax_document": "Tax Document",
+        "other": "Other"
+      },
+      "document": {
+        "label": "Upload Document",
+        "description": "Upload a document for verification."
+      },
+      "addDocument": "Add Document",
+      "removeDocument": "Remove Document"
+    },
+    "integrations": {
+      "description": "Manage your payment and shipping integrations.",
+      "payment": "Payment Providers",
+      "shipping": "Shipping Providers",
+      "noPaymentProviders": "No payment providers connected.",
+      "noShippingProviders": "No shipping providers connected.",
+      "manage": "Manage Integrations"
+    },
+    "success": {
+      "title": "Settings Saved",
+      "description": "Your settings have been successfully updated.",
+      "subscriptionUpgraded": "Successfully upgraded to {plan} plan."
+    },
+    "errors": {
+      "fetchTitle": "Error Fetching Settings",
+      "fetchDescription": "Failed to fetch settings. Please try again.",
+      "fetchFailed": "Failed to fetch integrations.",
+      "submitTitle": "Error Saving Settings",
+      "submitDescription": "Failed to save settings. Please try again.",
+      "saveError": "Failed to save store settings.",
+      "fileSizeTitle": "File Too Large",
+      "fileSizeDescription": "File size exceeds {size} limit.",
+      "fileTypeTitle": "Invalid File Type",
+      "fileTypeDescription": "Only JPEG, PNG, and WebP files are allowed.",
+      "fileReadTitle": "Error Reading File",
+      "fileReadDescription": "Failed to read the uploaded file.",
+      "uploadTitle": "Upload Error",
+      "uploadDescription": "Failed to upload the file. Please try again."
+    },
+    "validation": {
+      "discountOffers": {
+        "validDates": "The end date must be after the start date."
+      }
+    },
+    "preview": "Site Preview"
+  },
+  "TemplateLibrary": {
+    "title": "Template Library",
+    "public": "Public",
+    "private": "Private",
+    "select": "Select Template",
+    "error": "Error",
+    "fetchTemplatesFailed": "Failed to fetch templates",
+    "unnamedTemplate": "Unnamed Template"
+  },
+  "TemplateImporter": {
+    "success": "Success",
+    "templateImported": "Template imported successfully",
+    "websiteImported": "Website imported successfully",
+    "error": "Error",
+    "invalidTemplate": "Invalid template format",
+    "invalidZip": "Invalid ZIP file",
+    "noTemplateJson": "No template.json found in ZIP",
+    "onlyJsonOrZipSupported": "Only JSON or ZIP files are supported",
+    "dragDropTemplate": "Drag and drop a template file",
+    "orClick": "or click to select"
+  },
+  "DomainManager": {
+    "manageDomains": "Manage Domains",
+    "enterCustomDomain": "Enter your custom domain (e.g., example.com)",
+    "addDomain": "Add Domain",
+    "success": "Domain Added Successfully",
+    "domainAdded": "Your custom domain has been added. Follow the DNS instructions to complete setup.",
+    "dnsInstructions": "DNS Setup Instructions",
+    "noDomains": "No domains added yet",
+    "primary": "Primary Domain",
+    "setAsPrimary": "Set as Primary",
+    "errors": {
+      "fetchDomainsFailed": "Failed to fetch domains",
+      "addDomainFailed": "Failed to add domain",
+      "setPrimaryFailed": "Failed to set primary domain"
     }
   },
-  "preview": "Site Preview"
-},
-"TemplateLibrary": {
-  "title": "Template Library",
-  "public": "Public",
-  "private": "Private",
-  "select": "Select Template",
-  "error": "Error",
-  "fetchTemplatesFailed": "Failed to fetch templates",
-  "unnamedTemplate": "Unnamed Template"
-},
-"TemplateImporter": {
-  "success": "Success",
-  "templateImported": "Template imported successfully",
-  "websiteImported": "Website imported successfully",
-  "error": "Error",
-  "invalidTemplate": "Invalid template format",
-  "invalidZip": "Invalid ZIP file",
-  "noTemplateJson": "No template.json found in ZIP",
-  "onlyJsonOrZipSupported": "Only JSON or ZIP files are supported",
-  "dragDropTemplate": "Drag and drop a template file",
-  "orClick": "or click to select"
-},
-"DomainManager": {
-  "manageDomains": "Manage Domains",
-  "enterCustomDomain": "Enter your custom domain (e.g., example.com)",
-  "addDomain": "Add Domain",
-  "success": "Domain Added Successfully",
-  "domainAdded": "Your custom domain has been added. Follow the DNS instructions to complete setup.",
-  "dnsInstructions": "DNS Setup Instructions",
-  "noDomains": "No domains added yet",
-  "primary": "Primary Domain",
-  "setAsPrimary": "Set as Primary",
-  "errors": {
-    "fetchDomainsFailed": "Failed to fetch domains",
-    "addDomainFailed": "Failed to add domain",
-    "setPrimaryFailed": "Failed to set primary domain"
-  }
-},
-"PageManager": {
-  "managePages": "Manage Pages",
-  "addPage": "Add New Page",
-  "pageTitle": "Page Title",
-  "pageSlug": "Page Slug",
-  "pageContent": "Page Content",
-  "enterPageContent": "Enter page content",
-  "productIds": "Enter product IDs (comma-separated)",
-  "customCSS": "Custom CSS",
-  "customHTML": "Custom HTML",
-  "visualMode": "Switch to Visual Mode",
-  "codeMode": "Switch to Code Mode",
-  "newCustomPage": "New Custom Page",
-  "newHeroPage": "New Hero Page",
-  "newProductsPage": "New Products Page",
-  "newTestimonialsPage": "New Testimonials Page",
-  "newFaqPage": "New FAQ Page",
-  "text": "Text",
-  "image": "Image",
-  "video": "Video",
-  "button": "Button",
-  "heading": "Heading",
-  "divider": "Divider",
-  "spacer": "Spacer",
-  "carousel": "Carousel",
-  "slider": "Slider",
-  "gallery": "Gallery",
-  "columns": "Columns",
-  "features-grid": "Features Grid",
-  "pricing-table": "Pricing Table",
-  "cta": "Call to Action",
-  "accordion": "Accordion",
-  "tabs": "Tabs",
-  "testimonials": "Testimonials",
-  "testimonial-carousel": "Testimonial Carousel",
-  "logos": "Logos",
-  "timeline": "Timeline",
-  "steps": "Steps",
-  "animation": "Animation",
-  "count-up": "Count Up",
-  "popup": "Popup",
-  "newsletter": "Newsletter",
-  "contact-form": "Contact Form",
-  "map": "Map",
-  "products": "Products",
-  "product-card": "Product Card",
-  "collection-banner": "Collection Banner",
-  "upsell": "Upsell",
-  "related-products": "Related Products",
-  "quick-view": "Quick View",
-  "carousel-products": "Carousel Products",
-  "reviews": "Reviews",
-  "hero": "Hero",
-  "footer": "Footer",
-  "faq": "FAQ",
-  "breadcrumbs": "Breadcrumbs",
-  "navigation": "Navigation",
-  "sidebar": "Sidebar",
-  "blog-posts": "Blog Posts",
-  "article": "Article",
-  "background-video": "Background Video",
-  "icon-grid": "Icon Grid",
-  "image-grid": "Image Grid",
-  "shape-divider": "Shape Divider"
-},
-"Template": {
-  "primaryColor": "Primary Color",
-  "secondaryColor": "Secondary Color",
-  "heroTitle": "Hero Title",
-  "heroSubtitle": "Hero Subtitle",
-  "enterHeroTitle": "Enter hero title",
-  "enterHeroSubtitle": "Enter hero subtitle",
-  "assets": "Assets",
-  "enterSectionName": "Enter section name",
-  "enterSectionUrl": "Enter section URL",
-  "addSection": "Add Section",
-  "save": "Save Template",
-  "saveSuccess": "Template Saved",
-  "templateUpdated": "Your template has been successfully updated.",
-  "templateSelected": "Template Selected",
-  "templateApplied": "The selected template has been applied.",
-  "templateImported": "Template Imported",
-  "errors": {
-    "saveError": "Failed to save template"
-  }
-},
-"IntegrationsManager": {
-  "manageIntegrations": "Manage Integrations",
-  "selectType": "Select Integration Type",
-  "integrationName": "Integration Name",
-  "keyName": "Key Name",
-  "keyValue": "Key Value",
-  "addKey": "Add Key",
-  "webhookEvent": "Webhook Event",
-  "webhookUrl": "Webhook URL",
-  "addWebhook": "Add Webhook",
-  "addIntegration": "Add Integration",
-  "success": "Success",
-  "integrationAdded": "Integration added successfully",
-  "integrationDeleted": "Integration deleted successfully",
-  "errors": {
-    "fetchFailed": "Failed to fetch integrations",
-    "addFailed": "Failed to add integration",
-    "deleteFailed": "Failed to delete integration"
+  "PageManager": {
+    "managePages": "Manage Pages",
+    "addPage": "Add New Page",
+    "pageTitle": "Page Title",
+    "pageSlug": "Page Slug",
+    "pageContent": "Page Content",
+    "enterPageContent": "Enter page content",
+    "productIds": "Enter product IDs (comma-separated)",
+    "customCSS": "Custom CSS",
+    "customHTML": "Custom HTML",
+    "visualMode": "Switch to Visual Mode",
+    "codeMode": "Switch to Code Mode",
+    "newCustomPage": "New Custom Page",
+    "newHeroPage": "New Hero Page",
+    "newProductsPage": "New Products Page",
+    "newTestimonialsPage": "New Testimonials Page",
+    "newFaqPage": "New FAQ Page",
+    "text": "Text",
+    "image": "Image",
+    "video": "Video",
+    "button": "Button",
+    "heading": "Heading",
+    "divider": "Divider",
+    "spacer": "Spacer",
+    "carousel": "Carousel",
+    "slider": "Slider",
+    "gallery": "Gallery",
+    "columns": "Columns",
+    "features-grid": "Features Grid",
+    "pricing-table": "Pricing Table",
+    "cta": "Call to Action",
+    "accordion": "Accordion",
+    "tabs": "Tabs",
+    "testimonials": "Testimonials",
+    "testimonial-carousel": "Testimonial Carousel",
+    "logos": "Logos",
+    "timeline": "Timeline",
+    "steps": "Steps",
+    "animation": "Animation",
+    "count-up": "Count Up",
+    "popup": "Popup",
+    "newsletter": "Newsletter",
+    "contact-form": "Contact Form",
+    "map": "Map",
+    "products": "Products",
+    "product-card": "Product Card",
+    "collection-banner": "Collection Banner",
+    "upsell": "Upsell",
+    "related-products": "Related Products",
+    "quick-view": "Quick View",
+    "carousel-products": "Carousel Products",
+    "reviews": "Reviews",
+    "hero": "Hero",
+    "footer": "Footer",
+    "faq": "FAQ",
+    "breadcrumbs": "Breadcrumbs",
+    "navigation": "Navigation",
+    "sidebar": "Sidebar",
+    "blog-posts": "Blog Posts",
+    "article": "Article",
+    "background-video": "Background Video",
+    "icon-grid": "Icon Grid",
+    "image-grid": "Image Grid",
+    "shape-divider": "Shape Divider"
   },
-  "payment": "Payment",
-  "warehouse": "Warehouse",
-  "dropshipping": "Dropshipping",
-  "marketplace": "Marketplace",
-  "shipping": "Shipping",
-  "marketing": "Marketing",
-  "accounting": "Accounting",
-  "crm": "CRM",
-  "analytics": "Analytics",
-  "automation": "Automation",
-  "communication": "Communication",
-  "education": "Education",
-  "security": "Security",
-  "advertising": "Advertising",
-  "tax": "Tax",
-  "custom": "Custom",
-  "name": "Name",
-  "type": "Type",
-  "keys": "Keys",
-  "webhooks": "Webhooks"
-},
-"securityapiKeys": {
-  "title": "Security Settings",
-  "apiKeys": "API Keys",
-  "createNewKey": "Create New API Key",
-  "namePlaceholder": "Enter API key name",
-  "createKey": "Create API Key",
-  "creating": "Creating...",
-  "existingKeys": "Existing API Keys",
-  "refresh": "Refresh",
-  "refreshing": "Refreshing...",
-  "loading": "Loading...",
-  "noKeys": "No API keys found",
-  "name": "Name",
-  "permissions": "Permissions",
-  "status": "Status",
-  "lastUsed": "Last Used",
-  "created": "Created",
-  "actions": "Actions",
-  "active": "Active",
-  "inactive": "Inactive",
-  "errors": {
-    "fetchFailed": "Failed to fetch API keys",
-    "nameRequired": "API key name is required",
-    "createFailed": "Failed to create API key",
-    "rotationFailed": "Failed to rotate API key",
-    "deleteFailed": "Failed to delete API key"
+  "Template": {
+    "primaryColor": "Primary Color",
+    "secondaryColor": "Secondary Color",
+    "heroTitle": "Hero Title",
+    "heroSubtitle": "Hero Subtitle",
+    "enterHeroTitle": "Enter hero title",
+    "enterHeroSubtitle": "Enter hero subtitle",
+    "assets": "Assets",
+    "enterSectionName": "Enter section name",
+    "enterSectionUrl": "Enter section URL",
+    "addSection": "Add Section",
+    "save": "Save Template",
+    "saveSuccess": "Template Saved",
+    "templateUpdated": "Your template has been successfully updated.",
+    "templateSelected": "Template Selected",
+    "templateApplied": "The selected template has been applied.",
+    "templateImported": "Template Imported",
+    "errors": {
+      "saveError": "Failed to save template"
+    }
   },
-  "success": {
-    "created": "API Key Created",
-    "createdMessage": "API key {name} has been created successfully",
-    "keyCopied": "API Key Copied",
-    "keyCopiedMessage": "Your new API key has been copied to clipboard. Save it securely!",
-    "rotated": "API Key Rotated",
-    "rotatedMessage": "API key has been rotated successfully",
-    "deleted": "API Key Deleted",
-    "deletedMessage": "API key has been deleted successfully"
+  "IntegrationsManager": {
+    "manageIntegrations": "Manage Integrations",
+    "selectType": "Select Integration Type",
+    "integrationName": "Integration Name",
+    "keyName": "Key Name",
+    "keyValue": "Key Value",
+    "addKey": "Add Key",
+    "webhookEvent": "Webhook Event",
+    "webhookUrl": "Webhook URL",
+    "addWebhook": "Add Webhook",
+    "addIntegration": "Add Integration",
+    "success": "Success",
+    "integrationAdded": "Integration added successfully",
+    "integrationDeleted": "Integration deleted successfully",
+    "errors": {
+      "fetchFailed": "Failed to fetch integrations",
+      "addFailed": "Failed to add integration",
+      "deleteFailed": "Failed to delete integration"
+    },
+    "payment": "Payment",
+    "warehouse": "Warehouse",
+    "dropshipping": "Dropshipping",
+    "marketplace": "Marketplace",
+    "shipping": "Shipping",
+    "marketing": "Marketing",
+    "accounting": "Accounting",
+    "crm": "CRM",
+    "analytics": "Analytics",
+    "automation": "Automation",
+    "communication": "Communication",
+    "education": "Education",
+    "security": "Security",
+    "advertising": "Advertising",
+    "tax": "Tax",
+    "custom": "Custom",
+    "name": "Name",
+    "type": "Type",
+    "keys": "Keys",
+    "webhooks": "Webhooks"
   },
-  "confirm": {
-    "rotate": "Are you sure you want to rotate this API key? The old key will become invalid.",
-    "delete": "Are you sure you want to delete this API key? This action cannot be undone."
+  "securityapiKeys": {
+    "title": "Security Settings",
+    "apiKeys": "API Keys",
+    "createNewKey": "Create New API Key",
+    "namePlaceholder": "Enter API key name",
+    "createKey": "Create API Key",
+    "creating": "Creating...",
+    "existingKeys": "Existing API Keys",
+    "refresh": "Refresh",
+    "refreshing": "Refreshing...",
+    "loading": "Loading...",
+    "noKeys": "No API keys found",
+    "name": "Name",
+    "permissions": "Permissions",
+    "status": "Status",
+    "lastUsed": "Last Used",
+    "created": "Created",
+    "actions": "Actions",
+    "active": "Active",
+    "inactive": "Inactive",
+    "errors": {
+      "fetchFailed": "Failed to fetch API keys",
+      "nameRequired": "API key name is required",
+      "createFailed": "Failed to create API key",
+      "rotationFailed": "Failed to rotate API key",
+      "deleteFailed": "Failed to delete API key"
+    },
+    "success": {
+      "created": "API Key Created",
+      "createdMessage": "API key {name} has been created successfully",
+      "keyCopied": "API Key Copied",
+      "keyCopiedMessage": "Your new API key has been copied to clipboard. Save it securely!",
+      "rotated": "API Key Rotated",
+      "rotatedMessage": "API key has been rotated successfully",
+      "deleted": "API Key Deleted",
+      "deletedMessage": "API key has been deleted successfully"
+    },
+    "confirm": {
+      "rotate": "Are you sure you want to rotate this API key? The old key will become invalid.",
+      "delete": "Are you sure you want to delete this API key? This action cannot be undone."
+    }
   }
-}
 }

@@ -103,3 +103,17 @@ export const GET_CAMPAIGN_PRODUCTS = gql`
     }
   }
 `;
+
+
+
+export const CALCULATE_PRICING = gql`
+  mutation CalculatePricing($basePrice: Float!, $listPrice: Float!, $markup: Float, $discount: DiscountInput, $currency: String!) {
+    calculatePricing(basePrice: $basePrice, listPrice: $listPrice, markup: $markup, discount: $discount, currency: $currency) {
+      currency
+      commission
+      suggestedMarkup
+      finalPrice
+      profit
+    }
+  }
+`;

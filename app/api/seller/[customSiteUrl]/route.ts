@@ -1,4 +1,4 @@
-// app/api/seller/[customSiteUrl]/route.ts
+// app/api/seller/[userId]/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import Seller from '@/lib/db/models/seller.model';
@@ -7,20 +7,20 @@ import { auth } from '@/auth';
 import mongoose from 'mongoose';
 import crypto from 'crypto';
 
-export async function GET(request: NextRequest, { params }: { params: { customSiteUrl: string } }) {
+export async function GET(request: NextRequest, { params }: { params: { userId: string } }) {
   const requestId = crypto.randomUUID();
 
   try {
     await connectToDatabase();
     const session = await auth();
 
-    const { customSiteUrl } = params;  // ✅ customSiteUrl بدل userId
+    const { userId } = params;  // ✅ userId بدل userId
 
-    // ✅ تحقق من صحة ObjectId أو customSiteUrl
-    if (mongoose.isValidObjectId(customSiteUrl)) {
+    // ✅ تحقق من صحة ObjectId أو userId
+    if (mongoose.isValidObjectId(userId)) {
       // لو ObjectId → استخدمه كـ userId
-      if (!session?.user?.id || session.user.id !== customSiteUrl) {
-        await customLogger.error('Unauthorized access to seller data', { requestId, customSiteUrl, service: 'api' });
+      if (!session?.user?.id || session.user.id !== userId) {
+        await customLogger.error('Unauthorized access to seller data', { requestId, userId, service: 'api' });
         return NextResponse.json(
           { success: false, error: 'Unauthorized', requestId, timestamp: new Date().toISOString() },
           { status: 401 }
@@ -28,14 +28,14 @@ export async function GET(request: NextRequest, { params }: { params: { customSi
       }
     }
 
-    // ابحث بالـ userId أو customSiteUrl
-    const sellerQuery = mongoose.isValidObjectId(customSiteUrl) 
-      ? { userId: customSiteUrl } 
-      : { customSiteUrl };
+    // ابحث بالـ userId أو userId
+    const sellerQuery = mongoose.isValidObjectId(userId) 
+      ? { userId: userId } 
+      : { userId };
 
     const seller = await Seller.findOne(sellerQuery).lean();
     if (!seller) {
-      await customLogger.error('Seller not found', { requestId, customSiteUrl, service: 'api' });
+      await customLogger.error('Seller not found', { requestId, userId, service: 'api' });
       return NextResponse.json(
         { success: false, error: 'Seller not found', requestId, timestamp: new Date().toISOString() },
         { status: 404 }

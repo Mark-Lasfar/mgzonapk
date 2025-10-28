@@ -1,6 +1,8 @@
+// /home/mark/Music/my-nextjs-project-clean/lib/utils.ts
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
 import qs from 'query-string';
+import { supportedCurrencies } from './config';
 
 export function escapeGraphQLString(str: string): string {
   return str.replace(/"/g, '\\"').replace(/\n/g, '\\n');
@@ -9,6 +11,16 @@ export function escapeGraphQLString(str: string): string {
 export function toPlainObject<T>(obj: T): T {
   return JSON.parse(JSON.stringify(obj));
 }
+
+
+interface PricingResult {
+  currency: string;
+  commission: number;
+  suggestedMarkup: number;
+  finalPrice: number;
+  profit: number;
+}
+
 
 export function formUrlQuery({
   params,
@@ -54,6 +66,39 @@ const CURRENCY_FORMATTER = new Intl.NumberFormat('en-US', {
 });
 export function formatCurrency(amount: number) {
   return CURRENCY_FORMATTER.format(amount);
+}
+
+export function calculatePricing(
+  basePrice: number,
+  listPrice: number,
+  markup: number,
+  discount: { type: string; value?: number } | undefined,
+  currency: string
+): PricingResult {
+  if (!supportedCurrencies.includes(currency)) {
+    throw new Error('Unsupported currency');
+  }
+
+  const commissionRate = 0.1; // 10% commission
+  const commission = basePrice * commissionRate;
+  const suggestedMarkup = markup || 30;
+  let finalPrice = listPrice || basePrice * (1 + suggestedMarkup / 100);
+
+  if (discount?.type === 'percentage' && discount.value) {
+    finalPrice *= 1 - discount.value / 100;
+  } else if (discount?.type === 'fixed' && discount.value) {
+    finalPrice -= discount.value;
+  }
+
+  const profit = finalPrice - basePrice - commission;
+
+  return {
+    currency,
+    commission: Number(commission.toFixed(2)),
+    suggestedMarkup,
+    finalPrice: Number(finalPrice.toFixed(2)),
+    profit: Number(profit.toFixed(2)),
+  };
 }
 
 const NUMBER_FORMATTER = new Intl.NumberFormat('en-US');

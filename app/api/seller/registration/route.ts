@@ -75,6 +75,7 @@ const sellerRegistrationSchema = z
 
 type SellerRegistrationData = z.infer<typeof sellerRegistrationSchema>;
 
+// في بداية دالة POST
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
   const locale = await getLocale();
@@ -110,23 +111,19 @@ export async function POST(request: NextRequest) {
         throw new Error(t('errors.invalidFormData') || 'Missing or invalid sensitive data');
       }
 
-      // فك تشفير البيانات الحساسة
       const sensitiveData = decrypt<Record<string, unknown>>(parsedData.sensitiveData, true);
       console.log('Decrypted sensitive data:', sensitiveData);
 
-      // دمج البيانات المفكوكة مع البيانات غير الحساسة
       const mergedData = {
         ...parsedData,
         ...sensitiveData,
-        phoneCountryCode: undefined, // إزالة phoneCountryCode إذا لم يكن مطلوبًا
+        phoneCountryCode: undefined,
       };
-      delete mergedData.sensitiveData; // إزالة sensitiveData من البيانات النهائية
+      delete mergedData.sensitiveData;
 
-      // التحقق من البيانات باستخدام Zod
       data = sellerRegistrationSchema.parse(mergedData);
       logger.debug('Validated data', { businessType: data.businessType });
 
-      // التحقق من وجود ملف logo في FormData
       const logoFile = formData.get('logo');
       if (logoFile instanceof File) {
         try {
@@ -173,11 +170,11 @@ export async function POST(request: NextRequest) {
     }
 
     // الاتصال بقاعدة البيانات وبدء جلسة المعاملة
-    await connectToDatabase();
-    const dbSession = await mongoose.startSession();
-    dbSession.startTransaction();
+    const mongooseConnection = await connectToDatabase();
+    const dbSession = await mongooseConnection.startSession();
+    dbSession.startTransaction({ maxTimeMS: 30000 }); // زيادة مهلة المعاملة
+    let seller, updatedUser;
     try {
-      // التحقق من وجود بائع مسجل مسبقًا
       const existingSeller = await Seller.findOne({
         $or: [{ email: data.email }, { userId: userSession.user.id }],
       }).session(dbSession);
@@ -188,6 +185,7 @@ export async function POST(request: NextRequest) {
         integrations: existingSeller.integrations,
       } : 'No existing seller found');
       if (existingSeller) {
+        await dbSession.commitTransaction();
         await prometheusMetrics.recordRequest('POST', '/api/seller/registration', true, Date.now() - startTime);
         await prometheusMetrics.recordSellerRegistration('success');
         logger.info('Existing seller found', { email: data.email, userId: userSession.user.id });
@@ -208,7 +206,6 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // التحقق من وجود المستخدم
       const user = await User.findById(new mongoose.Types.ObjectId(userSession.user.id)).session(dbSession);
       if (!user) {
         logger.error('User not found before role update', { userId: userSession.user.id });
@@ -219,10 +216,9 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // إنشاء ملف تعريف البائع
       const trialEndDate = new Date(Date.now() + 5 * 24 * 60 * 60 * 1000);
       const customSiteUrl = `seller-${userSession.user.id}`;
-      const seller = await Seller.create(
+      seller = await Seller.create(
         [
           {
             userId: userSession.user.id,
@@ -293,7 +289,7 @@ export async function POST(request: NextRequest) {
             settings: {
               notifications: {
                 email: true,
-                sms: false,
+                sms: false, // تعطيل SMS
                 push: false,
                 orderUpdates: true,
                 marketingEmails: false,
@@ -359,8 +355,7 @@ export async function POST(request: NextRequest) {
       );
       console.log('Created seller:', seller[0]);
 
-      // تحديث دور المستخدم
-      const updatedUser = await User.findByIdAndUpdate(
+      updatedUser = await User.findByIdAndUpdate(
         new mongoose.Types.ObjectId(userSession.user.id),
         {
           role: 'SELLER',
@@ -377,7 +372,20 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      // إرسال إشعارات
+      await dbSession.commitTransaction();
+      logger.info('Transaction committed successfully', { userId: userSession.user.id, sellerId: seller[0]._id });
+    } catch (error) {
+      if (dbSession.inTransaction()) {
+        await dbSession.abortTransaction();
+      }
+      logger.error('Transaction failed', { error: error instanceof Error ? error.message : 'Unknown error' });
+      throw error;
+    } finally {
+      dbSession.endSession();
+    }
+
+    // إرسال الإشعارات بعد تأكيد المعاملة
+    try {
       await Promise.all([
         sendNotification({
           userId: userSession.user.id,
@@ -389,7 +397,7 @@ export async function POST(request: NextRequest) {
         }),
         sendNotification({
           userId: userSession.user.id,
-          type: 'points.earned',
+          type: 'points earned',
           title: t('messages.bonusPointsTitle') || 'Welcome Bonus',
           message: t('messages.bonusPointsMessage', { points: 50 }) || `You have been awarded 50 points as a welcome bonus!`,
           channels: ['email', 'in_app'],
@@ -397,40 +405,36 @@ export async function POST(request: NextRequest) {
         }),
         sendNotification({
           userId: userSession.user.id,
-          type: 'trial.reminder',
+          type: 'trial reminder',
           title: t('messages.trialActiveTitle') || 'Trial Period Activated',
           message: t('messages.trialActiveMessage', { trialDays: 5 }) || 'Your 5-day trial period is now active.',
           channels: ['email', 'in_app'],
           locale,
         }),
       ]);
-
-      await dbSession.commitTransaction();
-      await prometheusMetrics.recordRequest('POST', '/api/seller/registration', true, Date.now() - startTime);
-      await prometheusMetrics.recordSellerRegistration('success');
-      logger.info('Seller registered successfully', { userId: userSession.user.id, sellerId: seller[0]._id });
-
-      return NextResponse.json({
-        success: true,
-        message: t('messages.success') || 'Seller registration successful!',
-        data: {
-          id: seller[0]._id,
-          businessName: seller[0].businessName,
-          email: seller[0].email,
-          role: updatedUser.role,
-          subscription: seller[0].subscription,
-          customSiteUrl: seller[0].customSiteUrl,
-          redirect: '/seller/dashboard',
-        },
-      });
-    } catch (error) {
-      if (dbSession.inTransaction()) {
-        await dbSession.abortTransaction();
-      }
-      throw error;
-    } finally {
-      dbSession.endSession();
+      logger.info('Notifications sent successfully', { userId: userSession.user.id });
+    } catch (notificationError) {
+      logger.error('Failed to send notifications', { error: notificationError instanceof Error ? notificationError.message : 'Unknown error' });
+      // لا تفشل عملية التسجيل إذا فشلت الإشعارات
     }
+
+    await prometheusMetrics.recordRequest('POST', '/api/seller/registration', true, Date.now() - startTime);
+    await prometheusMetrics.recordSellerRegistration('success');
+    logger.info('Seller registered successfully', { userId: userSession.user.id, sellerId: seller[0]._id });
+
+    return NextResponse.json({
+      success: true,
+      message: t('messages.success') || 'Seller registration successful!',
+      data: {
+        id: seller[0]._id,
+        businessName: seller[0].businessName,
+        email: seller[0].email,
+        role: updatedUser.role,
+        subscription: seller[0].subscription,
+        customSiteUrl: seller[0].customSiteUrl,
+        redirect: '/seller/dashboard',
+      },
+    });
   } catch (error) {
     await prometheusMetrics.recordRequest('POST', '/api/seller/registration', false, Date.now() - startTime);
     await prometheusMetrics.recordSellerRegistration('failed');

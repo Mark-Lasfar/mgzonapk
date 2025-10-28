@@ -19,7 +19,7 @@ import {
   FormMessage,
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { createWebPage, updateWebPage } from '@/lib/actions/web-page.actions'
 import { IWebPage } from '@/lib/db/models/web-page.model'
 import { WebPageInputSchema, WebPageUpdateSchema } from '@/lib/validator'

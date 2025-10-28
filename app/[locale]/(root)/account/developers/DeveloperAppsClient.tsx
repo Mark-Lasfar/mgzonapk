@@ -12,9 +12,9 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { useFieldArray, useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Star, Loader2, Menu, X } from 'lucide-react';
+import { Star, Loader2, Menu, X, Edit, Link } from 'lucide-react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { cn } from '@/lib/utils';
 import { useSession } from 'next-auth/react';
 import { USER_PERMISSIONS, SELLER_PERMISSIONS } from '@/lib/constants/permissions';
@@ -74,6 +74,21 @@ const appSchema = z.object({
   features: z.array(z.string().max(200, 'Feature cannot exceed 200 characters')).optional(),
   categories: z.array(z.enum(availableCategories)).optional(),
   slug: z.string().regex(/^[a-z0-9-]+$/, 'Invalid slug format').optional(),
+  pricing: z
+    .object({
+      model: z.enum(['free', 'one-time', 'subscription']).default('free'),
+      amount: z.number().min(0, 'Price must be a positive number').optional(),
+      currency: z.enum(['USD', 'SAR', 'EGP']).default('USD').optional(),
+      interval: z.enum(['monthly', 'yearly']).optional(),
+    })
+    .refine(
+      (data) => data.model === 'free' || (data.amount !== undefined && data.amount > 0),
+      { message: 'Price is required for paid or subscription models', path: ['amount'] }
+    )
+    .refine(
+      (data) => data.model !== 'subscription' || (data.interval !== undefined),
+      { message: 'Interval is required for subscription model', path: ['interval'] }
+    ),
 });
 
 type AppForm = z.infer<typeof appSchema>;
@@ -98,6 +113,13 @@ interface ClientApplication {
   slug: string;
   createdAt: string;
   status: 'pending' | 'approved' | 'rejected';
+  pricing?: {
+    model: 'free' | 'one-time' | 'subscription';
+    amount?: number;
+    currency?: 'USD' | 'SAR' | 'EGP';
+    interval?: 'monthly' | 'yearly';
+  };
+
 }
 
 export default function DeveloperAppsClient() {
@@ -147,7 +169,7 @@ export default function DeveloperAppsClient() {
 
   const { fields: featureFields, append: appendFeature, remove: removeFeature } = useFieldArray({
     control: form.control,
-    name: 'features',
+    name: 'features' as any, // مؤقتًا لتجنب الخطأ
   });
 
   const fetchApps = async () => {
@@ -205,7 +227,12 @@ export default function DeveloperAppsClient() {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${session.user.token}`,
         },
-        body: JSON.stringify(data),
+        body: JSON.stringify({
+          ...data,
+          isMarketplaceApp: true, // Always true for DeveloperAppsClient
+          status: 'pending', // Marketplace apps start as pending
+          pricing: data.pricing, // إضافة بيانات التسعيرة
+        }),
       });
 
       const result = await response.json();
@@ -283,7 +310,7 @@ export default function DeveloperAppsClient() {
               setSidebarOpen(false);
             }}
           >
-            {t('noAppsFound')}
+            {t('listApps')}
           </Button>
           <Button
             variant={activeView === 'create' ? 'default' : 'ghost'}
@@ -309,9 +336,11 @@ export default function DeveloperAppsClient() {
         </Button>
 
         {error && (
-          <Alert variant="destructive" className="mb-6">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
+          <div className="mb-6">
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          </div>
         )}
 
         {activeView === 'create' && (
@@ -367,11 +396,11 @@ export default function DeveloperAppsClient() {
                       <div key={scope} className="flex items-center space-x-2 p-1 rounded">
                         <Checkbox
                           id={scope}
-                          checked={form.watch('scopes').includes(scope)}
+                          checked={form.watch('scopes')?.includes(scope) || false}
                           onCheckedChange={(checked) => {
                             const newScopes = checked
-                              ? [...form.watch('scopes'), scope]
-                              : form.watch('scopes').filter((s) => s !== scope);
+                              ? [...(form.watch('scopes') || []), scope]
+                              : (form.watch('scopes') || []).filter((s) => s !== scope);
                             form.setValue('scopes', newScopes);
                           }}
                           disabled={loading}
@@ -598,11 +627,11 @@ export default function DeveloperAppsClient() {
                       <div key={category} className="flex items-center space-x-2 p-1 rounded">
                         <Checkbox
                           id={category}
-                          checked={form.watch('categories').includes(category)}
+                          checked={form.watch('categories')?.includes(category) || false}
                           onCheckedChange={(checked) => {
                             const newCategories = checked
-                              ? [...form.watch('categories'), category]
-                              : form.watch('categories').filter((c) => c !== category);
+                              ? [...(form.watch('categories') || []), category]
+                              : (form.watch('categories') || []).filter((c) => c !== category);
                             form.setValue('categories', newCategories);
                           }}
                           disabled={loading}
@@ -617,7 +646,79 @@ export default function DeveloperAppsClient() {
                     <p className="text-red-500 text-sm">{form.formState.errors.categories.message}</p>
                   )}
                 </div>
+                <div>
+                  <Label>{t('pricing')}</Label>
+                  <div className="space-y-4 mt-2">
+                    <Select
+                      onValueChange={(value) => form.setValue('pricing.model', value as any)}
+                      defaultValue={form.watch('pricing.model') || 'free'}
+                    >
+                      <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                        <SelectValue placeholder={t('selectPricingModel')} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        <SelectItem value="free">{t('free')}</SelectItem>
+                        <SelectItem value="one-time">{t('oneTime')}</SelectItem>
+                        <SelectItem value="subscription">{t('subscription')}</SelectItem>
+                      </SelectContent>
+                    </Select>
 
+                    {form.watch('pricing.model') !== 'free' && (
+                      <div className="flex gap-2">
+                        <div className="flex-1">
+                          <Label htmlFor="pricing.amount">{t('amount')}</Label>
+                          <Input
+                            id="pricing.amount"
+                            type="number"
+                            {...form.register('pricing.amount', { valueAsNumber: true })}
+                            placeholder={t('amountPlaceholder')}
+                            className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600"
+                          />
+                          {form.formState.errors.pricing?.amount && (
+                            <p className="text-red-500 text-sm">{form.formState.errors.pricing.amount.message}</p>
+                          )}
+                        </div>
+                        <div className="w-1/3">
+                          <Label htmlFor="pricing.currency">{t('currency')}</Label>
+                          <Select
+                            onValueChange={(value) => form.setValue('pricing.currency', value as any)}
+                            defaultValue={form.watch('pricing.currency') || 'USD'}
+                          >
+                            <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                              <SelectValue placeholder={t('selectCurrency')} />
+                            </SelectTrigger>
+                            <SelectContent>
+                              <SelectItem value="USD">USD</SelectItem>
+                              <SelectItem value="SAR">SAR</SelectItem>
+                              <SelectItem value="EGP">EGP</SelectItem>
+                            </SelectContent>
+                          </Select>
+                        </div>
+                      </div>
+                    )}
+
+                    {form.watch('pricing.model') === 'subscription' && (
+                      <div>
+                        <Label htmlFor="pricing.interval">{t('interval')}</Label>
+                        <Select
+                          onValueChange={(value) => form.setValue('pricing.interval', value as any)}
+                          defaultValue={form.watch('pricing.interval')}
+                        >
+                          <SelectTrigger className="bg-white dark:bg-gray-800 border-gray-300 dark:border-gray-600">
+                            <SelectValue placeholder={t('selectInterval')} />
+                          </SelectTrigger>
+                          <SelectContent>
+                            <SelectItem value="monthly">{t('monthly')}</SelectItem>
+                            <SelectItem value="yearly">{t('yearly')}</SelectItem>
+                          </SelectContent>
+                        </Select>
+                        {form.formState.errors.pricing?.interval && (
+                          <p className="text-red-500 text-sm">{form.formState.errors.pricing.interval.message}</p>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                </div>
                 <Button type="submit" disabled={loading} className="w-full">
                   {loading ? (
                     <>
@@ -636,7 +737,7 @@ export default function DeveloperAppsClient() {
         {activeView === 'list' && (
           <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
             <CardHeader>
-              <CardTitle>{t('noAppsFound')}</CardTitle>
+              <CardTitle>{t('yourApps')}</CardTitle>
             </CardHeader>
             <CardContent>
               {loading ? (
@@ -650,7 +751,7 @@ export default function DeveloperAppsClient() {
                   <p className="text-sm text-gray-500">{t('createFirstApp')}</p>
                 </div>
               ) : (
-                <div className="grid gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                   {apps.map((app) => (
                     <Card key={app._id} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                       <CardContent className="p-6">
@@ -716,6 +817,158 @@ export default function DeveloperAppsClient() {
                             <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">{app.installs}</span>
                           </div>
                         )}
+
+{activeView === 'list' && (
+  <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+    <CardHeader>
+      <CardTitle>{t('yourApps')}</CardTitle>
+    </CardHeader>
+    <CardContent>
+      {loading ? (
+        <div className="text-center py-12 flex items-center justify-center">
+          <Loader2 className="h-8 w-8 animate-spin text-blue-600" />
+          <span className="ml-2 text-gray-600 dark:text-gray-400">{t('loading')}</span>
+        </div>
+      ) : apps.length === 0 ? (
+        <div className="text-center py-12 bg-gray-50 dark:bg-gray-900 rounded-lg">
+          <p className="text-gray-600 dark:text-gray-400 mb-2">{t('noAppsFound')}</p>
+          <p className="text-sm text-gray-500">{t('createFirstApp')}</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {apps.map((app) => (
+            <Card key={app._id} className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
+              <CardContent className="p-6">
+                <div className="flex justify-between items-start mb-4">
+                  <h3 className="text-lg font-semibold text-gray-900 dark:text-white">{app.name}</h3>
+                  <div className="flex gap-2">
+                    <Button variant="outline" asChild className="flex items-center gap-2">
+                      <Link href={`/integrations/${app.slug}/edit`}>
+                        <Edit className="h-4 w-4" />
+                        {t('editApp')}
+                      </Link>
+                    </Button>
+                    <span className="text-sm text-gray-500 dark:text-gray-400">
+                      {t('status')}: {t(app.status)}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">{app.description || t('noDescription')}</p>
+                {app.logoUrl ? (
+                  <img src={app.logoUrl} alt={app.name} className="w-16 h-16 object-contain mb-2" />
+                ) : (
+                  <img src="/icons/logo.svg" alt="Default Logo" className="w-16 h-16 object-contain mb-2" />
+                )}
+                <p className="text-sm text-gray-600 dark:text-gray-300 mb-2">
+                  {t('slug')}: <a href={`/integrations/${app.slug}`} className="text-blue-600 dark:text-blue-400 hover:underline">{app.slug}</a>
+                </p>
+                {app.features && app.features.length > 0 && (
+                  <div className="mb-2">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t('features')}:</span>
+                    <ul className="list-disc pl-5">
+                      {app.features.map((feature, index) => (
+                        <li key={index} className="text-sm text-gray-600 dark:text-gray-300">{feature}</li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                {app.categories && app.categories.length > 0 && (
+                  <div className="mb-2">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t('categories')}:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {app.categories.map((category, index) => (
+                        <span
+                          key={index}
+                          className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs"
+                        >
+                          {t(category)}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {app.rating && (
+                  <div className="mb-2 flex items-center">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t('rating')}:</span>
+                    <div className="flex ml-2">
+                      {[...Array(5)].map((_, i) => (
+                        <Star
+                          key={i}
+                          className={`h-4 w-4 ${i < Math.round(app.rating!) ? 'text-yellow-400 fill-yellow-400' : 'text-gray-300'}`}
+                        />
+                      ))}
+                      <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                        ({app.ratingsCount} {t('reviews')})
+                      </span>
+                    </div>
+                  </div>
+                )}
+                {app.installs && (
+                  <div className="mb-2">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t('installs')}:</span>
+                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">{app.installs}</span>
+                  </div>
+                )}
+                {app.pricing && (
+                  <div className="mb-2">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">{t('pricing')}:</span>
+                    <span className="ml-2 text-sm text-gray-600 dark:text-gray-300">
+                      {app.pricing.model === 'free'
+                        ? t('free')
+                        : `${app.pricing.amount} ${app.pricing.currency} ${
+                            app.pricing.model === 'subscription' ? `/${t(app.pricing.interval)}` : ''
+                          }`}
+                    </span>
+                  </div>
+                )}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                  <div>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Client ID:</span>
+                    <div className="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs break-all">
+                      {app.clientId}
+                    </div>
+                  </div>
+                  <div>
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Client Secret:</span>
+                    <div className="font-mono bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded text-xs break-all">
+                      {app.clientSecret}
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Redirect URIs:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {app.redirectUris.map((uri, index) => (
+                        <span
+                          key={index}
+                          className="inline-block bg-blue-100 dark:bg-blue-900 text-blue-800 dark:text-blue-200 px-2 py-1 rounded-full text-xs"
+                        >
+                          {uri}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="md:col-span-2">
+                    <span className="font-medium text-gray-700 dark:text-gray-300">Scopes:</span>
+                    <div className="flex flex-wrap gap-1 mt-1">
+                      {app.scopes.map((scope, index) => (
+                        <span
+                          key={index}
+                          className="inline-block bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-200 px-2 py-1 rounded-full text-xs"
+                        >
+                          {scope}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      )}
+    </CardContent>
+  </Card>
+)}
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
                           <div>
                             <span className="font-medium text-gray-700 dark:text-gray-300">Client ID:</span>

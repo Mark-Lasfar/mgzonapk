@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation';
 import { useQuery } from '@apollo/client/react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { ArrowLeft, Edit } from 'lucide-react';
 import Sidebar from '@/components/ui/Sidebar';
 import { GET_CAMPAIGN, GET_NOTIFICATIONS } from '@/graphql/ads/queries';

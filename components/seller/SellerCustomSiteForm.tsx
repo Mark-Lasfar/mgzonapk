@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/components/seller/SellerCustomSiteForm.tsx
 'use client';
 
 import { useCallback, useState } from 'react';
@@ -8,13 +9,18 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { useTranslations } from 'next-intl';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { useDropzone } from 'react-dropzone';
 import Image from 'next/image';
 import { Loader2, Trash2 } from 'lucide-react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 import SitePreview from './SitePreview';
+import Editor from '@monaco-editor/react'; // Added for developer mode
+import sanitizeHtml from 'sanitize-html';
+import { DndContext, closestCenter, DragEndEvent } from '@dnd-kit/core';
+import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
 
 interface Props {
   form: ReturnType<typeof useFormContext<SettingsFormData>>;
@@ -22,13 +28,28 @@ interface Props {
   storeId: string; 
 }
 
+const SortableSection = ({ id, children }: { id: string; children: React.ReactNode }) => {
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id });
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+  return (
+    <div ref={setNodeRef} style={style} {...attributes} {...listeners}>
+      {children}
+    </div>
+  );
+};
+
 export default function SellerCustomSiteForm({ form, locale, storeId }: Props) {
   const t = useTranslations('SellerSettings');
   const { toast } = useToast();
   const [logoPreview, setLogoPreview] = useState<string | null>(null);
   const [bannerPreview, setBannerPreview] = useState<string | null>(null);
+  const [isDeveloperMode, setIsDeveloperMode] = useState(false);
+  const [customCSS, setCustomCSS] = useState('');
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, move } = useFieldArray({
     control: form.control,
     name: 'customSite.customSections',
   });
@@ -77,10 +98,29 @@ export default function SellerCustomSiteForm({ form, locale, storeId }: Props) {
     setBannerPreview(null);
   };
 
+  const handleDragEnd = (event: DragEndEvent) => {
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
+    const oldIndex = fields.findIndex((f) => f.id === active.id);
+    const newIndex = fields.findIndex((f) => f.id === over.id);
+    move(oldIndex, newIndex);
+  };
+
   const onSubmit = async (data: SettingsFormData) => {
     try {
+      const sanitizedData = {
+        ...data,
+        customSite: {
+          ...data.customSite,
+          customSections: data.customSite?.customSections?.map((section) => ({
+            ...section,
+            content: sanitizeHtml(section.content),
+            customCSS: sanitizeHtml(customCSS, { allowedTags: [] }), // Sanitize CSS if needed
+          })),
+        },
+      };
       const formData = new FormData();
-      formData.append('settings', JSON.stringify({ customSite: data.customSite }));
+      formData.append('settings', JSON.stringify(sanitizedData));
       if (data.customSite?.logo instanceof File) {
         formData.append('logo', data.customSite.logo);
       }
@@ -117,8 +157,22 @@ export default function SellerCustomSiteForm({ form, locale, storeId }: Props) {
           <Card>
             <CardHeader>
               <CardTitle>{t('customSite.title')}</CardTitle>
+              <Button onClick={() => setIsDeveloperMode(!isDeveloperMode)}>
+                {isDeveloperMode ? t('switchToVisual') : t('switchToDeveloper')}
+              </Button>
             </CardHeader>
             <CardContent className="space-y-6">
+              {isDeveloperMode ? (
+                <div>
+                  <FormLabel>{t('customCSS')}</FormLabel>
+                  <Editor
+                    height="300px"
+                    defaultLanguage="css"
+                    value={customCSS}
+                    onChange={(value) => setCustomCSS(value || '')}
+                  />
+                </div>
+              ) : null}
               <FormField
                 control={form.control}
                 name="customSite.theme"
@@ -249,104 +303,110 @@ export default function SellerCustomSiteForm({ form, locale, storeId }: Props) {
               />
               <div className="space-y-4">
                 <h3 className="text-lg font-semibold">{t('customSite.sections.title')}</h3>
-                {fields.map((fieldItem, index) => (
-                  <Card key={fieldItem.id} className="p-4">
-                    <FormField
-                      control={form.control}
-                      name={`customSite.customSections.${index}.title`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('customSite.sections.title.label')}</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder={t('customSite.sections.title.placeholder')}
-                              {...field}
-                              onChange={(e) => {
-                                field.onChange(e);
-                                form.setValue(
-                                  `customSite.customSections.${index}.slug`,
-                                  e.target.value.toLowerCase().replace(/\s+/g, '-') || `section-${fieldItem.id}`
-                                );
-                              }}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`customSite.customSections.${index}.slug`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('customSite.sections.slug.label')}</FormLabel>
-                          <FormControl>
-                            <Input placeholder={t('customSite.sections.slug.placeholder')} {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`customSite.customSections.${index}.type`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('customSite.sections.type.label')}</FormLabel>
-                          <Select onValueChange={field.onChange} defaultValue={field.value}>
-                            <FormControl>
-                              <SelectTrigger>
-                                <SelectValue placeholder={t('customSite.sections.type.placeholder')} />
-                              </SelectTrigger>
-                            </FormControl>
-                            <SelectContent>
-                              <SelectItem value="custom">{t('customSite.sections.type.custom')}</SelectItem>
-                              <SelectItem value="hero">{t('customSite.sections.type.hero')}</SelectItem>
-                              <SelectItem value="products">{t('customSite.sections.type.products')}</SelectItem>
-                              <SelectItem value="testimonials">{t('customSite.sections.type.testimonials')}</SelectItem>
-                              <SelectItem value="faq">{t('customSite.sections.type.faq')}</SelectItem>
-                            </SelectContent>
-                          </Select>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`customSite.customSections.${index}.content`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('customSite.sections.content.label')}</FormLabel>
-                          <FormControl>
-                            <Textarea placeholder={t('customSite.sections.content.placeholder')} {...field} />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name={`customSite.customSections.${index}.position`}
-                      render={({ field }) => (
-                        <FormItem>
-                          <FormLabel>{t('customSite.sections.position.label')}</FormLabel>
-                          <FormControl>
-                            <Input
-                              type="number"
-                              placeholder={t('customSite.sections.position.placeholder')}
-                              {...field}
-                              onChange={(e) => field.onChange(Number(e.target.value))}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <Button type="button" variant="destructive" onClick={() => remove(index)}>
-                      {t('customSite.sections.remove')}
-                    </Button>
-                  </Card>
-                ))}
+                <DndContext collisionDetection={closestCenter} onDragEnd={handleDragEnd}>
+                  <SortableContext items={fields.map((f) => f.id)} strategy={verticalListSortingStrategy}>
+                    {fields.map((fieldItem, index) => (
+                      <SortableSection key={fieldItem.id} id={fieldItem.id}>
+                        <Card className="p-4">
+                          <FormField
+                            control={form.control}
+                            name={`customSite.customSections.${index}.title`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{t('customSite.sections.title.label')}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    placeholder={t('customSite.sections.title.placeholder')}
+                                    {...field}
+                                    onChange={(e) => {
+                                      field.onChange(e);
+                                      form.setValue(
+                                        `customSite.customSections.${index}.slug`,
+                                        e.target.value.toLowerCase().replace(/\s+/g, '-') || `section-${fieldItem.id}`
+                                      );
+                                    }}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`customSite.customSections.${index}.slug`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{t('customSite.sections.slug.label')}</FormLabel>
+                                <FormControl>
+                                  <Input placeholder={t('customSite.sections.slug.placeholder')} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`customSite.customSections.${index}.type`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{t('customSite.sections.type.label')}</FormLabel>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                  <FormControl>
+                                    <SelectTrigger>
+                                      <SelectValue placeholder={t('customSite.sections.type.placeholder')} />
+                                    </SelectTrigger>
+                                  </FormControl>
+                                  <SelectContent>
+                                    <SelectItem value="custom">{t('customSite.sections.type.custom')}</SelectItem>
+                                    <SelectItem value="hero">{t('customSite.sections.type.hero')}</SelectItem>
+                                    <SelectItem value="products">{t('customSite.sections.type.products')}</SelectItem>
+                                    <SelectItem value="testimonials">{t('customSite.sections.type.testimonials')}</SelectItem>
+                                    <SelectItem value="faq">{t('customSite.sections.type.faq')}</SelectItem>
+                                  </SelectContent>
+                                </Select>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`customSite.customSections.${index}.content`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{t('customSite.sections.content.label')}</FormLabel>
+                                <FormControl>
+                                  <Textarea placeholder={t('customSite.sections.content.placeholder')} {...field} />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <FormField
+                            control={form.control}
+                            name={`customSite.customSections.${index}.position`}
+                            render={({ field }) => (
+                              <FormItem>
+                                <FormLabel>{t('customSite.sections.position.label')}</FormLabel>
+                                <FormControl>
+                                  <Input
+                                    type="number"
+                                    placeholder={t('customSite.sections.position.placeholder')}
+                                    {...field}
+                                    onChange={(e) => field.onChange(Number(e.target.value))}
+                                  />
+                                </FormControl>
+                                <FormMessage />
+                              </FormItem>
+                            )}
+                          />
+                          <Button type="button" variant="destructive" onClick={() => remove(index)}>
+                            {t('customSite.sections.remove')}
+                          </Button>
+                        </Card>
+                      </SortableSection>
+                    ))}
+                  </SortableContext>
+                </DndContext>
                 <Button
                   type="button"
                   variant="outline"

@@ -1,3 +1,4 @@
+// /app/api/seller/integrations/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { connectToDatabase } from '@/lib/db';
 import { auth } from '@/auth';
@@ -12,7 +13,7 @@ export async function GET(req: NextRequest) {
   const t = await getTranslations('seller integrations');
   try {
     const session = await auth();
-    if (!session?.user?.id || session.user.role !== 'SELLER') {
+    if (!session?.user?.id) {
       return NextResponse.json({ error: t('Unauthorized') }, { status: 401 });
     }
 
@@ -79,6 +80,12 @@ export async function GET(req: NextRequest) {
           videos: 1,
           images: 1,
           buttons: 1,
+          features: 1,
+          categories: 1,
+          rating: 1,
+          ratingsCount: 1,
+          installs: 1,
+          slug: 1,
           connected: { $gt: [{ $size: '$sellerInt' }, 0] },
           status: { $arrayElemAt: ['$sellerInt.status', 0] },
           lastUpdated: { $arrayElemAt: ['$sellerInt.lastUpdated', 0] },
@@ -95,7 +102,7 @@ export async function GET(req: NextRequest) {
       },
     ]);
 
-    customLogger.info('Integrations fetched for seller', { requestId, userId: session.user.id, sandbox });
+    customLogger.info('Integrations fetched successfully', { requestId, userId: session.user.id, sandbox });
     return NextResponse.json({ success: true, data });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);

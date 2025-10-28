@@ -8,9 +8,8 @@ import crypto from 'crypto';
 
 export async function GET(req: NextRequest) {
   const requestId = crypto.randomUUID();
-  const t = await getTranslations('api.admin.clients');
+  const t = await getTranslations('api.clients');
   try {
-    await connectToDatabase();
     const session = await auth();
     if (!session?.user?.id || session.user.role !== 'Admin') {
       await customLogger.error('Unauthorized access to clients', { requestId, service: 'api' });
@@ -20,9 +19,14 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    const clients = await Client.find();
-    await customLogger.info('Clients retrieved successfully for admin', {
+    await connectToDatabase('live');
+    const clients = await Client.find({ status: 'pending' })
+      .lean()
+      .select('name logoUrl description categories features redirectUris scopes customScopes clientId slug status createdAt');
+
+    await customLogger.info('Clients retrieved successfully', {
       requestId,
+      userId: session.user.id,
       count: clients.length,
       service: 'api',
     });
@@ -35,7 +39,11 @@ export async function GET(req: NextRequest) {
     });
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : t('unknown_error');
-    await customLogger.error('Failed to retrieve clients', { requestId, error: errorMessage, service: 'api' });
+    await customLogger.error('Failed to retrieve clients', {
+      requestId,
+      error: errorMessage,
+      service: 'api',
+    });
     return NextResponse.json(
       { success: false, error: errorMessage, requestId, timestamp: new Date().toISOString() },
       { status: 500 }

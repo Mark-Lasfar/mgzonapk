@@ -13,15 +13,16 @@ declare module '@craftjs/core' {
     settings?: Record<string, any>;
   }
 
-  export class Editor<P = {}> extends React.Component<P> {}
-  export class Frame<P = {}> extends React.Component<P> {}
-  export class Element<P = {}> extends React.Component<P> {}
+  export class Editor<P = {}> extends React.Component<P> { }
+  export class Frame<P = {}> extends React.Component<P> { }
+  export class Element<P = {}> extends React.Component<P> { }
 
   export function useNode<T = any>(): {
     id: string;
     connectors: {
-      connect: (ref: React.MutableRefObject<HTMLElement | null>) => void;
-      drag: (ref: React.MutableRefObject<HTMLElement | null>) => void;
+      connect: (element: HTMLElement | null) => void;
+      drag: (element: HTMLElement | null) => void;
+
     };
     actions: T;
     isHovered: boolean;

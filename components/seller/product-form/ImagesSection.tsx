@@ -1,22 +1,26 @@
+'use client';
+
 import { useTranslations } from 'next-intl';
 import { useMutation } from '@apollo/client/react';
 import { Card, CardHeader, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import Image from 'next/image';
 import { useToast } from '@/components/ui/toast';
-import { UPLOAD_IMAGE, DELETE_IMAGE } from '@/graphql/product/mutations';
-import { uploadToStorage, getPublicIdFromUrl } from '@/lib/utils/cloudinary';
+import { UPDATE_PRODUCT, DELETE_IMAGE } from '@/graphql/product/mutations';
+import { useSession } from 'next-auth/react';
 import { State, Action } from '@/lib/types';
 
 interface ImagesSectionProps {
   state: State;
   dispatch: React.Dispatch<Action>;
+  productId?: string; // إضافة productId لو كنت بتحدث منتج موجود
 }
 
-export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
+export default function ImagesSection({ state, dispatch, productId }: ImagesSectionProps) {
   const t = useTranslations('Seller.ProductForm');
   const { toast } = useToast();
-  const [uploadImage, { loading: uploadLoading }] = useMutation(UPLOAD_IMAGE);
+  const { data: session } = useSession();
+  const [updateProduct, { loading: updateLoading }] = useMutation(UPDATE_PRODUCT);
   const [deleteImage, { loading: deleteLoading }] = useMutation(DELETE_IMAGE);
 
   const handleImageUpload = async (files: File[]) => {
@@ -35,12 +39,51 @@ export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
     try {
       const uploadedUrls = await Promise.all(
         files.map(async (file) => {
-          const { secureUrl } = await uploadToStorage(file, `product-${Date.now()}`, { folder: 'products', resource_type: 'image' });
-          await uploadImage({ variables: { input: { file, folder: 'products' } } });
-          return secureUrl;
+          const formData = new FormData();
+          formData.append('file', file);
+          formData.append(
+            'options',
+            JSON.stringify({
+              folder: 'products',
+              resource_type: 'image',
+              public_id: `product-${Date.now()}`,
+            })
+          );
+
+          const response = await fetch('/api/storage/upload', {
+            method: 'POST',
+            headers: {
+              Authorization: `Bearer ${session?.user?.token}`,
+              'x-locale': t('locale'),
+            },
+            body: formData,
+          });
+
+          const result = await response.json();
+          if (!result.success) {
+            throw new Error(result.error || t('imageUploadFailed'));
+          }
+
+          return result.data.secureUrl;
         })
       );
-      dispatch({ type: 'SET_IMAGES', payload: [...state.images, ...uploadedUrls] });
+
+      const newImages = [...state.images, ...uploadedUrls];
+      dispatch({ type: 'SET_IMAGES', payload: newImages });
+
+      // تحديث المنتج في قاعدة البيانات لو فيه productId
+      if (productId) {
+        await updateProduct({
+          variables: {
+            id: productId,
+            input: {
+              ...state.formValues,
+              images: newImages,
+            },
+          },
+        });
+      }
+
       toast({ description: t('imagesUploaded', { count: uploadedUrls.length }) });
     } catch (error) {
       toast({ variant: 'destructive', title: t('error'), description: t('imageUploadFailed') });
@@ -53,9 +96,40 @@ export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
     if (!confirm(t('confirmDeleteImage'))) return;
 
     try {
-      const publicId = getPublicIdFromUrl(image);
+      const publicId = image.split('/').slice(-2).join('/').split('.')[0];
       await deleteImage({ variables: { publicId } });
-      dispatch({ type: 'SET_IMAGES', payload: state.images.filter((_, i) => i !== index) });
+
+      const response = await fetch('/api/storage/delete', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${session?.user?.token}`,
+          'x-locale': t('locale'),
+        },
+        body: JSON.stringify({ publicId }),
+      });
+
+      const result = await response.json();
+      if (!result.success) {
+        throw new Error(result.error || t('imageDeleteFailed'));
+      }
+
+      const newImages = state.images.filter((_: string, i: number) => i !== index);
+      dispatch({ type: 'SET_IMAGES', payload: newImages });
+
+      // تحديث المنتج في قاعدة البيانات لو فيه productId
+      if (productId) {
+        await updateProduct({
+          variables: {
+            id: productId,
+            input: {
+              ...state.formValues,
+              images: newImages,
+            },
+          },
+        });
+      }
+
       toast({ description: t('imageDeleted') });
     } catch (error) {
       toast({ variant: 'destructive', title: t('error'), description: t('imageDeleteFailed') });
@@ -68,9 +142,9 @@ export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
         <h2>{t('productImages')}</h2>
       </CardHeader>
       <CardContent>
-        {(uploadLoading || deleteLoading) && <div className="text-center mb-4">{t('uploading')}</div>}
+        {(updateLoading || deleteLoading) && <div className="text-center mb-4">{t('uploading')}</div>}
         <div className="flex flex-wrap gap-4">
-          {state.images.map((image, index) => (
+          {state.images.map((image: string, index: number) => (
             <Card key={index} className="relative w-[150px] h-[150px]">
               <CardContent className="p-0">
                 <Image
@@ -85,7 +159,7 @@ export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
                   size="icon"
                   className="absolute top-2 right-2"
                   onClick={() => handleImageDelete(image, index)}
-                  disabled={uploadLoading || deleteLoading}
+                  disabled={updateLoading || deleteLoading}
                   aria-label={t('deleteImage')}
                 >
                   ×
@@ -93,7 +167,7 @@ export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
               </CardContent>
             </Card>
           ))}
-          {state.previewUrls.map((url, index) => (
+          {state.previewUrls.map((url: string, index: number) => (
             <Card key={`preview-${index}`} className="relative w-[150px] h-[150px] opacity-50">
               <CardContent className="p-0">
                 <Image
@@ -114,7 +188,7 @@ export default function ImagesSection({ state, dispatch }: ImagesSectionProps) {
                   accept="image/jpeg,image/png"
                   multiple
                   onChange={(e) => e.target.files && handleImageUpload(Array.from(e.target.files))}
-                  disabled={uploadLoading || deleteLoading}
+                  disabled={updateLoading || deleteLoading}
                   aria-label={t('uploadImages')}
                 />
               </CardContent>

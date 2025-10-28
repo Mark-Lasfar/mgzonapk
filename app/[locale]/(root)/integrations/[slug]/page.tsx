@@ -1,3 +1,4 @@
+// /app/[locale]/(root)/integrations/[slug]/page.tsx
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -7,13 +8,13 @@ import { notFound } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { Star } from 'lucide-react';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 
 interface Integration {
   _id: string;
-  name: string; // providerName for integrations, name for clients
+  name: string;
   type: string;
   logoUrl?: string;
   description?: string;
@@ -29,7 +30,7 @@ interface Integration {
   commissionRate?: number;
   source: 'admin' | 'developer';
   connected: boolean;
-  status: 'connected' | 'disconnected' | 'expired' | 'needs_reauth';
+  status: 'connected' | 'disconnected' | 'expired' | 'needs_reauth' | 'pending' | 'approved' | 'rejected';
 }
 
 export default function IntegrationLandingPage() {
@@ -45,7 +46,6 @@ export default function IntegrationLandingPage() {
     async function fetchIntegration() {
       try {
         setIsLoading(true);
-        // Fetch both admin integrations and developer clients
         const [adminResponse, developerResponse] = await Promise.all([
           fetch(`/api/seller/integrations?provider=${slug}&sandbox=${isSandbox}`),
           fetch(`/api/seller/developer-clients?slug=${slug}&sandbox=${isSandbox}`),
@@ -54,7 +54,7 @@ export default function IntegrationLandingPage() {
         let data: Integration | null = null;
         if (adminResponse.ok) {
           const adminData = await adminResponse.json();
-          if (adminData.data && adminData.data.length > 0) {
+          if (adminData.success && adminData.data && adminData.data.length > 0) {
             data = {
               ...adminData.data[0],
               name: adminData.data[0].providerName,
@@ -65,12 +65,13 @@ export default function IntegrationLandingPage() {
               rating: adminData.data[0].rating || 0,
               ratingsCount: adminData.data[0].ratingsCount || 0,
               installs: adminData.data[0].installs || 0,
+              status: adminData.data[0].status || 'approved',
             };
           }
         }
         if (!data && developerResponse.ok) {
           const developerData = await developerResponse.json();
-          if (developerData.data.clients && developerData.data.clients.length > 0) {
+          if (developerData.success && developerData.data.clients && developerData.data.clients.length > 0) {
             const client = developerData.data.clients[0];
             if (client.status === 'approved') {
               data = {
@@ -93,6 +94,12 @@ export default function IntegrationLandingPage() {
                 connected: client.connected || false,
                 status: client.status || 'disconnected',
               };
+            } else {
+              toast({
+                variant: 'destructive',
+                title: t('error_title'),
+                description: t('app_not_approved'),
+              });
             }
           }
         }
@@ -113,6 +120,14 @@ export default function IntegrationLandingPage() {
 
   const handleConnect = async () => {
     if (!integration) return;
+    if (integration.status !== 'approved') {
+      toast({
+        variant: 'destructive',
+        title: t('error_title'),
+        description: t('app_not_approved'),
+      });
+      return;
+    }
     setIsConnecting(true);
     try {
       const endpoint =
@@ -186,6 +201,13 @@ export default function IntegrationLandingPage() {
                 </p>
               </div>
             </div>
+            {integration.status === 'pending' && (
+              <div className="mb-4">
+                <span className="inline-block bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-200 px-3 py-1 rounded-full text-sm">
+                  {t('pending_approval')}
+                </span>
+              </div>
+            )}
             <div className="flex items-center mb-4">
               {integration.rating ? (
                 <div className="flex items-center">
@@ -230,23 +252,27 @@ export default function IntegrationLandingPage() {
               </p>
             )}
             <div className="flex gap-4 mb-4">
-              {integration.connected ? (
-                <Button
-                  variant="destructive"
-                  onClick={handleDisconnect}
-                  disabled={isConnecting}
-                  className="bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800"
-                >
-                  {t('disconnect')}
-                </Button>
-              ) : (
-                <Button
-                  onClick={handleConnect}
-                  disabled={isConnecting}
-                  className="bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800"
-                >
-                  {isConnecting ? t('connecting') : t('install')}
-                </Button>
+              {integration.status === 'approved' && (
+                <>
+                  {integration.connected ? (
+                    <Button
+                      variant="destructive"
+                      onClick={handleDisconnect}
+                      disabled={isConnecting}
+                      className="bg-red-600 dark:bg-red-700 hover:bg-red-700 dark:hover:bg-red-800"
+                    >
+                      {t('disconnect')}
+                    </Button>
+                  ) : (
+                    <Button
+                      onClick={handleConnect}
+                      disabled={isConnecting}
+                      className="bg-blue-600 dark:bg-blue-700 hover:bg-blue-700 dark:hover:bg-blue-800"
+                    >
+                      {isConnecting ? t('connecting') : t('install')}
+                    </Button>
+                  )}
+                </>
               )}
               {integration.buttons?.map((button) => (
                 <Button

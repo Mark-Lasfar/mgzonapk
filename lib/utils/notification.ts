@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/lib/utils/notification.ts
 'use server';
 
 import admin from 'firebase-admin';
@@ -36,12 +37,12 @@ async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
     console.error('Failed to send log:', err);
   }
 }
+
 type EmailTemplateType = keyof typeof emailTemplates;
 
 function isEmailTemplateType(type: string): type is EmailTemplateType {
   return type in emailTemplates;
 }
-
 
 export interface NotificationOptions {
   userId: string;
@@ -74,6 +75,7 @@ export interface SMSOptions {
   message: string;
 }
 
+
 export async function sendNotification(options: NotificationOptions) {
   const t = await getTranslations('notifications');
   try {
@@ -85,7 +87,7 @@ export async function sendNotification(options: NotificationOptions) {
       title,
       message,
       data = {},
-      channels = NOTIFICATION_CONFIG.types[type.toUpperCase()]?.defaultChannels || ['email'],
+      channels = NOTIFICATION_CONFIG.types[type.toUpperCase()]?.defaultChannels || ['email', 'in_app'], // استبعاد SMS
       priority = NOTIFICATION_CONFIG.types[type.toUpperCase()]?.priority || 'medium',
       expiresAt,
       metadata,
@@ -99,7 +101,7 @@ export async function sendNotification(options: NotificationOptions) {
       throw new Error(t('User not found'));
     }
 
-    let allowedChannels = channels;
+    let allowedChannels = channels.filter(channel => channel !== 'sms'); // تعطيل SMS
     let notificationSettings = {
       email: true,
       sms: false,
@@ -110,9 +112,15 @@ export async function sendNotification(options: NotificationOptions) {
 
     if (isSellerSpecific) {
       const seller = await Seller.findOne({ userId });
-      notificationSettings = seller?.settings.notifications || notificationSettings;
+      notificationSettings = {
+        email: seller?.settings.notifications.email ?? true,
+        sms: false, // تعطيل SMS
+        orderUpdates: seller?.settings.notifications.orderUpdates ?? true,
+        marketingEmails: seller?.settings.notifications.marketingEmails ?? false,
+        pointsNotifications: seller?.settings.notifications.pointsNotifications ?? true,
+      };
 
-      allowedChannels = channels.filter((channel) => {
+      allowedChannels = allowedChannels.filter((channel) => {
         if (channel === 'email' && !notificationSettings.email) return false;
         if (channel === 'sms' && !notificationSettings.sms) return false;
         if (channel === 'whatsapp' && !notificationSettings.sms) return false;
@@ -152,7 +160,7 @@ export async function sendNotification(options: NotificationOptions) {
                   status: 'queued',
                   queuedAt: new Date(),
                 });
-                await sendLog('info', t('Email rate limit exceeded, notification queued'), { notificationId: notification._id });
+                await sendLog('info', t('Email rate limit exceeded, notification queued', { notificationId: notification._id.toString() }), { notificationId: notification._id });
                 return;
               }
               if (type === 'verification') {
@@ -180,6 +188,7 @@ export async function sendNotification(options: NotificationOptions) {
                   plan: data.plan || 'Unknown',
                   amount: data.amount || 0,
                   currency: data.currency || 'USD',
+                  email: ''
                 });
               } else if (type === 'paymentFailure') {
                 await emailService.sendPaymentFailure({
@@ -193,14 +202,14 @@ export async function sendNotification(options: NotificationOptions) {
                   : emailTemplates.verification;
 
                 const { subject, html, text } = template(user.name || 'User', data.code || '', data);
-                await emailService.send({
+                await emailService.sendEmail({
                   to: user.email,
                   subject,
                   html,
                   text,
                 });
               }
-              await sendLog('info', t('Email notification sent'), { userId, notificationId: notification._id, channel });
+              await sendLog('info', t('Email notification sent', { userId, notificationId: notification._id.toString() }), { userId, notificationId: notification._id, channel });
             }
             break;
 
@@ -216,18 +225,17 @@ export async function sendNotification(options: NotificationOptions) {
             }
             break;
 
-          case 'sms':
-            if (user.phone && (!isSellerSpecific || notificationSettings.sms)) {
-              await sendSMS({
-                to: user.phone,
-                message: `${title}\n\n${message}`,
-              });
-              await sendLog('info', t('SMS notification sent'), { userId, notificationId: notification._id, channel });
-            }
-            break;
-
           case 'whatsapp':
             if (user.phone && (!isSellerSpecific || notificationSettings.sms)) {
+              const canSendWhatsApp = await checkWhatsAppRateLimit();
+              if (!canSendWhatsApp) {
+                await Notification.findByIdAndUpdate(notification._id, {
+                  status: 'queued',
+                  queuedAt: new Date(),
+                });
+                await sendLog('info', t('WhatsApp rate limit exceeded, notification queued', { notificationId: notification._id.toString() }), { notificationId: notification._id });
+                return;
+              }
               await sendWhatsApp({
                 to: user.phone,
                 message: `${title}\n\n${message}`,
@@ -240,7 +248,7 @@ export async function sendNotification(options: NotificationOptions) {
             user.notifications = user.notifications || [];
             user.notifications.push(notification.toObject());
             await user.save();
-            await sendLog('info', t('In-app notification saved'), { userId, notificationId: notification._id, channel });
+            await sendLog('info', t('In-app notification saved', { userId, notificationId: notification._id.toString() }), { userId, notificationId: notification._id, channel });
             break;
         }
       } catch (error) {
@@ -251,7 +259,7 @@ export async function sendNotification(options: NotificationOptions) {
 
     await Promise.allSettled(promises);
     await notification.markAsSent();
-    await sendLog('info', t('Notification sent successfully'), { userId, notificationId: notification._id });
+    await sendLog('info', t('Notification sent successfully', { userId, notificationId: notification._id.toString() }), { userId, notificationId: notification._id });
 
     return { success: true, notificationId: notification._id.toString() };
   } catch (error) {
@@ -344,11 +352,11 @@ export async function sendSMS({ to, message }: SMSOptions) {
     const result = await response.json();
     if (result.status !== 'success') {
       const errorMessage = result.errors?.[0]?.message || t('Unknown error');
-      await sendLog('error', t('Textlocal API error'), { error: errorMessage });
-      throw new Error(t('Textlocal API error: {message}', { message: errorMessage }));
+      await sendLog('error', t('Textlocal API error', { message: errorMessage }), { error: errorMessage });
+      throw new Error(t('Textlocal API error', { message: errorMessage }));
     }
 
-    await sendLog('info', t('SMS sent'), { to });
+    await sendLog('info', t('SMS notification sent'), { to });
     return result;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : t('Failed to send SMS');
@@ -360,38 +368,36 @@ export async function sendSMS({ to, message }: SMSOptions) {
 export async function sendWhatsApp({ to, message }: SMSOptions) {
   const t = await getTranslations('notifications');
   try {
-    const apiKey = process.env.TEXTLOCAL_API_KEY;
+    const apiKey = process.env.WASENDER_API_KEY;
     if (!apiKey) {
-      await sendLog('error', t('Textlocal API key not configured'), {});
-      throw new Error(t('Textlocal API key not configured'));
+      await sendLog('error', t('Wasender API key not configured'), {});
+      throw new Error(t('Wasender API key not configured'));
     }
 
-    const response = await fetch('https://api.textlocal.in/send/', {
+    const response = await fetch('https://wasenderapi.com/api/send-message', {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
+        'Authorization': `Bearer ${apiKey}`,
+        'Content-Type': 'application/json',
       },
-      body: new URLSearchParams({
-        apikey: apiKey,
-        numbers: to,
-        message: encodeURIComponent(message),
-        sender: process.env.TEXTLOCAL_SENDER || 'MGZon',
-        channel: 'whatsapp',
-      }).toString(),
+      body: JSON.stringify({
+        to,
+        text: message,
+      }),
     });
 
     const result = await response.json();
-    if (result.status !== 'success') {
-      const errorMessage = result.errors?.[0]?.message || t('Unknown error');
-      await sendLog('error', t('Textlocal WhatsApp API error'), { error: errorMessage });
-      throw new Error(t('Textlocal WhatsApp API error: {message}', { message: errorMessage }));
+    if (!result.success || result.status !== 'in_progress') {
+      const errorMessage = result.error || t('Unknown error');
+      await sendLog('error', t('Wasender WhatsApp API error', { message: errorMessage }), { to, error: errorMessage, msgId: result.msgId });
+      throw new Error(t('Wasender WhatsApp API error', { message: errorMessage }));
     }
 
-    await sendLog('info', t('WhatsApp message sent'), { to });
+    await sendLog('info', t('WhatsApp notification sent'), { to, msgId: result.msgId });
     return result;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : t('Failed to send WhatsApp message');
-    await sendLog('error', t('WhatsApp error'), { error: errorMessage });
+    await sendLog('error', t('WhatsApp error'), { to, error: errorMessage });
     throw new Error(t('Failed to send WhatsApp message'));
   }
 }
@@ -412,18 +418,54 @@ export async function checkEmailRateLimit(): Promise<boolean> {
         count: 1,
         expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
       });
-      await sendLog('info', t('Email rate limit initialized'), { key });
+      await sendLog('info', t('Email rate limit initialized', { key }), { key });
       return true;
     }
 
     if (rateLimit.count >= limit) {
-      await sendLog('error', t('Email rate limit exceeded'), { key, count: rateLimit.count });
+      await sendLog('error', t('Email rate limit exceeded', { key, count: rateLimit.count }), { key, count: rateLimit.count });
       return false;
     }
 
     rateLimit.count += 1;
     await rateLimit.save();
-    await sendLog('info', t('Email rate limit incremented'), { key, count: rateLimit.count });
+    await sendLog('info', t('Email rate limit incremented', { key, count: rateLimit.count }), { key, count: rateLimit.count });
+    return true;
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : t('Rate limit check error');
+    await sendLog('error', t('Rate limit check error'), { error: errorMessage });
+    return false;
+  }
+}
+
+export async function checkWhatsAppRateLimit(): Promise<boolean> {
+  const t = await getTranslations('notifications');
+  try {
+    await connectToDatabase();
+
+    const key = `whatsapp_rate_limit:${new Date().toISOString().slice(0, 10)}`;
+    const limit = parseInt(process.env.WHATSAPP_RATE_LIMIT || '100');
+
+    let rateLimit = await RateLimit.findOne({ key });
+
+    if (!rateLimit) {
+      rateLimit = await RateLimit.create({
+        key,
+        count: 1,
+        expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000),
+      });
+      await sendLog('info', t('WhatsApp rate limit initialized', { key }), { key });
+      return true;
+    }
+
+    if (rateLimit.count >= limit) {
+      await sendLog('error', t('WhatsApp rate limit exceeded', { key, count: rateLimit.count }), { key, count: rateLimit.count });
+      return false;
+    }
+
+    rateLimit.count += 1;
+    await rateLimit.save();
+    await sendLog('info', t('WhatsApp rate limit incremented', { key, count: rateLimit.count }), { key, count: rateLimit.count });
     return true;
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : t('Rate limit check error');

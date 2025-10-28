@@ -8,6 +8,7 @@ import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { useTranslations } from 'next-intl';
 import crypto from 'crypto';
+import { getTranslations } from 'next-intl/server';
 
 type ProductPageProps = {
   params: Promise<{
@@ -54,48 +55,44 @@ async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
 
 async function getProductPageData({ customSiteUrl, slug, locale }: { customSiteUrl: string; slug: string; locale: string }) {
   const requestId = crypto.randomUUID();
-  const t = await useTranslations('product');
+  const t = await getTranslations({ locale, namespace: 'product' });
 
   try {
     const sellerResponse = await getSellerByCustomSiteUrl(customSiteUrl, locale);
     if (!sellerResponse.success || !sellerResponse.data) {
-      await sendLog('error', t('Seller not found for customSiteUrl'), { requestId, customSiteUrl, service: 'product-page' });
       notFound();
     }
-    const seller: Seller = sellerResponse.data;
 
-    // جلب المنتج عبر API
+    const seller = sellerResponse.data;
     const productResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/products?slug=${slug}&action=getProductBySlug`);
     const productData = await productResponse.json();
+
     if (!productData.success || !productData.data) {
-      await sendLog('error', t('Failed to fetch product by slug'), { requestId, slug, service: 'product-page' });
       notFound();
     }
-    const product: Product = productData.data;
+
+    const product = productData.data;
 
     if (product.sellerId.toString() !== seller._id.toString()) {
-      await sendLog('error', t('Product does not belong to seller'), { requestId, productId: product._id, sellerId: seller._id, service: 'product-page' });
       notFound();
     }
 
-    // جلب المنتجات المرتبطة عبر API
     const relatedProductsResponse = await fetch(
       `${process.env.NEXT_PUBLIC_BASE_URL}/api/products?category=${product.category}&productId=${product._id}&limit=4&action=getRelatedProducts`
     );
     const relatedProductsData = await relatedProductsResponse.json();
-    if (!relatedProductsData.success) {
-      await sendLog('error', t('Failed to fetch related products'), { requestId, category: product.category, service: 'product-page' });
-      return { seller, product, relatedProducts: [] };
-    }
 
-    await sendLog('info', t('Product page data fetched successfully'), { requestId, customSiteUrl, slug, service: 'product-page' });
-    return { seller, product, relatedProducts: relatedProductsData.data };
+    return {
+      seller,
+      product,
+      relatedProducts: relatedProductsData.success ? relatedProductsData.data : [],
+    };
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : t('Error fetching product page data');
-    await sendLog('error', t('Error fetching product page data'), { requestId, error: errorMessage, service: 'product-page' });
+    console.error('Error fetching product page data:', error);
     throw error;
   }
 }
+
 
 export default async function ProductPage(props: ProductPageProps) {
   const { locale, customSiteUrl, slug } = await props.params;

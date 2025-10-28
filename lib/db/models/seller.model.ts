@@ -779,35 +779,32 @@ const SellerSchema: Schema<ISeller> = new Schema(
     },
     pointsTransactions: { type: String, trim: true, default: '' },
     pointsHistory: [
-      {
-        amount: {
-          type: Number,
-          required: true,
-          min: 0,
-        },
-        type: {
-          type: String,
-          enum: ['credit', 'debit'],
-          required: true,
-        },
-        reason: {
-          type: String,
-          required: true,
-          trim: true,
-          minlength: [2, 'Reason must be at least 2 characters'],
-        },
-        orderId: {
-          type: String,
-          trim: true,
-          validate: {
-            validator: (v: string) => !v || mongoose.Types.ObjectId.isValid(v),
-            message: 'Invalid order ID',
-          },
-        },
-        createdAt: { type: Date, default: Date.now },
-        _id: false,
-      },
-    ],
+  {
+    amount: {
+      type: Number,
+      required: true,
+      min: 0,
+    },
+    type: {
+      type: String,
+      enum: ['earn', 'redeem'],
+      required: true,
+    },
+    description: { // استبدال reason بـ description
+      type: String,
+      required: true,
+      trim: true,
+      minlength: [2, 'Description must be at least 2 characters'],
+    },
+    orderId: {
+      type: Schema.Types.ObjectId,
+      ref: 'Order',
+      index: true,
+    },
+    createdAt: { type: Date, default: Date.now },
+    _id: false,
+  },
+],
     freeTrial: {
       type: Boolean,
       default: false,

@@ -17,7 +17,7 @@ export class WebhookDispatcher {
   private static readonly RETRY_BACKOFF = 1000; // 1 second
 
   private static async getRedisClient(): Promise<Redis> {
-    if (!process.env.UPSTASH_REDIS_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+    if (!process.env.UPSTASH_REDIS_URL || !process.env.UPSTASH_REDIS_TOKEN) {
       logger.error('Missing Redis environment variables');
       throw new Error('Redis configuration is missing');
     }
@@ -25,7 +25,7 @@ export class WebhookDispatcher {
     if (!this.redis) {
       this.redis = new Redis({
         url: process.env.UPSTASH_REDIS_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        token: process.env.UPSTASH_REDIS_TOKEN,
       });
     }
     return this.redis;

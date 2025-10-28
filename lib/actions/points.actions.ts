@@ -6,6 +6,7 @@ import PointsTransaction, { IPointsTransaction } from '@/lib/db/models/points-tr
 import { getSetting } from './setting.actions';
 import { round2 } from '../utils';
 import { Types } from 'mongoose';
+import Seller from '../db/models/seller.model';
 
 // دالة sendLog لإرسال اللوج إلى /api/log
 async function sendLog(type: 'info' | 'error', message: string, meta?: any) {
@@ -28,12 +29,22 @@ export async function awardPoints(userId: string, amount: number, description: s
     try {
       const objectId = new Types.ObjectId(userId);
       const user = await User.findById(objectId).session(session);
-      if (!user) {
-        await sendLog('error', `User not found for userId: ${userId}`, { userId });
-        throw new Error('User not found');
+      const seller = await Seller.findOne({ userId }).session(session);
+      if (!user || !seller) {
+        await sendLog('error', `User or Seller not found for userId: ${userId}`, { userId });
+        throw new Error('User or Seller not found');
       }
       user.pointsBalance += amount;
+      seller.pointsBalance += amount;
+      seller.pointsHistory.push({
+        amount,
+        type: 'earn',
+        description,
+        orderId: orderId ? new Types.ObjectId(orderId) : undefined,
+        createdAt: new Date(),
+      });
       await user.save({ session });
+      await seller.save({ session });
       await PointsTransaction.create(
         [{
           userId: objectId,
