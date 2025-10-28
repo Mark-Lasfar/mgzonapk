@@ -35,7 +35,14 @@ interface EmailMetadata {
 }
 
 class EmailService {
+  sendPaymentFailure(arg0: { to: string; order: any; user: { name: string; }; }) {
+    throw new Error('Method not implemented.');
+  }
   private transporter: nodemailer.Transporter;
+
+  public async sendEmail(options: EmailOptions) {
+  return this.send(options); // تستخدم private send داخليًا
+}
 
   constructor() {
     this.transporter = nodemailer.createTransport({

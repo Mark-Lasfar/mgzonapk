@@ -38,7 +38,10 @@ interface ITemplate extends Document {
     type: 'text' | 'image' | 'video' | 'button' | 'carousel' | 'countdown' | 'reviews';
     content: Record<string, any>;
     position: number;
+    customCSS?: string; // Added for developer mode
+    customHTML?: string; // Added for developer mode
   }>;
+  assets?: Array<{ name: string; url: string }>; // Added for assets in templates
 }
 
 const templateSchema = new Schema<ITemplate>(
@@ -53,9 +56,11 @@ const templateSchema = new Schema<ITemplate>(
     },
     sections: [{
       id: { type: String, required: true },
-      type: { type: String, enum: ['text', 'image', 'video', 'button', 'carousel', 'countdown', 'reviews'], required: true },
+      type: { type: String, enum: ['text', 'image', 'video', 'button', 'carousel', 'countdown', 'reviews', 'products', 'testimonials', 'faq'], required: true },
       content: { type: Schema.Types.Mixed, default: {} },
       position: { type: Number, required: true },
+      customCSS: { type: String, default: '' }, // New field for custom CSS
+      customHTML: { type: String, default: '' }, // New field for custom HTML
     }],
     createdAt: { type: Date, default: Date.now },
     updatedAt: { type: Date, default: Date.now },
@@ -123,6 +128,10 @@ const templateSchema = new Schema<ITemplate>(
       required: [true, 'Background image is required'],
       trim: true,
     },
+    assets: [{
+      name: { type: String, required: true },
+      url: { type: String, required: true },
+    }], // New field for assets
 
   },
   {

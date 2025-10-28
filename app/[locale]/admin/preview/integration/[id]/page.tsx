@@ -6,7 +6,7 @@ import { useParams } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 
 // Interface aligned with integration.model.ts
 interface PreviewData {

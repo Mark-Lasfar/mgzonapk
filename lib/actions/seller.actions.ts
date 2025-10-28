@@ -57,6 +57,8 @@ import { NotificationType } from '@/lib/db/models/notification.model';
 import validator from 'validator';
 import { languages } from 'countries-list';
 import { subscriptionUpdateSchema } from '../validator';
+import { IPointsTransaction } from '../db/models/points-transaction.model';
+
 // import { emailService } from '@/lib/services/email/mailer';
 
 // Initialize Stripe
@@ -929,7 +931,7 @@ export async function updateSellerSettings(
     await seller.save();
     await sendNotification({
       userId: session.user.id,
-      type: 'profile_updated',
+      type: 'profile updated',
       title: t('messages.profileUpdatedTitle'),
       message: t('messages.profileUpdatedMessage'),
       channels: ['in_app', 'email'],
@@ -2621,21 +2623,32 @@ interface SaleHistory {
 export async function getSellerMetrics(userId: string, locale: string = 'en') {
   const t = await getTranslations({ locale, namespace: 'api' });
   try {
-await connectToDatabase();
+    await connectToDatabase();
     const seller = await Seller.findOne({ userId });
     if (!seller) {
       throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
     }
 
+    const pointsEarned = seller.pointsHistory
+      .filter((t: IPointsTransaction) => t.type === 'earn')
+      .reduce((sum: number, t: IPointsTransaction) => sum + t.amount, 0);
+
+    const pointsRedeemed = seller.pointsHistory
+      .filter((t: IPointsTransaction) => t.type === 'redeem')
+      .reduce((sum: number, t: IPointsTransaction) => sum + Math.abs(t.amount), 0);
+
+    const recentTransactions = seller.pointsHistory
+      .sort((a: IPointsTransaction, b: IPointsTransaction) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .slice(0, 10);
+
     return {
       points: {
         balance: seller.pointsBalance,
-        earned: seller.pointsHistory
-          .filter((t: PointsTransaction) => t.type === 'credit')
-          .reduce((sum: number, t: PointsTransaction) => sum + t.amount, 0),
-        redeemed: seller.pointsHistory
-          .filter((t: PointsTransaction) => t.type === 'debit')
-          .reduce((sum: number, t: PointsTransaction) => sum + Math.abs(t.amount), 0),
+        earned: pointsEarned,
+        redeemed: pointsRedeemed,
+        recentTransactions,
       },
       subscription: {
         plan: seller.subscription.plan,
@@ -2667,24 +2680,28 @@ await connectToDatabase();
   }
 }
 
-
-
 export const getCachedSellerMetrics = cache(async (userId: string, locale: string = 'en') => {
-  const t = await getSafeTranslations(locale, 'api');
+  const t = await getTranslations({ locale, namespace: 'api' });
   try {
-await connectToDatabase();
+    await connectToDatabase();
     const seller = await Seller.findOne({ userId });
     if (!seller) {
       throw new SellerError(t('errors.sellerNotFound'), 'NOT_FOUND');
     }
 
     const pointsEarned = seller.pointsHistory
-      .filter((t: PointsTransaction) => t.type === 'credit')
-      .reduce((sum: number, t: PointsTransaction) => sum + t.amount, 0);
+      .filter((t: IPointsTransaction) => t.type === 'earn')
+      .reduce((sum: number, t: IPointsTransaction) => sum + t.amount, 0);
 
     const pointsRedeemed = seller.pointsHistory
-      .filter((t: PointsTransaction) => t.type === 'debit')
-      .reduce((sum: number, t: PointsTransaction) => sum + Math.abs(t.amount), 0);
+      .filter((t: IPointsTransaction) => t.type === 'redeem')
+      .reduce((sum: number, t: IPointsTransaction) => sum + Math.abs(t.amount), 0);
+
+    const recentTransactions = seller.pointsHistory
+      .sort((a: IPointsTransaction, b: IPointsTransaction) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      )
+      .slice(0, 10);
 
     const monthlyRevenue = seller.metrics.totalSalesHistory
       ?.filter((sale: SaleHistory) => new Date(sale.date).getMonth() === new Date().getMonth())
@@ -2700,6 +2717,7 @@ await connectToDatabase();
         balance: seller.pointsBalance,
         earned: pointsEarned,
         redeemed: pointsRedeemed,
+        recentTransactions,
       },
       subscription: {
         plan: seller.subscription.plan,
@@ -3137,7 +3155,7 @@ export async function distributeEarnings(sellerId: string, period: 'daily' | 'we
   }
 
   try {
-await connectToDatabase();
+  await connectToDatabase();
     const session = await mongoose.startSession();
     session.startTransaction();
 

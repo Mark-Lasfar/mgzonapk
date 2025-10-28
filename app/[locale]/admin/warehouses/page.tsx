@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button'
 import { PlusCircle } from 'lucide-react'
 import { columns } from './columns'
 import { WarehouseDialog } from './warehouse-dialog'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { getWarehouses } from '@/lib/actions/warehouse.actions'
 import { IWarehouse } from '@/types'
 

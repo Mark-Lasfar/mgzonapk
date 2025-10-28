@@ -6,7 +6,7 @@ import Image from 'next/image';
 import { useMemo, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Loader2 } from 'lucide-react';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card';
 
 interface Props {

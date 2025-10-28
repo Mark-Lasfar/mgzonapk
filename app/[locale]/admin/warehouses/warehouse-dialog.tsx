@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Checkbox } from '@/components/ui/checkbox'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { createWarehouse, updateWarehouse } from '@/lib/actions/warehouse.actions'
 
 // Zod validation schema

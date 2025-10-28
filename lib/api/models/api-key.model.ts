@@ -78,7 +78,7 @@ const apiKeySchema = new Schema<IApiKey>(
     sellerId: {
       type: Schema.Types.ObjectId,
       ref: 'Seller',
-      required: [true, 'Seller ID is required'],
+      required: false,
     },
   },
   {

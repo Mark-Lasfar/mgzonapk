@@ -8,12 +8,13 @@ export class RedisClient {
 
   static getInstance(): Redis {
     if (!this.instance) {
-      if (!process.env.UPSTASH_REDIS_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) {
+      if (!process.env.UPSTASH_REDIS_URL || !process.env.UPSTASH_REDIS_TOKEN) {
+
         throw new Error('Redis configuration is missing');
       }
       this.instance = new Redis({
         url: process.env.UPSTASH_REDIS_URL,
-        token: process.env.UPSTASH_REDIS_REST_TOKEN,
+        token: process.env.UPSTASH_REDIS_TOKEN,
       });
       logger.info('Redis client initialized', {
         timestamp: new Date().toISOString(),

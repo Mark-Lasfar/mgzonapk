@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
 import { SettingInputSchema } from '@/lib/validator';
 import { ClientSetting, ISettingInput } from '@/types';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import LanguageForm from './language-form';
 import CurrencyForm from './currency-form';
 import PaymentMethodForm from './payment-method-form';
@@ -19,7 +19,9 @@ import SubscriptionSettingsForm from './subscription-settings-form';
 import AIAssistantForm from './ai-assistant-form';
 import useSetting from '../../../../hooks/use-setting';
 import { useQuery, useMutation } from '@apollo/client/react';
-import { GET_SETTINGS, UPDATE_SETTINGS } from '@/graphql/settings/queries';
+import { GET_SETTINGS } from '@/graphql/settings/queries';
+import { UPDATE_SETTINGS } from '@/graphql/settings/mutations';
+// import { GET_SETTINGS, UPDATE_SETTINGS } from '@/graphql/settings/queries';
 
 const SettingForm = ({ setting }: { setting: ISettingInput }) => {
   const { setSetting } = useSetting();

@@ -19,6 +19,7 @@ import {
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogDescription,
+  AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
@@ -29,7 +30,7 @@ import Sidebar from '@/components/ui/Sidebar';
 import { CreativeInput } from './CreativeInput';
 import { GET_SELLER_DATA } from '@/graphql/seller/queries';
 import { CREATE_CAMPAIGN, SYNC_CAMPAIGN_METRICS, DELETE_CAMPAIGN } from '@/graphql/ads/mutations';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { useCampaigns, useSyncCampaignMetrics } from '@/lib/hooks/useCampaigns';
 import { useDebounce } from 'use-debounce';
 

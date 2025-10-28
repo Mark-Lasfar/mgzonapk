@@ -1,3 +1,4 @@
+// /home/mark/Music/my-nextjs-project-clean/app/api/seller/subscription/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { getTranslations, getLocale } from 'next-intl/server';

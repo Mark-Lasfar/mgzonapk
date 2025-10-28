@@ -1,4 +1,4 @@
-import { Schema, model, models, Document, Types } from 'mongoose';
+import mongoose, { Schema, model, models, Document, Types } from 'mongoose';
 import crypto from 'crypto';
 
 export type ApiPermission =
@@ -94,12 +94,8 @@ enum: {
       ref: 'User',
       required: [true, 'Updated by is required'],
     },
-    sellerId: {
-      type: Schema.Types.ObjectId,
-      ref: 'Seller',
-      required: [true, 'Seller ID is required'],
-      index: true,
-    },
+sellerId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: false },
+
     userId: {
       type: Schema.Types.ObjectId,
       ref: 'User',

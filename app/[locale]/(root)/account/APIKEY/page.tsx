@@ -2,15 +2,18 @@ import { auth } from '@/auth';
 import APIKeyClient from './APIKeyClient';
 
 interface ApiKey {
-  _id: string;
-  key: string;
+  id: string; 
   name: string;
+  key: string;
   permissions: string[];
+  isActive: boolean;
+  lastUsed?: string;
+  expiresAt?: string;
   createdAt: string;
 }
 
 interface ClientApplication {
-  _id: string;
+  id: string; 
   name: string;
   clientId: string;
   clientSecret: string;
@@ -19,6 +22,7 @@ interface ClientApplication {
   customScopes?: string[];
   createdAt: string;
 }
+
 
 export default async function APIKeyPage({ params: { locale } }: { params: { locale: string } }) {
   const session = await auth();

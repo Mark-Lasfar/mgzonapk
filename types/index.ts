@@ -77,6 +77,7 @@ export interface IPointsSettings {
 }
 
 export interface ISettingInput {
+  subscriptions: any;
   site: ISiteInfo;
   common: ICommonSettings;
   

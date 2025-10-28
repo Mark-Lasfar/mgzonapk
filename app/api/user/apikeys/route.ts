@@ -36,7 +36,7 @@ export async function GET(req: NextRequest) {
     const apiKeys = apiKeysArray.map((key: any) => ({
       id: key._id,
       name: key.name,
-      key: key.key.substring(0, 8) + '****',
+      key: key.key,
       permissions: key.permissions,
       isActive: key.isActive,
       lastUsed: key.lastUsed,
@@ -84,7 +84,7 @@ export async function POST(req: NextRequest) {
     ];
 
     // التحقق من الصلاحيات
-    const forbiddenPermissions = parsedData.permissions.filter((p: string) => 
+    const forbiddenPermissions = parsedData.permissions.filter((p: string) =>
       !userAllowedPermissions.includes(p) && sellerOnlyPermissions.includes(p)
     );
 
@@ -102,7 +102,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: t('errors.invalidPermissions') }, { status: 400 });
     }
 
-    const apiKey = new ApiKey({
+    const apiKeyData: any = {
       name: parsedData.name,
       key: `mgz_${crypto.randomBytes(16).toString('hex')}`,
       secret: encrypt(crypto.randomBytes(32).toString('hex')),
@@ -111,8 +111,15 @@ export async function POST(req: NextRequest) {
       createdBy: user._id,
       updatedBy: user._id,
       isActive: true,
-      sellerId: user.role === 'SELLER' ? user._id : null, // إضافة sellerId إذا كان بائعًا
-    });
+    };
+
+    // أضف sellerId فقط إذا كان المستخدم بائعًا
+    if (user.role === 'SELLER') {
+      apiKeyData.sellerId = user._id;
+    }
+
+    const apiKey = new ApiKey(apiKeyData);
+
 
     await apiKey.save();
     user.apiKeys = user.apiKeys || [];

@@ -1,11 +1,10 @@
 import Integration, { IIntegration } from '@/lib/db/models/integration.model';
 import SellerIntegration, { ISellerIntegration } from '@/lib/db/models/seller-integration.model';
-// import { customLogger } from '@lib/api/services/logging';
+import { customLogger } from './logging';
 import { GenericIntegrationService } from './generic-integration';
-// import { v4 as uuidv4 } from '@uuid';
 import { SellerError } from '@/lib/errors/seller-error';
 import Seller from '@/lib/db/models/seller.model';
-import { customLogger } from './logging';
+import { v4 as uuidv4 } from 'uuid'; // استيراد uuid
 
 export interface AnalyticsEvent {
   eventName: string;
@@ -144,7 +143,3 @@ export class AnalyticsService {
 }
 
 export default new AnalyticsService();
-
-function uuidv4() {
-  throw new Error('Function not implemented.');
-}

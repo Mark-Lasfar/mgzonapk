@@ -1,7 +1,7 @@
-import { useQuery, useMutation } from '@apollo/client/react';
+import { useQuery, useMutation } from '@apollo/client';
 import { GET_CAMPAIGNS } from '@/graphql/ads/queries';
 import { SYNC_CAMPAIGN_METRICS } from '@/graphql/ads/mutations';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { useState } from 'react';
 
 // Define interfaces for the GraphQL response shapes

@@ -27,8 +27,8 @@ interface DashboardResponse {
 export async function GET(request: Request): Promise<NextResponse<DashboardResponse>> {
   const t = await getTranslations('api');
   const session = await auth();
-  
-  if (!session || session.user.role !== 'SELLER') {
+
+  if (!session || session.user.role !== 'SELLER' || !session.user.id) {
     return NextResponse.json(
       { success: false, message: t('errors.unauthorized') },
       { status: 401 }
@@ -47,7 +47,7 @@ export async function GET(request: Request): Promise<NextResponse<DashboardRespo
 
     const seller: ISeller = sellerResult.data;
     const now = new Date();
-    
+
     if (
       seller.subscription.status !== 'active' ||
       (seller.subscription.endDate && new Date(seller.subscription.endDate) < now)

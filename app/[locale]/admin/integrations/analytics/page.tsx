@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { useTranslations } from 'next-intl';
 
 interface AnalyticsData {

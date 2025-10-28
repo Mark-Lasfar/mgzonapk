@@ -1,9 +1,14 @@
-// /home/mark/Music/my-nextjs-project-clean/components/craft/Map.tsx
 'use client';
 import React, { useRef } from 'react';
 import { useNode } from '@craftjs/core';
-import { MapContainer, TileLayer, Marker, Popup } from 'react-leaflet';
+import dynamic from 'next/dynamic';
 import 'leaflet/dist/leaflet.css';
+
+// تحميل مكونات react-leaflet ديناميكيًا مع تعطيل SSR
+const MapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), { ssr: false });
+const TileLayer = dynamic(() => import('react-leaflet').then((mod) => mod.TileLayer), { ssr: false });
+const Marker = dynamic(() => import('react-leaflet').then((mod) => mod.Marker), { ssr: false });
+const Popup = dynamic(() => import('react-leaflet').then((mod) => mod.Popup), { ssr: false });
 
 interface MapProps {
   latitude?: number;
@@ -34,8 +39,8 @@ export const Map = ({
       ref={(element) => {
         ref.current = element;
         if (ref.current) {
-          connect(ref);
-          drag(ref);
+          connect(element); // تم تعديل ref إلى element
+          drag(element);
         }
       }}
       style={{

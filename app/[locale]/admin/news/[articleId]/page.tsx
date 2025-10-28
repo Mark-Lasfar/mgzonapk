@@ -19,7 +19,7 @@ import {
 } from '@/components/ui/form'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { createNewsArticle, updateNewsArticle } from '@/lib/actions/news.actions'
 import { INewsArticle } from '@/lib/db/models/news.model'
 import { NewsArticleInputSchema, NewsArticleUpdateSchema } from '@/lib/validator'

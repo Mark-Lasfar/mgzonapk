@@ -33,6 +33,8 @@ export default function SellerCustomSiteFormWrapper({ defaultValues, locale, sto
           content: section.content ?? 'Default Content',
           type: section.type ?? 'custom',
           position: section.position ?? 0,
+          customCSS: section.customCSS ?? '',
+          customHTML: section.customHTML ?? '',
         })) || [
           {
             title: 'Welcome Section',
@@ -66,6 +68,8 @@ export default function SellerCustomSiteFormWrapper({ defaultValues, locale, sto
           content: section.content ?? 'Default Content',
           type: section.type ?? 'custom',
           position: section.position ?? 0,
+          customCSS: section.customCSS ?? '',
+          customHTML: section.customHTML ?? '',
         })) ?? [];
 
         const validSeo = value.customSite.seo

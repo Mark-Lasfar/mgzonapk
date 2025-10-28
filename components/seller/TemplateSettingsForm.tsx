@@ -8,7 +8,7 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { useTranslations } from 'next-intl';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import { Loader2, Trash2 } from 'lucide-react';
 import TemplateImporter from './TemplateImporter';
 import TemplateLibrary from './TemplateLibrary';

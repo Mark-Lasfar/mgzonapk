@@ -418,6 +418,7 @@ export interface ApiKey {
   lastUsed?: Date;
   expiresAt?: Date;
   isActive: boolean;
+  
 }
 
 export type ApiPermission =
@@ -1127,4 +1128,45 @@ export interface UpdateOrderStatusResponse {
     id: string;
     status: string;
   };
+}
+
+
+
+export interface ClientApplication {
+  id: string;
+  clientId: string;
+  clientSecret: string;
+  name: string;
+  redirectUris: string[];
+  scopes: string[];
+  customScopes?: string[];
+  description?: string;
+  logoUrl?: string;
+  videos?: Array<{ url: string; position: 'left' | 'center' | 'right'; size: 'small' | 'medium' | 'large' }>;
+  images?: Array<{ url: string; position: 'left' | 'center' | 'right'; size: 'small' | 'medium' | 'large' }>;
+  buttons?: Array<{ label: string; link: string; type: 'primary' | 'secondary' | 'link' }>;
+  features?: string[];
+  categories?: string[];
+  slug: string;
+  isMarketplaceApp: boolean;
+  status: 'pending' | 'approved' | 'rejected';
+  createdAt: string;
+    pricing?: {
+    model: 'free' | 'one-time' | 'subscription';
+    amount?: number;
+    currency?: 'USD' | 'SAR' | 'EGP';
+    interval?: 'monthly' | 'yearly';
+  };
+}
+
+export interface Template {
+  sections?: Array<{
+    id: string;
+    type: string;
+    customHTML?: string;
+    customCSS?: string;
+    [key: string]: any;
+  }>;
+  assets?: Array<{ name: string; url: string }>;
+  [key: string]: any; // For flexibility, since the schema is validated by Zod
 }

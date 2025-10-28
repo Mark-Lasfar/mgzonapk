@@ -3,7 +3,7 @@
 
 import { useState, useEffect, useRef } from 'react';
 import { useTranslations } from 'next-intl';
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 import io from 'socket.io-client';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';

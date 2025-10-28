@@ -19,7 +19,7 @@ import { GET_INTEGRATIONS } from '@/graphql/seller/queries';
 import { UPDATE_CAMPAIGN } from '@/graphql/ads/mutations'; // Import from mutations.ts
 import { GET_CAMPAIGN } from '@/graphql/ads/queries'; // Import from queries.ts
 
-import { useToast } from '@/hooks/use-toast';
+import { useToast } from '@/components/ui/toast';
 
 const campaignSchema = z.object({
   integrationId: z.string().min(1, 'Ads.Error.Integration Required'),

@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/components/ui/toast'
 
 export default function PointsNotification() {
   const { toast } = useToast()

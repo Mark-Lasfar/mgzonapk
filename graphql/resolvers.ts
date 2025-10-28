@@ -21,7 +21,7 @@ import { v4 as uuidv4 } from 'uuid';
 import mongoose from 'mongoose';
 import Stripe from 'stripe';
 import { z } from 'zod';
-import Setting from '@/lib/db/models/setting.model';
+// import Setting from '@/lib/db/models/setting.model';
 import User from '@/lib/db/models/user.model';
 import Setting from "@/lib/db/models/setting.model";
 
@@ -1602,5 +1602,53 @@ export const resolvers = {
         throw new Error(errorMessage);
       }
     },
+    calculatePricing: async (
+  _: any,
+  { basePrice, listPrice, markup, discount, currency }: 
+  { basePrice: number; listPrice: number; markup: number; discount?: { type: string; value?: number }; currency: string },
+  { session }: { session: Session }
+) => {
+  const requestId = uuidv4();
+  try {
+    if (!session?.user?.id) {
+      await logToApi('error', 'Unauthorized access to calculate pricing', { requestId });
+      throw new Error('Unauthorized');
+    }
+
+    // تحقق من العملة
+    const supportedCurrencies = ['USD', 'EUR', 'GBP']; // لو في ملف config.ts، استبدل بالقائمة منه
+    if (!supportedCurrencies.includes(currency)) {
+      await logToApi('error', 'Unsupported currency', { requestId, currency });
+      throw new Error('Unsupported currency');
+    }
+
+    const commissionRate = 0.1; // 10% commission
+    const commission = basePrice * commissionRate;
+    const suggestedMarkup = markup || 30;
+    let finalPrice = listPrice || basePrice * (1 + suggestedMarkup / 100);
+
+    if (discount?.type === 'percentage' && discount.value) {
+      finalPrice *= 1 - discount.value / 100;
+    } else if (discount?.type === 'fixed' && discount.value) {
+      finalPrice -= discount.value;
+    }
+
+    const profit = finalPrice - basePrice - commission;
+
+    await logToApi('info', 'Pricing calculated successfully', { requestId, basePrice, currency });
+
+    return {
+      currency,
+      commission: Number(commission.toFixed(2)),
+      suggestedMarkup,
+      finalPrice: Number(finalPrice.toFixed(2)),
+      profit: Number(profit.toFixed(2)),
+    };
+  } catch (error) {
+    const errorMessage = error instanceof Error ? error.message : 'Failed to calculate pricing';
+    await logToApi('error', 'Failed to calculate pricing', { requestId, basePrice, currency }, errorMessage);
+    throw new Error(errorMessage);
+  }
+},
   },
 };

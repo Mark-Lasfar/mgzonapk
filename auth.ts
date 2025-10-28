@@ -1,10 +1,9 @@
-// /home/mark/Music/my-nextjs-project-clean/auth.ts
 
 import { MongoDBAdapter } from '@auth/mongodb-adapter';
 import Google from 'next-auth/providers/google';
 import bcrypt from 'bcryptjs';
 import CredentialsProvider from 'next-auth/providers/credentials';
-import { connectToDatabase, getMongoClient } from '@/lib/db';
+import { connectToDatabase } from '@/lib/db';
 import User from './lib/db/models/user.model';
 import NextAuth, { type DefaultSession } from 'next-auth';
 import authConfig from './auth.config';
@@ -28,7 +27,7 @@ declare module 'next-auth' {
 
 export async function authenticateUser(credentials: { email: string; password: string }) {
   try {
-    await connectToDatabase();
+    await connectToDatabase(); // استخدام connectToDatabase بدل getMongoClient
     const user = await User.findOne({ email: credentials.email }).select('+password');
     console.log('authenticateUser: User lookup:', {
       email: credentials.email,
@@ -100,7 +99,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: 'jwt',
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
-  adapter: MongoDBAdapter(getMongoClient()),
+  adapter: MongoDBAdapter((await connectToDatabase()).client), // استخدام MongoClient من connectToDatabase
   providers: [
     Google({
       clientId: process.env.AUTH_GOOGLE_ID!,
@@ -139,14 +138,12 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   callbacks: {
     jwt: async ({ token, user, trigger, session }) => {
       if (user) {
-        if (!user.name) {
-          await getMongoClient();
-          await User.findByIdAndUpdate(user.id, {
-            name: user.name || user.email!.split('@')[0],
-            role: 'user',
-            emailVerified: true,
-          });
-        }
+        await connectToDatabase(); // استخدام connectToDatabase بدل getMongoClient
+        await User.findByIdAndUpdate(user.id, {
+          name: user.name || user.email!.split('@')[0],
+          role: 'user',
+          emailVerified: true,
+        });
         token.name = user.name || user.email!.split('@')[0];
         token.role = (user as { role: string }).role;
         token.id = user.id;

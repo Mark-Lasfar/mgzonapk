@@ -8,6 +8,7 @@ export interface IClient extends Document {
   clientSecret: string;
   redirectUris: string[];
   scopes: string[];
+  isMarketplaceApp: boolean;
   customScopes?: string[];
   createdBy: string;
   updatedBy: string;
@@ -44,11 +45,16 @@ const clientSchema = new Schema<IClient>(
       unique: true,
       default: () => `mgzon_${crypto.randomBytes(16).toString('hex')}`,
     },
+    isMarketplaceApp: {
+      type: Boolean,
+      default: false,
+    },
     clientSecret: {
       type: String,
       required: [true, 'Client Secret is required'],
       default: () => crypto.randomBytes(32).toString('hex'),
     },
+
     redirectUris: [
       {
         type: String,
@@ -107,7 +113,9 @@ const clientSchema = new Schema<IClient>(
     status: {
       type: String,
       enum: ['pending', 'approved', 'rejected'],
-      default: 'pending',
+      default: function () {
+        return this.isMarketplaceApp ? 'pending' : 'approved';
+      },
     },
     commissionRate: {
       type: Number,

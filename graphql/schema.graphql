@@ -1,3 +1,4 @@
+
 # =====================================================
 # SELLER ADMIN OPERATIONS
 # =====================================================
@@ -66,6 +67,18 @@ type SellersListResponse {
   data: SellersList!
   error: String
 }
+
+
+
+type PricingResult {
+  currency: String!
+  commission: Float!
+  suggestedMarkup: Float!
+  finalPrice: Float!
+  profit: Float!
+}
+
+
 
 type SellersList {
   sellers: [Seller!]!
@@ -365,6 +378,16 @@ type Integration {
   webhook: Webhook
 }
 
+type ImportDropshippingProduct {
+  name: String!
+  description: String!
+  price: Float!
+  images: [String!]!
+  sku: String
+  currency: String!
+  region: String
+  availability: String!
+}
 type Webhook {
   enabled: Boolean!
   url: String
@@ -767,6 +790,33 @@ input CreativeInput {
   metadata: JSON
 }
 
+
+type PointsTransaction {
+  id: ID!
+  userId: ID!
+  amount: Float!
+  type: String!
+  description: String!
+  orderId: ID
+  createdAt: DateTime!
+}
+
+type SellerMetrics {
+  points: PointsMetrics!
+  subscription: Subscription!
+  revenue: Revenue!
+  orders: Orders!
+  products: Products!
+  performance: Performance!
+}
+
+type PointsMetrics {
+  balance: Float!
+  earned: Float!
+  redeemed: Float!
+  recentTransactions: [PointsTransaction!]!
+}
+
 # =====================================================
 # RESPONSES
 # =====================================================
@@ -810,6 +860,9 @@ type ImportDropshippingProductResponse {
 # =====================================================
 
 type Query {
+
+  integrations(sellerId: String!, sandboxMode: Boolean): [Integration!]!
+  importDropshippingProduct(providerId: String!, externalProductId: String!): ImportDropshippingProduct!
   # Products
   products(sellerId: ID!, excludeProductId: ID): [Product!]!
   
@@ -874,6 +927,8 @@ type Mutation {
   # Banking
   updateBankInfo(input: BankInfoInput!): BankInfo!
   
+  uploadImage(input: UploadImageInput!): UploadImageResponse!
+  deleteImage(publicId: String!): Boolean!
   # Advertising
   createCampaign(input: CampaignInput!): AdCampaign!
   updateCampaign(id: ID!, input: CampaignInput!): AdCampaign!
@@ -884,5 +939,15 @@ type Mutation {
   suspendSeller(input: SuspendSellerInput!): SellerResponse!
   deleteSeller(input: DeleteSellerInput!): SellerResponse!
   unsuspendSeller(sellerId: ID!): SellerResponse!
+
+  calculatePricing(
+    basePrice: Float!
+    listPrice: Float!
+    markup: Float
+    discount: DiscountInput
+    currency: String!
+  ): PricingResult!
+  sellerMetrics(userId: ID!, locale: String): SellerMetrics!
+
 
 }

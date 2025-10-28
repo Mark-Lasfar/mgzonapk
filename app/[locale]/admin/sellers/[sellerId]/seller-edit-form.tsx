@@ -6,10 +6,11 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { useToast } from '@/hooks/use-toast';
-import { useMutation, useQueryClient } from '@apollo/client/react';
+import { useToast } from '@/components/ui/toast';
+import { useMutation, useQueryClient } from '@apollo/client';
 import { UPDATE_SELLER, SUSPEND_SELLER, DELETE_SELLER, UNSUSPEND_SELLER } from '@/graphql/admin/seller/mutations';
 import { GET_SELLER } from '@/graphql/admin/seller/queries';
+// import {  useQueryClient } from '@apollo/client/react';
 
 interface SellerEditFormProps {
   seller: any;

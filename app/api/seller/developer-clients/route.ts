@@ -1,3 +1,4 @@
+// /app/api/seller/developer-clients/route.ts
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/auth';
 import { connectToDatabase } from '@/lib/db';
@@ -20,7 +21,7 @@ export async function GET(req: NextRequest) {
   const t = await getTranslations('api.seller.clients');
   try {
     const session = await auth();
-    if (!session?.user?.id || session.user.role !== 'SELLER') {
+    if (!session?.user?.id) {
       await customLogger.error('Unauthorized access to developer clients', { requestId, service: 'api' });
       return NextResponse.json(
         { success: false, error: t('unauthorized'), requestId, timestamp: new Date().toISOString() },
@@ -38,7 +39,7 @@ export async function GET(req: NextRequest) {
     const minRating = parseFloat(searchParams.get('minRating') || '0');
     const minInstalls = parseInt(searchParams.get('minInstalls') || '0', 10);
 
-    const cacheKey = `seller:developer-clients:${session.user.id}:${slug || 'all'}:${category || 'all'}:${page}:${limit}`;
+    const cacheKey = `clients:${session.user.id}:${slug || 'all'}:${category || 'all'}:${page}:${limit}:${sandbox}`;
     if (redis) {
       const cached = await redis.get(cacheKey);
       if (cached) {
@@ -58,7 +59,7 @@ export async function GET(req: NextRequest) {
 
     await connectToDatabase(sandbox ? 'sandbox' : 'live');
 
-    const query: any = { status: 'approved', isActive: true };
+    const query: any = { status: 'approved', isActive: true, isMarketplaceApp: true };
 
     if (slug) {
       query.slug = slug;
@@ -88,7 +89,8 @@ export async function GET(req: NextRequest) {
     const clients = await Client.find(query)
       .skip(skip)
       .limit(limit)
-      .lean();
+      .lean()
+      .select('name logoUrl description categories features redirectUris scopes customScopes clientId slug status rating ratingsCount installs videos images buttons');
 
     const clientsWithConnection = await Promise.all(
       clients.map(async (client) => {

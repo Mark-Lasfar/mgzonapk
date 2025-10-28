@@ -2,7 +2,7 @@
 import { useTransition } from 'react'
 
 import { Button } from '@/components/ui/button'
-import { useToast } from '@/hooks/use-toast'
+import { useToast } from '@/components/ui/toast'
 import { cn } from '@/lib/utils'
 
 export default function ActionButton({
